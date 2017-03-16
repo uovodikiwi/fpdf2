@@ -51,12 +51,14 @@ supported.
 
 Documentation:
 --------------
+**TODO: MOVE ONTO GH-PAGES**
 [![Documentation Status](https://readthedocs.org/projects/pyfpdf/badge/?version=latest)](http://pyfpdf.rtfd.org)
 
  * [Read the Docs](http://pyfpdf.readthedocs.org/en/latest/)
- * [FAQ](docs/FAQ.md)
- * [Tutorial](docs/Tutorial.md) (Spanish translation available)
- * [Reference Manual](docs/ReferenceManual.md)
+ * [FAQ](http://pyfpdf.readthedocs.io/en/latest/FAQ/index.html)
+ * [Tutorial](http://pyfpdf.readthedocs.io/en/latest/Tutorial/index.html)
+ (Spanish translation available)
+ * [Reference Manual](http://pyfpdf.readthedocs.io/en/latest/ReferenceManual/index.html)
 
 For further information, see the project site:
 https://github.com/reingart/pyfpdf or the old Google Code project page
