@@ -31,16 +31,16 @@ Installation Instructions:
 
 To get the latest development version you can download the source code running:
 
-```
-  git clone https://github.com/alexanderankin/pyfpdf.git
-  cd pyfpdf
-  python setup.py install
+```bash
+git clone https://github.com/alexanderankin/pyfpdf.git
+cd pyfpdf
+python setup.py install
 ```
 
 You can also install PyFPDF from PyPI, with easyinstall or from Windows 
 installers. For example, using pip:
-```
-  pip install fpdf
+```bash
+pip install fpdf
 ```
 
 **Note:** the [Python Imaging Library](http://www.pythonware.com/products/pil/)
