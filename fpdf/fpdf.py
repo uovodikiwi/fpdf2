@@ -174,7 +174,7 @@ class FPDF(object):
                            'timesBI': 'Times-BoldItalic',
                            'symbol': 'Symbol', 'zapfdingbats': 'ZapfDingbats'}
         self.core_fonts_encoding = "latin-1"
-        self.unifontsubset = True
+        # self.unifontsubset = True
 
         # Scale factor
         if unit == "pt":
@@ -222,7 +222,7 @@ class FPDF(object):
         self.set_compression(1)                  # Enable compression
         self.pdf_version = '1.3'                 # Set default PDF version No.
 
-        self.set_font('arial', '', 12)
+        # self.set_font('arial', '', 12)
 
     def check_page(fn):
         "Decorator to protect drawing methods"

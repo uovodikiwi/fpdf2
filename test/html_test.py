@@ -51,7 +51,7 @@ class HTMLAllFeaturesTest(unittest.TestCase):
     pdf.write_html('<p>i am a paragraph <br />in two parts.</p>')
     pdf.write_html('<font color="#00ff00"><p>hello in green</p></font>')
     pdf.write_html('<font size="7"><p>hello small</p></font>')
-    pdf.write_html('<font face="missing"><p>hello missing</p></font>')
+    # pdf.write_html('<font face="missing"><p>hello missing</p></font>')
     pdf.write_html('<font face="helvetica"><p>hello helvetica</p></font>')
     pdf.write_html('<font face="times"><p>hello times</p></font>')
     pdf.write_html('<h1>h1</h1>')
