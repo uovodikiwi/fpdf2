@@ -21,7 +21,8 @@ def textstring(s):
 
 def escape(s):
     "Add \ before \, ( and )"
-    return s.replace('\\', '\\\\') \
+    # return s.replace('\\', '\\\\') \
+    return str(s).replace('\\', '\\\\') \
             .replace(')', '\\)') \
             .replace('(', '\\(') \
             .replace('\r', '\\r')

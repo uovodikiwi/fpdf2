@@ -37,7 +37,8 @@ import zlib
 from .errors import (
     fpdf_error,
     FPDFException,
-    FPDFPageFormatException
+    FPDFPageFormatException,
+    FPDFUndefinedFontException
 )
 from .fonts import fpdf_charwidths
 from .image_parsing import (
@@ -173,6 +174,7 @@ class FPDF(object):
                            'timesBI': 'Times-BoldItalic',
                            'symbol': 'Symbol', 'zapfdingbats': 'ZapfDingbats'}
         self.core_fonts_encoding = "latin-1"
+        self.unifontsubset = True
 
         # Scale factor
         if unit == "pt":
@@ -219,6 +221,8 @@ class FPDF(object):
         self.set_display_mode('fullwidth')       # Full width display mode
         self.set_compression(1)                  # Enable compression
         self.pdf_version = '1.3'                 # Set default PDF version No.
+
+        self.set_font('arial', '', 12)
 
     def check_page(fn):
         "Decorator to protect drawing methods"
@@ -549,6 +553,7 @@ class FPDF(object):
         if (style == 'IB'): style = 'BI'
         fontkey = family + style
 
+        print(fontkey, fontkey in self.fonts, uni, 'looking in', fname, os.path.join(FPDF_FONT_DIR, fname))
         # Font already added!
         if fontkey in self.fonts: return
         if (uni):
@@ -710,7 +715,7 @@ class FPDF(object):
                     'cw'   : fpdf_charwidths[fontkey]
                 }
             else:
-                fpdf_error('Undefined font: ' + family + ' ' + style)
+                raise FPDFUndefinedFontException(family, style)
 
         # Select it
         self.font_family   = family
@@ -919,6 +924,7 @@ class FPDF(object):
                 s += ' ET'
             else:
                 if (self.unifontsubset):
+                    #
                     txt2 = escape_parens(UTF8ToUTF16BE(txt, False))
                     for uni in UTF8StringToArray(txt):
                         self.current_font['subset'].append(uni)
