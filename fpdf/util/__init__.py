@@ -14,6 +14,7 @@ def freadint(f):
 
 def textstring(s):
     "Format a text string"
+    if isinstance(s, bytes): s = s.decode('latin-1')
     if s:
         return '(' + escape(s) + ')'
     else:
@@ -21,6 +22,7 @@ def textstring(s):
 
 def escape(s):
     "Add \ before \, ( and )"
+    if isinstance(s, bytes): s = s.decode('latin-1')
     return s.replace('\\', '\\\\') \
             .replace(')', '\\)') \
             .replace('(', '\\(') \

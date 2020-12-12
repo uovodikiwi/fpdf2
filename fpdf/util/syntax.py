@@ -115,6 +115,14 @@ def iobj_ref(n):
     return str(n) + ' 0 R'
 
 def create_stream(stream):
+    """Create Stream
+    
+    the encoding this function uses corresponds to the _out method in FPDF.
+
+    @param stream: bytebuffer of latin-1 encoded bytes
+    @return bytebuffer
+    """
+    if isinstance(stream, bytes): stream = stream.decode('latin-1')
     if py3k and type(stream) in (bytearray, bytes):
         stream = str(stream, 'latin-1')
     return '\n'.join(['stream', stream, 'endstream'])

@@ -17,11 +17,17 @@ def calculate_hash_of_file(full_path):
     data = file.read()
   return hashlib.md5(data).hexdigest()
 
-def relative_path_to(place):
+def relative_path_to(place, *sub_paths):
   """Finds Relative Path to a place
 
   Works by getting the file of the caller module, then joining the directory
   of that absolute path and the place in the argument.
   """
+  if sub_paths is not None:
+    place = os.path.join(place, *sub_paths)
   caller_file = inspect.getfile(sys._getframe(1))
   return os.path.join(os.path.dirname(os.path.abspath(caller_file)), place)
+
+def files_in_dir(abs_path):
+  """Files In Directory (abs file paths from absolute path to directory)"""
+  return [os.path.join(abs_path, p) for p in os.listdir(abs_path)]
