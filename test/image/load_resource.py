@@ -26,7 +26,7 @@ class LoadResourceTest(unittest.TestCase):
 
   def test_load_text_file(self):
     file = relative_path_to('__init__.py')
-    contents = '"""This package contains image tests"""\n'
+    contents = '"""This package contains image tests"""\nfrom . import *\n'
     bc = contents.encode('utf-8')
 
     resource = fpdf.image_parsing.load_resource(file).getvalue()
