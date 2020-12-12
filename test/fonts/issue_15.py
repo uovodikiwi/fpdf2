@@ -54,7 +54,7 @@ class Issue15(unittest.TestCase):
     # print(calculate_hash_of_file(outfile))
     # known_good_hash = "4cf8faa9baf3f1835c03fa4ac1e6eb29"
     # self.assertEqual(known_good_hash, calculate_hash_of_file(outfile))
-    os.system('evince ' + outfile)
+    # os.system('evince ' + outfile)
     os.unlink(outfile)
 
 
