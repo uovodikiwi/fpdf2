@@ -1,0 +1,3559 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>fpdf.ttfonts API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>fpdf.ttfonts</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># ******************************************************************************
+# TTFontFile class
+#
+# This class is based on The ReportLab Open Source PDF library
+# written in Python - http://www.reportlab.com/software/opensource/
+# together with ideas from the OpenOffice source code and others.
+#
+# Version:  1.04
+# Date:     2011-09-18
+# Author:   Ian Back &lt;ianb@bpm1.com&gt;
+# License:  LGPL
+# Copyright (c) Ian Back, 2010
+# Ported to Python 2.7 by Mariano Reingart (reingart@gmail.com) on 2012
+# This header must be retained in any redistribution or
+# modification of the file.
+#
+# ******************************************************************************
+
+from struct import pack, unpack
+import re
+import warnings
+from .php import die, substr, str_repeat, str_pad, strlen, count
+from .util import b
+
+
+# Define the value used in the &#34;head&#34; table of a created TTF file
+# 0x74727565 &#34;true&#34; for Mac
+# 0x00010000 for Windows
+# Either seems to work for a font embedded in a PDF file
+# when read by Adobe Reader on a Windows PC(!)
+_TTF_MAC_HEADER = False
+
+
+# TrueType Font Glyph operators
+GF_WORDS = 1 &lt;&lt; 0
+GF_SCALE = 1 &lt;&lt; 3
+GF_MORE = 1 &lt;&lt; 5
+GF_XYSCALE = 1 &lt;&lt; 6
+GF_TWOBYTWO = 1 &lt;&lt; 7
+
+
+def sub32(x, y):
+    xlo = x[1]
+    xhi = x[0]
+    ylo = y[1]
+    yhi = y[0]
+    if ylo &gt; xlo:
+        xlo += 1 &lt;&lt; 16
+        yhi += 1
+    reslo = xlo - ylo
+    if yhi &gt; xhi:
+        xhi += 1 &lt;&lt; 16
+    reshi = xhi - yhi
+    reshi = reshi &amp; 0xFFFF
+    return (reshi, reslo)
+
+
+def calcChecksum(data):
+    if strlen(data) % 4:
+        data += str_repeat(b(&#34;\0&#34;), (4 - (len(data) % 4)))
+    hi = 0x0000
+    lo = 0x0000
+    for i in range(0, len(data), 4):
+        hi += data[i] &lt;&lt; 8 + data[i + 1]
+        lo += data[i + 2] &lt;&lt; 8 + data[i + 3]
+        hi += lo &gt;&gt; 16
+        lo = lo &amp; 0xFFFF
+        hi = hi &amp; 0xFFFF
+    return (hi, lo)
+
+
+class TTFontFile:
+    def __init__(self):
+        self.maxStrLenRead = 200000  # Maximum size of glyf table to read in as string (otherwise reads each glyph from file)
+
+    def getMetrics(self, file):
+        self.filename = file
+        with open(file, &#34;rb&#34;) as self.fh:
+            self._pos = 0
+            self.charWidths = []
+            self.glyphPos = {}
+            self.charToGlyph = {}
+            self.tables = {}
+            self.otables = {}
+            self.ascent = 0
+            self.descent = 0
+            self.version = version = self.read_ulong()
+            if version == 0x4F54544F:
+                die(&#34;Postscript outlines are not supported&#34;)
+            if version == 0x74746366:
+                die(&#34;ERROR - TrueType Fonts Collections not supported&#34;)
+            if version not in (0x00010000, 0x74727565):
+                die(&#34;Not a TrueType font: version=&#34; + str(version))
+            self.readTableDirectory()
+            self.extractInfo()
+
+    def readTableDirectory(
+        self,
+    ):
+        self.numTables = self.read_ushort()
+        self.searchRange = self.read_ushort()
+        self.entrySelector = self.read_ushort()
+        self.rangeShift = self.read_ushort()
+        self.tables = {}
+        for i in range(self.numTables):
+            record = {}
+            record[&#34;tag&#34;] = self.read_tag()
+            record[&#34;checksum&#34;] = (self.read_ushort(), self.read_ushort())
+            record[&#34;offset&#34;] = self.read_ulong()
+            record[&#34;length&#34;] = self.read_ulong()
+            self.tables[record[&#34;tag&#34;]] = record
+
+    def get_table_pos(self, tag):
+        offset = self.tables[tag][&#34;offset&#34;]
+        length = self.tables[tag][&#34;length&#34;]
+        return (offset, length)
+
+    def seek(self, pos):
+        self._pos = pos
+        self.fh.seek(self._pos)
+
+    def skip(self, delta):
+        self._pos = self._pos + delta
+        self.fh.seek(self._pos)
+
+    def seek_table(self, tag, offset_in_table=0):
+        tpos = self.get_table_pos(tag)
+        self._pos = tpos[0] + offset_in_table
+        self.fh.seek(self._pos)
+        return self._pos
+
+    def read_tag(self):
+        self._pos += 4
+        return self.fh.read(4).decode(&#34;latin1&#34;)
+
+    def read_short(self):
+        self._pos += 2
+        s = self.fh.read(2)
+        a = s[0] &lt;&lt; 8 + s[1]
+        if a &amp; (1 &lt;&lt; 15):
+            a = a - (1 &lt;&lt; 16)
+        return a
+
+    def read_ushort(self):
+        self._pos += 2
+        s = self.fh.read(2)
+        return s[0] &lt;&lt; 8 + s[1]
+
+    def read_ulong(self):
+        self._pos += 4
+        s = self.fh.read(4)
+        # if large uInt32 as an integer, PHP converts it to -ve
+        return s[0] * 16777216 + s[1] &lt;&lt; 16 + s[2] &lt;&lt; 8 + s[3]  #     16777216  = 1&lt;&lt;24
+
+    def get_ushort(self, pos):
+        self.fh.seek(pos)
+        s = self.fh.read(2)
+        return s[0] &lt;&lt; 8 + s[1]
+
+    def splice(self, stream, offset, value):
+        return (
+            substr(stream, 0, offset) + value + substr(stream, offset + strlen(value))
+        )
+
+    def _set_ushort(self, stream, offset, value):
+        up = pack(&#34;&gt;H&#34;, value)
+        return self.splice(stream, offset, up)
+
+    def get_chunk(self, pos, length):
+        self.fh.seek(pos)
+        if length &lt; 1:
+            return &#34;&#34;
+        return self.fh.read(length)
+
+    def get_table(self, tag):
+        (pos, length) = self.get_table_pos(tag)
+        if length == 0:
+            die(&#34;Truetype font (&#34; + self.filename + &#34;): error reading table: &#34; + tag)
+        self.fh.seek(pos)
+        return self.fh.read(length)
+
+    def add(self, tag, data):
+        if tag == &#34;head&#34;:
+            data = self.splice(data, 8, b(&#34;\0\0\0\0&#34;))
+        self.otables[tag] = data
+
+    ############################################/
+    ############################################/
+
+    ############################################/
+
+    def extractInfo(self):
+        #################/
+        # name - Naming table
+        #################/
+        self.sFamilyClass = 0
+        self.sFamilySubClass = 0
+
+        name_offset = self.seek_table(&#34;name&#34;)
+        format = self.read_ushort()
+        if format != 0:
+            die(&#34;Unknown name table format &#34; + format)
+        numRecords = self.read_ushort()
+        string_data_offset = name_offset + self.read_ushort()
+        names = {1: &#34;&#34;, 2: &#34;&#34;, 3: &#34;&#34;, 4: &#34;&#34;, 6: &#34;&#34;}
+        K = list(names.keys())
+        nameCount = len(names)
+        for i in range(numRecords):
+            platformId = self.read_ushort()
+            encodingId = self.read_ushort()
+            languageId = self.read_ushort()
+            nameId = self.read_ushort()
+            length = self.read_ushort()
+            offset = self.read_ushort()
+            if nameId not in K:
+                continue
+            N = &#34;&#34;
+            if (
+                platformId == 3 and encodingId == 1 and languageId == 0x409
+            ):  # Microsoft, Unicode, US English, PS Name
+                opos = self._pos
+                self.seek(string_data_offset + offset)
+                if length % 2 != 0:
+                    die(&#34;PostScript name is UTF-16BE string of odd length&#34;)
+                length //= 2
+                N = &#34;&#34;
+                while length &gt; 0:
+                    char = self.read_ushort()
+                    N += chr(char)
+                    length -= 1
+                self._pos = opos
+                self.seek(opos)
+
+            elif (
+                platformId == 1 and encodingId == 0 and languageId == 0
+            ):  # Macintosh, Roman, English, PS Name
+                opos = self._pos
+                N = self.get_chunk(string_data_offset + offset, length).decode(&#34;latin1&#34;)
+                self._pos = opos
+                self.seek(opos)
+
+            if N and names[nameId] == &#34;&#34;:
+                names[nameId] = N
+                nameCount -= 1
+                if nameCount == 0:
+                    break
+
+        if names[6]:
+            psName = names[6]
+        elif names[4]:
+            psName = re.sub(&#34; &#34;, &#34;-&#34;, names[4])
+        elif names[1]:
+            psName = re.sub(&#34; &#34;, &#34;-&#34;, names[1])
+        else:
+            psName = &#34;&#34;
+        if not psName:
+            die(&#34;Could not find PostScript font name&#34;)
+        self.name = psName
+        if names[1]:
+            self.familyName = names[1]
+        else:
+            self.familyName = psName
+        if names[2]:
+            self.styleName = names[2]
+        else:
+            self.styleName = &#34;Regular&#34;
+        if names[4]:
+            self.fullName = names[4]
+        else:
+            self.fullName = psName
+        if names[3]:
+            self.uniqueFontID = names[3]
+        else:
+            self.uniqueFontID = psName
+        if names[6]:
+            self.fullName = names[6]
+
+        #################/
+        # head - Font header table
+        #################/
+        self.seek_table(&#34;head&#34;)
+        self.skip(18)
+        self.unitsPerEm = unitsPerEm = self.read_ushort()
+        scale = 1000 / float(unitsPerEm)
+        self.skip(16)
+        xMin = self.read_short()
+        yMin = self.read_short()
+        xMax = self.read_short()
+        yMax = self.read_short()
+        self.bbox = [(xMin * scale), (yMin * scale), (xMax * scale), (yMax * scale)]
+        self.skip(3 * 2)
+        indexToLocFormat = self.read_ushort()
+        glyphDataFormat = self.read_ushort()
+        if glyphDataFormat != 0:
+            die(&#34;Unknown glyph data format &#34; + glyphDataFormat)
+
+        #################/
+        # hhea metrics table
+        #################/
+        # ttf2t1 seems to use this value rather than the one in OS/2 - so put in for compatibility
+        if &#34;hhea&#34; in self.tables:
+            self.seek_table(&#34;hhea&#34;)
+            self.skip(4)
+            hheaAscender = self.read_short()
+            hheaDescender = self.read_short()
+            self.ascent = hheaAscender * scale
+            self.descent = hheaDescender * scale
+
+        #################/
+        # OS/2 - OS/2 and Windows metrics table
+        #################/
+        if &#34;OS/2&#34; in self.tables:
+            self.seek_table(&#34;OS/2&#34;)
+            version = self.read_ushort()
+            self.skip(2)
+            usWeightClass = self.read_ushort()
+            self.skip(2)
+            fsType = self.read_ushort()
+            if fsType == 0x0002 or (fsType &amp; 0x0300) != 0:
+                die(
+                    &#34;ERROR - Font file &#34;
+                    + self.filename
+                    + &#34; cannot be embedded due to copyright restrictions.&#34;
+                )
+                self.restrictedUse = True
+
+            self.skip(20)
+            sF = self.read_short()
+            self.sFamilyClass = sF &gt;&gt; 8
+            self.sFamilySubClass = sF &amp; 0xFF
+            self._pos += 10  # PANOSE = 10 byte length
+            panose = self.fh.read(10)
+            self.skip(26)
+            sTypoAscender = self.read_short()
+            sTypoDescender = self.read_short()
+            if not self.ascent:
+                self.ascent = sTypoAscender * scale
+            if not self.descent:
+                self.descent = sTypoDescender * scale
+            if version &gt; 1:
+                self.skip(16)
+                sCapHeight = self.read_short()
+                self.capHeight = sCapHeight * scale
+            else:
+                self.capHeight = self.ascent
+
+        else:
+            usWeightClass = 500
+            if not self.ascent:
+                self.ascent = yMax * scale
+            if not self.descent:
+                self.descent = yMin * scale
+            self.capHeight = self.ascent
+
+        self.stemV = 50 + int(pow((usWeightClass / 65.0), 2))
+
+        #################/
+        # post - PostScript table
+        #################/
+        self.seek_table(&#34;post&#34;)
+        self.skip(4)
+        self.italicAngle = self.read_short() + self.read_ushort() / 65536.0
+        self.underlinePosition = self.read_short() * scale
+        self.underlineThickness = self.read_short() * scale
+        isFixedPitch = self.read_ulong()
+
+        self.flags = 4
+
+        if self.italicAngle != 0:
+            self.flags = self.flags | 64
+        if usWeightClass &gt;= 600:
+            self.flags = self.flags | 262144
+        if isFixedPitch:
+            self.flags = self.flags | 1
+
+        #################/
+        # hhea - Horizontal header table
+        #################/
+        self.seek_table(&#34;hhea&#34;)
+        self.skip(32)
+        metricDataFormat = self.read_ushort()
+        if metricDataFormat != 0:
+            die(&#34;Unknown horizontal metric data format &#34;.metricDataFormat)
+        numberOfHMetrics = self.read_ushort()
+        if numberOfHMetrics == 0:
+            die(&#34;Number of horizontal metrics is 0&#34;)
+
+        #################/
+        # maxp - Maximum profile table
+        #################/
+        self.seek_table(&#34;maxp&#34;)
+        self.skip(4)
+        numGlyphs = self.read_ushort()
+
+        #################/
+        # cmap - Character to glyph index mapping table
+        #################/
+        cmap_offset = self.seek_table(&#34;cmap&#34;)
+        self.skip(2)
+        cmapTableCount = self.read_ushort()
+        unicode_cmap_offset = 0
+        unicode_cmap_offset12 = 0
+
+        for i in range(cmapTableCount):
+            platformID = self.read_ushort()
+            encodingID = self.read_ushort()
+            offset = self.read_ulong()
+            save_pos = self._pos
+            if platformID == 3 and encodingID == 10:  # Microsoft, UCS-4
+                format = self.get_ushort(cmap_offset + offset)
+                if format == 12:
+                    if not unicode_cmap_offset12:
+                        unicode_cmap_offset12 = cmap_offset + offset
+                    break
+            if (
+                platformID == 3 and encodingID == 1
+            ) or platformID == 0:  # Microsoft, Unicode
+                format = self.get_ushort(cmap_offset + offset)
+                if format == 4:
+                    if not unicode_cmap_offset:
+                        unicode_cmap_offset = cmap_offset + offset
+                    break
+
+            self.seek(save_pos)
+
+        if not unicode_cmap_offset and not unicode_cmap_offset12:
+            die(
+                &#34;Font (&#34;
+                + self.filename
+                + &#34;) does not have cmap for Unicode (platform 3, encoding 1, format 4, or platform 3, encoding 10, format 12, or platform 0, any encoding, format 4)&#34;
+            )
+
+        glyphToChar = {}
+        charToGlyph = {}
+        if unicode_cmap_offset12:
+            self.getCMAP12(unicode_cmap_offset12, glyphToChar, charToGlyph)
+        else:
+            self.getCMAP4(unicode_cmap_offset, glyphToChar, charToGlyph)
+
+        #################/
+        # hmtx - Horizontal metrics table
+        #################/
+        self.getHMTX(numberOfHMetrics, numGlyphs, glyphToChar, scale)
+
+    ############################################/
+    ############################################/
+
+    def makeSubset(self, file, subset):
+        self.filename = file
+        with open(file, &#34;rb&#34;) as self.fh:
+            self._pos = 0
+            self.charWidths = []
+            self.glyphPos = {}
+            self.charToGlyph = {}
+            self.tables = {}
+            self.otables = {}
+            self.ascent = 0
+            self.descent = 0
+            self.skip(4)
+            self.maxUni = 0
+            self.readTableDirectory()
+
+            #################/
+            # head - Font header table
+            #################/
+            self.seek_table(&#34;head&#34;)
+            self.skip(50)
+            indexToLocFormat = self.read_ushort()
+            glyphDataFormat = self.read_ushort()
+
+            #################/
+            # hhea - Horizontal header table
+            #################/
+            self.seek_table(&#34;hhea&#34;)
+            self.skip(32)
+            metricDataFormat = self.read_ushort()
+            orignHmetrics = numberOfHMetrics = self.read_ushort()
+
+            #################/
+            # maxp - Maximum profile table
+            #################/
+            self.seek_table(&#34;maxp&#34;)
+            self.skip(4)
+            numGlyphs = self.read_ushort()
+
+            #################/
+            # cmap - Character to glyph index mapping table
+            #################/
+            cmap_offset = self.seek_table(&#34;cmap&#34;)
+            self.skip(2)
+            cmapTableCount = self.read_ushort()
+            unicode_cmap_offset = 0
+            unicode_cmap_offset12 = 0
+            for i in range(cmapTableCount):
+                platformID = self.read_ushort()
+                encodingID = self.read_ushort()
+                offset = self.read_ulong()
+                save_pos = self._pos
+                if platformID == 3 and encodingID == 10:  # Microsoft, UCS-4
+                    format = self.get_ushort(cmap_offset + offset)
+                    if format == 12:
+                        if not unicode_cmap_offset12:
+                            unicode_cmap_offset12 = cmap_offset + offset
+                        break
+                if (
+                    platformID == 3 and encodingID == 1
+                ) or platformID == 0:  # Microsoft, Unicode
+                    format = self.get_ushort(cmap_offset + offset)
+                    if format == 4:
+                        unicode_cmap_offset = cmap_offset + offset
+                        break
+
+                self.seek(save_pos)
+
+            if not unicode_cmap_offset and not unicode_cmap_offset12:
+                die(
+                    &#34;Font (&#34;
+                    + self.filename
+                    + &#34;) does not have cmap for Unicode (platform 3, encoding 1, format 4, or platform 3, encoding 10, format 12, or platform 0, any encoding, format 4)&#34;
+                )
+
+            glyphToChar = {}
+            charToGlyph = {}
+            if unicode_cmap_offset12:
+                self.getCMAP12(unicode_cmap_offset12, glyphToChar, charToGlyph)
+            else:
+                self.getCMAP4(unicode_cmap_offset, glyphToChar, charToGlyph)
+
+            self.charToGlyph = charToGlyph
+
+            #################/
+            # hmtx - Horizontal metrics table
+            #################/
+            scale = 1  # not used
+            self.getHMTX(numberOfHMetrics, numGlyphs, glyphToChar, scale)
+
+            #################/
+            # loca - Index to location
+            #################/
+            self.getLOCA(indexToLocFormat, numGlyphs)
+
+            subsetglyphs = [(0, 0)]  # special &#34;sorted dict&#34;!
+            subsetCharToGlyph = {}
+            for code in subset:
+                if code in self.charToGlyph:
+                    if (self.charToGlyph[code], code) not in subsetglyphs:
+                        subsetglyphs.append(
+                            (self.charToGlyph[code], code)
+                        )  # Old Glyph ID =&gt; Unicode
+                    subsetCharToGlyph[code] = self.charToGlyph[
+                        code
+                    ]  # Unicode to old GlyphID
+                self.maxUni = max(self.maxUni, code)
+            (start, _) = self.get_table_pos(&#34;glyf&#34;)
+
+            subsetglyphs.sort()
+            glyphSet = {}
+            n = 0
+            fsLastCharIndex = 0  # maximum Unicode index (character code) in this font, according to the cmap subtable for platform ID 3 and platform- specific encoding ID 0 or 1.
+            for originalGlyphIdx, uni in subsetglyphs:
+                fsLastCharIndex = max(fsLastCharIndex, uni)
+                glyphSet[originalGlyphIdx] = n  # old glyphID to new glyphID
+                n += 1
+
+            codeToGlyph = {}
+            for uni, originalGlyphIdx in sorted(subsetCharToGlyph.items()):
+                codeToGlyph[uni] = glyphSet[originalGlyphIdx]
+
+            self.codeToGlyph = codeToGlyph
+
+            for originalGlyphIdx, uni in subsetglyphs:
+                nonlocals = {
+                    &#34;start&#34;: start,
+                    &#34;glyphSet&#34;: glyphSet,
+                    &#34;subsetglyphs&#34;: subsetglyphs,
+                }
+                self.getGlyphs(originalGlyphIdx, nonlocals)
+
+            numGlyphs = numberOfHMetrics = len(subsetglyphs)
+
+            # tables copied from the original
+            tags = [&#34;name&#34;]
+            for tag in tags:
+                self.add(tag, self.get_table(tag))
+            tags = [&#34;cvt &#34;, &#34;fpgm&#34;, &#34;prep&#34;, &#34;gasp&#34;]
+            for tag in tags:
+                if tag in self.tables:
+                    self.add(tag, self.get_table(tag))
+
+            # post - PostScript
+            opost = self.get_table(&#34;post&#34;)
+            post = (
+                b(&#34;\x00\x03\x00\x00&#34;)
+                + substr(opost, 4, 12)
+                + b(&#34;\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00&#34;)
+            )
+            self.add(&#34;post&#34;, post)
+
+            # Sort CID2GID map into segments of contiguous codes
+            if 0 in codeToGlyph:
+                del codeToGlyph[0]
+            # unset(codeToGlyph[65535])
+            rangeid = 0
+            range_ = {}
+            prevcid = -2
+            prevglidx = -1
+            # for each character
+            for cid, glidx in sorted(codeToGlyph.items()):
+                if cid == (prevcid + 1) and glidx == (prevglidx + 1):
+                    range_[rangeid].append(glidx)
+                else:
+                    # new range
+                    rangeid = cid
+                    range_[rangeid] = []
+                    range_[rangeid].append(glidx)
+                prevcid = cid
+                prevglidx = glidx
+
+            # cmap - Character to glyph mapping - Format 4 (MS / )
+            segCount = len(range_) + 1  # + 1 Last segment has missing character 0xFFFF
+            searchRange = 1
+            entrySelector = 0
+            while searchRange * 2 &lt;= segCount:
+                searchRange = searchRange * 2
+                entrySelector = entrySelector + 1
+
+            searchRange = searchRange * 2
+            rangeShift = segCount * 2 - searchRange
+            length = 16 + (8 * segCount) + (numGlyphs + 1)
+            cmap = [
+                0,
+                1,  # Index : version, number of encoding subtables
+                3,
+                1,  # Encoding Subtable : platform (MS=3), encoding (Unicode)
+                0,
+                12,  # Encoding Subtable : offset (hi,lo)
+                4,
+                length,
+                0,  # Format 4 Mapping subtable: format, length, language
+                segCount * 2,
+                searchRange,
+                entrySelector,
+                rangeShift,
+            ]
+
+            range_ = sorted(range_.items())
+
+            # endCode(s)
+            for start, subrange in range_:
+                endCode = start + (len(subrange) - 1)
+                cmap.append(endCode)  # endCode(s)
+
+            cmap.append(0xFFFF)  # endCode of last Segment
+            cmap.append(0)  # reservedPad
+
+            # startCode(s)
+            for start, subrange in range_:
+                cmap.append(start)  # startCode(s)
+
+            cmap.append(0xFFFF)  # startCode of last Segment
+            # idDelta(s)
+            for start, subrange in range_:
+                idDelta = -(start - subrange[0])
+                n += count(subrange)
+                cmap.append(idDelta)  # idDelta(s)
+
+            cmap.append(1)  # idDelta of last Segment
+            # idRangeOffset(s)
+            for subrange in range_:
+                cmap.append(
+                    0
+                )  # idRangeOffset[segCount]      Offset in bytes to glyph indexArray, or 0
+
+            cmap.append(0)  # idRangeOffset of last Segment
+            for subrange, glidx in range_:
+                cmap.extend(glidx)
+
+            cmap.append(0)  # Mapping for last character
+            cmapstr = b(&#34;&#34;)
+            for cm in cmap:
+                if cm &gt;= 0:
+                    cmapstr += pack(&#34;&gt;H&#34;, cm)
+                else:
+                    try:
+                        cmapstr += pack(&#34;&gt;h&#34;, cm)
+                    except:
+                        warnings.warn(&#34;cmap value too big/small: %s&#34; % cm)
+                        cmapstr += pack(&#34;&gt;H&#34;, -cm)
+            self.add(&#34;cmap&#34;, cmapstr)
+
+            # glyf - Glyph data
+            (glyfOffset, glyfLength) = self.get_table_pos(&#34;glyf&#34;)
+            if glyfLength &lt; self.maxStrLenRead:
+                glyphData = self.get_table(&#34;glyf&#34;)
+
+            offsets = []
+            glyf = b(&#34;&#34;)
+            pos = 0
+
+            hmtxstr = b(&#34;&#34;)
+            xMinT = 0
+            yMinT = 0
+            xMaxT = 0
+            yMaxT = 0
+            advanceWidthMax = 0
+            minLeftSideBearing = 0
+            minRightSideBearing = 0
+            xMaxExtent = 0
+            maxPoints = 0  # points in non-compound glyph
+            maxContours = 0  # contours in non-compound glyph
+            maxComponentPoints = 0  # points in compound glyph
+            maxComponentContours = 0  # contours in compound glyph
+            maxComponentElements = 0  # number of glyphs referenced at top level
+            maxComponentDepth = (
+                0  # levels of recursion, set to 0 if font has only simple glyphs
+            )
+            self.glyphdata = {}
+
+            for originalGlyphIdx, uni in subsetglyphs:
+                # hmtx - Horizontal Metrics
+                hm = self.getHMetric(orignHmetrics, originalGlyphIdx)
+                hmtxstr += hm
+
+                offsets.append(pos)
+                try:
+                    glyphPos = self.glyphPos[originalGlyphIdx]
+                    glyphLen = self.glyphPos[originalGlyphIdx + 1] - glyphPos
+                except IndexError:
+                    warnings.warn(&#34;missing glyph %s&#34; % (originalGlyphIdx))
+                    glyphLen = 0
+
+                if glyfLength &lt; self.maxStrLenRead:
+                    data = substr(glyphData, glyphPos, glyphLen)
+                else:
+                    if glyphLen &gt; 0:
+                        data = self.get_chunk(glyfOffset + glyphPos, glyphLen)
+                    else:
+                        data = b(&#34;&#34;)
+
+                if glyphLen &gt; 0:
+                    up = unpack(&#34;&gt;H&#34;, substr(data, 0, 2))[0]
+                if glyphLen &gt; 2 and (
+                    up &amp; (1 &lt;&lt; 15)
+                ):  # If number of contours &lt;= -1 i.e. composite glyph
+                    pos_in_glyph = 10
+                    flags = GF_MORE
+                    nComponentElements = 0
+                    while flags &amp; GF_MORE:
+                        nComponentElements += (
+                            1  # number of glyphs referenced at top level
+                        )
+                        up = unpack(&#34;&gt;H&#34;, substr(data, pos_in_glyph, 2))
+                        flags = up[0]
+                        up = unpack(&#34;&gt;H&#34;, substr(data, pos_in_glyph + 2, 2))
+                        glyphIdx = up[0]
+                        self.glyphdata.setdefault(originalGlyphIdx, {}).setdefault(
+                            &#34;compGlyphs&#34;, []
+                        ).append(glyphIdx)
+                        try:
+                            data = self._set_ushort(
+                                data, pos_in_glyph + 2, glyphSet[glyphIdx]
+                            )
+                        except KeyError:
+                            data = 0
+                            warnings.warn(&#34;missing glyph data %s&#34; % glyphIdx)
+                        pos_in_glyph += 4
+                        if flags &amp; GF_WORDS:
+                            pos_in_glyph += 4
+                        else:
+                            pos_in_glyph += 2
+                        if flags &amp; GF_SCALE:
+                            pos_in_glyph += 2
+                        elif flags &amp; GF_XYSCALE:
+                            pos_in_glyph += 4
+                        elif flags &amp; GF_TWOBYTWO:
+                            pos_in_glyph += 8
+
+                    maxComponentElements = max(maxComponentElements, nComponentElements)
+
+                glyf += data
+                pos += glyphLen
+                if pos % 4 != 0:
+                    padding = 4 - (pos % 4)
+                    glyf += str_repeat(b(&#34;\0&#34;), padding)
+                    pos += padding
+
+            offsets.append(pos)
+            self.add(&#34;glyf&#34;, glyf)
+
+            # hmtx - Horizontal Metrics
+            self.add(&#34;hmtx&#34;, hmtxstr)
+
+            # loca - Index to location
+            locastr = b(&#34;&#34;)
+            if ((pos + 1) &gt;&gt; 1) &gt; 0xFFFF:
+                indexToLocFormat = 1  # long format
+                for offset in offsets:
+                    locastr += pack(&#34;&gt;L&#34;, offset)
+            else:
+                indexToLocFormat = 0  # short format
+                for offset in offsets:
+                    locastr += pack(&#34;&gt;H&#34;, offset // 2)
+
+            self.add(&#34;loca&#34;, locastr)
+
+            # head - Font header
+            head = self.get_table(&#34;head&#34;)
+            head = self._set_ushort(head, 50, indexToLocFormat)
+            self.add(&#34;head&#34;, head)
+
+            # hhea - Horizontal Header
+            hhea = self.get_table(&#34;hhea&#34;)
+            hhea = self._set_ushort(hhea, 34, numberOfHMetrics)
+            self.add(&#34;hhea&#34;, hhea)
+
+            # maxp - Maximum Profile
+            maxp = self.get_table(&#34;maxp&#34;)
+            maxp = self._set_ushort(maxp, 4, numGlyphs)
+            self.add(&#34;maxp&#34;, maxp)
+
+            # OS/2 - OS/2
+            os2 = self.get_table(&#34;OS/2&#34;)
+            self.add(&#34;OS/2&#34;, os2)
+
+        # Put the TTF file together
+        stm = self.endTTFile(&#34;&#34;)
+        return stm
+
+    #########################################
+    # Recursively get composite glyph data
+    def getGlyphData(self, originalGlyphIdx, nonlocals):
+        # &amp;maxdepth, &amp;depth, &amp;points, &amp;contours
+        nonlocals[&#34;depth&#34;] += 1
+        nonlocals[&#34;maxdepth&#34;] = max(nonlocals[&#34;maxdepth&#34;], nonlocals[&#34;depth&#34;])
+        if len(self.glyphdata[originalGlyphIdx][&#34;compGlyphs&#34;]):
+            for glyphIdx in self.glyphdata[originalGlyphIdx][&#34;compGlyphs&#34;]:
+                self.getGlyphData(glyphIdx, nonlocals)
+
+        elif (self.glyphdata[originalGlyphIdx][&#34;nContours&#34;] &gt; 0) and nonlocals[
+            &#34;depth&#34;
+        ] &gt; 0:  # simple
+            contours += self.glyphdata[originalGlyphIdx][&#34;nContours&#34;]
+            points += self.glyphdata[originalGlyphIdx][&#34;nPoints&#34;]
+
+        nonlocals[&#34;depth&#34;] -= 1
+
+    #########################################
+    # Recursively get composite glyphs
+    def getGlyphs(self, originalGlyphIdx, nonlocals):
+        # &amp;start, &amp;glyphSet, &amp;subsetglyphs)
+
+        try:
+            glyphPos = self.glyphPos[originalGlyphIdx]
+            glyphLen = self.glyphPos[originalGlyphIdx + 1] - glyphPos
+        except IndexError:
+            warnings.warn(&#34;missing glyph %s&#34; % (originalGlyphIdx))
+            return
+
+        if not glyphLen:
+            return
+
+        self.seek(nonlocals[&#34;start&#34;] + glyphPos)
+        numberOfContours = self.read_short()
+        if numberOfContours &lt; 0:
+            self.skip(8)
+            flags = GF_MORE
+            while flags &amp; GF_MORE:
+                flags = self.read_ushort()
+                glyphIdx = self.read_ushort()
+                if glyphIdx not in nonlocals[&#34;glyphSet&#34;]:
+                    nonlocals[&#34;glyphSet&#34;][glyphIdx] = len(
+                        nonlocals[&#34;subsetglyphs&#34;]
+                    )  # old glyphID to new glyphID
+                    nonlocals[&#34;subsetglyphs&#34;].append((glyphIdx, 1))
+
+                savepos = self.fh.tell()
+                self.getGlyphs(glyphIdx, nonlocals)
+                self.seek(savepos)
+                if flags &amp; GF_WORDS:
+                    self.skip(4)
+                else:
+                    self.skip(2)
+                if flags &amp; GF_SCALE:
+                    self.skip(2)
+                elif flags &amp; GF_XYSCALE:
+                    self.skip(4)
+                elif flags &amp; GF_TWOBYTWO:
+                    self.skip(8)
+
+    #########################################
+
+    def getHMTX(self, numberOfHMetrics, numGlyphs, glyphToChar, scale):
+        start = self.seek_table(&#34;hmtx&#34;)
+        aw = 0
+        self.charWidths = []
+
+        def resize_cw(size, default):
+            size = (((size + 1) // 1024) + 1) * 1024
+            delta = size - len(self.charWidths)
+            if delta &gt; 0:
+                self.charWidths += [default] * delta
+
+        nCharWidths = 0
+        if (numberOfHMetrics * 4) &lt; self.maxStrLenRead:
+            data = self.get_chunk(start, (numberOfHMetrics * 4))
+            arr = unpack(&#34;&gt;%dH&#34; % (len(data) // 2), data)
+        else:
+            self.seek(start)
+        for glyph in range(numberOfHMetrics):
+            if (numberOfHMetrics * 4) &lt; self.maxStrLenRead:
+                aw = arr[(glyph * 2)]  # PHP starts arrays from index 0!? +1
+            else:
+                aw = self.read_ushort()
+                lsb = self.read_ushort()
+
+            if glyph in glyphToChar or glyph == 0:
+                if aw &gt;= (1 &lt;&lt; 15):
+                    aw = 0  # 1.03 Some (arabic) fonts have -ve values for width
+                    # although should be unsigned value - comes out as e.g. 65108 (intended -50)
+                if glyph == 0:
+                    self.defaultWidth = scale * aw
+                    continue
+
+                for char in glyphToChar[glyph]:
+                    if char != 0 and char != 65535:
+                        w = int(round(scale * aw + 0.001))  # ROUND_HALF_UP (like php)
+                        if w == 0:
+                            w = 65535
+                        if char &lt; 196608:
+                            if char &gt;= len(self.charWidths):
+                                resize_cw(char, self.defaultWidth)
+                            self.charWidths[char] = w
+                            nCharWidths += 1
+
+        data = self.get_chunk((start + numberOfHMetrics * 4), (numGlyphs * 2))
+        arr = unpack(&#34;&gt;%dH&#34; % (len(data) // 2), data)
+        diff = numGlyphs - numberOfHMetrics
+        for pos in range(diff):
+            glyph = pos + numberOfHMetrics
+            if glyph in glyphToChar:
+                for char in glyphToChar[glyph]:
+                    if char != 0 and char != 65535:
+                        w = int(round(scale * aw + 0.001))  # ROUND_HALF_UP (like php)
+                        if w == 0:
+                            w = 65535
+                        if char &lt; 196608:
+                            if char &gt;= len(self.charWidths):
+                                resize_cw(char, self.defaultWidth)
+                            self.charWidths[char] = w
+                            nCharWidths += 1
+
+        # NB 65535 is a set width of 0
+        # First bytes define number of chars in font
+        self.charWidths[0] = nCharWidths
+
+    def getHMetric(self, numberOfHMetrics, gid):
+        start = self.seek_table(&#34;hmtx&#34;)
+        if gid &lt; numberOfHMetrics:
+            self.seek(start + (gid * 4))
+            hm = self.fh.read(4)
+        else:
+            self.seek(start + ((numberOfHMetrics - 1) * 4))
+            hm = self.fh.read(2)
+            self.seek(start + (numberOfHMetrics * 2) + (gid * 2))
+            hm += self.fh.read(2)
+        return hm
+
+    def getLOCA(self, indexToLocFormat, numGlyphs):
+        start = self.seek_table(&#34;loca&#34;)
+        self.glyphPos = []
+        if indexToLocFormat == 0:
+            data = self.get_chunk(start, (numGlyphs * 2) + 2)
+            arr = unpack(&#34;&gt;%dH&#34; % (len(data) // 2), data)
+            for n in range(numGlyphs):
+                self.glyphPos.append((arr[n] * 2))  # n+1 !?
+        elif indexToLocFormat == 1:
+            data = self.get_chunk(start, (numGlyphs * 4) + 4)
+            arr = unpack(&#34;&gt;%dL&#34; % (len(data) // 4), data)
+            for n in range(numGlyphs):
+                self.glyphPos.append((arr[n]))  # n+1 !?
+        else:
+            die(&#34;Unknown location table format &#34; + indexToLocFormat)
+
+    # CMAP Format 4
+    def getCMAP4(self, unicode_cmap_offset, glyphToChar, charToGlyph):
+        self.maxUniChar = 0
+        self.seek(unicode_cmap_offset + 2)
+        length = self.read_ushort()
+        limit = unicode_cmap_offset + length
+        self.skip(2)
+
+        segCount = self.read_ushort() // 2
+        self.skip(6)
+        endCount = []
+        for i in range(segCount):
+            endCount.append(self.read_ushort())
+        self.skip(2)
+        startCount = []
+        for i in range(segCount):
+            startCount.append(self.read_ushort())
+        idDelta = []
+        for i in range(segCount):
+            idDelta.append(self.read_short())  # ???? was unsigned short
+        idRangeOffset_start = self._pos
+        idRangeOffset = []
+        for i in range(segCount):
+            idRangeOffset.append(self.read_ushort())
+
+        for n in range(segCount):
+            endpoint = endCount[n] + 1
+            for unichar in range(startCount[n], endpoint, 1):
+                if idRangeOffset[n] == 0:
+                    glyph = (unichar + idDelta[n]) &amp; 0xFFFF
+                else:
+                    offset = (unichar - startCount[n]) * 2 + idRangeOffset[n]
+                    offset = idRangeOffset_start + 2 * n + offset
+                    if offset &gt;= limit:
+                        glyph = 0
+                    else:
+                        glyph = self.get_ushort(offset)
+                        if glyph != 0:
+                            glyph = (glyph + idDelta[n]) &amp; 0xFFFF
+
+                charToGlyph[unichar] = glyph
+                if unichar &lt; 196608:
+                    self.maxUniChar = max(unichar, self.maxUniChar)
+                glyphToChar.setdefault(glyph, []).append(unichar)
+
+    # CMAP Format 12
+    def getCMAP12(self, unicode_cmap_offset, glyphToChar, charToGlyph):
+        self.maxUniChar = 0
+        # table (skip format version, should be 12)
+        self.seek(unicode_cmap_offset + 2)
+        # reserved
+        self.skip(2)
+        # table length
+        length = self.read_ulong()
+        # language (should be 0)
+        self.skip(4)
+        # groups count
+        grpCount = self.read_ulong()
+
+        if 2 + 2 + 4 + 4 + 4 + grpCount * 3 * 4 &gt; length:
+            die(&#34;TTF format 12 cmap table too small&#34;)
+        for n in range(grpCount):
+            startCharCode = self.read_ulong()
+            endCharCode = self.read_ulong()
+            glyph = self.read_ulong()
+            for unichar in range(startCharCode, endCharCode + 1):
+                charToGlyph[unichar] = glyph
+                if unichar &lt; 196608:
+                    self.maxUniChar = max(unichar, self.maxUniChar)
+                glyphToChar.setdefault(glyph, []).append(unichar)
+                glyph += 1
+
+    # Put the TTF file together
+    def endTTFile(self, stm):
+        stm = b(&#34;&#34;)
+        numTables = count(self.otables)
+        searchRange = 1
+        entrySelector = 0
+        while searchRange * 2 &lt;= numTables:
+            searchRange = searchRange * 2
+            entrySelector = entrySelector + 1
+
+        searchRange = searchRange * 16
+        rangeShift = numTables * 16 - searchRange
+
+        # Header
+        if _TTF_MAC_HEADER:
+            stm += pack(
+                &#34;&gt;LHHHH&#34;, 0x74727565, numTables, searchRange, entrySelector, rangeShift
+            )  # Mac
+        else:
+            stm += pack(
+                &#34;&gt;LHHHH&#34;, 0x00010000, numTables, searchRange, entrySelector, rangeShift
+            )  # Windows
+
+        # Table directory
+        tables = self.otables
+
+        offset = 12 + numTables * 16
+        sorted_tables = sorted(tables.items())
+        for tag, data in sorted_tables:
+            if tag == &#34;head&#34;:
+                head_start = offset
+            stm += tag.encode(&#34;latin1&#34;)
+            checksum = calcChecksum(data)
+            stm += pack(&#34;&gt;HH&#34;, checksum[0], checksum[1])
+            stm += pack(&#34;&gt;LL&#34;, offset, strlen(data))
+            paddedLength = (strlen(data) + 3) &amp; ~3
+            offset = offset + paddedLength
+
+        # Table data
+        for tag, data in sorted_tables:
+            data += b(&#34;\0\0\0&#34;)
+            stm += substr(data, 0, (strlen(data) &amp; ~3))
+
+        checksum = calcChecksum(stm)
+        checksum = sub32((0xB1B0, 0xAFBA), checksum)
+        chk = pack(&#34;&gt;HH&#34;, checksum[0], checksum[1])
+        stm = self.splice(stm, (head_start + 8), chk)
+        return stm</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="fpdf.ttfonts.calcChecksum"><code class="name flex">
+<span>def <span class="ident">calcChecksum</span></span>(<span>data)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calcChecksum(data):
+    if strlen(data) % 4:
+        data += str_repeat(b(&#34;\0&#34;), (4 - (len(data) % 4)))
+    hi = 0x0000
+    lo = 0x0000
+    for i in range(0, len(data), 4):
+        hi += data[i] &lt;&lt; 8 + data[i + 1]
+        lo += data[i + 2] &lt;&lt; 8 + data[i + 3]
+        hi += lo &gt;&gt; 16
+        lo = lo &amp; 0xFFFF
+        hi = hi &amp; 0xFFFF
+    return (hi, lo)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.sub32"><code class="name flex">
+<span>def <span class="ident">sub32</span></span>(<span>x, y)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sub32(x, y):
+    xlo = x[1]
+    xhi = x[0]
+    ylo = y[1]
+    yhi = y[0]
+    if ylo &gt; xlo:
+        xlo += 1 &lt;&lt; 16
+        yhi += 1
+    reslo = xlo - ylo
+    if yhi &gt; xhi:
+        xhi += 1 &lt;&lt; 16
+    reshi = xhi - yhi
+    reshi = reshi &amp; 0xFFFF
+    return (reshi, reslo)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="fpdf.ttfonts.TTFontFile"><code class="flex name class">
+<span>class <span class="ident">TTFontFile</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TTFontFile:
+    def __init__(self):
+        self.maxStrLenRead = 200000  # Maximum size of glyf table to read in as string (otherwise reads each glyph from file)
+
+    def getMetrics(self, file):
+        self.filename = file
+        with open(file, &#34;rb&#34;) as self.fh:
+            self._pos = 0
+            self.charWidths = []
+            self.glyphPos = {}
+            self.charToGlyph = {}
+            self.tables = {}
+            self.otables = {}
+            self.ascent = 0
+            self.descent = 0
+            self.version = version = self.read_ulong()
+            if version == 0x4F54544F:
+                die(&#34;Postscript outlines are not supported&#34;)
+            if version == 0x74746366:
+                die(&#34;ERROR - TrueType Fonts Collections not supported&#34;)
+            if version not in (0x00010000, 0x74727565):
+                die(&#34;Not a TrueType font: version=&#34; + str(version))
+            self.readTableDirectory()
+            self.extractInfo()
+
+    def readTableDirectory(
+        self,
+    ):
+        self.numTables = self.read_ushort()
+        self.searchRange = self.read_ushort()
+        self.entrySelector = self.read_ushort()
+        self.rangeShift = self.read_ushort()
+        self.tables = {}
+        for i in range(self.numTables):
+            record = {}
+            record[&#34;tag&#34;] = self.read_tag()
+            record[&#34;checksum&#34;] = (self.read_ushort(), self.read_ushort())
+            record[&#34;offset&#34;] = self.read_ulong()
+            record[&#34;length&#34;] = self.read_ulong()
+            self.tables[record[&#34;tag&#34;]] = record
+
+    def get_table_pos(self, tag):
+        offset = self.tables[tag][&#34;offset&#34;]
+        length = self.tables[tag][&#34;length&#34;]
+        return (offset, length)
+
+    def seek(self, pos):
+        self._pos = pos
+        self.fh.seek(self._pos)
+
+    def skip(self, delta):
+        self._pos = self._pos + delta
+        self.fh.seek(self._pos)
+
+    def seek_table(self, tag, offset_in_table=0):
+        tpos = self.get_table_pos(tag)
+        self._pos = tpos[0] + offset_in_table
+        self.fh.seek(self._pos)
+        return self._pos
+
+    def read_tag(self):
+        self._pos += 4
+        return self.fh.read(4).decode(&#34;latin1&#34;)
+
+    def read_short(self):
+        self._pos += 2
+        s = self.fh.read(2)
+        a = s[0] &lt;&lt; 8 + s[1]
+        if a &amp; (1 &lt;&lt; 15):
+            a = a - (1 &lt;&lt; 16)
+        return a
+
+    def read_ushort(self):
+        self._pos += 2
+        s = self.fh.read(2)
+        return s[0] &lt;&lt; 8 + s[1]
+
+    def read_ulong(self):
+        self._pos += 4
+        s = self.fh.read(4)
+        # if large uInt32 as an integer, PHP converts it to -ve
+        return s[0] * 16777216 + s[1] &lt;&lt; 16 + s[2] &lt;&lt; 8 + s[3]  #     16777216  = 1&lt;&lt;24
+
+    def get_ushort(self, pos):
+        self.fh.seek(pos)
+        s = self.fh.read(2)
+        return s[0] &lt;&lt; 8 + s[1]
+
+    def splice(self, stream, offset, value):
+        return (
+            substr(stream, 0, offset) + value + substr(stream, offset + strlen(value))
+        )
+
+    def _set_ushort(self, stream, offset, value):
+        up = pack(&#34;&gt;H&#34;, value)
+        return self.splice(stream, offset, up)
+
+    def get_chunk(self, pos, length):
+        self.fh.seek(pos)
+        if length &lt; 1:
+            return &#34;&#34;
+        return self.fh.read(length)
+
+    def get_table(self, tag):
+        (pos, length) = self.get_table_pos(tag)
+        if length == 0:
+            die(&#34;Truetype font (&#34; + self.filename + &#34;): error reading table: &#34; + tag)
+        self.fh.seek(pos)
+        return self.fh.read(length)
+
+    def add(self, tag, data):
+        if tag == &#34;head&#34;:
+            data = self.splice(data, 8, b(&#34;\0\0\0\0&#34;))
+        self.otables[tag] = data
+
+    ############################################/
+    ############################################/
+
+    ############################################/
+
+    def extractInfo(self):
+        #################/
+        # name - Naming table
+        #################/
+        self.sFamilyClass = 0
+        self.sFamilySubClass = 0
+
+        name_offset = self.seek_table(&#34;name&#34;)
+        format = self.read_ushort()
+        if format != 0:
+            die(&#34;Unknown name table format &#34; + format)
+        numRecords = self.read_ushort()
+        string_data_offset = name_offset + self.read_ushort()
+        names = {1: &#34;&#34;, 2: &#34;&#34;, 3: &#34;&#34;, 4: &#34;&#34;, 6: &#34;&#34;}
+        K = list(names.keys())
+        nameCount = len(names)
+        for i in range(numRecords):
+            platformId = self.read_ushort()
+            encodingId = self.read_ushort()
+            languageId = self.read_ushort()
+            nameId = self.read_ushort()
+            length = self.read_ushort()
+            offset = self.read_ushort()
+            if nameId not in K:
+                continue
+            N = &#34;&#34;
+            if (
+                platformId == 3 and encodingId == 1 and languageId == 0x409
+            ):  # Microsoft, Unicode, US English, PS Name
+                opos = self._pos
+                self.seek(string_data_offset + offset)
+                if length % 2 != 0:
+                    die(&#34;PostScript name is UTF-16BE string of odd length&#34;)
+                length //= 2
+                N = &#34;&#34;
+                while length &gt; 0:
+                    char = self.read_ushort()
+                    N += chr(char)
+                    length -= 1
+                self._pos = opos
+                self.seek(opos)
+
+            elif (
+                platformId == 1 and encodingId == 0 and languageId == 0
+            ):  # Macintosh, Roman, English, PS Name
+                opos = self._pos
+                N = self.get_chunk(string_data_offset + offset, length).decode(&#34;latin1&#34;)
+                self._pos = opos
+                self.seek(opos)
+
+            if N and names[nameId] == &#34;&#34;:
+                names[nameId] = N
+                nameCount -= 1
+                if nameCount == 0:
+                    break
+
+        if names[6]:
+            psName = names[6]
+        elif names[4]:
+            psName = re.sub(&#34; &#34;, &#34;-&#34;, names[4])
+        elif names[1]:
+            psName = re.sub(&#34; &#34;, &#34;-&#34;, names[1])
+        else:
+            psName = &#34;&#34;
+        if not psName:
+            die(&#34;Could not find PostScript font name&#34;)
+        self.name = psName
+        if names[1]:
+            self.familyName = names[1]
+        else:
+            self.familyName = psName
+        if names[2]:
+            self.styleName = names[2]
+        else:
+            self.styleName = &#34;Regular&#34;
+        if names[4]:
+            self.fullName = names[4]
+        else:
+            self.fullName = psName
+        if names[3]:
+            self.uniqueFontID = names[3]
+        else:
+            self.uniqueFontID = psName
+        if names[6]:
+            self.fullName = names[6]
+
+        #################/
+        # head - Font header table
+        #################/
+        self.seek_table(&#34;head&#34;)
+        self.skip(18)
+        self.unitsPerEm = unitsPerEm = self.read_ushort()
+        scale = 1000 / float(unitsPerEm)
+        self.skip(16)
+        xMin = self.read_short()
+        yMin = self.read_short()
+        xMax = self.read_short()
+        yMax = self.read_short()
+        self.bbox = [(xMin * scale), (yMin * scale), (xMax * scale), (yMax * scale)]
+        self.skip(3 * 2)
+        indexToLocFormat = self.read_ushort()
+        glyphDataFormat = self.read_ushort()
+        if glyphDataFormat != 0:
+            die(&#34;Unknown glyph data format &#34; + glyphDataFormat)
+
+        #################/
+        # hhea metrics table
+        #################/
+        # ttf2t1 seems to use this value rather than the one in OS/2 - so put in for compatibility
+        if &#34;hhea&#34; in self.tables:
+            self.seek_table(&#34;hhea&#34;)
+            self.skip(4)
+            hheaAscender = self.read_short()
+            hheaDescender = self.read_short()
+            self.ascent = hheaAscender * scale
+            self.descent = hheaDescender * scale
+
+        #################/
+        # OS/2 - OS/2 and Windows metrics table
+        #################/
+        if &#34;OS/2&#34; in self.tables:
+            self.seek_table(&#34;OS/2&#34;)
+            version = self.read_ushort()
+            self.skip(2)
+            usWeightClass = self.read_ushort()
+            self.skip(2)
+            fsType = self.read_ushort()
+            if fsType == 0x0002 or (fsType &amp; 0x0300) != 0:
+                die(
+                    &#34;ERROR - Font file &#34;
+                    + self.filename
+                    + &#34; cannot be embedded due to copyright restrictions.&#34;
+                )
+                self.restrictedUse = True
+
+            self.skip(20)
+            sF = self.read_short()
+            self.sFamilyClass = sF &gt;&gt; 8
+            self.sFamilySubClass = sF &amp; 0xFF
+            self._pos += 10  # PANOSE = 10 byte length
+            panose = self.fh.read(10)
+            self.skip(26)
+            sTypoAscender = self.read_short()
+            sTypoDescender = self.read_short()
+            if not self.ascent:
+                self.ascent = sTypoAscender * scale
+            if not self.descent:
+                self.descent = sTypoDescender * scale
+            if version &gt; 1:
+                self.skip(16)
+                sCapHeight = self.read_short()
+                self.capHeight = sCapHeight * scale
+            else:
+                self.capHeight = self.ascent
+
+        else:
+            usWeightClass = 500
+            if not self.ascent:
+                self.ascent = yMax * scale
+            if not self.descent:
+                self.descent = yMin * scale
+            self.capHeight = self.ascent
+
+        self.stemV = 50 + int(pow((usWeightClass / 65.0), 2))
+
+        #################/
+        # post - PostScript table
+        #################/
+        self.seek_table(&#34;post&#34;)
+        self.skip(4)
+        self.italicAngle = self.read_short() + self.read_ushort() / 65536.0
+        self.underlinePosition = self.read_short() * scale
+        self.underlineThickness = self.read_short() * scale
+        isFixedPitch = self.read_ulong()
+
+        self.flags = 4
+
+        if self.italicAngle != 0:
+            self.flags = self.flags | 64
+        if usWeightClass &gt;= 600:
+            self.flags = self.flags | 262144
+        if isFixedPitch:
+            self.flags = self.flags | 1
+
+        #################/
+        # hhea - Horizontal header table
+        #################/
+        self.seek_table(&#34;hhea&#34;)
+        self.skip(32)
+        metricDataFormat = self.read_ushort()
+        if metricDataFormat != 0:
+            die(&#34;Unknown horizontal metric data format &#34;.metricDataFormat)
+        numberOfHMetrics = self.read_ushort()
+        if numberOfHMetrics == 0:
+            die(&#34;Number of horizontal metrics is 0&#34;)
+
+        #################/
+        # maxp - Maximum profile table
+        #################/
+        self.seek_table(&#34;maxp&#34;)
+        self.skip(4)
+        numGlyphs = self.read_ushort()
+
+        #################/
+        # cmap - Character to glyph index mapping table
+        #################/
+        cmap_offset = self.seek_table(&#34;cmap&#34;)
+        self.skip(2)
+        cmapTableCount = self.read_ushort()
+        unicode_cmap_offset = 0
+        unicode_cmap_offset12 = 0
+
+        for i in range(cmapTableCount):
+            platformID = self.read_ushort()
+            encodingID = self.read_ushort()
+            offset = self.read_ulong()
+            save_pos = self._pos
+            if platformID == 3 and encodingID == 10:  # Microsoft, UCS-4
+                format = self.get_ushort(cmap_offset + offset)
+                if format == 12:
+                    if not unicode_cmap_offset12:
+                        unicode_cmap_offset12 = cmap_offset + offset
+                    break
+            if (
+                platformID == 3 and encodingID == 1
+            ) or platformID == 0:  # Microsoft, Unicode
+                format = self.get_ushort(cmap_offset + offset)
+                if format == 4:
+                    if not unicode_cmap_offset:
+                        unicode_cmap_offset = cmap_offset + offset
+                    break
+
+            self.seek(save_pos)
+
+        if not unicode_cmap_offset and not unicode_cmap_offset12:
+            die(
+                &#34;Font (&#34;
+                + self.filename
+                + &#34;) does not have cmap for Unicode (platform 3, encoding 1, format 4, or platform 3, encoding 10, format 12, or platform 0, any encoding, format 4)&#34;
+            )
+
+        glyphToChar = {}
+        charToGlyph = {}
+        if unicode_cmap_offset12:
+            self.getCMAP12(unicode_cmap_offset12, glyphToChar, charToGlyph)
+        else:
+            self.getCMAP4(unicode_cmap_offset, glyphToChar, charToGlyph)
+
+        #################/
+        # hmtx - Horizontal metrics table
+        #################/
+        self.getHMTX(numberOfHMetrics, numGlyphs, glyphToChar, scale)
+
+    ############################################/
+    ############################################/
+
+    def makeSubset(self, file, subset):
+        self.filename = file
+        with open(file, &#34;rb&#34;) as self.fh:
+            self._pos = 0
+            self.charWidths = []
+            self.glyphPos = {}
+            self.charToGlyph = {}
+            self.tables = {}
+            self.otables = {}
+            self.ascent = 0
+            self.descent = 0
+            self.skip(4)
+            self.maxUni = 0
+            self.readTableDirectory()
+
+            #################/
+            # head - Font header table
+            #################/
+            self.seek_table(&#34;head&#34;)
+            self.skip(50)
+            indexToLocFormat = self.read_ushort()
+            glyphDataFormat = self.read_ushort()
+
+            #################/
+            # hhea - Horizontal header table
+            #################/
+            self.seek_table(&#34;hhea&#34;)
+            self.skip(32)
+            metricDataFormat = self.read_ushort()
+            orignHmetrics = numberOfHMetrics = self.read_ushort()
+
+            #################/
+            # maxp - Maximum profile table
+            #################/
+            self.seek_table(&#34;maxp&#34;)
+            self.skip(4)
+            numGlyphs = self.read_ushort()
+
+            #################/
+            # cmap - Character to glyph index mapping table
+            #################/
+            cmap_offset = self.seek_table(&#34;cmap&#34;)
+            self.skip(2)
+            cmapTableCount = self.read_ushort()
+            unicode_cmap_offset = 0
+            unicode_cmap_offset12 = 0
+            for i in range(cmapTableCount):
+                platformID = self.read_ushort()
+                encodingID = self.read_ushort()
+                offset = self.read_ulong()
+                save_pos = self._pos
+                if platformID == 3 and encodingID == 10:  # Microsoft, UCS-4
+                    format = self.get_ushort(cmap_offset + offset)
+                    if format == 12:
+                        if not unicode_cmap_offset12:
+                            unicode_cmap_offset12 = cmap_offset + offset
+                        break
+                if (
+                    platformID == 3 and encodingID == 1
+                ) or platformID == 0:  # Microsoft, Unicode
+                    format = self.get_ushort(cmap_offset + offset)
+                    if format == 4:
+                        unicode_cmap_offset = cmap_offset + offset
+                        break
+
+                self.seek(save_pos)
+
+            if not unicode_cmap_offset and not unicode_cmap_offset12:
+                die(
+                    &#34;Font (&#34;
+                    + self.filename
+                    + &#34;) does not have cmap for Unicode (platform 3, encoding 1, format 4, or platform 3, encoding 10, format 12, or platform 0, any encoding, format 4)&#34;
+                )
+
+            glyphToChar = {}
+            charToGlyph = {}
+            if unicode_cmap_offset12:
+                self.getCMAP12(unicode_cmap_offset12, glyphToChar, charToGlyph)
+            else:
+                self.getCMAP4(unicode_cmap_offset, glyphToChar, charToGlyph)
+
+            self.charToGlyph = charToGlyph
+
+            #################/
+            # hmtx - Horizontal metrics table
+            #################/
+            scale = 1  # not used
+            self.getHMTX(numberOfHMetrics, numGlyphs, glyphToChar, scale)
+
+            #################/
+            # loca - Index to location
+            #################/
+            self.getLOCA(indexToLocFormat, numGlyphs)
+
+            subsetglyphs = [(0, 0)]  # special &#34;sorted dict&#34;!
+            subsetCharToGlyph = {}
+            for code in subset:
+                if code in self.charToGlyph:
+                    if (self.charToGlyph[code], code) not in subsetglyphs:
+                        subsetglyphs.append(
+                            (self.charToGlyph[code], code)
+                        )  # Old Glyph ID =&gt; Unicode
+                    subsetCharToGlyph[code] = self.charToGlyph[
+                        code
+                    ]  # Unicode to old GlyphID
+                self.maxUni = max(self.maxUni, code)
+            (start, _) = self.get_table_pos(&#34;glyf&#34;)
+
+            subsetglyphs.sort()
+            glyphSet = {}
+            n = 0
+            fsLastCharIndex = 0  # maximum Unicode index (character code) in this font, according to the cmap subtable for platform ID 3 and platform- specific encoding ID 0 or 1.
+            for originalGlyphIdx, uni in subsetglyphs:
+                fsLastCharIndex = max(fsLastCharIndex, uni)
+                glyphSet[originalGlyphIdx] = n  # old glyphID to new glyphID
+                n += 1
+
+            codeToGlyph = {}
+            for uni, originalGlyphIdx in sorted(subsetCharToGlyph.items()):
+                codeToGlyph[uni] = glyphSet[originalGlyphIdx]
+
+            self.codeToGlyph = codeToGlyph
+
+            for originalGlyphIdx, uni in subsetglyphs:
+                nonlocals = {
+                    &#34;start&#34;: start,
+                    &#34;glyphSet&#34;: glyphSet,
+                    &#34;subsetglyphs&#34;: subsetglyphs,
+                }
+                self.getGlyphs(originalGlyphIdx, nonlocals)
+
+            numGlyphs = numberOfHMetrics = len(subsetglyphs)
+
+            # tables copied from the original
+            tags = [&#34;name&#34;]
+            for tag in tags:
+                self.add(tag, self.get_table(tag))
+            tags = [&#34;cvt &#34;, &#34;fpgm&#34;, &#34;prep&#34;, &#34;gasp&#34;]
+            for tag in tags:
+                if tag in self.tables:
+                    self.add(tag, self.get_table(tag))
+
+            # post - PostScript
+            opost = self.get_table(&#34;post&#34;)
+            post = (
+                b(&#34;\x00\x03\x00\x00&#34;)
+                + substr(opost, 4, 12)
+                + b(&#34;\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00&#34;)
+            )
+            self.add(&#34;post&#34;, post)
+
+            # Sort CID2GID map into segments of contiguous codes
+            if 0 in codeToGlyph:
+                del codeToGlyph[0]
+            # unset(codeToGlyph[65535])
+            rangeid = 0
+            range_ = {}
+            prevcid = -2
+            prevglidx = -1
+            # for each character
+            for cid, glidx in sorted(codeToGlyph.items()):
+                if cid == (prevcid + 1) and glidx == (prevglidx + 1):
+                    range_[rangeid].append(glidx)
+                else:
+                    # new range
+                    rangeid = cid
+                    range_[rangeid] = []
+                    range_[rangeid].append(glidx)
+                prevcid = cid
+                prevglidx = glidx
+
+            # cmap - Character to glyph mapping - Format 4 (MS / )
+            segCount = len(range_) + 1  # + 1 Last segment has missing character 0xFFFF
+            searchRange = 1
+            entrySelector = 0
+            while searchRange * 2 &lt;= segCount:
+                searchRange = searchRange * 2
+                entrySelector = entrySelector + 1
+
+            searchRange = searchRange * 2
+            rangeShift = segCount * 2 - searchRange
+            length = 16 + (8 * segCount) + (numGlyphs + 1)
+            cmap = [
+                0,
+                1,  # Index : version, number of encoding subtables
+                3,
+                1,  # Encoding Subtable : platform (MS=3), encoding (Unicode)
+                0,
+                12,  # Encoding Subtable : offset (hi,lo)
+                4,
+                length,
+                0,  # Format 4 Mapping subtable: format, length, language
+                segCount * 2,
+                searchRange,
+                entrySelector,
+                rangeShift,
+            ]
+
+            range_ = sorted(range_.items())
+
+            # endCode(s)
+            for start, subrange in range_:
+                endCode = start + (len(subrange) - 1)
+                cmap.append(endCode)  # endCode(s)
+
+            cmap.append(0xFFFF)  # endCode of last Segment
+            cmap.append(0)  # reservedPad
+
+            # startCode(s)
+            for start, subrange in range_:
+                cmap.append(start)  # startCode(s)
+
+            cmap.append(0xFFFF)  # startCode of last Segment
+            # idDelta(s)
+            for start, subrange in range_:
+                idDelta = -(start - subrange[0])
+                n += count(subrange)
+                cmap.append(idDelta)  # idDelta(s)
+
+            cmap.append(1)  # idDelta of last Segment
+            # idRangeOffset(s)
+            for subrange in range_:
+                cmap.append(
+                    0
+                )  # idRangeOffset[segCount]      Offset in bytes to glyph indexArray, or 0
+
+            cmap.append(0)  # idRangeOffset of last Segment
+            for subrange, glidx in range_:
+                cmap.extend(glidx)
+
+            cmap.append(0)  # Mapping for last character
+            cmapstr = b(&#34;&#34;)
+            for cm in cmap:
+                if cm &gt;= 0:
+                    cmapstr += pack(&#34;&gt;H&#34;, cm)
+                else:
+                    try:
+                        cmapstr += pack(&#34;&gt;h&#34;, cm)
+                    except:
+                        warnings.warn(&#34;cmap value too big/small: %s&#34; % cm)
+                        cmapstr += pack(&#34;&gt;H&#34;, -cm)
+            self.add(&#34;cmap&#34;, cmapstr)
+
+            # glyf - Glyph data
+            (glyfOffset, glyfLength) = self.get_table_pos(&#34;glyf&#34;)
+            if glyfLength &lt; self.maxStrLenRead:
+                glyphData = self.get_table(&#34;glyf&#34;)
+
+            offsets = []
+            glyf = b(&#34;&#34;)
+            pos = 0
+
+            hmtxstr = b(&#34;&#34;)
+            xMinT = 0
+            yMinT = 0
+            xMaxT = 0
+            yMaxT = 0
+            advanceWidthMax = 0
+            minLeftSideBearing = 0
+            minRightSideBearing = 0
+            xMaxExtent = 0
+            maxPoints = 0  # points in non-compound glyph
+            maxContours = 0  # contours in non-compound glyph
+            maxComponentPoints = 0  # points in compound glyph
+            maxComponentContours = 0  # contours in compound glyph
+            maxComponentElements = 0  # number of glyphs referenced at top level
+            maxComponentDepth = (
+                0  # levels of recursion, set to 0 if font has only simple glyphs
+            )
+            self.glyphdata = {}
+
+            for originalGlyphIdx, uni in subsetglyphs:
+                # hmtx - Horizontal Metrics
+                hm = self.getHMetric(orignHmetrics, originalGlyphIdx)
+                hmtxstr += hm
+
+                offsets.append(pos)
+                try:
+                    glyphPos = self.glyphPos[originalGlyphIdx]
+                    glyphLen = self.glyphPos[originalGlyphIdx + 1] - glyphPos
+                except IndexError:
+                    warnings.warn(&#34;missing glyph %s&#34; % (originalGlyphIdx))
+                    glyphLen = 0
+
+                if glyfLength &lt; self.maxStrLenRead:
+                    data = substr(glyphData, glyphPos, glyphLen)
+                else:
+                    if glyphLen &gt; 0:
+                        data = self.get_chunk(glyfOffset + glyphPos, glyphLen)
+                    else:
+                        data = b(&#34;&#34;)
+
+                if glyphLen &gt; 0:
+                    up = unpack(&#34;&gt;H&#34;, substr(data, 0, 2))[0]
+                if glyphLen &gt; 2 and (
+                    up &amp; (1 &lt;&lt; 15)
+                ):  # If number of contours &lt;= -1 i.e. composite glyph
+                    pos_in_glyph = 10
+                    flags = GF_MORE
+                    nComponentElements = 0
+                    while flags &amp; GF_MORE:
+                        nComponentElements += (
+                            1  # number of glyphs referenced at top level
+                        )
+                        up = unpack(&#34;&gt;H&#34;, substr(data, pos_in_glyph, 2))
+                        flags = up[0]
+                        up = unpack(&#34;&gt;H&#34;, substr(data, pos_in_glyph + 2, 2))
+                        glyphIdx = up[0]
+                        self.glyphdata.setdefault(originalGlyphIdx, {}).setdefault(
+                            &#34;compGlyphs&#34;, []
+                        ).append(glyphIdx)
+                        try:
+                            data = self._set_ushort(
+                                data, pos_in_glyph + 2, glyphSet[glyphIdx]
+                            )
+                        except KeyError:
+                            data = 0
+                            warnings.warn(&#34;missing glyph data %s&#34; % glyphIdx)
+                        pos_in_glyph += 4
+                        if flags &amp; GF_WORDS:
+                            pos_in_glyph += 4
+                        else:
+                            pos_in_glyph += 2
+                        if flags &amp; GF_SCALE:
+                            pos_in_glyph += 2
+                        elif flags &amp; GF_XYSCALE:
+                            pos_in_glyph += 4
+                        elif flags &amp; GF_TWOBYTWO:
+                            pos_in_glyph += 8
+
+                    maxComponentElements = max(maxComponentElements, nComponentElements)
+
+                glyf += data
+                pos += glyphLen
+                if pos % 4 != 0:
+                    padding = 4 - (pos % 4)
+                    glyf += str_repeat(b(&#34;\0&#34;), padding)
+                    pos += padding
+
+            offsets.append(pos)
+            self.add(&#34;glyf&#34;, glyf)
+
+            # hmtx - Horizontal Metrics
+            self.add(&#34;hmtx&#34;, hmtxstr)
+
+            # loca - Index to location
+            locastr = b(&#34;&#34;)
+            if ((pos + 1) &gt;&gt; 1) &gt; 0xFFFF:
+                indexToLocFormat = 1  # long format
+                for offset in offsets:
+                    locastr += pack(&#34;&gt;L&#34;, offset)
+            else:
+                indexToLocFormat = 0  # short format
+                for offset in offsets:
+                    locastr += pack(&#34;&gt;H&#34;, offset // 2)
+
+            self.add(&#34;loca&#34;, locastr)
+
+            # head - Font header
+            head = self.get_table(&#34;head&#34;)
+            head = self._set_ushort(head, 50, indexToLocFormat)
+            self.add(&#34;head&#34;, head)
+
+            # hhea - Horizontal Header
+            hhea = self.get_table(&#34;hhea&#34;)
+            hhea = self._set_ushort(hhea, 34, numberOfHMetrics)
+            self.add(&#34;hhea&#34;, hhea)
+
+            # maxp - Maximum Profile
+            maxp = self.get_table(&#34;maxp&#34;)
+            maxp = self._set_ushort(maxp, 4, numGlyphs)
+            self.add(&#34;maxp&#34;, maxp)
+
+            # OS/2 - OS/2
+            os2 = self.get_table(&#34;OS/2&#34;)
+            self.add(&#34;OS/2&#34;, os2)
+
+        # Put the TTF file together
+        stm = self.endTTFile(&#34;&#34;)
+        return stm
+
+    #########################################
+    # Recursively get composite glyph data
+    def getGlyphData(self, originalGlyphIdx, nonlocals):
+        # &amp;maxdepth, &amp;depth, &amp;points, &amp;contours
+        nonlocals[&#34;depth&#34;] += 1
+        nonlocals[&#34;maxdepth&#34;] = max(nonlocals[&#34;maxdepth&#34;], nonlocals[&#34;depth&#34;])
+        if len(self.glyphdata[originalGlyphIdx][&#34;compGlyphs&#34;]):
+            for glyphIdx in self.glyphdata[originalGlyphIdx][&#34;compGlyphs&#34;]:
+                self.getGlyphData(glyphIdx, nonlocals)
+
+        elif (self.glyphdata[originalGlyphIdx][&#34;nContours&#34;] &gt; 0) and nonlocals[
+            &#34;depth&#34;
+        ] &gt; 0:  # simple
+            contours += self.glyphdata[originalGlyphIdx][&#34;nContours&#34;]
+            points += self.glyphdata[originalGlyphIdx][&#34;nPoints&#34;]
+
+        nonlocals[&#34;depth&#34;] -= 1
+
+    #########################################
+    # Recursively get composite glyphs
+    def getGlyphs(self, originalGlyphIdx, nonlocals):
+        # &amp;start, &amp;glyphSet, &amp;subsetglyphs)
+
+        try:
+            glyphPos = self.glyphPos[originalGlyphIdx]
+            glyphLen = self.glyphPos[originalGlyphIdx + 1] - glyphPos
+        except IndexError:
+            warnings.warn(&#34;missing glyph %s&#34; % (originalGlyphIdx))
+            return
+
+        if not glyphLen:
+            return
+
+        self.seek(nonlocals[&#34;start&#34;] + glyphPos)
+        numberOfContours = self.read_short()
+        if numberOfContours &lt; 0:
+            self.skip(8)
+            flags = GF_MORE
+            while flags &amp; GF_MORE:
+                flags = self.read_ushort()
+                glyphIdx = self.read_ushort()
+                if glyphIdx not in nonlocals[&#34;glyphSet&#34;]:
+                    nonlocals[&#34;glyphSet&#34;][glyphIdx] = len(
+                        nonlocals[&#34;subsetglyphs&#34;]
+                    )  # old glyphID to new glyphID
+                    nonlocals[&#34;subsetglyphs&#34;].append((glyphIdx, 1))
+
+                savepos = self.fh.tell()
+                self.getGlyphs(glyphIdx, nonlocals)
+                self.seek(savepos)
+                if flags &amp; GF_WORDS:
+                    self.skip(4)
+                else:
+                    self.skip(2)
+                if flags &amp; GF_SCALE:
+                    self.skip(2)
+                elif flags &amp; GF_XYSCALE:
+                    self.skip(4)
+                elif flags &amp; GF_TWOBYTWO:
+                    self.skip(8)
+
+    #########################################
+
+    def getHMTX(self, numberOfHMetrics, numGlyphs, glyphToChar, scale):
+        start = self.seek_table(&#34;hmtx&#34;)
+        aw = 0
+        self.charWidths = []
+
+        def resize_cw(size, default):
+            size = (((size + 1) // 1024) + 1) * 1024
+            delta = size - len(self.charWidths)
+            if delta &gt; 0:
+                self.charWidths += [default] * delta
+
+        nCharWidths = 0
+        if (numberOfHMetrics * 4) &lt; self.maxStrLenRead:
+            data = self.get_chunk(start, (numberOfHMetrics * 4))
+            arr = unpack(&#34;&gt;%dH&#34; % (len(data) // 2), data)
+        else:
+            self.seek(start)
+        for glyph in range(numberOfHMetrics):
+            if (numberOfHMetrics * 4) &lt; self.maxStrLenRead:
+                aw = arr[(glyph * 2)]  # PHP starts arrays from index 0!? +1
+            else:
+                aw = self.read_ushort()
+                lsb = self.read_ushort()
+
+            if glyph in glyphToChar or glyph == 0:
+                if aw &gt;= (1 &lt;&lt; 15):
+                    aw = 0  # 1.03 Some (arabic) fonts have -ve values for width
+                    # although should be unsigned value - comes out as e.g. 65108 (intended -50)
+                if glyph == 0:
+                    self.defaultWidth = scale * aw
+                    continue
+
+                for char in glyphToChar[glyph]:
+                    if char != 0 and char != 65535:
+                        w = int(round(scale * aw + 0.001))  # ROUND_HALF_UP (like php)
+                        if w == 0:
+                            w = 65535
+                        if char &lt; 196608:
+                            if char &gt;= len(self.charWidths):
+                                resize_cw(char, self.defaultWidth)
+                            self.charWidths[char] = w
+                            nCharWidths += 1
+
+        data = self.get_chunk((start + numberOfHMetrics * 4), (numGlyphs * 2))
+        arr = unpack(&#34;&gt;%dH&#34; % (len(data) // 2), data)
+        diff = numGlyphs - numberOfHMetrics
+        for pos in range(diff):
+            glyph = pos + numberOfHMetrics
+            if glyph in glyphToChar:
+                for char in glyphToChar[glyph]:
+                    if char != 0 and char != 65535:
+                        w = int(round(scale * aw + 0.001))  # ROUND_HALF_UP (like php)
+                        if w == 0:
+                            w = 65535
+                        if char &lt; 196608:
+                            if char &gt;= len(self.charWidths):
+                                resize_cw(char, self.defaultWidth)
+                            self.charWidths[char] = w
+                            nCharWidths += 1
+
+        # NB 65535 is a set width of 0
+        # First bytes define number of chars in font
+        self.charWidths[0] = nCharWidths
+
+    def getHMetric(self, numberOfHMetrics, gid):
+        start = self.seek_table(&#34;hmtx&#34;)
+        if gid &lt; numberOfHMetrics:
+            self.seek(start + (gid * 4))
+            hm = self.fh.read(4)
+        else:
+            self.seek(start + ((numberOfHMetrics - 1) * 4))
+            hm = self.fh.read(2)
+            self.seek(start + (numberOfHMetrics * 2) + (gid * 2))
+            hm += self.fh.read(2)
+        return hm
+
+    def getLOCA(self, indexToLocFormat, numGlyphs):
+        start = self.seek_table(&#34;loca&#34;)
+        self.glyphPos = []
+        if indexToLocFormat == 0:
+            data = self.get_chunk(start, (numGlyphs * 2) + 2)
+            arr = unpack(&#34;&gt;%dH&#34; % (len(data) // 2), data)
+            for n in range(numGlyphs):
+                self.glyphPos.append((arr[n] * 2))  # n+1 !?
+        elif indexToLocFormat == 1:
+            data = self.get_chunk(start, (numGlyphs * 4) + 4)
+            arr = unpack(&#34;&gt;%dL&#34; % (len(data) // 4), data)
+            for n in range(numGlyphs):
+                self.glyphPos.append((arr[n]))  # n+1 !?
+        else:
+            die(&#34;Unknown location table format &#34; + indexToLocFormat)
+
+    # CMAP Format 4
+    def getCMAP4(self, unicode_cmap_offset, glyphToChar, charToGlyph):
+        self.maxUniChar = 0
+        self.seek(unicode_cmap_offset + 2)
+        length = self.read_ushort()
+        limit = unicode_cmap_offset + length
+        self.skip(2)
+
+        segCount = self.read_ushort() // 2
+        self.skip(6)
+        endCount = []
+        for i in range(segCount):
+            endCount.append(self.read_ushort())
+        self.skip(2)
+        startCount = []
+        for i in range(segCount):
+            startCount.append(self.read_ushort())
+        idDelta = []
+        for i in range(segCount):
+            idDelta.append(self.read_short())  # ???? was unsigned short
+        idRangeOffset_start = self._pos
+        idRangeOffset = []
+        for i in range(segCount):
+            idRangeOffset.append(self.read_ushort())
+
+        for n in range(segCount):
+            endpoint = endCount[n] + 1
+            for unichar in range(startCount[n], endpoint, 1):
+                if idRangeOffset[n] == 0:
+                    glyph = (unichar + idDelta[n]) &amp; 0xFFFF
+                else:
+                    offset = (unichar - startCount[n]) * 2 + idRangeOffset[n]
+                    offset = idRangeOffset_start + 2 * n + offset
+                    if offset &gt;= limit:
+                        glyph = 0
+                    else:
+                        glyph = self.get_ushort(offset)
+                        if glyph != 0:
+                            glyph = (glyph + idDelta[n]) &amp; 0xFFFF
+
+                charToGlyph[unichar] = glyph
+                if unichar &lt; 196608:
+                    self.maxUniChar = max(unichar, self.maxUniChar)
+                glyphToChar.setdefault(glyph, []).append(unichar)
+
+    # CMAP Format 12
+    def getCMAP12(self, unicode_cmap_offset, glyphToChar, charToGlyph):
+        self.maxUniChar = 0
+        # table (skip format version, should be 12)
+        self.seek(unicode_cmap_offset + 2)
+        # reserved
+        self.skip(2)
+        # table length
+        length = self.read_ulong()
+        # language (should be 0)
+        self.skip(4)
+        # groups count
+        grpCount = self.read_ulong()
+
+        if 2 + 2 + 4 + 4 + 4 + grpCount * 3 * 4 &gt; length:
+            die(&#34;TTF format 12 cmap table too small&#34;)
+        for n in range(grpCount):
+            startCharCode = self.read_ulong()
+            endCharCode = self.read_ulong()
+            glyph = self.read_ulong()
+            for unichar in range(startCharCode, endCharCode + 1):
+                charToGlyph[unichar] = glyph
+                if unichar &lt; 196608:
+                    self.maxUniChar = max(unichar, self.maxUniChar)
+                glyphToChar.setdefault(glyph, []).append(unichar)
+                glyph += 1
+
+    # Put the TTF file together
+    def endTTFile(self, stm):
+        stm = b(&#34;&#34;)
+        numTables = count(self.otables)
+        searchRange = 1
+        entrySelector = 0
+        while searchRange * 2 &lt;= numTables:
+            searchRange = searchRange * 2
+            entrySelector = entrySelector + 1
+
+        searchRange = searchRange * 16
+        rangeShift = numTables * 16 - searchRange
+
+        # Header
+        if _TTF_MAC_HEADER:
+            stm += pack(
+                &#34;&gt;LHHHH&#34;, 0x74727565, numTables, searchRange, entrySelector, rangeShift
+            )  # Mac
+        else:
+            stm += pack(
+                &#34;&gt;LHHHH&#34;, 0x00010000, numTables, searchRange, entrySelector, rangeShift
+            )  # Windows
+
+        # Table directory
+        tables = self.otables
+
+        offset = 12 + numTables * 16
+        sorted_tables = sorted(tables.items())
+        for tag, data in sorted_tables:
+            if tag == &#34;head&#34;:
+                head_start = offset
+            stm += tag.encode(&#34;latin1&#34;)
+            checksum = calcChecksum(data)
+            stm += pack(&#34;&gt;HH&#34;, checksum[0], checksum[1])
+            stm += pack(&#34;&gt;LL&#34;, offset, strlen(data))
+            paddedLength = (strlen(data) + 3) &amp; ~3
+            offset = offset + paddedLength
+
+        # Table data
+        for tag, data in sorted_tables:
+            data += b(&#34;\0\0\0&#34;)
+            stm += substr(data, 0, (strlen(data) &amp; ~3))
+
+        checksum = calcChecksum(stm)
+        checksum = sub32((0xB1B0, 0xAFBA), checksum)
+        chk = pack(&#34;&gt;HH&#34;, checksum[0], checksum[1])
+        stm = self.splice(stm, (head_start + 8), chk)
+        return stm</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="fpdf.ttfonts.TTFontFile.add"><code class="name flex">
+<span>def <span class="ident">add</span></span>(<span>self, tag, data)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add(self, tag, data):
+    if tag == &#34;head&#34;:
+        data = self.splice(data, 8, b(&#34;\0\0\0\0&#34;))
+    self.otables[tag] = data</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.endTTFile"><code class="name flex">
+<span>def <span class="ident">endTTFile</span></span>(<span>self, stm)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def endTTFile(self, stm):
+    stm = b(&#34;&#34;)
+    numTables = count(self.otables)
+    searchRange = 1
+    entrySelector = 0
+    while searchRange * 2 &lt;= numTables:
+        searchRange = searchRange * 2
+        entrySelector = entrySelector + 1
+
+    searchRange = searchRange * 16
+    rangeShift = numTables * 16 - searchRange
+
+    # Header
+    if _TTF_MAC_HEADER:
+        stm += pack(
+            &#34;&gt;LHHHH&#34;, 0x74727565, numTables, searchRange, entrySelector, rangeShift
+        )  # Mac
+    else:
+        stm += pack(
+            &#34;&gt;LHHHH&#34;, 0x00010000, numTables, searchRange, entrySelector, rangeShift
+        )  # Windows
+
+    # Table directory
+    tables = self.otables
+
+    offset = 12 + numTables * 16
+    sorted_tables = sorted(tables.items())
+    for tag, data in sorted_tables:
+        if tag == &#34;head&#34;:
+            head_start = offset
+        stm += tag.encode(&#34;latin1&#34;)
+        checksum = calcChecksum(data)
+        stm += pack(&#34;&gt;HH&#34;, checksum[0], checksum[1])
+        stm += pack(&#34;&gt;LL&#34;, offset, strlen(data))
+        paddedLength = (strlen(data) + 3) &amp; ~3
+        offset = offset + paddedLength
+
+    # Table data
+    for tag, data in sorted_tables:
+        data += b(&#34;\0\0\0&#34;)
+        stm += substr(data, 0, (strlen(data) &amp; ~3))
+
+    checksum = calcChecksum(stm)
+    checksum = sub32((0xB1B0, 0xAFBA), checksum)
+    chk = pack(&#34;&gt;HH&#34;, checksum[0], checksum[1])
+    stm = self.splice(stm, (head_start + 8), chk)
+    return stm</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.extractInfo"><code class="name flex">
+<span>def <span class="ident">extractInfo</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extractInfo(self):
+    #################/
+    # name - Naming table
+    #################/
+    self.sFamilyClass = 0
+    self.sFamilySubClass = 0
+
+    name_offset = self.seek_table(&#34;name&#34;)
+    format = self.read_ushort()
+    if format != 0:
+        die(&#34;Unknown name table format &#34; + format)
+    numRecords = self.read_ushort()
+    string_data_offset = name_offset + self.read_ushort()
+    names = {1: &#34;&#34;, 2: &#34;&#34;, 3: &#34;&#34;, 4: &#34;&#34;, 6: &#34;&#34;}
+    K = list(names.keys())
+    nameCount = len(names)
+    for i in range(numRecords):
+        platformId = self.read_ushort()
+        encodingId = self.read_ushort()
+        languageId = self.read_ushort()
+        nameId = self.read_ushort()
+        length = self.read_ushort()
+        offset = self.read_ushort()
+        if nameId not in K:
+            continue
+        N = &#34;&#34;
+        if (
+            platformId == 3 and encodingId == 1 and languageId == 0x409
+        ):  # Microsoft, Unicode, US English, PS Name
+            opos = self._pos
+            self.seek(string_data_offset + offset)
+            if length % 2 != 0:
+                die(&#34;PostScript name is UTF-16BE string of odd length&#34;)
+            length //= 2
+            N = &#34;&#34;
+            while length &gt; 0:
+                char = self.read_ushort()
+                N += chr(char)
+                length -= 1
+            self._pos = opos
+            self.seek(opos)
+
+        elif (
+            platformId == 1 and encodingId == 0 and languageId == 0
+        ):  # Macintosh, Roman, English, PS Name
+            opos = self._pos
+            N = self.get_chunk(string_data_offset + offset, length).decode(&#34;latin1&#34;)
+            self._pos = opos
+            self.seek(opos)
+
+        if N and names[nameId] == &#34;&#34;:
+            names[nameId] = N
+            nameCount -= 1
+            if nameCount == 0:
+                break
+
+    if names[6]:
+        psName = names[6]
+    elif names[4]:
+        psName = re.sub(&#34; &#34;, &#34;-&#34;, names[4])
+    elif names[1]:
+        psName = re.sub(&#34; &#34;, &#34;-&#34;, names[1])
+    else:
+        psName = &#34;&#34;
+    if not psName:
+        die(&#34;Could not find PostScript font name&#34;)
+    self.name = psName
+    if names[1]:
+        self.familyName = names[1]
+    else:
+        self.familyName = psName
+    if names[2]:
+        self.styleName = names[2]
+    else:
+        self.styleName = &#34;Regular&#34;
+    if names[4]:
+        self.fullName = names[4]
+    else:
+        self.fullName = psName
+    if names[3]:
+        self.uniqueFontID = names[3]
+    else:
+        self.uniqueFontID = psName
+    if names[6]:
+        self.fullName = names[6]
+
+    #################/
+    # head - Font header table
+    #################/
+    self.seek_table(&#34;head&#34;)
+    self.skip(18)
+    self.unitsPerEm = unitsPerEm = self.read_ushort()
+    scale = 1000 / float(unitsPerEm)
+    self.skip(16)
+    xMin = self.read_short()
+    yMin = self.read_short()
+    xMax = self.read_short()
+    yMax = self.read_short()
+    self.bbox = [(xMin * scale), (yMin * scale), (xMax * scale), (yMax * scale)]
+    self.skip(3 * 2)
+    indexToLocFormat = self.read_ushort()
+    glyphDataFormat = self.read_ushort()
+    if glyphDataFormat != 0:
+        die(&#34;Unknown glyph data format &#34; + glyphDataFormat)
+
+    #################/
+    # hhea metrics table
+    #################/
+    # ttf2t1 seems to use this value rather than the one in OS/2 - so put in for compatibility
+    if &#34;hhea&#34; in self.tables:
+        self.seek_table(&#34;hhea&#34;)
+        self.skip(4)
+        hheaAscender = self.read_short()
+        hheaDescender = self.read_short()
+        self.ascent = hheaAscender * scale
+        self.descent = hheaDescender * scale
+
+    #################/
+    # OS/2 - OS/2 and Windows metrics table
+    #################/
+    if &#34;OS/2&#34; in self.tables:
+        self.seek_table(&#34;OS/2&#34;)
+        version = self.read_ushort()
+        self.skip(2)
+        usWeightClass = self.read_ushort()
+        self.skip(2)
+        fsType = self.read_ushort()
+        if fsType == 0x0002 or (fsType &amp; 0x0300) != 0:
+            die(
+                &#34;ERROR - Font file &#34;
+                + self.filename
+                + &#34; cannot be embedded due to copyright restrictions.&#34;
+            )
+            self.restrictedUse = True
+
+        self.skip(20)
+        sF = self.read_short()
+        self.sFamilyClass = sF &gt;&gt; 8
+        self.sFamilySubClass = sF &amp; 0xFF
+        self._pos += 10  # PANOSE = 10 byte length
+        panose = self.fh.read(10)
+        self.skip(26)
+        sTypoAscender = self.read_short()
+        sTypoDescender = self.read_short()
+        if not self.ascent:
+            self.ascent = sTypoAscender * scale
+        if not self.descent:
+            self.descent = sTypoDescender * scale
+        if version &gt; 1:
+            self.skip(16)
+            sCapHeight = self.read_short()
+            self.capHeight = sCapHeight * scale
+        else:
+            self.capHeight = self.ascent
+
+    else:
+        usWeightClass = 500
+        if not self.ascent:
+            self.ascent = yMax * scale
+        if not self.descent:
+            self.descent = yMin * scale
+        self.capHeight = self.ascent
+
+    self.stemV = 50 + int(pow((usWeightClass / 65.0), 2))
+
+    #################/
+    # post - PostScript table
+    #################/
+    self.seek_table(&#34;post&#34;)
+    self.skip(4)
+    self.italicAngle = self.read_short() + self.read_ushort() / 65536.0
+    self.underlinePosition = self.read_short() * scale
+    self.underlineThickness = self.read_short() * scale
+    isFixedPitch = self.read_ulong()
+
+    self.flags = 4
+
+    if self.italicAngle != 0:
+        self.flags = self.flags | 64
+    if usWeightClass &gt;= 600:
+        self.flags = self.flags | 262144
+    if isFixedPitch:
+        self.flags = self.flags | 1
+
+    #################/
+    # hhea - Horizontal header table
+    #################/
+    self.seek_table(&#34;hhea&#34;)
+    self.skip(32)
+    metricDataFormat = self.read_ushort()
+    if metricDataFormat != 0:
+        die(&#34;Unknown horizontal metric data format &#34;.metricDataFormat)
+    numberOfHMetrics = self.read_ushort()
+    if numberOfHMetrics == 0:
+        die(&#34;Number of horizontal metrics is 0&#34;)
+
+    #################/
+    # maxp - Maximum profile table
+    #################/
+    self.seek_table(&#34;maxp&#34;)
+    self.skip(4)
+    numGlyphs = self.read_ushort()
+
+    #################/
+    # cmap - Character to glyph index mapping table
+    #################/
+    cmap_offset = self.seek_table(&#34;cmap&#34;)
+    self.skip(2)
+    cmapTableCount = self.read_ushort()
+    unicode_cmap_offset = 0
+    unicode_cmap_offset12 = 0
+
+    for i in range(cmapTableCount):
+        platformID = self.read_ushort()
+        encodingID = self.read_ushort()
+        offset = self.read_ulong()
+        save_pos = self._pos
+        if platformID == 3 and encodingID == 10:  # Microsoft, UCS-4
+            format = self.get_ushort(cmap_offset + offset)
+            if format == 12:
+                if not unicode_cmap_offset12:
+                    unicode_cmap_offset12 = cmap_offset + offset
+                break
+        if (
+            platformID == 3 and encodingID == 1
+        ) or platformID == 0:  # Microsoft, Unicode
+            format = self.get_ushort(cmap_offset + offset)
+            if format == 4:
+                if not unicode_cmap_offset:
+                    unicode_cmap_offset = cmap_offset + offset
+                break
+
+        self.seek(save_pos)
+
+    if not unicode_cmap_offset and not unicode_cmap_offset12:
+        die(
+            &#34;Font (&#34;
+            + self.filename
+            + &#34;) does not have cmap for Unicode (platform 3, encoding 1, format 4, or platform 3, encoding 10, format 12, or platform 0, any encoding, format 4)&#34;
+        )
+
+    glyphToChar = {}
+    charToGlyph = {}
+    if unicode_cmap_offset12:
+        self.getCMAP12(unicode_cmap_offset12, glyphToChar, charToGlyph)
+    else:
+        self.getCMAP4(unicode_cmap_offset, glyphToChar, charToGlyph)
+
+    #################/
+    # hmtx - Horizontal metrics table
+    #################/
+    self.getHMTX(numberOfHMetrics, numGlyphs, glyphToChar, scale)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.getCMAP12"><code class="name flex">
+<span>def <span class="ident">getCMAP12</span></span>(<span>self, unicode_cmap_offset, glyphToChar, charToGlyph)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getCMAP12(self, unicode_cmap_offset, glyphToChar, charToGlyph):
+    self.maxUniChar = 0
+    # table (skip format version, should be 12)
+    self.seek(unicode_cmap_offset + 2)
+    # reserved
+    self.skip(2)
+    # table length
+    length = self.read_ulong()
+    # language (should be 0)
+    self.skip(4)
+    # groups count
+    grpCount = self.read_ulong()
+
+    if 2 + 2 + 4 + 4 + 4 + grpCount * 3 * 4 &gt; length:
+        die(&#34;TTF format 12 cmap table too small&#34;)
+    for n in range(grpCount):
+        startCharCode = self.read_ulong()
+        endCharCode = self.read_ulong()
+        glyph = self.read_ulong()
+        for unichar in range(startCharCode, endCharCode + 1):
+            charToGlyph[unichar] = glyph
+            if unichar &lt; 196608:
+                self.maxUniChar = max(unichar, self.maxUniChar)
+            glyphToChar.setdefault(glyph, []).append(unichar)
+            glyph += 1</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.getCMAP4"><code class="name flex">
+<span>def <span class="ident">getCMAP4</span></span>(<span>self, unicode_cmap_offset, glyphToChar, charToGlyph)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getCMAP4(self, unicode_cmap_offset, glyphToChar, charToGlyph):
+    self.maxUniChar = 0
+    self.seek(unicode_cmap_offset + 2)
+    length = self.read_ushort()
+    limit = unicode_cmap_offset + length
+    self.skip(2)
+
+    segCount = self.read_ushort() // 2
+    self.skip(6)
+    endCount = []
+    for i in range(segCount):
+        endCount.append(self.read_ushort())
+    self.skip(2)
+    startCount = []
+    for i in range(segCount):
+        startCount.append(self.read_ushort())
+    idDelta = []
+    for i in range(segCount):
+        idDelta.append(self.read_short())  # ???? was unsigned short
+    idRangeOffset_start = self._pos
+    idRangeOffset = []
+    for i in range(segCount):
+        idRangeOffset.append(self.read_ushort())
+
+    for n in range(segCount):
+        endpoint = endCount[n] + 1
+        for unichar in range(startCount[n], endpoint, 1):
+            if idRangeOffset[n] == 0:
+                glyph = (unichar + idDelta[n]) &amp; 0xFFFF
+            else:
+                offset = (unichar - startCount[n]) * 2 + idRangeOffset[n]
+                offset = idRangeOffset_start + 2 * n + offset
+                if offset &gt;= limit:
+                    glyph = 0
+                else:
+                    glyph = self.get_ushort(offset)
+                    if glyph != 0:
+                        glyph = (glyph + idDelta[n]) &amp; 0xFFFF
+
+            charToGlyph[unichar] = glyph
+            if unichar &lt; 196608:
+                self.maxUniChar = max(unichar, self.maxUniChar)
+            glyphToChar.setdefault(glyph, []).append(unichar)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.getGlyphData"><code class="name flex">
+<span>def <span class="ident">getGlyphData</span></span>(<span>self, originalGlyphIdx, nonlocals)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getGlyphData(self, originalGlyphIdx, nonlocals):
+    # &amp;maxdepth, &amp;depth, &amp;points, &amp;contours
+    nonlocals[&#34;depth&#34;] += 1
+    nonlocals[&#34;maxdepth&#34;] = max(nonlocals[&#34;maxdepth&#34;], nonlocals[&#34;depth&#34;])
+    if len(self.glyphdata[originalGlyphIdx][&#34;compGlyphs&#34;]):
+        for glyphIdx in self.glyphdata[originalGlyphIdx][&#34;compGlyphs&#34;]:
+            self.getGlyphData(glyphIdx, nonlocals)
+
+    elif (self.glyphdata[originalGlyphIdx][&#34;nContours&#34;] &gt; 0) and nonlocals[
+        &#34;depth&#34;
+    ] &gt; 0:  # simple
+        contours += self.glyphdata[originalGlyphIdx][&#34;nContours&#34;]
+        points += self.glyphdata[originalGlyphIdx][&#34;nPoints&#34;]
+
+    nonlocals[&#34;depth&#34;] -= 1</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.getGlyphs"><code class="name flex">
+<span>def <span class="ident">getGlyphs</span></span>(<span>self, originalGlyphIdx, nonlocals)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getGlyphs(self, originalGlyphIdx, nonlocals):
+    # &amp;start, &amp;glyphSet, &amp;subsetglyphs)
+
+    try:
+        glyphPos = self.glyphPos[originalGlyphIdx]
+        glyphLen = self.glyphPos[originalGlyphIdx + 1] - glyphPos
+    except IndexError:
+        warnings.warn(&#34;missing glyph %s&#34; % (originalGlyphIdx))
+        return
+
+    if not glyphLen:
+        return
+
+    self.seek(nonlocals[&#34;start&#34;] + glyphPos)
+    numberOfContours = self.read_short()
+    if numberOfContours &lt; 0:
+        self.skip(8)
+        flags = GF_MORE
+        while flags &amp; GF_MORE:
+            flags = self.read_ushort()
+            glyphIdx = self.read_ushort()
+            if glyphIdx not in nonlocals[&#34;glyphSet&#34;]:
+                nonlocals[&#34;glyphSet&#34;][glyphIdx] = len(
+                    nonlocals[&#34;subsetglyphs&#34;]
+                )  # old glyphID to new glyphID
+                nonlocals[&#34;subsetglyphs&#34;].append((glyphIdx, 1))
+
+            savepos = self.fh.tell()
+            self.getGlyphs(glyphIdx, nonlocals)
+            self.seek(savepos)
+            if flags &amp; GF_WORDS:
+                self.skip(4)
+            else:
+                self.skip(2)
+            if flags &amp; GF_SCALE:
+                self.skip(2)
+            elif flags &amp; GF_XYSCALE:
+                self.skip(4)
+            elif flags &amp; GF_TWOBYTWO:
+                self.skip(8)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.getHMTX"><code class="name flex">
+<span>def <span class="ident">getHMTX</span></span>(<span>self, numberOfHMetrics, numGlyphs, glyphToChar, scale)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getHMTX(self, numberOfHMetrics, numGlyphs, glyphToChar, scale):
+    start = self.seek_table(&#34;hmtx&#34;)
+    aw = 0
+    self.charWidths = []
+
+    def resize_cw(size, default):
+        size = (((size + 1) // 1024) + 1) * 1024
+        delta = size - len(self.charWidths)
+        if delta &gt; 0:
+            self.charWidths += [default] * delta
+
+    nCharWidths = 0
+    if (numberOfHMetrics * 4) &lt; self.maxStrLenRead:
+        data = self.get_chunk(start, (numberOfHMetrics * 4))
+        arr = unpack(&#34;&gt;%dH&#34; % (len(data) // 2), data)
+    else:
+        self.seek(start)
+    for glyph in range(numberOfHMetrics):
+        if (numberOfHMetrics * 4) &lt; self.maxStrLenRead:
+            aw = arr[(glyph * 2)]  # PHP starts arrays from index 0!? +1
+        else:
+            aw = self.read_ushort()
+            lsb = self.read_ushort()
+
+        if glyph in glyphToChar or glyph == 0:
+            if aw &gt;= (1 &lt;&lt; 15):
+                aw = 0  # 1.03 Some (arabic) fonts have -ve values for width
+                # although should be unsigned value - comes out as e.g. 65108 (intended -50)
+            if glyph == 0:
+                self.defaultWidth = scale * aw
+                continue
+
+            for char in glyphToChar[glyph]:
+                if char != 0 and char != 65535:
+                    w = int(round(scale * aw + 0.001))  # ROUND_HALF_UP (like php)
+                    if w == 0:
+                        w = 65535
+                    if char &lt; 196608:
+                        if char &gt;= len(self.charWidths):
+                            resize_cw(char, self.defaultWidth)
+                        self.charWidths[char] = w
+                        nCharWidths += 1
+
+    data = self.get_chunk((start + numberOfHMetrics * 4), (numGlyphs * 2))
+    arr = unpack(&#34;&gt;%dH&#34; % (len(data) // 2), data)
+    diff = numGlyphs - numberOfHMetrics
+    for pos in range(diff):
+        glyph = pos + numberOfHMetrics
+        if glyph in glyphToChar:
+            for char in glyphToChar[glyph]:
+                if char != 0 and char != 65535:
+                    w = int(round(scale * aw + 0.001))  # ROUND_HALF_UP (like php)
+                    if w == 0:
+                        w = 65535
+                    if char &lt; 196608:
+                        if char &gt;= len(self.charWidths):
+                            resize_cw(char, self.defaultWidth)
+                        self.charWidths[char] = w
+                        nCharWidths += 1
+
+    # NB 65535 is a set width of 0
+    # First bytes define number of chars in font
+    self.charWidths[0] = nCharWidths</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.getHMetric"><code class="name flex">
+<span>def <span class="ident">getHMetric</span></span>(<span>self, numberOfHMetrics, gid)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getHMetric(self, numberOfHMetrics, gid):
+    start = self.seek_table(&#34;hmtx&#34;)
+    if gid &lt; numberOfHMetrics:
+        self.seek(start + (gid * 4))
+        hm = self.fh.read(4)
+    else:
+        self.seek(start + ((numberOfHMetrics - 1) * 4))
+        hm = self.fh.read(2)
+        self.seek(start + (numberOfHMetrics * 2) + (gid * 2))
+        hm += self.fh.read(2)
+    return hm</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.getLOCA"><code class="name flex">
+<span>def <span class="ident">getLOCA</span></span>(<span>self, indexToLocFormat, numGlyphs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getLOCA(self, indexToLocFormat, numGlyphs):
+    start = self.seek_table(&#34;loca&#34;)
+    self.glyphPos = []
+    if indexToLocFormat == 0:
+        data = self.get_chunk(start, (numGlyphs * 2) + 2)
+        arr = unpack(&#34;&gt;%dH&#34; % (len(data) // 2), data)
+        for n in range(numGlyphs):
+            self.glyphPos.append((arr[n] * 2))  # n+1 !?
+    elif indexToLocFormat == 1:
+        data = self.get_chunk(start, (numGlyphs * 4) + 4)
+        arr = unpack(&#34;&gt;%dL&#34; % (len(data) // 4), data)
+        for n in range(numGlyphs):
+            self.glyphPos.append((arr[n]))  # n+1 !?
+    else:
+        die(&#34;Unknown location table format &#34; + indexToLocFormat)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.getMetrics"><code class="name flex">
+<span>def <span class="ident">getMetrics</span></span>(<span>self, file)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getMetrics(self, file):
+    self.filename = file
+    with open(file, &#34;rb&#34;) as self.fh:
+        self._pos = 0
+        self.charWidths = []
+        self.glyphPos = {}
+        self.charToGlyph = {}
+        self.tables = {}
+        self.otables = {}
+        self.ascent = 0
+        self.descent = 0
+        self.version = version = self.read_ulong()
+        if version == 0x4F54544F:
+            die(&#34;Postscript outlines are not supported&#34;)
+        if version == 0x74746366:
+            die(&#34;ERROR - TrueType Fonts Collections not supported&#34;)
+        if version not in (0x00010000, 0x74727565):
+            die(&#34;Not a TrueType font: version=&#34; + str(version))
+        self.readTableDirectory()
+        self.extractInfo()</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.get_chunk"><code class="name flex">
+<span>def <span class="ident">get_chunk</span></span>(<span>self, pos, length)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_chunk(self, pos, length):
+    self.fh.seek(pos)
+    if length &lt; 1:
+        return &#34;&#34;
+    return self.fh.read(length)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.get_table"><code class="name flex">
+<span>def <span class="ident">get_table</span></span>(<span>self, tag)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_table(self, tag):
+    (pos, length) = self.get_table_pos(tag)
+    if length == 0:
+        die(&#34;Truetype font (&#34; + self.filename + &#34;): error reading table: &#34; + tag)
+    self.fh.seek(pos)
+    return self.fh.read(length)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.get_table_pos"><code class="name flex">
+<span>def <span class="ident">get_table_pos</span></span>(<span>self, tag)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_table_pos(self, tag):
+    offset = self.tables[tag][&#34;offset&#34;]
+    length = self.tables[tag][&#34;length&#34;]
+    return (offset, length)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.get_ushort"><code class="name flex">
+<span>def <span class="ident">get_ushort</span></span>(<span>self, pos)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_ushort(self, pos):
+    self.fh.seek(pos)
+    s = self.fh.read(2)
+    return s[0] &lt;&lt; 8 + s[1]</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.makeSubset"><code class="name flex">
+<span>def <span class="ident">makeSubset</span></span>(<span>self, file, subset)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def makeSubset(self, file, subset):
+    self.filename = file
+    with open(file, &#34;rb&#34;) as self.fh:
+        self._pos = 0
+        self.charWidths = []
+        self.glyphPos = {}
+        self.charToGlyph = {}
+        self.tables = {}
+        self.otables = {}
+        self.ascent = 0
+        self.descent = 0
+        self.skip(4)
+        self.maxUni = 0
+        self.readTableDirectory()
+
+        #################/
+        # head - Font header table
+        #################/
+        self.seek_table(&#34;head&#34;)
+        self.skip(50)
+        indexToLocFormat = self.read_ushort()
+        glyphDataFormat = self.read_ushort()
+
+        #################/
+        # hhea - Horizontal header table
+        #################/
+        self.seek_table(&#34;hhea&#34;)
+        self.skip(32)
+        metricDataFormat = self.read_ushort()
+        orignHmetrics = numberOfHMetrics = self.read_ushort()
+
+        #################/
+        # maxp - Maximum profile table
+        #################/
+        self.seek_table(&#34;maxp&#34;)
+        self.skip(4)
+        numGlyphs = self.read_ushort()
+
+        #################/
+        # cmap - Character to glyph index mapping table
+        #################/
+        cmap_offset = self.seek_table(&#34;cmap&#34;)
+        self.skip(2)
+        cmapTableCount = self.read_ushort()
+        unicode_cmap_offset = 0
+        unicode_cmap_offset12 = 0
+        for i in range(cmapTableCount):
+            platformID = self.read_ushort()
+            encodingID = self.read_ushort()
+            offset = self.read_ulong()
+            save_pos = self._pos
+            if platformID == 3 and encodingID == 10:  # Microsoft, UCS-4
+                format = self.get_ushort(cmap_offset + offset)
+                if format == 12:
+                    if not unicode_cmap_offset12:
+                        unicode_cmap_offset12 = cmap_offset + offset
+                    break
+            if (
+                platformID == 3 and encodingID == 1
+            ) or platformID == 0:  # Microsoft, Unicode
+                format = self.get_ushort(cmap_offset + offset)
+                if format == 4:
+                    unicode_cmap_offset = cmap_offset + offset
+                    break
+
+            self.seek(save_pos)
+
+        if not unicode_cmap_offset and not unicode_cmap_offset12:
+            die(
+                &#34;Font (&#34;
+                + self.filename
+                + &#34;) does not have cmap for Unicode (platform 3, encoding 1, format 4, or platform 3, encoding 10, format 12, or platform 0, any encoding, format 4)&#34;
+            )
+
+        glyphToChar = {}
+        charToGlyph = {}
+        if unicode_cmap_offset12:
+            self.getCMAP12(unicode_cmap_offset12, glyphToChar, charToGlyph)
+        else:
+            self.getCMAP4(unicode_cmap_offset, glyphToChar, charToGlyph)
+
+        self.charToGlyph = charToGlyph
+
+        #################/
+        # hmtx - Horizontal metrics table
+        #################/
+        scale = 1  # not used
+        self.getHMTX(numberOfHMetrics, numGlyphs, glyphToChar, scale)
+
+        #################/
+        # loca - Index to location
+        #################/
+        self.getLOCA(indexToLocFormat, numGlyphs)
+
+        subsetglyphs = [(0, 0)]  # special &#34;sorted dict&#34;!
+        subsetCharToGlyph = {}
+        for code in subset:
+            if code in self.charToGlyph:
+                if (self.charToGlyph[code], code) not in subsetglyphs:
+                    subsetglyphs.append(
+                        (self.charToGlyph[code], code)
+                    )  # Old Glyph ID =&gt; Unicode
+                subsetCharToGlyph[code] = self.charToGlyph[
+                    code
+                ]  # Unicode to old GlyphID
+            self.maxUni = max(self.maxUni, code)
+        (start, _) = self.get_table_pos(&#34;glyf&#34;)
+
+        subsetglyphs.sort()
+        glyphSet = {}
+        n = 0
+        fsLastCharIndex = 0  # maximum Unicode index (character code) in this font, according to the cmap subtable for platform ID 3 and platform- specific encoding ID 0 or 1.
+        for originalGlyphIdx, uni in subsetglyphs:
+            fsLastCharIndex = max(fsLastCharIndex, uni)
+            glyphSet[originalGlyphIdx] = n  # old glyphID to new glyphID
+            n += 1
+
+        codeToGlyph = {}
+        for uni, originalGlyphIdx in sorted(subsetCharToGlyph.items()):
+            codeToGlyph[uni] = glyphSet[originalGlyphIdx]
+
+        self.codeToGlyph = codeToGlyph
+
+        for originalGlyphIdx, uni in subsetglyphs:
+            nonlocals = {
+                &#34;start&#34;: start,
+                &#34;glyphSet&#34;: glyphSet,
+                &#34;subsetglyphs&#34;: subsetglyphs,
+            }
+            self.getGlyphs(originalGlyphIdx, nonlocals)
+
+        numGlyphs = numberOfHMetrics = len(subsetglyphs)
+
+        # tables copied from the original
+        tags = [&#34;name&#34;]
+        for tag in tags:
+            self.add(tag, self.get_table(tag))
+        tags = [&#34;cvt &#34;, &#34;fpgm&#34;, &#34;prep&#34;, &#34;gasp&#34;]
+        for tag in tags:
+            if tag in self.tables:
+                self.add(tag, self.get_table(tag))
+
+        # post - PostScript
+        opost = self.get_table(&#34;post&#34;)
+        post = (
+            b(&#34;\x00\x03\x00\x00&#34;)
+            + substr(opost, 4, 12)
+            + b(&#34;\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00&#34;)
+        )
+        self.add(&#34;post&#34;, post)
+
+        # Sort CID2GID map into segments of contiguous codes
+        if 0 in codeToGlyph:
+            del codeToGlyph[0]
+        # unset(codeToGlyph[65535])
+        rangeid = 0
+        range_ = {}
+        prevcid = -2
+        prevglidx = -1
+        # for each character
+        for cid, glidx in sorted(codeToGlyph.items()):
+            if cid == (prevcid + 1) and glidx == (prevglidx + 1):
+                range_[rangeid].append(glidx)
+            else:
+                # new range
+                rangeid = cid
+                range_[rangeid] = []
+                range_[rangeid].append(glidx)
+            prevcid = cid
+            prevglidx = glidx
+
+        # cmap - Character to glyph mapping - Format 4 (MS / )
+        segCount = len(range_) + 1  # + 1 Last segment has missing character 0xFFFF
+        searchRange = 1
+        entrySelector = 0
+        while searchRange * 2 &lt;= segCount:
+            searchRange = searchRange * 2
+            entrySelector = entrySelector + 1
+
+        searchRange = searchRange * 2
+        rangeShift = segCount * 2 - searchRange
+        length = 16 + (8 * segCount) + (numGlyphs + 1)
+        cmap = [
+            0,
+            1,  # Index : version, number of encoding subtables
+            3,
+            1,  # Encoding Subtable : platform (MS=3), encoding (Unicode)
+            0,
+            12,  # Encoding Subtable : offset (hi,lo)
+            4,
+            length,
+            0,  # Format 4 Mapping subtable: format, length, language
+            segCount * 2,
+            searchRange,
+            entrySelector,
+            rangeShift,
+        ]
+
+        range_ = sorted(range_.items())
+
+        # endCode(s)
+        for start, subrange in range_:
+            endCode = start + (len(subrange) - 1)
+            cmap.append(endCode)  # endCode(s)
+
+        cmap.append(0xFFFF)  # endCode of last Segment
+        cmap.append(0)  # reservedPad
+
+        # startCode(s)
+        for start, subrange in range_:
+            cmap.append(start)  # startCode(s)
+
+        cmap.append(0xFFFF)  # startCode of last Segment
+        # idDelta(s)
+        for start, subrange in range_:
+            idDelta = -(start - subrange[0])
+            n += count(subrange)
+            cmap.append(idDelta)  # idDelta(s)
+
+        cmap.append(1)  # idDelta of last Segment
+        # idRangeOffset(s)
+        for subrange in range_:
+            cmap.append(
+                0
+            )  # idRangeOffset[segCount]      Offset in bytes to glyph indexArray, or 0
+
+        cmap.append(0)  # idRangeOffset of last Segment
+        for subrange, glidx in range_:
+            cmap.extend(glidx)
+
+        cmap.append(0)  # Mapping for last character
+        cmapstr = b(&#34;&#34;)
+        for cm in cmap:
+            if cm &gt;= 0:
+                cmapstr += pack(&#34;&gt;H&#34;, cm)
+            else:
+                try:
+                    cmapstr += pack(&#34;&gt;h&#34;, cm)
+                except:
+                    warnings.warn(&#34;cmap value too big/small: %s&#34; % cm)
+                    cmapstr += pack(&#34;&gt;H&#34;, -cm)
+        self.add(&#34;cmap&#34;, cmapstr)
+
+        # glyf - Glyph data
+        (glyfOffset, glyfLength) = self.get_table_pos(&#34;glyf&#34;)
+        if glyfLength &lt; self.maxStrLenRead:
+            glyphData = self.get_table(&#34;glyf&#34;)
+
+        offsets = []
+        glyf = b(&#34;&#34;)
+        pos = 0
+
+        hmtxstr = b(&#34;&#34;)
+        xMinT = 0
+        yMinT = 0
+        xMaxT = 0
+        yMaxT = 0
+        advanceWidthMax = 0
+        minLeftSideBearing = 0
+        minRightSideBearing = 0
+        xMaxExtent = 0
+        maxPoints = 0  # points in non-compound glyph
+        maxContours = 0  # contours in non-compound glyph
+        maxComponentPoints = 0  # points in compound glyph
+        maxComponentContours = 0  # contours in compound glyph
+        maxComponentElements = 0  # number of glyphs referenced at top level
+        maxComponentDepth = (
+            0  # levels of recursion, set to 0 if font has only simple glyphs
+        )
+        self.glyphdata = {}
+
+        for originalGlyphIdx, uni in subsetglyphs:
+            # hmtx - Horizontal Metrics
+            hm = self.getHMetric(orignHmetrics, originalGlyphIdx)
+            hmtxstr += hm
+
+            offsets.append(pos)
+            try:
+                glyphPos = self.glyphPos[originalGlyphIdx]
+                glyphLen = self.glyphPos[originalGlyphIdx + 1] - glyphPos
+            except IndexError:
+                warnings.warn(&#34;missing glyph %s&#34; % (originalGlyphIdx))
+                glyphLen = 0
+
+            if glyfLength &lt; self.maxStrLenRead:
+                data = substr(glyphData, glyphPos, glyphLen)
+            else:
+                if glyphLen &gt; 0:
+                    data = self.get_chunk(glyfOffset + glyphPos, glyphLen)
+                else:
+                    data = b(&#34;&#34;)
+
+            if glyphLen &gt; 0:
+                up = unpack(&#34;&gt;H&#34;, substr(data, 0, 2))[0]
+            if glyphLen &gt; 2 and (
+                up &amp; (1 &lt;&lt; 15)
+            ):  # If number of contours &lt;= -1 i.e. composite glyph
+                pos_in_glyph = 10
+                flags = GF_MORE
+                nComponentElements = 0
+                while flags &amp; GF_MORE:
+                    nComponentElements += (
+                        1  # number of glyphs referenced at top level
+                    )
+                    up = unpack(&#34;&gt;H&#34;, substr(data, pos_in_glyph, 2))
+                    flags = up[0]
+                    up = unpack(&#34;&gt;H&#34;, substr(data, pos_in_glyph + 2, 2))
+                    glyphIdx = up[0]
+                    self.glyphdata.setdefault(originalGlyphIdx, {}).setdefault(
+                        &#34;compGlyphs&#34;, []
+                    ).append(glyphIdx)
+                    try:
+                        data = self._set_ushort(
+                            data, pos_in_glyph + 2, glyphSet[glyphIdx]
+                        )
+                    except KeyError:
+                        data = 0
+                        warnings.warn(&#34;missing glyph data %s&#34; % glyphIdx)
+                    pos_in_glyph += 4
+                    if flags &amp; GF_WORDS:
+                        pos_in_glyph += 4
+                    else:
+                        pos_in_glyph += 2
+                    if flags &amp; GF_SCALE:
+                        pos_in_glyph += 2
+                    elif flags &amp; GF_XYSCALE:
+                        pos_in_glyph += 4
+                    elif flags &amp; GF_TWOBYTWO:
+                        pos_in_glyph += 8
+
+                maxComponentElements = max(maxComponentElements, nComponentElements)
+
+            glyf += data
+            pos += glyphLen
+            if pos % 4 != 0:
+                padding = 4 - (pos % 4)
+                glyf += str_repeat(b(&#34;\0&#34;), padding)
+                pos += padding
+
+        offsets.append(pos)
+        self.add(&#34;glyf&#34;, glyf)
+
+        # hmtx - Horizontal Metrics
+        self.add(&#34;hmtx&#34;, hmtxstr)
+
+        # loca - Index to location
+        locastr = b(&#34;&#34;)
+        if ((pos + 1) &gt;&gt; 1) &gt; 0xFFFF:
+            indexToLocFormat = 1  # long format
+            for offset in offsets:
+                locastr += pack(&#34;&gt;L&#34;, offset)
+        else:
+            indexToLocFormat = 0  # short format
+            for offset in offsets:
+                locastr += pack(&#34;&gt;H&#34;, offset // 2)
+
+        self.add(&#34;loca&#34;, locastr)
+
+        # head - Font header
+        head = self.get_table(&#34;head&#34;)
+        head = self._set_ushort(head, 50, indexToLocFormat)
+        self.add(&#34;head&#34;, head)
+
+        # hhea - Horizontal Header
+        hhea = self.get_table(&#34;hhea&#34;)
+        hhea = self._set_ushort(hhea, 34, numberOfHMetrics)
+        self.add(&#34;hhea&#34;, hhea)
+
+        # maxp - Maximum Profile
+        maxp = self.get_table(&#34;maxp&#34;)
+        maxp = self._set_ushort(maxp, 4, numGlyphs)
+        self.add(&#34;maxp&#34;, maxp)
+
+        # OS/2 - OS/2
+        os2 = self.get_table(&#34;OS/2&#34;)
+        self.add(&#34;OS/2&#34;, os2)
+
+    # Put the TTF file together
+    stm = self.endTTFile(&#34;&#34;)
+    return stm</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.readTableDirectory"><code class="name flex">
+<span>def <span class="ident">readTableDirectory</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def readTableDirectory(
+    self,
+):
+    self.numTables = self.read_ushort()
+    self.searchRange = self.read_ushort()
+    self.entrySelector = self.read_ushort()
+    self.rangeShift = self.read_ushort()
+    self.tables = {}
+    for i in range(self.numTables):
+        record = {}
+        record[&#34;tag&#34;] = self.read_tag()
+        record[&#34;checksum&#34;] = (self.read_ushort(), self.read_ushort())
+        record[&#34;offset&#34;] = self.read_ulong()
+        record[&#34;length&#34;] = self.read_ulong()
+        self.tables[record[&#34;tag&#34;]] = record</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.read_short"><code class="name flex">
+<span>def <span class="ident">read_short</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_short(self):
+    self._pos += 2
+    s = self.fh.read(2)
+    a = s[0] &lt;&lt; 8 + s[1]
+    if a &amp; (1 &lt;&lt; 15):
+        a = a - (1 &lt;&lt; 16)
+    return a</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.read_tag"><code class="name flex">
+<span>def <span class="ident">read_tag</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_tag(self):
+    self._pos += 4
+    return self.fh.read(4).decode(&#34;latin1&#34;)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.read_ulong"><code class="name flex">
+<span>def <span class="ident">read_ulong</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_ulong(self):
+    self._pos += 4
+    s = self.fh.read(4)
+    # if large uInt32 as an integer, PHP converts it to -ve
+    return s[0] * 16777216 + s[1] &lt;&lt; 16 + s[2] &lt;&lt; 8 + s[3]  #     16777216  = 1&lt;&lt;24</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.read_ushort"><code class="name flex">
+<span>def <span class="ident">read_ushort</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_ushort(self):
+    self._pos += 2
+    s = self.fh.read(2)
+    return s[0] &lt;&lt; 8 + s[1]</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.seek"><code class="name flex">
+<span>def <span class="ident">seek</span></span>(<span>self, pos)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def seek(self, pos):
+    self._pos = pos
+    self.fh.seek(self._pos)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.seek_table"><code class="name flex">
+<span>def <span class="ident">seek_table</span></span>(<span>self, tag, offset_in_table=0)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def seek_table(self, tag, offset_in_table=0):
+    tpos = self.get_table_pos(tag)
+    self._pos = tpos[0] + offset_in_table
+    self.fh.seek(self._pos)
+    return self._pos</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.skip"><code class="name flex">
+<span>def <span class="ident">skip</span></span>(<span>self, delta)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def skip(self, delta):
+    self._pos = self._pos + delta
+    self.fh.seek(self._pos)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.ttfonts.TTFontFile.splice"><code class="name flex">
+<span>def <span class="ident">splice</span></span>(<span>self, stream, offset, value)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def splice(self, stream, offset, value):
+    return (
+        substr(stream, 0, offset) + value + substr(stream, offset + strlen(value))
+    )</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="fpdf" href="index.html">fpdf</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="fpdf.ttfonts.calcChecksum" href="#fpdf.ttfonts.calcChecksum">calcChecksum</a></code></li>
+<li><code><a title="fpdf.ttfonts.sub32" href="#fpdf.ttfonts.sub32">sub32</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="fpdf.ttfonts.TTFontFile" href="#fpdf.ttfonts.TTFontFile">TTFontFile</a></code></h4>
+<ul class="two-column">
+<li><code><a title="fpdf.ttfonts.TTFontFile.add" href="#fpdf.ttfonts.TTFontFile.add">add</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.endTTFile" href="#fpdf.ttfonts.TTFontFile.endTTFile">endTTFile</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.extractInfo" href="#fpdf.ttfonts.TTFontFile.extractInfo">extractInfo</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.getCMAP12" href="#fpdf.ttfonts.TTFontFile.getCMAP12">getCMAP12</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.getCMAP4" href="#fpdf.ttfonts.TTFontFile.getCMAP4">getCMAP4</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.getGlyphData" href="#fpdf.ttfonts.TTFontFile.getGlyphData">getGlyphData</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.getGlyphs" href="#fpdf.ttfonts.TTFontFile.getGlyphs">getGlyphs</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.getHMTX" href="#fpdf.ttfonts.TTFontFile.getHMTX">getHMTX</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.getHMetric" href="#fpdf.ttfonts.TTFontFile.getHMetric">getHMetric</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.getLOCA" href="#fpdf.ttfonts.TTFontFile.getLOCA">getLOCA</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.getMetrics" href="#fpdf.ttfonts.TTFontFile.getMetrics">getMetrics</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.get_chunk" href="#fpdf.ttfonts.TTFontFile.get_chunk">get_chunk</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.get_table" href="#fpdf.ttfonts.TTFontFile.get_table">get_table</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.get_table_pos" href="#fpdf.ttfonts.TTFontFile.get_table_pos">get_table_pos</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.get_ushort" href="#fpdf.ttfonts.TTFontFile.get_ushort">get_ushort</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.makeSubset" href="#fpdf.ttfonts.TTFontFile.makeSubset">makeSubset</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.readTableDirectory" href="#fpdf.ttfonts.TTFontFile.readTableDirectory">readTableDirectory</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.read_short" href="#fpdf.ttfonts.TTFontFile.read_short">read_short</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.read_tag" href="#fpdf.ttfonts.TTFontFile.read_tag">read_tag</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.read_ulong" href="#fpdf.ttfonts.TTFontFile.read_ulong">read_ulong</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.read_ushort" href="#fpdf.ttfonts.TTFontFile.read_ushort">read_ushort</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.seek" href="#fpdf.ttfonts.TTFontFile.seek">seek</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.seek_table" href="#fpdf.ttfonts.TTFontFile.seek_table">seek_table</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.skip" href="#fpdf.ttfonts.TTFontFile.skip">skip</a></code></li>
+<li><code><a title="fpdf.ttfonts.TTFontFile.splice" href="#fpdf.ttfonts.TTFontFile.splice">splice</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
