@@ -57,12 +57,15 @@ documentation see the `fpdf.fpdf` submodule.
 &#34;&#34;&#34;
 
 from .fpdf import (
+    FPDF,
     FPDF_VERSION as _FPDF_VERSION,
     FPDF_CACHE_MODE as _FPDF_CACHE_MODE,
     FPDF_FONT_DIR as _FPDF_FONT_DIR,
     FPDF_CACHE_DIR as _FPDF_CACHE_DIR,
     SYSTEM_TTFONTS as _SYSTEM_TTFONTS,
 )
+from .html import HTMLMixin
+from .template import Template
 
 FPDF_VERSION = _FPDF_VERSION
 &#34;&#34;&#34;Current FPDF Version, also available via `__version__` (which is read by
@@ -90,21 +93,10 @@ SYSTEM_TTFONTS = _SYSTEM_TTFONTS
 given.
 &#34;&#34;&#34;
 
-from .fpdf import FPDF
-
 __license__ = &#34;LGPL 3.0&#34;
 &#34;&#34;&#34;LGPL 3.0 license&#34;&#34;&#34;
 __version__ = FPDF_VERSION
 &#34;&#34;&#34;Version as reflected in `setup.py` and PyPI.&#34;&#34;&#34;
-
-try:
-    from .html import HTMLMixin
-except ImportError as e:
-    import warnings
-
-    warnings.warn(&#34;web2py gluon package not installed, required for html2pdf&#34;)
-
-from .template import Template
 
 __all__ = [
     # metadata
@@ -146,10 +138,6 @@ __all__ = [
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="fpdf.php" href="php.html">fpdf.php</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt><code class="name"><a title="fpdf.template" href="template.html">fpdf.template</a></code></dt>
 <dd>
 <div class="desc"><p>PDF Template Helper for FPDF.py</p></div>
@@ -160,7 +148,7 @@ __all__ = [
 </dd>
 <dt><code class="name"><a title="fpdf.util" href="util/index.html">fpdf.util</a></code></dt>
 <dd>
-<div class="desc"><p>Utility Functions (previously FPDF#methods)</p></div>
+<div class="desc"><p>Utility Functions</p></div>
 </dd>
 </dl>
 </section>
@@ -210,7 +198,7 @@ given.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class FPDF(object):
+<pre><code class="python">class FPDF:
     &#34;PDF Generation class&#34;
 
     def __init__(self, orientation=&#34;P&#34;, unit=&#34;mm&#34;, format=&#34;A4&#34;):
@@ -271,7 +259,7 @@ given.</p></div>
         elif unit == &#34;in&#34;:
             self.k = 72.0
         else:
-            fpdf_error(&#34;Incorrect unit: &#34; + unit)
+            raise FPDFException(&#34;Incorrect unit: &#34; + unit)
 
         # Page format
         self.dw_pt, self.dh_pt = get_page_format(format, self.k)
@@ -287,7 +275,7 @@ given.</p></div>
             self.w_pt = self.dh_pt
             self.h_pt = self.dw_pt
         else:
-            fpdf_error(&#34;Incorrect orientation: &#34; + orientation)
+            raise FPDFException(&#34;Incorrect orientation: &#34; + orientation)
         self.cur_orientation = self.def_orientation
         self.w = self.w_pt / self.k
         self.h = self.h_pt / self.k
@@ -300,20 +288,8 @@ given.</p></div>
         self.line_width = 0.567 / self.k  # line width (0.2 mm)
         self.set_auto_page_break(1, 2 * margin)  # Automatic page break
         self.set_display_mode(&#34;fullwidth&#34;)  # Full width display mode
-        self.set_compression(True)  # Enable compression
+        self.compress = True  # Enable compression by default
         self.pdf_version = &#34;1.3&#34;  # Set default PDF version No.
-
-    def check_page(fn):
-        &#34;Decorator to protect drawing methods&#34;
-
-        @wraps(fn)
-        def wrapper(self, *args, **kwargs):
-            if not self.page and not kwargs.get(&#34;split_only&#34;):
-                fpdf_error(&#34;No page open, you need to call add_page() first&#34;)
-            else:
-                return fn(self, *args, **kwargs)
-
-        return wrapper
 
     def set_margins(self, left, top, right=-1):
         &#34;Set left, top and right margins&#34;
@@ -354,12 +330,12 @@ given.</p></div>
         elif not isinstance(zoom, str):
             self.zoom_mode = zoom
         else:
-            fpdf_error(&#34;Incorrect zoom display mode: &#34; + zoom)
+            raise FPDFException(&#34;Incorrect zoom display mode: &#34; + zoom)
 
         if layout in [&#34;single&#34;, &#34;continuous&#34;, &#34;two&#34;, &#34;default&#34;]:
             self.layout_mode = layout
         else:
-            fpdf_error(&#34;Incorrect layout display mode: &#34; + layout)
+            raise FPDFException(&#34;Incorrect layout display mode: &#34; + layout)
 
     def set_compression(self, compress):
         &#34;Set page compression&#34;
@@ -394,7 +370,7 @@ given.</p></div>
         if opt == &#34;core_fonts_encoding&#34;:
             self.core_fonts_encoding = value
         else:
-            fpdf_error(&#39;Unknown document option &#34;%s&#34;&#39; % str(opt))
+            raise FPDFException(&#39;Unknown document option &#34;%s&#34;&#39; % str(opt))
 
     def alias_nb_pages(self, alias=&#34;{nb}&#34;):
         &#34;Define an alias for total number of pages&#34;
@@ -461,7 +437,7 @@ given.</p></div>
         self.text_color = tc
         self.color_flag = cf
 
-        &#34;&#34;&#34; BEGIN Page header &#34;&#34;&#34;
+        # BEGIN Page header
         self.header()
 
         if self.line_width != lw:  # Restore line width
@@ -482,15 +458,13 @@ given.</p></div>
 
         if stretching != 100:  # Restore stretching
             self.set_stretching(stretching)
-        &#34;&#34;&#34; END Page header &#34;&#34;&#34;
+        # END Page header
 
     def header(self):
         &#34;Header to be implemented in your own inherited class&#34;
-        pass
 
     def footer(self):
         &#34;Footer to be implemented in your own inherited class&#34;
-        pass
 
     def page_no(self):
         &#34;Get current page number&#34;
@@ -682,7 +656,6 @@ given.</p></div>
         if fontkey in self.fonts:
             return
         if uni:
-            global SYSTEM_TTFONTS, FPDF_CACHE_MODE, FPDF_CACHE_DIR
             if os.path.exists(fname):
                 ttffilename = fname
             elif FPDF_FONT_DIR and os.path.exists(os.path.join(FPDF_FONT_DIR, fname)):
@@ -691,7 +664,6 @@ given.</p></div>
                 ttffilename = os.path.join(SYSTEM_TTFONTS, fname)
             else:
                 raise RuntimeError(&#34;TTF Font file not found: %s&#34; % fname)
-            name = &#34;&#34;  # noqa: F841
             if FPDF_CACHE_MODE == 0:
                 unifilename = os.path.splitext(ttffilename)[0] + &#34;.pkl&#34;
             elif FPDF_CACHE_MODE == 2:
@@ -740,7 +712,7 @@ given.</p></div>
                         with open(unifilename, &#34;wb&#34;) as fh:
                             pickle.dump(font_dict, fh)
                     except IOError as e:
-                        if not e.errno == errno.EACCES:
+                        if e.errno != errno.EACCES:
                             raise  # Not a permission error.
                 del ttf
 
@@ -803,7 +775,7 @@ given.</p></div>
             family = self.font_family
         if family == &#34;arial&#34;:
             family = &#34;helvetica&#34;
-        elif family == &#34;symbol&#34; or family == &#34;zapfdingbats&#34;:
+        elif family in (&#34;symbol&#34;, &#34;zapfdingbats&#34;):
             style = &#34;&#34;
         style = style.upper()
         if &#34;U&#34; in style:
@@ -827,28 +799,17 @@ given.</p></div>
         # Test if used for the first time
         fontkey = family + style
         if fontkey not in self.fonts:
-            # Check if one of standard fonts
-            if fontkey in self.core_fonts:
-                if fontkey not in fpdf_charwidths:
-                    # Load metric file
-                    name = os.path.join(FPDF_FONT_DIR, family)
-                    if family == &#34;times&#34; or family == &#34;helvetica&#34;:
-                        name += style.lower()
-                    with open(name + &#34;.font&#34;) as file:
-                        exec(compile(file.read(), name + &#34;.font&#34;, &#34;exec&#34;))
-                    if fontkey not in fpdf_charwidths:
-                        fpdf_error(&#34;Could not include font metric file for&#34; + fontkey)
-                i = len(self.fonts) + 1
-                self.fonts[fontkey] = {
-                    &#34;i&#34;: i,
-                    &#34;type&#34;: &#34;core&#34;,
-                    &#34;name&#34;: self.core_fonts[fontkey],
-                    &#34;up&#34;: -100,
-                    &#34;ut&#34;: 50,
-                    &#34;cw&#34;: fpdf_charwidths[fontkey],
-                }
-            else:
-                fpdf_error(&#34;Undefined font: &#34; + family + &#34; &#34; + style)
+            if fontkey not in self.core_fonts or fontkey not in fpdf_charwidths:
+                raise FPDFException(&#34;Undefined font: &#34; + fontkey)
+            i = len(self.fonts) + 1
+            self.fonts[fontkey] = {
+                &#34;i&#34;: i,
+                &#34;type&#34;: &#34;core&#34;,
+                &#34;name&#34;: self.core_fonts[fontkey],
+                &#34;up&#34;: -100,
+                &#34;ut&#34;: 50,
+                &#34;cw&#34;: fpdf_charwidths[fontkey],
+            }
 
         # Select it
         self.font_family = family
@@ -909,7 +870,7 @@ given.</p></div>
         &#34;Output a string&#34;
         txt = self.normalize_text(txt)
         if self.unifontsubset:
-            txt2 = UTF8ToUTF16BE(escape_parens(txt), False)
+            txt2 = UTF8ToUTF16BE(escape_parens(txt), False).decode(&#34;latin-1&#34;)
             for uni in UTF8StringToArray(txt):
                 self.current_font[&#34;subset&#34;].append(uni)
         else:
@@ -1084,7 +1045,7 @@ given.</p></div>
             if self.ws and self.unifontsubset:
                 for uni in UTF8StringToArray(txt):
                     self.current_font[&#34;subset&#34;].append(uni)
-                space = escape_parens(UTF8ToUTF16BE(&#34; &#34;, False))
+                space = escape_parens(UTF8ToUTF16BE(&#34; &#34;, False).decode(&#34;latin-1&#34;))
 
                 s += sprintf(
                     &#34;BT 0 Tw %.2F %.2F Td [&#34;,
@@ -1096,7 +1057,9 @@ given.</p></div>
                 numt = len(t)
                 for i in range(numt):
                     tx = t[i]
-                    tx = enclose_in_parens(escape_parens(UTF8ToUTF16BE(tx, False)))
+                    tx = enclose_in_parens(
+                        escape_parens(UTF8ToUTF16BE(tx, False).decode(&#34;latin-1&#34;))
+                    )
                     s += sprintf(&#34;%s &#34;, tx)
                     if (i + 1) &lt; numt:
                         adj = -(self.ws * self.k) * 1000 / self.font_size_pt
@@ -1105,7 +1068,7 @@ given.</p></div>
                 s += &#34; ET&#34;
             else:
                 if self.unifontsubset:
-                    txt2 = escape_parens(UTF8ToUTF16BE(txt, False))
+                    txt2 = escape_parens(UTF8ToUTF16BE(txt, False).decode(&#34;latin-1&#34;))
                     for uni in UTF8StringToArray(txt):
                         self.current_font[&#34;subset&#34;].append(uni)
                 else:
@@ -1132,7 +1095,6 @@ given.</p></div>
                     self.font_size,
                     link,
                 )
-
         if s:
             self._out(s)
         self.lasth = h
@@ -1150,8 +1112,8 @@ given.</p></div>
     def multi_cell(
         self, w, h, txt=&#34;&#34;, border=0, align=&#34;J&#34;, fill=0, split_only=False, link=&#34;&#34;, ln=0
     ):
-        &#34;&#34;&#34;Output text with automatic or explicit line breaks, returns
-        boolean if page break triggered in output mode
+        &#34;&#34;&#34;Output text with automatic or explicit line breaks,
+        returns boolean if page break triggered in output mode
         &#34;&#34;&#34;
         page_break_triggered = False
         if split_only:
@@ -1411,6 +1373,11 @@ given.</p></div>
     ):
         # def image(self, name, x = None, y = None, w = 0, h = 0, type = &#39;&#39;, link = &#39;&#39;):  # noqa: E501
         &#34;Put an image on the page&#34;
+        if type:
+            warnings.warn(
+                &#39;&#34;type&#34; is unused and will soon be deprecated&#39;,
+                PendingDeprecationWarning,
+            )
         if name not in self.images:
             info = get_img_info(image_parsing_load_resource(name))
             info[&#34;i&#34;] = len(self.images) + 1
@@ -1502,29 +1469,27 @@ given.</p></div>
         By default the PDF is written to sys.stdout. If a name is given, the
         PDF is written to a new file. If dest=&#39;S&#39; is given, the PDF data is
         returned as a byte string.&#34;&#34;&#34;
-
+        # pylint: disable=inconsistent-return-statements
         # Finish document if necessary
         if self.state &lt; 3:
             self.close()
         dest = dest.upper()
         if dest == &#34;&#34;:
-            if name == &#34;&#34;:
-                dest = &#34;I&#34;
-            else:
-                dest = &#34;F&#34;
+            dest = &#34;I&#34; if name == &#34;&#34; else &#34;F&#34;
         if dest in (&#34;I&#34;, &#34;D&#34;):
             # Python &lt; 3 writes byte data transparently without &#34;buffer&#34;
             stdout = getattr(sys.stdout, &#34;buffer&#34;, sys.stdout)
             stdout.write(self.buffer)
-        elif dest == &#34;F&#34;:
+            return None
+        if dest == &#34;F&#34;:
             # Save to local file
             with open(name, &#34;wb&#34;) as f:
                 f.write(self.buffer)
+            return None
         # Return as a byte string
-        elif dest == &#34;S&#34;:
+        if dest == &#34;S&#34;:
             return self.buffer
-        else:
-            fpdf_error(&#34;Incorrect output destination: &#34; + dest)
+        raise FPDFException(&#34;Incorrect output destination: &#34; + dest)
 
     def normalize_text(self, txt):
         &#34;Check that text input is in the correct format/encoding&#34;
@@ -1545,7 +1510,7 @@ given.</p></div>
             # Now repeat for no pages in non-subset fonts
             for n in range(1, nb + 1):
                 self.pages[n][&#34;content&#34;].replace(
-                    self.str_alias_nb_pages.encode(), str(nb).encode()
+                    self.str_alias_nb_pages.encode(&#34;latin-1&#34;), str(nb).encode(&#34;latin-1&#34;)
                 )
         if self.def_orientation == &#34;P&#34;:
             dw_pt = self.dw_pt
@@ -1693,8 +1658,8 @@ given.</p></div>
         # Font objects
         flist = [(x[1][&#34;i&#34;], x[0], x[1]) for x in self.fonts.items()]
         flist.sort()
-        for idx, k, font in flist:
-            self.fonts[k][&#34;n&#34;] = self.n + 1
+        for _, font_name, font in flist:
+            self.fonts[font_name][&#34;n&#34;] = self.n + 1
             my_type = font[&#34;type&#34;]
             name = font[&#34;name&#34;]
             # Standard font
@@ -1703,13 +1668,13 @@ given.</p></div>
                 self._out(&#34;&lt;&lt;/Type /Font&#34;)
                 self._out(&#34;/BaseFont /&#34; + name)
                 self._out(&#34;/Subtype /Type1&#34;)
-                if name != &#34;Symbol&#34; and name != &#34;ZapfDingbats&#34;:
+                if name not in (&#34;Symbol&#34;, &#34;ZapfDingbats&#34;):
                     self._out(&#34;/Encoding /WinAnsiEncoding&#34;)
                 self._out(&#34;&gt;&gt;&#34;)
                 self._out(&#34;endobj&#34;)
 
             # Additional Type1 or TrueType font
-            elif my_type == &#34;Type1&#34; or my_type == &#34;TrueType&#34;:
+            elif my_type in (&#34;Type1&#34;, &#34;TrueType&#34;):
                 self._newobj()
                 self._out(&#34;&lt;&lt;/Type /Font&#34;)
                 self._out(&#34;/BaseFont /&#34; + name)
@@ -1762,7 +1727,7 @@ given.</p></div>
                 self._out(s + &#34;&gt;&gt;&#34;)
                 self._out(&#34;endobj&#34;)
             elif my_type == &#34;TTF&#34;:
-                self.fonts[k][&#34;n&#34;] = self.n + 1
+                self.fonts[font_name][&#34;n&#34;] = self.n + 1
                 ttf = TTFontFile()
                 fontname = &#34;MPDFAA&#34; + &#34;+&#34; + font[&#34;name&#34;]
                 subset = font[&#34;subset&#34;]
@@ -1892,7 +1857,8 @@ given.</p></div>
                 mtd = &#34;_put&#34; + my_type.lower()
                 # check if self has a attr mtd which is callable (method)
                 if not callable(getattr(self, mtd, None)):
-                    fpdf_error(&#34;Unsupported font type: &#34; + my_type)
+                    raise FPDFException(&#34;Unsupported font type: &#34; + my_type)
+                # pylint: disable=no-member
                 self.mtd(font)
 
     def _putTTfontwidths(self, font, maxUni):
@@ -1935,10 +1901,10 @@ given.</p></div>
                         font_dict[&#34;range&#34;] = range_
                         pickle.dump(font_dict, fh)
                 except IOError as e:
-                    if not e.errno == errno.EACCES:
+                    if e.errno != errno.EACCES:
                         raise  # Not a permission error.
 
-            if cid &gt; 255 and (cid not in subset):
+            if cid &gt; 255 and (cid not in subset or cid &gt;= len(font[&#34;cw&#34;])):
                 continue
             width = font[&#34;cw&#34;][cid]
             if width == 0:
@@ -2002,11 +1968,9 @@ given.</p></div>
         self._out(&#34;/W [%s]&#34; % &#34;&#34;.join(w))
 
     def _putimages(self):
-        filter = &#34;&#34; if not self.compress else &#34;/Filter /FlateDecode &#34;  # noqa: F841
-
         i = [(x[1][&#34;i&#34;], x[1]) for x in self.images.items()]
         i.sort()
-        for idx, info in i:
+        for _, info in i:
             self._putimage(info)
             del info[&#34;data&#34;]
             if &#34;smask&#34; in info:
@@ -2075,11 +2039,11 @@ given.</p></div>
             # Palette
             if info[&#34;cs&#34;] == &#34;Indexed&#34;:
                 self._newobj()
-                filter = self.compress and &#34;/Filter /FlateDecode &#34; or &#34;&#34;
-                if self.compress:
-                    pal = zlib.compress(info[&#34;pal&#34;])
-                else:
-                    pal = info[&#34;pal&#34;]
+                filter, pal = (
+                    (&#34;/Filter /FlateDecode &#34;, zlib.compress(info[&#34;pal&#34;]))
+                    if self.compress
+                    else (&#34;&#34;, info[&#34;pal&#34;])
+                )
                 self._out(&#34;&lt;&lt;&#34; + filter + &#34;/Length &#34; + str(len(pal)) + &#34;&gt;&gt;&#34;)
                 self._out(pdf_stream(pal))
                 self._out(&#34;endobj&#34;)
@@ -2118,26 +2082,28 @@ given.</p></div>
             self._out(&#34;endobj&#34;)
 
     def _putinfo(self):
-        ts = lambda a: enclose_in_parens(a)
-
         info_d = o_dict()
         # info_d[pdf_name(&#39;producer&#39;)] = ts(&#39;PyFPDF &#39; + FPDF_VERSION + \
         #     &#39; https://github.com/alexanderankin/pyfpdf&#39;)
-        info_d[pdf_name(&#34;title&#34;)] = ts(getattr(self, &#34;title&#34;, None))
-        info_d[pdf_name(&#34;subject&#34;)] = ts(getattr(self, &#34;subject&#34;, None))
-        info_d[pdf_name(&#34;author&#34;)] = ts(getattr(self, &#34;author&#34;, None))
-        info_d[pdf_name(&#34;keywords&#34;)] = ts(getattr(self, &#34;keywords&#34;, None))
-        info_d[pdf_name(&#34;creator&#34;)] = ts(getattr(self, &#34;creator&#34;, None))
+        info_d[pdf_name(&#34;title&#34;)] = enclose_in_parens(getattr(self, &#34;title&#34;, None))
+        info_d[pdf_name(&#34;subject&#34;)] = enclose_in_parens(getattr(self, &#34;subject&#34;, None))
+        info_d[pdf_name(&#34;author&#34;)] = enclose_in_parens(getattr(self, &#34;author&#34;, None))
+        info_d[pdf_name(&#34;keywords&#34;)] = enclose_in_parens(
+            getattr(self, &#34;keywords&#34;, None)
+        )
+        info_d[pdf_name(&#34;creator&#34;)] = enclose_in_parens(getattr(self, &#34;creator&#34;, None))
 
         if hasattr(self, &#34;creation_date&#34;):
             try:
                 creation_date = self.creation_date
                 date_string = creation_date.strftime(&#34;%Y%m%d%H%M%S&#34;)
-            except Exception as e:
-                fpdf_error(&#34;Could not format date: &#34; + str(creation_date))
+            except Exception as error:
+                raise FPDFException(
+                    &#34;Could not format date: &#34; + str(creation_date)
+                ) from error
         else:
             date_string = datetime.now().strftime(&#34;%Y%m%d%H%M%S&#34;)
-        info_d[pdf_name(&#34;CreationDate&#34;)] = ts(&#34;D:&#34; + date_string)
+        info_d[pdf_name(&#34;CreationDate&#34;)] = enclose_in_parens(&#34;D:&#34; + date_string)
 
         self._out(pdf_d(info_d, open_dict=&#34;&#34;, close_dict=&#34;&#34;, has_empty_fields=True))
 
@@ -2237,7 +2203,6 @@ given.</p></div>
                 # Set to default format
                 fw_pt = self.dw_pt
                 fh_pt = self.dh_pt
-            fh = fh_pt / self.k
             # Page orientation
             if not orientation:
                 orientation = self.def_orientation
@@ -2281,17 +2246,14 @@ given.</p></div>
 
     def _out(self, s):
         # Add a line to the document
-        if isinstance(s, bytes):
-            # manage binary data as latin1 until PEP461-like function is
-            # implemented
-            s = s.decode(&#34;latin1&#34;)
-        elif not isinstance(s, str):
-            s = str(s)
+        if not isinstance(s, bytes):
+            if not isinstance(s, str):
+                s = str(s)
+            s = s.encode(&#34;latin1&#34;)
         if self.state == 2:
-            # self.pages[self.page][&#34;content&#34;] += (s + &#34;\n&#34;)
-            self.pages[self.page][&#34;content&#34;] += s.encode(&#34;latin1&#34;) + b&#34;\n&#34;
+            self.pages[self.page][&#34;content&#34;] += s + b&#34;\n&#34;
         else:
-            self.buffer += s.encode(&#34;latin1&#34;) + b&#34;\n&#34;
+            self.buffer += s + b&#34;\n&#34;
 
     @check_page
     def interleaved2of5(self, txt, x, y, w=1.0, h=10.0):
@@ -2329,7 +2291,7 @@ given.</p></div>
             char_bar = code[i]
             char_space = code[i + 1]
             # check whether it is a valid digit
-            if not char_bar in bar_char.keys():
+            if char_bar not in bar_char.keys():
                 raise RuntimeError(&#39;Char &#34;%s&#34; invalid for I25: &#39; % char_bar)
             if not char_space in bar_char.keys():
                 raise RuntimeError(&#39;Char &#34;%s&#34; invalid for I25: &#39; % char_space)
@@ -2339,12 +2301,9 @@ given.</p></div>
             for s in range(0, len(bar_char[char_bar])):
                 seq += bar_char[char_bar][s] + bar_char[char_space][s]
 
-            for bar in range(0, len(seq)):
+            for bar, char in enumerate(seq):
                 # set line_width depending on value
-                if seq[bar] == &#34;n&#34;:
-                    line_width = narrow
-                else:
-                    line_width = wide
+                line_width = narrow if char == &#34;n&#34; else wide
 
                 # draw every second value, the other is represented by space
                 if bar % 2 == 0:
@@ -2477,7 +2436,6 @@ def accept_page_break(self):
     if fontkey in self.fonts:
         return
     if uni:
-        global SYSTEM_TTFONTS, FPDF_CACHE_MODE, FPDF_CACHE_DIR
         if os.path.exists(fname):
             ttffilename = fname
         elif FPDF_FONT_DIR and os.path.exists(os.path.join(FPDF_FONT_DIR, fname)):
@@ -2486,7 +2444,6 @@ def accept_page_break(self):
             ttffilename = os.path.join(SYSTEM_TTFONTS, fname)
         else:
             raise RuntimeError(&#34;TTF Font file not found: %s&#34; % fname)
-        name = &#34;&#34;  # noqa: F841
         if FPDF_CACHE_MODE == 0:
             unifilename = os.path.splitext(ttffilename)[0] + &#34;.pkl&#34;
         elif FPDF_CACHE_MODE == 2:
@@ -2535,7 +2492,7 @@ def accept_page_break(self):
                     with open(unifilename, &#34;wb&#34;) as fh:
                         pickle.dump(font_dict, fh)
                 except IOError as e:
-                    if not e.errno == errno.EACCES:
+                    if e.errno != errno.EACCES:
                         raise  # Not a permission error.
             del ttf
 
@@ -2658,7 +2615,7 @@ def accept_page_break(self):
     self.text_color = tc
     self.color_flag = cf
 
-    &#34;&#34;&#34; BEGIN Page header &#34;&#34;&#34;
+    # BEGIN Page header
     self.header()
 
     if self.line_width != lw:  # Restore line width
@@ -2679,7 +2636,7 @@ def accept_page_break(self):
 
     if stretching != 100:  # Restore stretching
         self.set_stretching(stretching)
-    &#34;&#34;&#34; END Page header &#34;&#34;&#34;</code></pre>
+    # END Page header</code></pre>
 </details>
 </dd>
 <dt id="fpdf.FPDF.alias_nb_pages"><code class="name flex">
@@ -2803,7 +2760,7 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
         if self.ws and self.unifontsubset:
             for uni in UTF8StringToArray(txt):
                 self.current_font[&#34;subset&#34;].append(uni)
-            space = escape_parens(UTF8ToUTF16BE(&#34; &#34;, False))
+            space = escape_parens(UTF8ToUTF16BE(&#34; &#34;, False).decode(&#34;latin-1&#34;))
 
             s += sprintf(
                 &#34;BT 0 Tw %.2F %.2F Td [&#34;,
@@ -2815,7 +2772,9 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
             numt = len(t)
             for i in range(numt):
                 tx = t[i]
-                tx = enclose_in_parens(escape_parens(UTF8ToUTF16BE(tx, False)))
+                tx = enclose_in_parens(
+                    escape_parens(UTF8ToUTF16BE(tx, False).decode(&#34;latin-1&#34;))
+                )
                 s += sprintf(&#34;%s &#34;, tx)
                 if (i + 1) &lt; numt:
                     adj = -(self.ws * self.k) * 1000 / self.font_size_pt
@@ -2824,7 +2783,7 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
             s += &#34; ET&#34;
         else:
             if self.unifontsubset:
-                txt2 = escape_parens(UTF8ToUTF16BE(txt, False))
+                txt2 = escape_parens(UTF8ToUTF16BE(txt, False).decode(&#34;latin-1&#34;))
                 for uni in UTF8StringToArray(txt):
                     self.current_font[&#34;subset&#34;].append(uni)
             else:
@@ -2851,7 +2810,6 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
                 self.font_size,
                 link,
             )
-
     if s:
         self._out(s)
     self.lasth = h
@@ -2864,28 +2822,6 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
         self.x += w
 
     return page_break_triggered</code></pre>
-</details>
-</dd>
-<dt id="fpdf.FPDF.check_page"><code class="name flex">
-<span>def <span class="ident">check_page</span></span>(<span>fn)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Decorator to protect drawing methods</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def check_page(fn):
-    &#34;Decorator to protect drawing methods&#34;
-
-    @wraps(fn)
-    def wrapper(self, *args, **kwargs):
-        if not self.page and not kwargs.get(&#34;split_only&#34;):
-            fpdf_error(&#34;No page open, you need to call add_page() first&#34;)
-        else:
-            return fn(self, *args, **kwargs)
-
-    return wrapper</code></pre>
 </details>
 </dd>
 <dt id="fpdf.FPDF.close"><code class="name flex">
@@ -3086,8 +3022,7 @@ def ellipse(self, x, y, w, h, style=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def footer(self):
-    &#34;Footer to be implemented in your own inherited class&#34;
-    pass</code></pre>
+    &#34;Footer to be implemented in your own inherited class&#34;</code></pre>
 </details>
 </dd>
 <dt id="fpdf.FPDF.get_string_width"><code class="name flex">
@@ -3161,8 +3096,7 @@ def ellipse(self, x, y, w, h, style=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def header(self):
-    &#34;Header to be implemented in your own inherited class&#34;
-    pass</code></pre>
+    &#34;Header to be implemented in your own inherited class&#34;</code></pre>
 </details>
 </dd>
 <dt id="fpdf.FPDF.image"><code class="name flex">
@@ -3187,6 +3121,11 @@ def image(
 ):
     # def image(self, name, x = None, y = None, w = 0, h = 0, type = &#39;&#39;, link = &#39;&#39;):  # noqa: E501
     &#34;Put an image on the page&#34;
+    if type:
+        warnings.warn(
+            &#39;&#34;type&#34; is unused and will soon be deprecated&#39;,
+            PendingDeprecationWarning,
+        )
     if name not in self.images:
         info = get_img_info(image_parsing_load_resource(name))
         info[&#34;i&#34;] = len(self.images) + 1
@@ -3281,7 +3220,7 @@ def interleaved2of5(self, txt, x, y, w=1.0, h=10.0):
         char_bar = code[i]
         char_space = code[i + 1]
         # check whether it is a valid digit
-        if not char_bar in bar_char.keys():
+        if char_bar not in bar_char.keys():
             raise RuntimeError(&#39;Char &#34;%s&#34; invalid for I25: &#39; % char_bar)
         if not char_space in bar_char.keys():
             raise RuntimeError(&#39;Char &#34;%s&#34; invalid for I25: &#39; % char_space)
@@ -3291,12 +3230,9 @@ def interleaved2of5(self, txt, x, y, w=1.0, h=10.0):
         for s in range(0, len(bar_char[char_bar])):
             seq += bar_char[char_bar][s] + bar_char[char_space][s]
 
-        for bar in range(0, len(seq)):
+        for bar, char in enumerate(seq):
             # set line_width depending on value
-            if seq[bar] == &#34;n&#34;:
-                line_width = narrow
-            else:
-                line_width = wide
+            line_width = narrow if char == &#34;n&#34; else wide
 
             # draw every second value, the other is represented by space
             if bar % 2 == 0:
@@ -3369,8 +3305,8 @@ def ln(self, h=None):
 <span>def <span class="ident">multi_cell</span></span>(<span>self, w, h, txt='', border=0, align='J', fill=0, split_only=False, link='', ln=0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Output text with automatic or explicit line breaks, returns
-boolean if page break triggered in output mode</p></div>
+<div class="desc"><p>Output text with automatic or explicit line breaks,
+returns boolean if page break triggered in output mode</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3379,8 +3315,8 @@ boolean if page break triggered in output mode</p></div>
 def multi_cell(
     self, w, h, txt=&#34;&#34;, border=0, align=&#34;J&#34;, fill=0, split_only=False, link=&#34;&#34;, ln=0
 ):
-    &#34;&#34;&#34;Output text with automatic or explicit line breaks, returns
-    boolean if page break triggered in output mode
+    &#34;&#34;&#34;Output text with automatic or explicit line breaks,
+    returns boolean if page break triggered in output mode
     &#34;&#34;&#34;
     page_break_triggered = False
     if split_only:
@@ -3610,29 +3546,27 @@ returned as a byte string.</p></div>
     By default the PDF is written to sys.stdout. If a name is given, the
     PDF is written to a new file. If dest=&#39;S&#39; is given, the PDF data is
     returned as a byte string.&#34;&#34;&#34;
-
+    # pylint: disable=inconsistent-return-statements
     # Finish document if necessary
     if self.state &lt; 3:
         self.close()
     dest = dest.upper()
     if dest == &#34;&#34;:
-        if name == &#34;&#34;:
-            dest = &#34;I&#34;
-        else:
-            dest = &#34;F&#34;
+        dest = &#34;I&#34; if name == &#34;&#34; else &#34;F&#34;
     if dest in (&#34;I&#34;, &#34;D&#34;):
         # Python &lt; 3 writes byte data transparently without &#34;buffer&#34;
         stdout = getattr(sys.stdout, &#34;buffer&#34;, sys.stdout)
         stdout.write(self.buffer)
-    elif dest == &#34;F&#34;:
+        return None
+    if dest == &#34;F&#34;:
         # Save to local file
         with open(name, &#34;wb&#34;) as f:
             f.write(self.buffer)
+        return None
     # Return as a byte string
-    elif dest == &#34;S&#34;:
+    if dest == &#34;S&#34;:
         return self.buffer
-    else:
-        fpdf_error(&#34;Incorrect output destination: &#34; + dest)</code></pre>
+    raise FPDFException(&#34;Incorrect output destination: &#34; + dest)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.FPDF.page_no"><code class="name flex">
@@ -3873,12 +3807,12 @@ def rotation(self, angle, x=None, y=None):
     elif not isinstance(zoom, str):
         self.zoom_mode = zoom
     else:
-        fpdf_error(&#34;Incorrect zoom display mode: &#34; + zoom)
+        raise FPDFException(&#34;Incorrect zoom display mode: &#34; + zoom)
 
     if layout in [&#34;single&#34;, &#34;continuous&#34;, &#34;two&#34;, &#34;default&#34;]:
         self.layout_mode = layout
     else:
-        fpdf_error(&#34;Incorrect layout display mode: &#34; + layout)</code></pre>
+        raise FPDFException(&#34;Incorrect layout display mode: &#34; + layout)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.FPDF.set_doc_option"><code class="name flex">
@@ -3895,7 +3829,7 @@ def rotation(self, angle, x=None, y=None):
     if opt == &#34;core_fonts_encoding&#34;:
         self.core_fonts_encoding = value
     else:
-        fpdf_error(&#39;Unknown document option &#34;%s&#34;&#39; % str(opt))</code></pre>
+        raise FPDFException(&#39;Unknown document option &#34;%s&#34;&#39; % str(opt))</code></pre>
 </details>
 </dd>
 <dt id="fpdf.FPDF.set_draw_color"><code class="name flex">
@@ -3957,7 +3891,7 @@ def rotation(self, angle, x=None, y=None):
         family = self.font_family
     if family == &#34;arial&#34;:
         family = &#34;helvetica&#34;
-    elif family == &#34;symbol&#34; or family == &#34;zapfdingbats&#34;:
+    elif family in (&#34;symbol&#34;, &#34;zapfdingbats&#34;):
         style = &#34;&#34;
     style = style.upper()
     if &#34;U&#34; in style:
@@ -3981,28 +3915,17 @@ def rotation(self, angle, x=None, y=None):
     # Test if used for the first time
     fontkey = family + style
     if fontkey not in self.fonts:
-        # Check if one of standard fonts
-        if fontkey in self.core_fonts:
-            if fontkey not in fpdf_charwidths:
-                # Load metric file
-                name = os.path.join(FPDF_FONT_DIR, family)
-                if family == &#34;times&#34; or family == &#34;helvetica&#34;:
-                    name += style.lower()
-                with open(name + &#34;.font&#34;) as file:
-                    exec(compile(file.read(), name + &#34;.font&#34;, &#34;exec&#34;))
-                if fontkey not in fpdf_charwidths:
-                    fpdf_error(&#34;Could not include font metric file for&#34; + fontkey)
-            i = len(self.fonts) + 1
-            self.fonts[fontkey] = {
-                &#34;i&#34;: i,
-                &#34;type&#34;: &#34;core&#34;,
-                &#34;name&#34;: self.core_fonts[fontkey],
-                &#34;up&#34;: -100,
-                &#34;ut&#34;: 50,
-                &#34;cw&#34;: fpdf_charwidths[fontkey],
-            }
-        else:
-            fpdf_error(&#34;Undefined font: &#34; + family + &#34; &#34; + style)
+        if fontkey not in self.core_fonts or fontkey not in fpdf_charwidths:
+            raise FPDFException(&#34;Undefined font: &#34; + fontkey)
+        i = len(self.fonts) + 1
+        self.fonts[fontkey] = {
+            &#34;i&#34;: i,
+            &#34;type&#34;: &#34;core&#34;,
+            &#34;name&#34;: self.core_fonts[fontkey],
+            &#34;up&#34;: -100,
+            &#34;ut&#34;: 50,
+            &#34;cw&#34;: fpdf_charwidths[fontkey],
+        }
 
     # Select it
     self.font_family = family
@@ -4279,7 +4202,7 @@ def text(self, x, y, txt=&#34;&#34;):
     &#34;Output a string&#34;
     txt = self.normalize_text(txt)
     if self.unifontsubset:
-        txt2 = UTF8ToUTF16BE(escape_parens(txt), False)
+        txt2 = UTF8ToUTF16BE(escape_parens(txt), False).decode(&#34;latin-1&#34;)
         for uni in UTF8StringToArray(txt):
             self.current_font[&#34;subset&#34;].append(uni)
     else:
@@ -4383,7 +4306,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class HTMLMixin(object):
+<pre><code class="python">class HTMLMixin:
     def write_html(self, text, image_map=None):
         &#34;Parse HTML and convert it to PDF&#34;
         h2p = HTML2FPDF(self, image_map)
@@ -4421,6 +4344,8 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Template:
+    # Disabling this check due to the &#34;format&#34; parameter below:
+    # pylint: disable=redefined-builtin
     def __init__(
         self,
         infile=None,
@@ -4433,6 +4358,11 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         creator=&#34;&#34;,
         keywords=&#34;&#34;,
     ):
+        if infile:
+            warnings.warn(
+                &#39;&#34;infile&#34; is unused and will soon be deprecated&#39;,
+                PendingDeprecationWarning,
+            )
         if elements:
             self.load_elements(elements)
         self.handlers = {
@@ -4486,13 +4416,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
                 for i, v in enumerate(row):
                     if not v.startswith(&#34;&#39;&#34;) and decimal_sep != &#34;.&#34;:
                         v = v.replace(decimal_sep, &#34;.&#34;)
-                    else:
-                        v = v
-                    if v == &#34;&#34;:
-                        v = None
-                    else:
-                        v = eval(v.strip())
-                    kargs[keys[i]] = v
+                    kargs[keys[i]] = v.strip()
                 self.elements.append(kargs)
         self.keys = [v[&#34;name&#34;].lower() for v in self.elements]
 
@@ -4523,15 +4447,13 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
             if key in self.texts:
                 # text for this page:
                 return self.texts[self.pg_no][key]
-            else:
-                # find first element for default text:
-                elements = [
-                    element
-                    for element in self.elements
-                    if element[&#34;name&#34;].lower() == key
-                ]
-                if elements:
-                    return elements[0][&#34;text&#34;]
+            # find first element for default text:
+            elements = [
+                element for element in self.elements if element[&#34;name&#34;].lower() == key
+            ]
+            if elements:
+                return elements[0][&#34;text&#34;]
+        return None
 
     def split_multicell(self, text, element_name):
         &#34;Divide (\n) a string using a given element width&#34;
@@ -4580,13 +4502,14 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
                         self.handlers[handler_name](pdf, **element)
                 else:
                     self.handlers[handler_name](pdf, **element)
-
         if dest:
             return pdf.output(outfile, dest)
+        return None
 
+    @staticmethod
     def text(
-        self,
         pdf,
+        *_,
         x1=0,
         y1=0,
         x2=0,
@@ -4601,8 +4524,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         foreground=0,
         backgroud=65535,
         multiline=None,
-        *args,
-        **kwargs
+        **__
     ):
         if text:
             if pdf.text_color != rgb(foreground):
@@ -4647,7 +4569,8 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
 
             # pdf.Text(x=x1,y=y1,txt=text)
 
-    def line(self, pdf, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, *args, **kwargs):
+    @staticmethod
+    def line(pdf, *_, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, **__):
         if pdf.draw_color != rgb(foreground):
             # print &#34;SetDrawColor&#34;, hex(foreground)
             pdf.set_draw_color(*rgb(foreground))
@@ -4655,18 +4578,9 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         pdf.set_line_width(size)
         pdf.line(x1, y1, x2, y2)
 
+    @staticmethod
     def rect(
-        self,
-        pdf,
-        x1=0,
-        y1=0,
-        x2=0,
-        y2=0,
-        size=0,
-        foreground=0,
-        backgroud=65535,
-        *args,
-        **kwargs
+        pdf, *_, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, backgroud=65535, **__
     ):
         if pdf.draw_color != rgb(foreground):
             pdf.set_draw_color(*rgb(foreground))
@@ -4675,13 +4589,15 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         pdf.set_line_width(size)
         pdf.rect(x1, y1, x2 - x1, y2 - y1)
 
-    def image(self, pdf, x1=0, y1=0, x2=0, y2=0, text=&#34;&#34;, *args, **kwargs):
+    @staticmethod
+    def image(pdf, *_, x1=0, y1=0, x2=0, y2=0, text=&#34;&#34;, **__):
         if text:
-            pdf.image(text, x1, y1, w=x2 - x1, h=y2 - y1, type=&#34;&#34;, link=&#34;&#34;)
+            pdf.image(text, x1, y1, w=x2 - x1, h=y2 - y1, link=&#34;&#34;)
 
+    @staticmethod
     def barcode(
-        self,
         pdf,
+        *_,
         x1=0,
         y1=0,
         x2=0,
@@ -4690,9 +4606,9 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         font=&#34;arial&#34;,
         size=1,
         foreground=0,
-        *args,
-        **kwargs
+        **__
     ):
+        # pylint: disable=unused-argument
         if pdf.draw_color != rgb(foreground):
             pdf.set_draw_color(*rgb(foreground))
         font = font.lower().strip()
@@ -4700,9 +4616,10 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
             pdf.interleaved2of5(text, x1, y1, w=size, h=y2 - y1)
 
     # Added by Derek Schwalenberg Schwalenberg1013@gmail.com to allow (url) links in templates (using write method) 2014-02-22
+    @staticmethod
     def write(
-        self,
         pdf,
+        *_,
         x1=0,
         y1=0,
         x2=0,
@@ -4716,9 +4633,9 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         align=&#34;&#34;,
         link=&#34;http://example.com&#34;,
         foreground=0,
-        *args,
-        **kwargs
+        **__
     ):
+        # pylint: disable=unused-argument
         if pdf.text_color != rgb(foreground):
             pdf.set_text_color(*rgb(foreground))
         font = font.strip().lower()
@@ -4744,6 +4661,223 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         pdf.set_xy(x1, y1)
         pdf.write(5, text, link)</code></pre>
 </details>
+<h3>Static methods</h3>
+<dl>
+<dt id="fpdf.Template.barcode"><code class="name flex">
+<span>def <span class="ident">barcode</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', font='arial', size=1, foreground=0, **__)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def barcode(
+    pdf,
+    *_,
+    x1=0,
+    y1=0,
+    x2=0,
+    y2=0,
+    text=&#34;&#34;,
+    font=&#34;arial&#34;,
+    size=1,
+    foreground=0,
+    **__
+):
+    # pylint: disable=unused-argument
+    if pdf.draw_color != rgb(foreground):
+        pdf.set_draw_color(*rgb(foreground))
+    font = font.lower().strip()
+    if font == &#34;interleaved 2of5 nt&#34;:
+        pdf.interleaved2of5(text, x1, y1, w=size, h=y2 - y1)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.Template.image"><code class="name flex">
+<span>def <span class="ident">image</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', **__)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def image(pdf, *_, x1=0, y1=0, x2=0, y2=0, text=&#34;&#34;, **__):
+    if text:
+        pdf.image(text, x1, y1, w=x2 - x1, h=y2 - y1, link=&#34;&#34;)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.Template.line"><code class="name flex">
+<span>def <span class="ident">line</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, **__)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def line(pdf, *_, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, **__):
+    if pdf.draw_color != rgb(foreground):
+        # print &#34;SetDrawColor&#34;, hex(foreground)
+        pdf.set_draw_color(*rgb(foreground))
+    # print &#34;SetLineWidth&#34;, size
+    pdf.set_line_width(size)
+    pdf.line(x1, y1, x2, y2)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.Template.rect"><code class="name flex">
+<span>def <span class="ident">rect</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, backgroud=65535, **__)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def rect(
+    pdf, *_, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, backgroud=65535, **__
+):
+    if pdf.draw_color != rgb(foreground):
+        pdf.set_draw_color(*rgb(foreground))
+    if pdf.fill_color != rgb(backgroud):
+        pdf.set_fill_color(*rgb(backgroud))
+    pdf.set_line_width(size)
+    pdf.rect(x1, y1, x2 - x1, y2 - y1)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.Template.text"><code class="name flex">
+<span>def <span class="ident">text</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', font='arial', size=10, bold=False, italic=False, underline=False, align='', foreground=0, backgroud=65535, multiline=None, **__)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def text(
+    pdf,
+    *_,
+    x1=0,
+    y1=0,
+    x2=0,
+    y2=0,
+    text=&#34;&#34;,
+    font=&#34;arial&#34;,
+    size=10,
+    bold=False,
+    italic=False,
+    underline=False,
+    align=&#34;&#34;,
+    foreground=0,
+    backgroud=65535,
+    multiline=None,
+    **__
+):
+    if text:
+        if pdf.text_color != rgb(foreground):
+            pdf.set_text_color(*rgb(foreground))
+        if pdf.fill_color != rgb(backgroud):
+            pdf.set_fill_color(*rgb(backgroud))
+
+        font = font.strip().lower()
+        if font == &#34;arial black&#34;:
+            font = &#34;arial&#34;
+        style = &#34;&#34;
+        for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
+            if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
+                text = text[3:-4]
+                style += tag
+        if bold:
+            style += &#34;B&#34;
+        if italic:
+            style += &#34;I&#34;
+        if underline:
+            style += &#34;U&#34;
+        align = {&#34;L&#34;: &#34;L&#34;, &#34;R&#34;: &#34;R&#34;, &#34;I&#34;: &#34;L&#34;, &#34;D&#34;: &#34;R&#34;, &#34;C&#34;: &#34;C&#34;, &#34;&#34;: &#34;&#34;}.get(
+            align
+        )  # D/I in spanish
+        pdf.set_font(font, style, size)
+        ##m_k = 72 / 2.54
+        ##h = (size/m_k)
+        pdf.set_xy(x1, y1)
+        if multiline is None:
+            # multiline==None: write without wrapping/trimming (default)
+            pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
+        elif multiline:
+            # multiline==True: automatic word - warp
+            pdf.multi_cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, align=align)
+        else:
+            # multiline==False: trim to fit exactly the space defined
+            text = pdf.multi_cell(
+                w=x2 - x1, h=y2 - y1, txt=text, align=align, split_only=True
+            )[0]
+            print(&#34;trimming: *%s*&#34; % text)
+            pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
+
+        # pdf.Text(x=x1,y=y1,txt=text)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.Template.write"><code class="name flex">
+<span>def <span class="ident">write</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', font='arial', size=1, bold=False, italic=False, underline=False, align='', link='http://example.com', foreground=0, **__)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def write(
+    pdf,
+    *_,
+    x1=0,
+    y1=0,
+    x2=0,
+    y2=0,
+    text=&#34;&#34;,
+    font=&#34;arial&#34;,
+    size=1,
+    bold=False,
+    italic=False,
+    underline=False,
+    align=&#34;&#34;,
+    link=&#34;http://example.com&#34;,
+    foreground=0,
+    **__
+):
+    # pylint: disable=unused-argument
+    if pdf.text_color != rgb(foreground):
+        pdf.set_text_color(*rgb(foreground))
+    font = font.strip().lower()
+    if font == &#34;arial black&#34;:
+        font = &#34;arial&#34;
+    style = &#34;&#34;
+    for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
+        if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
+            text = text[3:-4]
+            style += tag
+    if bold:
+        style += &#34;B&#34;
+    if italic:
+        style += &#34;I&#34;
+    if underline:
+        style += &#34;U&#34;
+    align = {&#34;L&#34;: &#34;L&#34;, &#34;R&#34;: &#34;R&#34;, &#34;I&#34;: &#34;L&#34;, &#34;D&#34;: &#34;R&#34;, &#34;C&#34;: &#34;C&#34;, &#34;&#34;: &#34;&#34;}.get(
+        align
+    )  # D/I in spanish
+    pdf.set_font(font, style, size)
+    ##m_k = 72 / 2.54
+    ##h = (size/m_k)
+    pdf.set_xy(x1, y1)
+    pdf.write(5, text, link)</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="fpdf.Template.add_page"><code class="name flex">
@@ -4760,36 +4894,6 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
     self.texts[self.pg_no] = {}</code></pre>
 </details>
 </dd>
-<dt id="fpdf.Template.barcode"><code class="name flex">
-<span>def <span class="ident">barcode</span></span>(<span>self, pdf, x1=0, y1=0, x2=0, y2=0, text='', font='arial', size=1, foreground=0, *args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def barcode(
-    self,
-    pdf,
-    x1=0,
-    y1=0,
-    x2=0,
-    y2=0,
-    text=&#34;&#34;,
-    font=&#34;arial&#34;,
-    size=1,
-    foreground=0,
-    *args,
-    **kwargs
-):
-    if pdf.draw_color != rgb(foreground):
-        pdf.set_draw_color(*rgb(foreground))
-    font = font.lower().strip()
-    if font == &#34;interleaved 2of5 nt&#34;:
-        pdf.interleaved2of5(text, x1, y1, w=size, h=y2 - y1)</code></pre>
-</details>
-</dd>
 <dt id="fpdf.Template.has_key"><code class="name flex">
 <span>def <span class="ident">has_key</span></span>(<span>self, name)</span>
 </code></dt>
@@ -4801,38 +4905,6 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
 </summary>
 <pre><code class="python">def has_key(self, name):
     return name.lower() in self.keys</code></pre>
-</details>
-</dd>
-<dt id="fpdf.Template.image"><code class="name flex">
-<span>def <span class="ident">image</span></span>(<span>self, pdf, x1=0, y1=0, x2=0, y2=0, text='', *args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def image(self, pdf, x1=0, y1=0, x2=0, y2=0, text=&#34;&#34;, *args, **kwargs):
-    if text:
-        pdf.image(text, x1, y1, w=x2 - x1, h=y2 - y1, type=&#34;&#34;, link=&#34;&#34;)</code></pre>
-</details>
-</dd>
-<dt id="fpdf.Template.line"><code class="name flex">
-<span>def <span class="ident">line</span></span>(<span>self, pdf, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, *args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def line(self, pdf, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, *args, **kwargs):
-    if pdf.draw_color != rgb(foreground):
-        # print &#34;SetDrawColor&#34;, hex(foreground)
-        pdf.set_draw_color(*rgb(foreground))
-    # print &#34;SetLineWidth&#34;, size
-    pdf.set_line_width(size)
-    pdf.line(x1, y1, x2, y2)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.Template.load_elements"><code class="name flex">
@@ -4889,45 +4961,9 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
             for i, v in enumerate(row):
                 if not v.startswith(&#34;&#39;&#34;) and decimal_sep != &#34;.&#34;:
                     v = v.replace(decimal_sep, &#34;.&#34;)
-                else:
-                    v = v
-                if v == &#34;&#34;:
-                    v = None
-                else:
-                    v = eval(v.strip())
-                kargs[keys[i]] = v
+                kargs[keys[i]] = v.strip()
             self.elements.append(kargs)
     self.keys = [v[&#34;name&#34;].lower() for v in self.elements]</code></pre>
-</details>
-</dd>
-<dt id="fpdf.Template.rect"><code class="name flex">
-<span>def <span class="ident">rect</span></span>(<span>self, pdf, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, backgroud=65535, *args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rect(
-    self,
-    pdf,
-    x1=0,
-    y1=0,
-    x2=0,
-    y2=0,
-    size=0,
-    foreground=0,
-    backgroud=65535,
-    *args,
-    **kwargs
-):
-    if pdf.draw_color != rgb(foreground):
-        pdf.set_draw_color(*rgb(foreground))
-    if pdf.fill_color != rgb(backgroud):
-        pdf.set_fill_color(*rgb(backgroud))
-    pdf.set_line_width(size)
-    pdf.rect(x1, y1, x2 - x1, y2 - y1)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.Template.render"><code class="name flex">
@@ -4958,9 +4994,9 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
                     self.handlers[handler_name](pdf, **element)
             else:
                 self.handlers[handler_name](pdf, **element)
-
     if dest:
-        return pdf.output(outfile, dest)</code></pre>
+        return pdf.output(outfile, dest)
+    return None</code></pre>
 </details>
 </dd>
 <dt id="fpdf.Template.set"><code class="name flex">
@@ -5020,133 +5056,6 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
     )</code></pre>
 </details>
 </dd>
-<dt id="fpdf.Template.text"><code class="name flex">
-<span>def <span class="ident">text</span></span>(<span>self, pdf, x1=0, y1=0, x2=0, y2=0, text='', font='arial', size=10, bold=False, italic=False, underline=False, align='', foreground=0, backgroud=65535, multiline=None, *args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def text(
-    self,
-    pdf,
-    x1=0,
-    y1=0,
-    x2=0,
-    y2=0,
-    text=&#34;&#34;,
-    font=&#34;arial&#34;,
-    size=10,
-    bold=False,
-    italic=False,
-    underline=False,
-    align=&#34;&#34;,
-    foreground=0,
-    backgroud=65535,
-    multiline=None,
-    *args,
-    **kwargs
-):
-    if text:
-        if pdf.text_color != rgb(foreground):
-            pdf.set_text_color(*rgb(foreground))
-        if pdf.fill_color != rgb(backgroud):
-            pdf.set_fill_color(*rgb(backgroud))
-
-        font = font.strip().lower()
-        if font == &#34;arial black&#34;:
-            font = &#34;arial&#34;
-        style = &#34;&#34;
-        for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
-            if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
-                text = text[3:-4]
-                style += tag
-        if bold:
-            style += &#34;B&#34;
-        if italic:
-            style += &#34;I&#34;
-        if underline:
-            style += &#34;U&#34;
-        align = {&#34;L&#34;: &#34;L&#34;, &#34;R&#34;: &#34;R&#34;, &#34;I&#34;: &#34;L&#34;, &#34;D&#34;: &#34;R&#34;, &#34;C&#34;: &#34;C&#34;, &#34;&#34;: &#34;&#34;}.get(
-            align
-        )  # D/I in spanish
-        pdf.set_font(font, style, size)
-        ##m_k = 72 / 2.54
-        ##h = (size/m_k)
-        pdf.set_xy(x1, y1)
-        if multiline is None:
-            # multiline==None: write without wrapping/trimming (default)
-            pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
-        elif multiline:
-            # multiline==True: automatic word - warp
-            pdf.multi_cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, align=align)
-        else:
-            # multiline==False: trim to fit exactly the space defined
-            text = pdf.multi_cell(
-                w=x2 - x1, h=y2 - y1, txt=text, align=align, split_only=True
-            )[0]
-            print(&#34;trimming: *%s*&#34; % text)
-            pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
-
-        # pdf.Text(x=x1,y=y1,txt=text)</code></pre>
-</details>
-</dd>
-<dt id="fpdf.Template.write"><code class="name flex">
-<span>def <span class="ident">write</span></span>(<span>self, pdf, x1=0, y1=0, x2=0, y2=0, text='', font='arial', size=1, bold=False, italic=False, underline=False, align='', link='http://example.com', foreground=0, *args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def write(
-    self,
-    pdf,
-    x1=0,
-    y1=0,
-    x2=0,
-    y2=0,
-    text=&#34;&#34;,
-    font=&#34;arial&#34;,
-    size=1,
-    bold=False,
-    italic=False,
-    underline=False,
-    align=&#34;&#34;,
-    link=&#34;http://example.com&#34;,
-    foreground=0,
-    *args,
-    **kwargs
-):
-    if pdf.text_color != rgb(foreground):
-        pdf.set_text_color(*rgb(foreground))
-    font = font.strip().lower()
-    if font == &#34;arial black&#34;:
-        font = &#34;arial&#34;
-    style = &#34;&#34;
-    for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
-        if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
-            text = text[3:-4]
-            style += tag
-    if bold:
-        style += &#34;B&#34;
-    if italic:
-        style += &#34;I&#34;
-    if underline:
-        style += &#34;U&#34;
-    align = {&#34;L&#34;: &#34;L&#34;, &#34;R&#34;: &#34;R&#34;, &#34;I&#34;: &#34;L&#34;, &#34;D&#34;: &#34;R&#34;, &#34;C&#34;: &#34;C&#34;, &#34;&#34;: &#34;&#34;}.get(
-        align
-    )  # D/I in spanish
-    pdf.set_font(font, style, size)
-    ##m_k = 72 / 2.54
-    ##h = (size/m_k)
-    pdf.set_xy(x1, y1)
-    pdf.write(5, text, link)</code></pre>
-</details>
-</dd>
 </dl>
 </dd>
 </dl>
@@ -5165,7 +5074,6 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
 <li><code><a title="fpdf.fpdf" href="fpdf.html">fpdf.fpdf</a></code></li>
 <li><code><a title="fpdf.html" href="html.html">fpdf.html</a></code></li>
 <li><code><a title="fpdf.image_parsing" href="image_parsing.html">fpdf.image_parsing</a></code></li>
-<li><code><a title="fpdf.php" href="php.html">fpdf.php</a></code></li>
 <li><code><a title="fpdf.template" href="template.html">fpdf.template</a></code></li>
 <li><code><a title="fpdf.ttfonts" href="ttfonts.html">fpdf.ttfonts</a></code></li>
 <li><code><a title="fpdf.util" href="util/index.html">fpdf.util</a></code></li>
@@ -5190,7 +5098,6 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
 <li><code><a title="fpdf.FPDF.add_page" href="#fpdf.FPDF.add_page">add_page</a></code></li>
 <li><code><a title="fpdf.FPDF.alias_nb_pages" href="#fpdf.FPDF.alias_nb_pages">alias_nb_pages</a></code></li>
 <li><code><a title="fpdf.FPDF.cell" href="#fpdf.FPDF.cell">cell</a></code></li>
-<li><code><a title="fpdf.FPDF.check_page" href="#fpdf.FPDF.check_page">check_page</a></code></li>
 <li><code><a title="fpdf.FPDF.close" href="#fpdf.FPDF.close">close</a></code></li>
 <li><code><a title="fpdf.FPDF.code39" href="#fpdf.FPDF.code39">code39</a></code></li>
 <li><code><a title="fpdf.FPDF.dashed_line" href="#fpdf.FPDF.dashed_line">dashed_line</a></code></li>

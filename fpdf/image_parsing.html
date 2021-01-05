@@ -28,16 +28,13 @@
 </summary>
 <pre><code class="python"># -*- coding: utf-8 -*-
 
-import re
 import zlib
 from io import BytesIO
 from urllib.request import urlopen
 
 from PIL import Image
 
-from .errors import fpdf_error
-from .php import substr
-from .util import b
+from .errors import FPDFException
 
 
 def load_resource(filename, reason=&#34;image&#34;):
@@ -53,8 +50,7 @@ def load_resource(filename, reason=&#34;image&#34;):
             with open(filename, &#34;rb&#34;) as fl:
                 f = BytesIO(fl.read())
         return f
-    else:
-        fpdf_error(&#39;Unknown resource loading reason &#34;%s&#34;&#39; % reason)
+    raise FPDFException(&#39;Unknown resource loading reason &#34;%s&#34;&#39; % reason)
 
 
 def get_img_info(bytesio):
@@ -203,8 +199,7 @@ def to_zdata(img, remove_slice=None, select_slice=None):
             with open(filename, &#34;rb&#34;) as fl:
                 f = BytesIO(fl.read())
         return f
-    else:
-        fpdf_error(&#39;Unknown resource loading reason &#34;%s&#34;&#39; % reason)</code></pre>
+    raise FPDFException(&#39;Unknown resource loading reason &#34;%s&#34;&#39; % reason)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.image_parsing.to_zdata"><code class="name flex">

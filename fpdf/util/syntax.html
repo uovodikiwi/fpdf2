@@ -83,7 +83,7 @@ remains something to be looked into.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python"># -*- coding: latin-1 -*-
+<pre><code class="python"># -*- coding: utf-8 -*-
 
 &#34;&#34;&#34;PDF Syntax Helpers
 
@@ -158,8 +158,7 @@ As of this writing, I am not sure how length is actually calculated, so this
 remains something to be looked into.
 
 &#34;&#34;&#34;
-import sys
-from collections import OrderedDict as o_d
+from collections import OrderedDict
 
 
 def create_name(name):
@@ -169,7 +168,7 @@ def create_name(name):
 
 
 def clear_empty_fields(d):
-    return o_d((k, v) for k, v in d.items() if v)
+    return OrderedDict((k, v) for k, v in d.items() if v)
 
 
 def create_dictionary_string(
@@ -241,7 +240,7 @@ if __name__ == &#34;__main__&#34;:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def clear_empty_fields(d):
-    return o_d((k, v) for k, v in d.items() if v)</code></pre>
+    return OrderedDict((k, v) for k, v in d.items() if v)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.util.syntax.create_dictionary_string"><code class="name flex">

@@ -1193,7 +1193,6 @@ f[&quot;company_logo&quot;] = &quot;pyfpdf/tutorial/logo.png&quot;
 
 #and now we render the page
 f.render(&quot;./template.pdf&quot;)
-
 </code></pre>
 <p>See template.py or [Web2Py] (Web2Py.md) for a complete example.</p>
 <h1 id="example-elements-defined-in-csv-file">Example - Elements defined in CSV file</h1>
@@ -1210,49 +1209,12 @@ title0;T;64;26;104;30;times;10.0;0;0;0;0;0;C;;2
 <pre><code class="language-python">def test_template():
     f = Template(format=&quot;A4&quot;,
                  title=&quot;Sample Invoice&quot;)
-    f.parse_csv(&quot;mycsvfile.csv&quot;)
+    f.parse_csv(&quot;mycsvfile.csv&quot;, delimiter=&quot;;&quot;)
     f.add_page()
     f[&quot;company_name&quot;] = &quot;Sample Company&quot;
-    response.headers['Content-Type'] = 'application/pdf'
     return f.render(&quot;./template.pdf&quot;, dest='S')
 
 </code></pre>
-<h1 id="designer-gui-tool-to-design-templates">Designer - GUI tool to design templates</h1>
-<p>This library includes a program <code>designer.py</code> to visually modify the designs of a template (e.g., an invoice, report, etc.).</p>
-<p>Input files are CSV spreadsheets describing the design (see above).
-Once opened, the designer displays the template with the elements as how they will be located.</p>
-<p>The toolbar has buttons for:</p>
-<ul>
-<li>Open, save and print (preview) template</li>
-<li>Add, delete and duplicate</li>
-<li>Find items by name or by text</li>
-<li>Find and replace (modify selected elements, mainly move x/y)</li>
-</ul>
-<p>Over an element, double left click opens a dialog to edit its text and right click opens a dialog with the properties window.
-You can select multiple items by holding down shift and left clicking them.
-To move the elements you can use the arrow keys or drag the elements.</p>
-<p>To run it, just go to the directory and run:</p>
-<pre><code>python designer.py
-</code></pre>
-<p>(you need to have wx installed).</p>
-<p>If you are having problems making it work, change the imports on designer.py file to the following (it should be fixed in the next version):</p>
-<pre><code class="language-python">import os, sys
-import wx
-import wx.lib
-import wx.lib.ogl as ogl
-try:
-    from wx.lib.wordwrap import wordwrap
-except ImportError:
-    wordwrap = lambda text, width, dc: text
-
-try:
-    from template import Template
-except ImportError:
-    # we are frozen?
-    from fpdf.template import Template
-</code></pre>
-<p>As an example, the following screenshot shows the Visual Designer, with the sample invoice.csv file open and 'logo' element selected, editing its properties:</p>
-<p><img alt="http://pyfpdf.googlecode.com/files/designer.png" src="http://pyfpdf.googlecode.com/files/designer.png" /></p>
                 
               
               

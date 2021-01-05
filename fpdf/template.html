@@ -35,7 +35,7 @@ __author__ = &#34;Mariano Reingart &lt;reingart@gmail.com&gt;&#34;
 __copyright__ = &#34;Copyright (C) 2010 Mariano Reingart&#34;
 __license__ = &#34;LGPL 3.0&#34;
 
-import sys, os, csv
+import csv, warnings
 from .fpdf import FPDF
 
 
@@ -44,6 +44,8 @@ def rgb(col):
 
 
 class Template:
+    # Disabling this check due to the &#34;format&#34; parameter below:
+    # pylint: disable=redefined-builtin
     def __init__(
         self,
         infile=None,
@@ -56,6 +58,11 @@ class Template:
         creator=&#34;&#34;,
         keywords=&#34;&#34;,
     ):
+        if infile:
+            warnings.warn(
+                &#39;&#34;infile&#34; is unused and will soon be deprecated&#39;,
+                PendingDeprecationWarning,
+            )
         if elements:
             self.load_elements(elements)
         self.handlers = {
@@ -109,13 +116,7 @@ class Template:
                 for i, v in enumerate(row):
                     if not v.startswith(&#34;&#39;&#34;) and decimal_sep != &#34;.&#34;:
                         v = v.replace(decimal_sep, &#34;.&#34;)
-                    else:
-                        v = v
-                    if v == &#34;&#34;:
-                        v = None
-                    else:
-                        v = eval(v.strip())
-                    kargs[keys[i]] = v
+                    kargs[keys[i]] = v.strip()
                 self.elements.append(kargs)
         self.keys = [v[&#34;name&#34;].lower() for v in self.elements]
 
@@ -146,15 +147,13 @@ class Template:
             if key in self.texts:
                 # text for this page:
                 return self.texts[self.pg_no][key]
-            else:
-                # find first element for default text:
-                elements = [
-                    element
-                    for element in self.elements
-                    if element[&#34;name&#34;].lower() == key
-                ]
-                if elements:
-                    return elements[0][&#34;text&#34;]
+            # find first element for default text:
+            elements = [
+                element for element in self.elements if element[&#34;name&#34;].lower() == key
+            ]
+            if elements:
+                return elements[0][&#34;text&#34;]
+        return None
 
     def split_multicell(self, text, element_name):
         &#34;Divide (\n) a string using a given element width&#34;
@@ -203,13 +202,14 @@ class Template:
                         self.handlers[handler_name](pdf, **element)
                 else:
                     self.handlers[handler_name](pdf, **element)
-
         if dest:
             return pdf.output(outfile, dest)
+        return None
 
+    @staticmethod
     def text(
-        self,
         pdf,
+        *_,
         x1=0,
         y1=0,
         x2=0,
@@ -224,8 +224,7 @@ class Template:
         foreground=0,
         backgroud=65535,
         multiline=None,
-        *args,
-        **kwargs
+        **__
     ):
         if text:
             if pdf.text_color != rgb(foreground):
@@ -270,7 +269,8 @@ class Template:
 
             # pdf.Text(x=x1,y=y1,txt=text)
 
-    def line(self, pdf, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, *args, **kwargs):
+    @staticmethod
+    def line(pdf, *_, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, **__):
         if pdf.draw_color != rgb(foreground):
             # print &#34;SetDrawColor&#34;, hex(foreground)
             pdf.set_draw_color(*rgb(foreground))
@@ -278,18 +278,9 @@ class Template:
         pdf.set_line_width(size)
         pdf.line(x1, y1, x2, y2)
 
+    @staticmethod
     def rect(
-        self,
-        pdf,
-        x1=0,
-        y1=0,
-        x2=0,
-        y2=0,
-        size=0,
-        foreground=0,
-        backgroud=65535,
-        *args,
-        **kwargs
+        pdf, *_, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, backgroud=65535, **__
     ):
         if pdf.draw_color != rgb(foreground):
             pdf.set_draw_color(*rgb(foreground))
@@ -298,13 +289,15 @@ class Template:
         pdf.set_line_width(size)
         pdf.rect(x1, y1, x2 - x1, y2 - y1)
 
-    def image(self, pdf, x1=0, y1=0, x2=0, y2=0, text=&#34;&#34;, *args, **kwargs):
+    @staticmethod
+    def image(pdf, *_, x1=0, y1=0, x2=0, y2=0, text=&#34;&#34;, **__):
         if text:
-            pdf.image(text, x1, y1, w=x2 - x1, h=y2 - y1, type=&#34;&#34;, link=&#34;&#34;)
+            pdf.image(text, x1, y1, w=x2 - x1, h=y2 - y1, link=&#34;&#34;)
 
+    @staticmethod
     def barcode(
-        self,
         pdf,
+        *_,
         x1=0,
         y1=0,
         x2=0,
@@ -313,9 +306,9 @@ class Template:
         font=&#34;arial&#34;,
         size=1,
         foreground=0,
-        *args,
-        **kwargs
+        **__
     ):
+        # pylint: disable=unused-argument
         if pdf.draw_color != rgb(foreground):
             pdf.set_draw_color(*rgb(foreground))
         font = font.lower().strip()
@@ -323,9 +316,10 @@ class Template:
             pdf.interleaved2of5(text, x1, y1, w=size, h=y2 - y1)
 
     # Added by Derek Schwalenberg Schwalenberg1013@gmail.com to allow (url) links in templates (using write method) 2014-02-22
+    @staticmethod
     def write(
-        self,
         pdf,
+        *_,
         x1=0,
         y1=0,
         x2=0,
@@ -339,9 +333,9 @@ class Template:
         align=&#34;&#34;,
         link=&#34;http://example.com&#34;,
         foreground=0,
-        *args,
-        **kwargs
+        **__
     ):
+        # pylint: disable=unused-argument
         if pdf.text_color != rgb(foreground):
             pdf.set_text_color(*rgb(foreground))
         font = font.strip().lower()
@@ -404,6 +398,8 @@ class Template:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Template:
+    # Disabling this check due to the &#34;format&#34; parameter below:
+    # pylint: disable=redefined-builtin
     def __init__(
         self,
         infile=None,
@@ -416,6 +412,11 @@ class Template:
         creator=&#34;&#34;,
         keywords=&#34;&#34;,
     ):
+        if infile:
+            warnings.warn(
+                &#39;&#34;infile&#34; is unused and will soon be deprecated&#39;,
+                PendingDeprecationWarning,
+            )
         if elements:
             self.load_elements(elements)
         self.handlers = {
@@ -469,13 +470,7 @@ class Template:
                 for i, v in enumerate(row):
                     if not v.startswith(&#34;&#39;&#34;) and decimal_sep != &#34;.&#34;:
                         v = v.replace(decimal_sep, &#34;.&#34;)
-                    else:
-                        v = v
-                    if v == &#34;&#34;:
-                        v = None
-                    else:
-                        v = eval(v.strip())
-                    kargs[keys[i]] = v
+                    kargs[keys[i]] = v.strip()
                 self.elements.append(kargs)
         self.keys = [v[&#34;name&#34;].lower() for v in self.elements]
 
@@ -506,15 +501,13 @@ class Template:
             if key in self.texts:
                 # text for this page:
                 return self.texts[self.pg_no][key]
-            else:
-                # find first element for default text:
-                elements = [
-                    element
-                    for element in self.elements
-                    if element[&#34;name&#34;].lower() == key
-                ]
-                if elements:
-                    return elements[0][&#34;text&#34;]
+            # find first element for default text:
+            elements = [
+                element for element in self.elements if element[&#34;name&#34;].lower() == key
+            ]
+            if elements:
+                return elements[0][&#34;text&#34;]
+        return None
 
     def split_multicell(self, text, element_name):
         &#34;Divide (\n) a string using a given element width&#34;
@@ -563,13 +556,14 @@ class Template:
                         self.handlers[handler_name](pdf, **element)
                 else:
                     self.handlers[handler_name](pdf, **element)
-
         if dest:
             return pdf.output(outfile, dest)
+        return None
 
+    @staticmethod
     def text(
-        self,
         pdf,
+        *_,
         x1=0,
         y1=0,
         x2=0,
@@ -584,8 +578,7 @@ class Template:
         foreground=0,
         backgroud=65535,
         multiline=None,
-        *args,
-        **kwargs
+        **__
     ):
         if text:
             if pdf.text_color != rgb(foreground):
@@ -630,7 +623,8 @@ class Template:
 
             # pdf.Text(x=x1,y=y1,txt=text)
 
-    def line(self, pdf, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, *args, **kwargs):
+    @staticmethod
+    def line(pdf, *_, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, **__):
         if pdf.draw_color != rgb(foreground):
             # print &#34;SetDrawColor&#34;, hex(foreground)
             pdf.set_draw_color(*rgb(foreground))
@@ -638,18 +632,9 @@ class Template:
         pdf.set_line_width(size)
         pdf.line(x1, y1, x2, y2)
 
+    @staticmethod
     def rect(
-        self,
-        pdf,
-        x1=0,
-        y1=0,
-        x2=0,
-        y2=0,
-        size=0,
-        foreground=0,
-        backgroud=65535,
-        *args,
-        **kwargs
+        pdf, *_, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, backgroud=65535, **__
     ):
         if pdf.draw_color != rgb(foreground):
             pdf.set_draw_color(*rgb(foreground))
@@ -658,13 +643,15 @@ class Template:
         pdf.set_line_width(size)
         pdf.rect(x1, y1, x2 - x1, y2 - y1)
 
-    def image(self, pdf, x1=0, y1=0, x2=0, y2=0, text=&#34;&#34;, *args, **kwargs):
+    @staticmethod
+    def image(pdf, *_, x1=0, y1=0, x2=0, y2=0, text=&#34;&#34;, **__):
         if text:
-            pdf.image(text, x1, y1, w=x2 - x1, h=y2 - y1, type=&#34;&#34;, link=&#34;&#34;)
+            pdf.image(text, x1, y1, w=x2 - x1, h=y2 - y1, link=&#34;&#34;)
 
+    @staticmethod
     def barcode(
-        self,
         pdf,
+        *_,
         x1=0,
         y1=0,
         x2=0,
@@ -673,9 +660,9 @@ class Template:
         font=&#34;arial&#34;,
         size=1,
         foreground=0,
-        *args,
-        **kwargs
+        **__
     ):
+        # pylint: disable=unused-argument
         if pdf.draw_color != rgb(foreground):
             pdf.set_draw_color(*rgb(foreground))
         font = font.lower().strip()
@@ -683,9 +670,10 @@ class Template:
             pdf.interleaved2of5(text, x1, y1, w=size, h=y2 - y1)
 
     # Added by Derek Schwalenberg Schwalenberg1013@gmail.com to allow (url) links in templates (using write method) 2014-02-22
+    @staticmethod
     def write(
-        self,
         pdf,
+        *_,
         x1=0,
         y1=0,
         x2=0,
@@ -699,9 +687,9 @@ class Template:
         align=&#34;&#34;,
         link=&#34;http://example.com&#34;,
         foreground=0,
-        *args,
-        **kwargs
+        **__
     ):
+        # pylint: disable=unused-argument
         if pdf.text_color != rgb(foreground):
             pdf.set_text_color(*rgb(foreground))
         font = font.strip().lower()
@@ -727,6 +715,223 @@ class Template:
         pdf.set_xy(x1, y1)
         pdf.write(5, text, link)</code></pre>
 </details>
+<h3>Static methods</h3>
+<dl>
+<dt id="fpdf.template.Template.barcode"><code class="name flex">
+<span>def <span class="ident">barcode</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', font='arial', size=1, foreground=0, **__)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def barcode(
+    pdf,
+    *_,
+    x1=0,
+    y1=0,
+    x2=0,
+    y2=0,
+    text=&#34;&#34;,
+    font=&#34;arial&#34;,
+    size=1,
+    foreground=0,
+    **__
+):
+    # pylint: disable=unused-argument
+    if pdf.draw_color != rgb(foreground):
+        pdf.set_draw_color(*rgb(foreground))
+    font = font.lower().strip()
+    if font == &#34;interleaved 2of5 nt&#34;:
+        pdf.interleaved2of5(text, x1, y1, w=size, h=y2 - y1)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.template.Template.image"><code class="name flex">
+<span>def <span class="ident">image</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', **__)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def image(pdf, *_, x1=0, y1=0, x2=0, y2=0, text=&#34;&#34;, **__):
+    if text:
+        pdf.image(text, x1, y1, w=x2 - x1, h=y2 - y1, link=&#34;&#34;)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.template.Template.line"><code class="name flex">
+<span>def <span class="ident">line</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, **__)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def line(pdf, *_, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, **__):
+    if pdf.draw_color != rgb(foreground):
+        # print &#34;SetDrawColor&#34;, hex(foreground)
+        pdf.set_draw_color(*rgb(foreground))
+    # print &#34;SetLineWidth&#34;, size
+    pdf.set_line_width(size)
+    pdf.line(x1, y1, x2, y2)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.template.Template.rect"><code class="name flex">
+<span>def <span class="ident">rect</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, backgroud=65535, **__)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def rect(
+    pdf, *_, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, backgroud=65535, **__
+):
+    if pdf.draw_color != rgb(foreground):
+        pdf.set_draw_color(*rgb(foreground))
+    if pdf.fill_color != rgb(backgroud):
+        pdf.set_fill_color(*rgb(backgroud))
+    pdf.set_line_width(size)
+    pdf.rect(x1, y1, x2 - x1, y2 - y1)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.template.Template.text"><code class="name flex">
+<span>def <span class="ident">text</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', font='arial', size=10, bold=False, italic=False, underline=False, align='', foreground=0, backgroud=65535, multiline=None, **__)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def text(
+    pdf,
+    *_,
+    x1=0,
+    y1=0,
+    x2=0,
+    y2=0,
+    text=&#34;&#34;,
+    font=&#34;arial&#34;,
+    size=10,
+    bold=False,
+    italic=False,
+    underline=False,
+    align=&#34;&#34;,
+    foreground=0,
+    backgroud=65535,
+    multiline=None,
+    **__
+):
+    if text:
+        if pdf.text_color != rgb(foreground):
+            pdf.set_text_color(*rgb(foreground))
+        if pdf.fill_color != rgb(backgroud):
+            pdf.set_fill_color(*rgb(backgroud))
+
+        font = font.strip().lower()
+        if font == &#34;arial black&#34;:
+            font = &#34;arial&#34;
+        style = &#34;&#34;
+        for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
+            if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
+                text = text[3:-4]
+                style += tag
+        if bold:
+            style += &#34;B&#34;
+        if italic:
+            style += &#34;I&#34;
+        if underline:
+            style += &#34;U&#34;
+        align = {&#34;L&#34;: &#34;L&#34;, &#34;R&#34;: &#34;R&#34;, &#34;I&#34;: &#34;L&#34;, &#34;D&#34;: &#34;R&#34;, &#34;C&#34;: &#34;C&#34;, &#34;&#34;: &#34;&#34;}.get(
+            align
+        )  # D/I in spanish
+        pdf.set_font(font, style, size)
+        ##m_k = 72 / 2.54
+        ##h = (size/m_k)
+        pdf.set_xy(x1, y1)
+        if multiline is None:
+            # multiline==None: write without wrapping/trimming (default)
+            pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
+        elif multiline:
+            # multiline==True: automatic word - warp
+            pdf.multi_cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, align=align)
+        else:
+            # multiline==False: trim to fit exactly the space defined
+            text = pdf.multi_cell(
+                w=x2 - x1, h=y2 - y1, txt=text, align=align, split_only=True
+            )[0]
+            print(&#34;trimming: *%s*&#34; % text)
+            pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
+
+        # pdf.Text(x=x1,y=y1,txt=text)</code></pre>
+</details>
+</dd>
+<dt id="fpdf.template.Template.write"><code class="name flex">
+<span>def <span class="ident">write</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', font='arial', size=1, bold=False, italic=False, underline=False, align='', link='http://example.com', foreground=0, **__)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def write(
+    pdf,
+    *_,
+    x1=0,
+    y1=0,
+    x2=0,
+    y2=0,
+    text=&#34;&#34;,
+    font=&#34;arial&#34;,
+    size=1,
+    bold=False,
+    italic=False,
+    underline=False,
+    align=&#34;&#34;,
+    link=&#34;http://example.com&#34;,
+    foreground=0,
+    **__
+):
+    # pylint: disable=unused-argument
+    if pdf.text_color != rgb(foreground):
+        pdf.set_text_color(*rgb(foreground))
+    font = font.strip().lower()
+    if font == &#34;arial black&#34;:
+        font = &#34;arial&#34;
+    style = &#34;&#34;
+    for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
+        if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
+            text = text[3:-4]
+            style += tag
+    if bold:
+        style += &#34;B&#34;
+    if italic:
+        style += &#34;I&#34;
+    if underline:
+        style += &#34;U&#34;
+    align = {&#34;L&#34;: &#34;L&#34;, &#34;R&#34;: &#34;R&#34;, &#34;I&#34;: &#34;L&#34;, &#34;D&#34;: &#34;R&#34;, &#34;C&#34;: &#34;C&#34;, &#34;&#34;: &#34;&#34;}.get(
+        align
+    )  # D/I in spanish
+    pdf.set_font(font, style, size)
+    ##m_k = 72 / 2.54
+    ##h = (size/m_k)
+    pdf.set_xy(x1, y1)
+    pdf.write(5, text, link)</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="fpdf.template.Template.add_page"><code class="name flex">
@@ -743,36 +948,6 @@ class Template:
     self.texts[self.pg_no] = {}</code></pre>
 </details>
 </dd>
-<dt id="fpdf.template.Template.barcode"><code class="name flex">
-<span>def <span class="ident">barcode</span></span>(<span>self, pdf, x1=0, y1=0, x2=0, y2=0, text='', font='arial', size=1, foreground=0, *args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def barcode(
-    self,
-    pdf,
-    x1=0,
-    y1=0,
-    x2=0,
-    y2=0,
-    text=&#34;&#34;,
-    font=&#34;arial&#34;,
-    size=1,
-    foreground=0,
-    *args,
-    **kwargs
-):
-    if pdf.draw_color != rgb(foreground):
-        pdf.set_draw_color(*rgb(foreground))
-    font = font.lower().strip()
-    if font == &#34;interleaved 2of5 nt&#34;:
-        pdf.interleaved2of5(text, x1, y1, w=size, h=y2 - y1)</code></pre>
-</details>
-</dd>
 <dt id="fpdf.template.Template.has_key"><code class="name flex">
 <span>def <span class="ident">has_key</span></span>(<span>self, name)</span>
 </code></dt>
@@ -784,38 +959,6 @@ class Template:
 </summary>
 <pre><code class="python">def has_key(self, name):
     return name.lower() in self.keys</code></pre>
-</details>
-</dd>
-<dt id="fpdf.template.Template.image"><code class="name flex">
-<span>def <span class="ident">image</span></span>(<span>self, pdf, x1=0, y1=0, x2=0, y2=0, text='', *args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def image(self, pdf, x1=0, y1=0, x2=0, y2=0, text=&#34;&#34;, *args, **kwargs):
-    if text:
-        pdf.image(text, x1, y1, w=x2 - x1, h=y2 - y1, type=&#34;&#34;, link=&#34;&#34;)</code></pre>
-</details>
-</dd>
-<dt id="fpdf.template.Template.line"><code class="name flex">
-<span>def <span class="ident">line</span></span>(<span>self, pdf, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, *args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def line(self, pdf, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, *args, **kwargs):
-    if pdf.draw_color != rgb(foreground):
-        # print &#34;SetDrawColor&#34;, hex(foreground)
-        pdf.set_draw_color(*rgb(foreground))
-    # print &#34;SetLineWidth&#34;, size
-    pdf.set_line_width(size)
-    pdf.line(x1, y1, x2, y2)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.template.Template.load_elements"><code class="name flex">
@@ -872,45 +1015,9 @@ class Template:
             for i, v in enumerate(row):
                 if not v.startswith(&#34;&#39;&#34;) and decimal_sep != &#34;.&#34;:
                     v = v.replace(decimal_sep, &#34;.&#34;)
-                else:
-                    v = v
-                if v == &#34;&#34;:
-                    v = None
-                else:
-                    v = eval(v.strip())
-                kargs[keys[i]] = v
+                kargs[keys[i]] = v.strip()
             self.elements.append(kargs)
     self.keys = [v[&#34;name&#34;].lower() for v in self.elements]</code></pre>
-</details>
-</dd>
-<dt id="fpdf.template.Template.rect"><code class="name flex">
-<span>def <span class="ident">rect</span></span>(<span>self, pdf, x1=0, y1=0, x2=0, y2=0, size=0, foreground=0, backgroud=65535, *args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rect(
-    self,
-    pdf,
-    x1=0,
-    y1=0,
-    x2=0,
-    y2=0,
-    size=0,
-    foreground=0,
-    backgroud=65535,
-    *args,
-    **kwargs
-):
-    if pdf.draw_color != rgb(foreground):
-        pdf.set_draw_color(*rgb(foreground))
-    if pdf.fill_color != rgb(backgroud):
-        pdf.set_fill_color(*rgb(backgroud))
-    pdf.set_line_width(size)
-    pdf.rect(x1, y1, x2 - x1, y2 - y1)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.template.Template.render"><code class="name flex">
@@ -941,9 +1048,9 @@ class Template:
                     self.handlers[handler_name](pdf, **element)
             else:
                 self.handlers[handler_name](pdf, **element)
-
     if dest:
-        return pdf.output(outfile, dest)</code></pre>
+        return pdf.output(outfile, dest)
+    return None</code></pre>
 </details>
 </dd>
 <dt id="fpdf.template.Template.set"><code class="name flex">
@@ -1001,133 +1108,6 @@ class Template:
         align=align,
         split_only=True,
     )</code></pre>
-</details>
-</dd>
-<dt id="fpdf.template.Template.text"><code class="name flex">
-<span>def <span class="ident">text</span></span>(<span>self, pdf, x1=0, y1=0, x2=0, y2=0, text='', font='arial', size=10, bold=False, italic=False, underline=False, align='', foreground=0, backgroud=65535, multiline=None, *args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def text(
-    self,
-    pdf,
-    x1=0,
-    y1=0,
-    x2=0,
-    y2=0,
-    text=&#34;&#34;,
-    font=&#34;arial&#34;,
-    size=10,
-    bold=False,
-    italic=False,
-    underline=False,
-    align=&#34;&#34;,
-    foreground=0,
-    backgroud=65535,
-    multiline=None,
-    *args,
-    **kwargs
-):
-    if text:
-        if pdf.text_color != rgb(foreground):
-            pdf.set_text_color(*rgb(foreground))
-        if pdf.fill_color != rgb(backgroud):
-            pdf.set_fill_color(*rgb(backgroud))
-
-        font = font.strip().lower()
-        if font == &#34;arial black&#34;:
-            font = &#34;arial&#34;
-        style = &#34;&#34;
-        for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
-            if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
-                text = text[3:-4]
-                style += tag
-        if bold:
-            style += &#34;B&#34;
-        if italic:
-            style += &#34;I&#34;
-        if underline:
-            style += &#34;U&#34;
-        align = {&#34;L&#34;: &#34;L&#34;, &#34;R&#34;: &#34;R&#34;, &#34;I&#34;: &#34;L&#34;, &#34;D&#34;: &#34;R&#34;, &#34;C&#34;: &#34;C&#34;, &#34;&#34;: &#34;&#34;}.get(
-            align
-        )  # D/I in spanish
-        pdf.set_font(font, style, size)
-        ##m_k = 72 / 2.54
-        ##h = (size/m_k)
-        pdf.set_xy(x1, y1)
-        if multiline is None:
-            # multiline==None: write without wrapping/trimming (default)
-            pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
-        elif multiline:
-            # multiline==True: automatic word - warp
-            pdf.multi_cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, align=align)
-        else:
-            # multiline==False: trim to fit exactly the space defined
-            text = pdf.multi_cell(
-                w=x2 - x1, h=y2 - y1, txt=text, align=align, split_only=True
-            )[0]
-            print(&#34;trimming: *%s*&#34; % text)
-            pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
-
-        # pdf.Text(x=x1,y=y1,txt=text)</code></pre>
-</details>
-</dd>
-<dt id="fpdf.template.Template.write"><code class="name flex">
-<span>def <span class="ident">write</span></span>(<span>self, pdf, x1=0, y1=0, x2=0, y2=0, text='', font='arial', size=1, bold=False, italic=False, underline=False, align='', link='http://example.com', foreground=0, *args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def write(
-    self,
-    pdf,
-    x1=0,
-    y1=0,
-    x2=0,
-    y2=0,
-    text=&#34;&#34;,
-    font=&#34;arial&#34;,
-    size=1,
-    bold=False,
-    italic=False,
-    underline=False,
-    align=&#34;&#34;,
-    link=&#34;http://example.com&#34;,
-    foreground=0,
-    *args,
-    **kwargs
-):
-    if pdf.text_color != rgb(foreground):
-        pdf.set_text_color(*rgb(foreground))
-    font = font.strip().lower()
-    if font == &#34;arial black&#34;:
-        font = &#34;arial&#34;
-    style = &#34;&#34;
-    for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
-        if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
-            text = text[3:-4]
-            style += tag
-    if bold:
-        style += &#34;B&#34;
-    if italic:
-        style += &#34;I&#34;
-    if underline:
-        style += &#34;U&#34;
-    align = {&#34;L&#34;: &#34;L&#34;, &#34;R&#34;: &#34;R&#34;, &#34;I&#34;: &#34;L&#34;, &#34;D&#34;: &#34;R&#34;, &#34;C&#34;: &#34;C&#34;, &#34;&#34;: &#34;&#34;}.get(
-        align
-    )  # D/I in spanish
-    pdf.set_font(font, style, size)
-    ##m_k = 72 / 2.54
-    ##h = (size/m_k)
-    pdf.set_xy(x1, y1)
-    pdf.write(5, text, link)</code></pre>
 </details>
 </dd>
 </dl>
