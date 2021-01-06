@@ -87,7 +87,7 @@ from .util.syntax import (
 LOGGER = logging.getLogger(__name__)
 
 # Global variables
-FPDF_VERSION = &#34;2.1.0&#34;
+FPDF_VERSION = &#34;2.2.0&#34;
 FPDF_FONT_DIR = os.path.join(os.path.dirname(__file__), &#34;font&#34;)
 FPDF_CACHE_MODE = 0  # 0 - in same folder, 1 - none, 2 - hash
 FPDF_CACHE_DIR = None
@@ -852,6 +852,10 @@ class FPDF:
 
     @check_page
     def rotate(self, angle, x=None, y=None):
+        &#34;&#34;&#34;
+        .. deprecated:: 2.1.0
+          Use `rotation` instead.
+        &#34;&#34;&#34;
         warnings.warn(
             &#34;rotate() can produces malformed PDFs and is deprecated. Use the rotation() context manager instead.&#34;,
             PendingDeprecationWarning,
@@ -886,6 +890,18 @@ class FPDF:
     @check_page
     @contextmanager
     def rotation(self, angle, x=None, y=None):
+        &#34;&#34;&#34;
+        This method allows to perform a rotation around a given center.
+
+        The rotation affects all elements which are printed inside the indented context
+        (with the exception of clickable areas).
+
+        Notes
+        -----
+
+        Only the rendering is altered. The `get_x()` and `get_y()` methods are not affected,
+        nor the automatic page break mechanism.
+        &#34;&#34;&#34;
         if x is None:
             x = self.x
         if y is None:
@@ -1078,8 +1094,16 @@ class FPDF:
     def multi_cell(
         self, w, h, txt=&#34;&#34;, border=0, align=&#34;J&#34;, fill=0, split_only=False, link=&#34;&#34;, ln=0
     ):
-        &#34;&#34;&#34;Output text with automatic or explicit line breaks,
-        returns boolean if page break triggered in output mode
+        &#34;&#34;&#34;
+        Output text with automatic or explicit line breaks,
+        returns boolean if page break triggered in output mode.
+
+        Args:
+            ln (int): controls cell positioning:
+
+              - 0: stack cells horizontally, with respect to `.x` &amp; `.y`
+              - 1: one cell per line, aligned on the left with respect to `.l_margin`
+              - 2: one cell per line
         &#34;&#34;&#34;
         page_break_triggered = False
         if split_only:
@@ -1338,7 +1362,12 @@ class FPDF:
         link=&#34;&#34;,
     ):
         # def image(self, name, x = None, y = None, w = 0, h = 0, type = &#39;&#39;, link = &#39;&#39;):  # noqa: E501
-        &#34;Put an image on the page&#34;
+        &#34;&#34;&#34;
+        Put an image on the page
+
+        Args:
+            type (str): [**DEPRECATED**] unused, will be removed in a later version
+        &#34;&#34;&#34;
         if type:
             warnings.warn(
                 &#39;&#34;type&#34; is unused and will soon be deprecated&#39;,
@@ -3166,6 +3195,10 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
     @check_page
     def rotate(self, angle, x=None, y=None):
+        &#34;&#34;&#34;
+        .. deprecated:: 2.1.0
+          Use `rotation` instead.
+        &#34;&#34;&#34;
         warnings.warn(
             &#34;rotate() can produces malformed PDFs and is deprecated. Use the rotation() context manager instead.&#34;,
             PendingDeprecationWarning,
@@ -3200,6 +3233,18 @@ case insensitive key (the name of the new format) and 2-tuple value of
     @check_page
     @contextmanager
     def rotation(self, angle, x=None, y=None):
+        &#34;&#34;&#34;
+        This method allows to perform a rotation around a given center.
+
+        The rotation affects all elements which are printed inside the indented context
+        (with the exception of clickable areas).
+
+        Notes
+        -----
+
+        Only the rendering is altered. The `get_x()` and `get_y()` methods are not affected,
+        nor the automatic page break mechanism.
+        &#34;&#34;&#34;
         if x is None:
             x = self.x
         if y is None:
@@ -3392,8 +3437,16 @@ case insensitive key (the name of the new format) and 2-tuple value of
     def multi_cell(
         self, w, h, txt=&#34;&#34;, border=0, align=&#34;J&#34;, fill=0, split_only=False, link=&#34;&#34;, ln=0
     ):
-        &#34;&#34;&#34;Output text with automatic or explicit line breaks,
-        returns boolean if page break triggered in output mode
+        &#34;&#34;&#34;
+        Output text with automatic or explicit line breaks,
+        returns boolean if page break triggered in output mode.
+
+        Args:
+            ln (int): controls cell positioning:
+
+              - 0: stack cells horizontally, with respect to `.x` &amp; `.y`
+              - 1: one cell per line, aligned on the left with respect to `.l_margin`
+              - 2: one cell per line
         &#34;&#34;&#34;
         page_break_triggered = False
         if split_only:
@@ -3652,7 +3705,12 @@ case insensitive key (the name of the new format) and 2-tuple value of
         link=&#34;&#34;,
     ):
         # def image(self, name, x = None, y = None, w = 0, h = 0, type = &#39;&#39;, link = &#39;&#39;):  # noqa: E501
-        &#34;Put an image on the page&#34;
+        &#34;&#34;&#34;
+        Put an image on the page
+
+        Args:
+            type (str): [**DEPRECATED**] unused, will be removed in a later version
+        &#34;&#34;&#34;
         if type:
             warnings.warn(
                 &#39;&#34;type&#34; is unused and will soon be deprecated&#39;,
@@ -5383,7 +5441,12 @@ def ellipse(self, x, y, w, h, style=None):
 <span>def <span class="ident">image</span></span>(<span>self, name, x=None, y=None, w=0, h=0, type='', link='')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Put an image on the page</p></div>
+<div class="desc"><p>Put an image on the page</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>type</code></strong> :&ensp;<code>str</code></dt>
+<dd>[<strong>DEPRECATED</strong>] unused, will be removed in a later version</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5400,7 +5463,12 @@ def image(
     link=&#34;&#34;,
 ):
     # def image(self, name, x = None, y = None, w = 0, h = 0, type = &#39;&#39;, link = &#39;&#39;):  # noqa: E501
-    &#34;Put an image on the page&#34;
+    &#34;&#34;&#34;
+    Put an image on the page
+
+    Args:
+        type (str): [**DEPRECATED**] unused, will be removed in a later version
+    &#34;&#34;&#34;
     if type:
         warnings.warn(
             &#39;&#34;type&#34; is unused and will soon be deprecated&#39;,
@@ -5586,7 +5654,19 @@ def ln(self, h=None):
 </code></dt>
 <dd>
 <div class="desc"><p>Output text with automatic or explicit line breaks,
-returns boolean if page break triggered in output mode</p></div>
+returns boolean if page break triggered in output mode.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>ln</code></strong> :&ensp;<code>int</code></dt>
+<dd>
+<p>controls cell positioning:</p>
+<ul>
+<li>0: stack cells horizontally, with respect to <code>.x</code> &amp; <code>.y</code></li>
+<li>1: one cell per line, aligned on the left with respect to <code>.l_margin</code></li>
+<li>2: one cell per line</li>
+</ul>
+</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5595,8 +5675,16 @@ returns boolean if page break triggered in output mode</p></div>
 def multi_cell(
     self, w, h, txt=&#34;&#34;, border=0, align=&#34;J&#34;, fill=0, split_only=False, link=&#34;&#34;, ln=0
 ):
-    &#34;&#34;&#34;Output text with automatic or explicit line breaks,
-    returns boolean if page break triggered in output mode
+    &#34;&#34;&#34;
+    Output text with automatic or explicit line breaks,
+    returns boolean if page break triggered in output mode.
+
+    Args:
+        ln (int): controls cell positioning:
+
+          - 0: stack cells horizontally, with respect to `.x` &amp; `.y`
+          - 1: one cell per line, aligned on the left with respect to `.l_margin`
+          - 2: one cell per line
     &#34;&#34;&#34;
     page_break_triggered = False
     if split_only:
@@ -5918,13 +6006,20 @@ def rect_clip(self, x, y, w, h):
 <span>def <span class="ident">rotate</span></span>(<span>self, angle, x=None, y=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><div class="admonition deprecated">
+<p class="admonition-title">Deprecated since version:&ensp;2.1.0</p>
+<p>Use <code>rotation</code> instead.</p>
+</div></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@check_page
 def rotate(self, angle, x=None, y=None):
+    &#34;&#34;&#34;
+    .. deprecated:: 2.1.0
+      Use `rotation` instead.
+    &#34;&#34;&#34;
     warnings.warn(
         &#34;rotate() can produces malformed PDFs and is deprecated. Use the rotation() context manager instead.&#34;,
         PendingDeprecationWarning,
@@ -5961,7 +6056,12 @@ def rotate(self, angle, x=None, y=None):
 <span>def <span class="ident">rotation</span></span>(<span>self, angle, x=None, y=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>This method allows to perform a rotation around a given center.</p>
+<p>The rotation affects all elements which are printed inside the indented context
+(with the exception of clickable areas).</p>
+<h2 id="notes">Notes</h2>
+<p>Only the rendering is altered. The <code>get_x()</code> and <code>get_y()</code> methods are not affected,
+nor the automatic page break mechanism.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5969,6 +6069,18 @@ def rotate(self, angle, x=None, y=None):
 <pre><code class="python">@check_page
 @contextmanager
 def rotation(self, angle, x=None, y=None):
+    &#34;&#34;&#34;
+    This method allows to perform a rotation around a given center.
+
+    The rotation affects all elements which are printed inside the indented context
+    (with the exception of clickable areas).
+
+    Notes
+    -----
+
+    Only the rendering is altered. The `get_x()` and `get_y()` methods are not affected,
+    nor the automatic page break mechanism.
+    &#34;&#34;&#34;
     if x is None:
         x = self.x
     if y is None:
