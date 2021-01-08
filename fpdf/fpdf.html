@@ -187,6 +187,7 @@ class FPDF:
         self.font_style = &#34;&#34;  # current font style
         self.font_size_pt = 12  # current font size in points
         self.font_stretching = 100  # current font stretching
+        self.unifontsubset = False
         self.underline = 0  # underlining flag
         self.draw_color = &#34;0 G&#34;
         self.fill_color = &#34;0 g&#34;
@@ -607,11 +608,11 @@ class FPDF:
 
     def add_font(self, family, style=&#34;&#34;, fname=None, uni=False):
         &#34;Add a TrueType or Type1 font&#34;
-        family = family.lower()
         if not fname:
             fname = family.replace(&#34; &#34;, &#34;&#34;) + style.lower() + &#34;.pkl&#34;
 
-        if family == &#34;arial&#34;:
+        if family.lower() == &#34;arial&#34;:
+            warnings.warn(&#34;Substitutting Arial by core font Helvetica&#34;)
             family = &#34;helvetica&#34;
         style = style.upper()
         if style == &#34;IB&#34;:
@@ -736,10 +737,10 @@ class FPDF:
 
     def set_font(self, family, style=&#34;&#34;, size=0):
         &#34;Select a font; size given in points&#34;
-        family = family.lower()
         if family == &#34;&#34;:
             family = self.font_family
-        if family == &#34;arial&#34;:
+        if family.lower() == &#34;arial&#34;:
+            warnings.warn(&#34;Substitutting Arial by core font Helvetica&#34;)
             family = &#34;helvetica&#34;
         elif family in (&#34;symbol&#34;, &#34;zapfdingbats&#34;):
             style = &#34;&#34;
@@ -783,7 +784,7 @@ class FPDF:
         self.font_size_pt = size
         self.font_size = size / self.k
         self.current_font = self.fonts[fontkey]
-        self.unifontsubset = self.fonts[fontkey][&#34;type&#34;] == &#34;TTF&#34;
+        self.unifontsubset = self.current_font[&#34;type&#34;] == &#34;TTF&#34;
         if self.page &gt; 0:
             self._out(
                 sprintf(&#34;BT /F%d %.2f Tf ET&#34;, self.current_font[&#34;i&#34;], self.font_size_pt)
@@ -834,6 +835,8 @@ class FPDF:
     @check_page
     def text(self, x, y, txt=&#34;&#34;):
         &#34;Output a string&#34;
+        if not self.font_family:
+            raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
         txt = self.normalize_text(txt)
         if self.unifontsubset:
             txt2 = UTF8ToUTF16BE(escape_parens(txt), False).decode(&#34;latin-1&#34;)
@@ -933,6 +936,8 @@ class FPDF:
     @check_page
     def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0, link=&#34;&#34;):
         &#34;Output a cell, return boolean if triggered auto page break&#34;
+        if not self.font_family:
+            raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
         page_break_triggered = False
         txt = self.normalize_text(txt)
         k = self.k
@@ -1285,6 +1290,8 @@ class FPDF:
     @check_page
     def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         &#34;Output text in flowing mode&#34;
+        if not self.font_family:
+            raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
         txt = self.normalize_text(txt)
         cw = self.current_font[&#34;cw&#34;]
         w = self.w - self.r_margin - self.x
@@ -2530,6 +2537,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
         self.font_style = &#34;&#34;  # current font style
         self.font_size_pt = 12  # current font size in points
         self.font_stretching = 100  # current font stretching
+        self.unifontsubset = False
         self.underline = 0  # underlining flag
         self.draw_color = &#34;0 G&#34;
         self.fill_color = &#34;0 g&#34;
@@ -2950,11 +2958,11 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
     def add_font(self, family, style=&#34;&#34;, fname=None, uni=False):
         &#34;Add a TrueType or Type1 font&#34;
-        family = family.lower()
         if not fname:
             fname = family.replace(&#34; &#34;, &#34;&#34;) + style.lower() + &#34;.pkl&#34;
 
-        if family == &#34;arial&#34;:
+        if family.lower() == &#34;arial&#34;:
+            warnings.warn(&#34;Substitutting Arial by core font Helvetica&#34;)
             family = &#34;helvetica&#34;
         style = style.upper()
         if style == &#34;IB&#34;:
@@ -3079,10 +3087,10 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
     def set_font(self, family, style=&#34;&#34;, size=0):
         &#34;Select a font; size given in points&#34;
-        family = family.lower()
         if family == &#34;&#34;:
             family = self.font_family
-        if family == &#34;arial&#34;:
+        if family.lower() == &#34;arial&#34;:
+            warnings.warn(&#34;Substitutting Arial by core font Helvetica&#34;)
             family = &#34;helvetica&#34;
         elif family in (&#34;symbol&#34;, &#34;zapfdingbats&#34;):
             style = &#34;&#34;
@@ -3126,7 +3134,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
         self.font_size_pt = size
         self.font_size = size / self.k
         self.current_font = self.fonts[fontkey]
-        self.unifontsubset = self.fonts[fontkey][&#34;type&#34;] == &#34;TTF&#34;
+        self.unifontsubset = self.current_font[&#34;type&#34;] == &#34;TTF&#34;
         if self.page &gt; 0:
             self._out(
                 sprintf(&#34;BT /F%d %.2f Tf ET&#34;, self.current_font[&#34;i&#34;], self.font_size_pt)
@@ -3177,6 +3185,8 @@ case insensitive key (the name of the new format) and 2-tuple value of
     @check_page
     def text(self, x, y, txt=&#34;&#34;):
         &#34;Output a string&#34;
+        if not self.font_family:
+            raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
         txt = self.normalize_text(txt)
         if self.unifontsubset:
             txt2 = UTF8ToUTF16BE(escape_parens(txt), False).decode(&#34;latin-1&#34;)
@@ -3276,6 +3286,8 @@ case insensitive key (the name of the new format) and 2-tuple value of
     @check_page
     def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0, link=&#34;&#34;):
         &#34;Output a cell, return boolean if triggered auto page break&#34;
+        if not self.font_family:
+            raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
         page_break_triggered = False
         txt = self.normalize_text(txt)
         k = self.k
@@ -3628,6 +3640,8 @@ case insensitive key (the name of the new format) and 2-tuple value of
     @check_page
     def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         &#34;Output text in flowing mode&#34;
+        if not self.font_family:
+            raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
         txt = self.normalize_text(txt)
         cw = self.current_font[&#34;cw&#34;]
         w = self.w - self.r_margin - self.x
@@ -4759,11 +4773,11 @@ def accept_page_break(self):
 </summary>
 <pre><code class="python">def add_font(self, family, style=&#34;&#34;, fname=None, uni=False):
     &#34;Add a TrueType or Type1 font&#34;
-    family = family.lower()
     if not fname:
         fname = family.replace(&#34; &#34;, &#34;&#34;) + style.lower() + &#34;.pkl&#34;
 
-    if family == &#34;arial&#34;:
+    if family.lower() == &#34;arial&#34;:
+        warnings.warn(&#34;Substitutting Arial by core font Helvetica&#34;)
         family = &#34;helvetica&#34;
     style = style.upper()
     if style == &#34;IB&#34;:
@@ -5004,6 +5018,8 @@ def accept_page_break(self):
 <pre><code class="python">@check_page
 def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0, link=&#34;&#34;):
     &#34;Output a cell, return boolean if triggered auto page break&#34;
+    if not self.font_family:
+        raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
     page_break_triggered = False
     txt = self.normalize_text(txt)
     k = self.k
@@ -6278,10 +6294,10 @@ def rotation(self, angle, x=None, y=None):
 </summary>
 <pre><code class="python">def set_font(self, family, style=&#34;&#34;, size=0):
     &#34;Select a font; size given in points&#34;
-    family = family.lower()
     if family == &#34;&#34;:
         family = self.font_family
-    if family == &#34;arial&#34;:
+    if family.lower() == &#34;arial&#34;:
+        warnings.warn(&#34;Substitutting Arial by core font Helvetica&#34;)
         family = &#34;helvetica&#34;
     elif family in (&#34;symbol&#34;, &#34;zapfdingbats&#34;):
         style = &#34;&#34;
@@ -6325,7 +6341,7 @@ def rotation(self, angle, x=None, y=None):
     self.font_size_pt = size
     self.font_size = size / self.k
     self.current_font = self.fonts[fontkey]
-    self.unifontsubset = self.fonts[fontkey][&#34;type&#34;] == &#34;TTF&#34;
+    self.unifontsubset = self.current_font[&#34;type&#34;] == &#34;TTF&#34;
     if self.page &gt; 0:
         self._out(
             sprintf(&#34;BT /F%d %.2f Tf ET&#34;, self.current_font[&#34;i&#34;], self.font_size_pt)
@@ -6592,6 +6608,8 @@ def rotation(self, angle, x=None, y=None):
 <pre><code class="python">@check_page
 def text(self, x, y, txt=&#34;&#34;):
     &#34;Output a string&#34;
+    if not self.font_family:
+        raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
     txt = self.normalize_text(txt)
     if self.unifontsubset:
         txt2 = UTF8ToUTF16BE(escape_parens(txt), False).decode(&#34;latin-1&#34;)
@@ -6621,6 +6639,8 @@ def text(self, x, y, txt=&#34;&#34;):
 <pre><code class="python">@check_page
 def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
     &#34;Output text in flowing mode&#34;
+    if not self.font_family:
+        raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
     txt = self.normalize_text(txt)
     cw = self.current_font[&#34;cw&#34;]
     w = self.w - self.r_margin - self.x

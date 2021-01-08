@@ -1391,8 +1391,7 @@ to generate a PDF that is easy to compare: annotated, strictly formatted,
 whith uncompressed internal streams.
 You will need to have its binary in your <code>$PATH</code>,
 otherwise <code>assert_pdf_equal</code> will fall back to hash-based comparison.
-In order to generate a "reference" PDF file, simply call <code>assert_pdf_equal</code> once
-with <code>delete=False</code>, and retrieve the generated <code>/tmp/pyfpdf-test-*-actual.pdf</code> file.</p>
+In order to generate a "reference" PDF file, simply call <code>assert_pdf_equal</code> once with <code>generate=True</code>.</p>
 <p>Be sure to see the example tests in the <code>test/</code> folder in general.</p>
 <h2 id="github-pipeline">GitHub pipeline</h2>
 <p>A <a href="https://help.github.com/en/actions/reference">GitHub Actions</a> pipeline
