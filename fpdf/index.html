@@ -1408,7 +1408,7 @@ given.</p></div>
                 PendingDeprecationWarning,
             )
         if name not in self.images:
-            info = get_img_info(image_parsing_load_resource(name))
+            info = get_img_info(load_resource(name))
             info[&#34;i&#34;] = len(self.images) + 1
             self.images[name] = info
         else:
@@ -3166,7 +3166,7 @@ def image(
             PendingDeprecationWarning,
         )
     if name not in self.images:
-        info = get_img_info(image_parsing_load_resource(name))
+        info = get_img_info(load_resource(name))
         info[&#34;i&#34;] = len(self.images) + 1
         self.images[name] = info
     else:
@@ -4574,7 +4574,18 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
             split_only=True,
         )
 
-    def render(self, outfile, dest=&#34;F&#34;):
+    def render(self, outfile=None, dest=None):
+        &#34;&#34;&#34;
+        Args:
+            outfile (str): optional output PDF file path.
+                If ommited, the `.pdf.output(...)` method can be manuallyy called afterwise.
+            dest (str): [**DEPRECATED**] unused, will be removed in a later version
+        &#34;&#34;&#34;
+        if dest:
+            warnings.warn(
+                &#39;&#34;dest&#34; is unused and will soon be deprecated&#39;,
+                PendingDeprecationWarning,
+            )
         pdf = self.pdf
         for pg in range(1, self.pg_no + 1):
             pdf.add_page()
@@ -4593,9 +4604,8 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
                         self.handlers[handler_name](pdf, **element)
                 else:
                     self.handlers[handler_name](pdf, **element)
-        if dest:
-            return pdf.output(outfile, dest)
-        return None
+        if outfile:
+            pdf.output(outfile, dest=&#34;F&#34;)
 
     @staticmethod
     def text(
@@ -5058,15 +5068,33 @@ def write(
 </details>
 </dd>
 <dt id="fpdf.Template.render"><code class="name flex">
-<span>def <span class="ident">render</span></span>(<span>self, outfile, dest='F')</span>
+<span>def <span class="ident">render</span></span>(<span>self, outfile=None, dest=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>outfile</code></strong> :&ensp;<code>str</code></dt>
+<dd>optional output PDF file path.
+If ommited, the <code>.pdf.output(&hellip;)</code> method can be manuallyy called afterwise.</dd>
+<dt><strong><code>dest</code></strong> :&ensp;<code>str</code></dt>
+<dd>[<strong>DEPRECATED</strong>] unused, will be removed in a later version</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def render(self, outfile, dest=&#34;F&#34;):
+<pre><code class="python">def render(self, outfile=None, dest=None):
+    &#34;&#34;&#34;
+    Args:
+        outfile (str): optional output PDF file path.
+            If ommited, the `.pdf.output(...)` method can be manuallyy called afterwise.
+        dest (str): [**DEPRECATED**] unused, will be removed in a later version
+    &#34;&#34;&#34;
+    if dest:
+        warnings.warn(
+            &#39;&#34;dest&#34; is unused and will soon be deprecated&#39;,
+            PendingDeprecationWarning,
+        )
     pdf = self.pdf
     for pg in range(1, self.pg_no + 1):
         pdf.add_page()
@@ -5085,9 +5113,8 @@ def write(
                     self.handlers[handler_name](pdf, **element)
             else:
                 self.handlers[handler_name](pdf, **element)
-    if dest:
-        return pdf.output(outfile, dest)
-    return None</code></pre>
+    if outfile:
+        pdf.output(outfile, dest=&#34;F&#34;)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.Template.set"><code class="name flex">
