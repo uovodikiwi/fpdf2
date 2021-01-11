@@ -291,6 +291,19 @@
       
 
 
+
+  <li class="md-nav__item">
+    <a href="Logging.html" class="md-nav__link">
+      Logging
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
   
 
 
@@ -324,8 +337,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#introduction" class="md-nav__link">
-    Introduction
+  <a href="#history" class="md-nav__link">
+    History
   </a>
   
 </li>
@@ -442,14 +455,14 @@
   <li class="md-nav__item md-nav__item--nested">
     
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-10" type="checkbox" id="nav-10" >
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-11" type="checkbox" id="nav-11" >
     
-    <label class="md-nav__link" for="nav-10">
+    <label class="md-nav__link" for="nav-11">
       ReferenceManual
       <span class="md-nav__icon md-icon"></span>
     </label>
     <nav class="md-nav" aria-label="ReferenceManual" data-md-level="1">
-      <label class="md-nav__title" for="nav-10">
+      <label class="md-nav__title" for="nav-11">
         <span class="md-nav__icon md-icon"></span>
         ReferenceManual
       </label>
@@ -1214,8 +1227,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#introduction" class="md-nav__link">
-    Introduction
+  <a href="#history" class="md-nav__link">
+    History
   </a>
   
 </li>
@@ -1294,10 +1307,11 @@
                 
                 
                 <h1 id="development">Development</h1>
+<p>This page has summary information about developing the PyPDF library.</p>
 <div class="toc">
 <ul>
 <li><a href="#development">Development</a><ul>
-<li><a href="#introduction">Introduction</a></li>
+<li><a href="#history">History</a></li>
 <li><a href="#repository-structure">Repository structure</a></li>
 <li><a href="#code-auto-formatting">Code auto-formatting</a></li>
 <li><a href="#linting">Linting</a></li>
@@ -1310,15 +1324,14 @@
 </li>
 </ul>
 </div>
-<h2 id="introduction">Introduction</h2>
-<p>This page has summary information about developing the PyPDF library.</p>
-<p>This project, fpdf2 is a [FORK] of the PyFPDF project, which can be found
+<h2 id="history">History</h2>
+<p>This project, <code>fpdf2</code> is a [FORK] of the PyFPDF project, which can be found
 <a href="https://github.com/reingart/pyfpdf">on GitHub at reingart/pyfpdf</a>.
 It is made in order to keep the library updated and fulfill the goals of its
 <a href="https://github.com/reingart/pyfpdf/wiki/Roadmap">Roadmap</a> and a general overhaul of
 the codebase because there was technical debt keeping features from being
 created and bugs from being eradicated.</p>
-<p>More on pyfpdf:</p>
+<p>More on PyFPDF:</p>
 <blockquote>
 <p>This project started as Python fork of the <a href="http://fpdf.org/">FPDF</a> PHP library. 
 Later, code for native reading TTF fonts was added. FPDF has not been updated since
@@ -1359,20 +1372,20 @@ or globally through the <code>.pylintrc</code> file.</p>
 <p>If you use a UNIX system, you can place the following shell code
 in <code>.git/hooks/pre-commit</code> in order to always invoke <code>black</code> &amp; <code>pylint</code>
 before every commit:</p>
-<pre><code class="language-shell">#!/bin/bash
-git_cached_names() { git diff --cached --name-only --diff-filter=ACM; }
-modified_py_files=$(git_cached_names | grep '.py$')
-modified_fpdf_files=$(git_cached_names | grep ^fpdf | grep '.py$')
-# if python files modified, format
-if [ -n &quot;$modified_py_files&quot; ]; then
-    if ! black --check $modified_py_files; then
-        black $modified_py_files
-        exit 1
-    fi
-    # if core files modified, lint
-    [[ $modified_fpdf_files == &quot;&quot; ]] || pylint $modified_fpdf_files
-fi
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+git_cached_names<span class="o">()</span> <span class="o">{</span> git diff --cached --name-only --diff-filter<span class="o">=</span>ACM<span class="p">;</span> <span class="o">}</span>
+<span class="nv">modified_py_files</span><span class="o">=</span><span class="k">$(</span>git_cached_names <span class="p">|</span> grep <span class="s1">&#39;.py$&#39;</span><span class="k">)</span>
+<span class="nv">modified_fpdf_files</span><span class="o">=</span><span class="k">$(</span>git_cached_names <span class="p">|</span> grep ^fpdf <span class="p">|</span> grep <span class="s1">&#39;.py$&#39;</span><span class="k">)</span>
+<span class="c1"># if python files modified, format</span>
+<span class="k">if</span> <span class="o">[</span> -n <span class="s2">&quot;</span><span class="nv">$modified_py_files</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="k">if</span> ! black --check <span class="nv">$modified_py_files</span><span class="p">;</span> <span class="k">then</span>
+        black <span class="nv">$modified_py_files</span>
+        <span class="nb">exit</span> <span class="m">1</span>
+    <span class="k">fi</span>
+    <span class="c1"># if core files modified, lint</span>
+    <span class="o">[[</span> <span class="nv">$modified_fpdf_files</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="o">]]</span> <span class="o">||</span> pylint <span class="nv">$modified_fpdf_files</span>
+<span class="k">fi</span>
+</code></pre></div>
 <p>It will abort the commit if <code>pylint</code> found issues
 or <code>black</code> detect non-properly formatted code.
 In the later case though, it will auto-format your code
@@ -1412,9 +1425,12 @@ in the project <a href="https://alexanderankin.github.io/pyfpdf/fpdf/">home page
 <a href="https://alexanderankin.github.io/pyfpdf/">GitHub Pages</a>.</p>
 <p>There is a useful one-page example Python module with docstrings illustrating how to document code:
 <a href="https://github.com/pdoc3/pdoc/blob/master/pdoc/test/example_pkg/__init__.py">pdoc3 example_pkg</a>.</p>
-<p>To preview the API documentation generated by <code>pdoc</code>, launch a local rendering server with:</p>
-<pre><code>pdoc --html -o public/ fpdf --http :
-</code></pre>
+<p>To preview the Markdown documentation, launch a local rendering server with:</p>
+<div class="highlight"><pre><span></span><code>mkdocs serve
+</code></pre></div>
+<p>To preview the API documentation, launch a local rendering server with:</p>
+<div class="highlight"><pre><span></span><code>pdoc --html -o public/ fpdf --http :
+</code></pre></div>
 <h2 id="see-also">See also</h2>
 <p><a href="index.html">Project Home</a>, <a href="FAQ.html">Frequently asked questions</a>, 
 <a href="Unicode.html">Unicode</a>.</p>
@@ -1436,7 +1452,7 @@ in the project <a href="https://alexanderankin.github.io/pyfpdf/fpdf/">home page
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="FAQ.html" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="Logging.html" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -1445,7 +1461,7 @@ in the project <a href="https://alexanderankin.github.io/pyfpdf/fpdf/">home page
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                FAQ
+                Logging
               </div>
             </div>
           </a>

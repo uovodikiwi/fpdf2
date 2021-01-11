@@ -293,6 +293,19 @@
 
 
   <li class="md-nav__item">
+    <a href="Logging.html" class="md-nav__link">
+      Logging
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
     <a href="Development.html" class="md-nav__link">
       Development
     </a>
@@ -400,14 +413,14 @@
   <li class="md-nav__item md-nav__item--nested">
     
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-10" type="checkbox" id="nav-10" >
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-11" type="checkbox" id="nav-11" >
     
-    <label class="md-nav__link" for="nav-10">
+    <label class="md-nav__link" for="nav-11">
       ReferenceManual
       <span class="md-nav__icon md-icon"></span>
     </label>
     <nav class="md-nav" aria-label="ReferenceManual" data-md-level="1">
-      <label class="md-nav__title" for="nav-10">
+      <label class="md-nav__title" for="nav-11">
         <span class="md-nav__icon md-icon"></span>
         ReferenceManual
       </label>
@@ -1267,73 +1280,73 @@ of <a href="reference/add_font.html">add_font</a>.</p>
 <h2 id="example">Example</h2>
 <p>This example uses several free fonts to display some Unicode strings. Be sure to
 install the fonts in the <code>font</code> directory first.</p>
-<pre><code class="language-python">#!/usr/bin/env python
-# -*- coding: utf8 -*-
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf8 -*-</span>
 
-from fpdf import FPDF
+<span class="kn">from</span> <span class="nn">fpdf</span> <span class="kn">import</span> <span class="n">FPDF</span>
 
-pdf = FPDF()
-pdf.add_page()
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">FPDF</span><span class="p">()</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
 
-# Add a DejaVu Unicode font (uses UTF-8)
-# Supports more than 200 languages. For a coverage status see:
-# http://dejavu.svn.sourceforge.net/viewvc/dejavu/trunk/dejavu-fonts/langcover.txt
-pdf.add_font('DejaVu', '', 'DejaVuSansCondensed.ttf', uni=True)
-pdf.set_font('DejaVu', '', 14)
+<span class="c1"># Add a DejaVu Unicode font (uses UTF-8)</span>
+<span class="c1"># Supports more than 200 languages. For a coverage status see:</span>
+<span class="c1"># http://dejavu.svn.sourceforge.net/viewvc/dejavu/trunk/dejavu-fonts/langcover.txt</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">add_font</span><span class="p">(</span><span class="s1">&#39;DejaVu&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;DejaVuSansCondensed.ttf&#39;</span><span class="p">,</span> <span class="n">uni</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;DejaVu&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
 
-text = u&quot;&quot;&quot;
-English: Hello World
-Greek: Γειά σου κόσμος
-Polish: Witaj świecie
-Portuguese: Olá mundo
-Russian: Здравствуй, Мир
-Vietnamese: Xin chào thế giới
-Arabic: مرحبا العالم
-Hebrew: שלום עולם
-&quot;&quot;&quot;
+<span class="n">text</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">English: Hello World</span>
+<span class="s2">Greek: Γειά σου κόσμος</span>
+<span class="s2">Polish: Witaj świecie</span>
+<span class="s2">Portuguese: Olá mundo</span>
+<span class="s2">Russian: Здравствуй, Мир</span>
+<span class="s2">Vietnamese: Xin chào thế giới</span>
+<span class="s2">Arabic: مرحبا العالم</span>
+<span class="s2">Hebrew: שלום עולם</span>
+<span class="s2">&quot;&quot;&quot;</span>
 
-for txt in text.split('\n'):
-    pdf.write(8, txt)
-    pdf.ln(8)
+<span class="k">for</span> <span class="n">txt</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">txt</span><span class="p">)</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">ln</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
 
-# Add a Indic Unicode font (uses UTF-8)
-# Supports: Bengali, Devanagari, Gujarati, 
-#           Gurmukhi (including the variants for Punjabi) 
-#           Kannada, Malayalam, Oriya, Tamil, Telugu, Tibetan
-pdf.add_font('gargi', '', 'gargi.ttf', uni=True) 
-pdf.set_font('gargi', '', 14)
-pdf.write(8, u'Hindi: नमस्ते दुनिया')
-pdf.ln(20)
+<span class="c1"># Add a Indic Unicode font (uses UTF-8)</span>
+<span class="c1"># Supports: Bengali, Devanagari, Gujarati, </span>
+<span class="c1">#           Gurmukhi (including the variants for Punjabi) </span>
+<span class="c1">#           Kannada, Malayalam, Oriya, Tamil, Telugu, Tibetan</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">add_font</span><span class="p">(</span><span class="s1">&#39;gargi&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;gargi.ttf&#39;</span><span class="p">,</span> <span class="n">uni</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+<span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;gargi&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Hindi: नमस्ते दुनिया&#39;</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">ln</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
 
-# Add a AR PL New Sung Unicode font (uses UTF-8)
-# The Open Source Chinese Font (also supports other east Asian languages)
-pdf.add_font('fireflysung', '', 'fireflysung.ttf', uni=True)
-pdf.set_font('fireflysung', '', 14)
-pdf.write(8, u'Chinese: 你好世界\n')
-pdf.write(8, u'Japanese: こんにちは世界\n')
-pdf.ln(10)
+<span class="c1"># Add a AR PL New Sung Unicode font (uses UTF-8)</span>
+<span class="c1"># The Open Source Chinese Font (also supports other east Asian languages)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">add_font</span><span class="p">(</span><span class="s1">&#39;fireflysung&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;fireflysung.ttf&#39;</span><span class="p">,</span> <span class="n">uni</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;fireflysung&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Chinese: 你好世界</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Japanese: こんにちは世界</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">ln</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 
-# Add a Alee Unicode font (uses UTF-8)
-# General purpose Hangul truetype fonts that contain Korean syllable 
-# and Latin9 (iso8859-15) characters.
-pdf.add_font('eunjin', '', 'Eunjin.ttf', uni=True)
-pdf.set_font('eunjin', '', 14)
-pdf.write(8, u'Korean: 안녕하세요')
-pdf.ln(20)
+<span class="c1"># Add a Alee Unicode font (uses UTF-8)</span>
+<span class="c1"># General purpose Hangul truetype fonts that contain Korean syllable </span>
+<span class="c1"># and Latin9 (iso8859-15) characters.</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">add_font</span><span class="p">(</span><span class="s1">&#39;eunjin&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;Eunjin.ttf&#39;</span><span class="p">,</span> <span class="n">uni</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;eunjin&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Korean: 안녕하세요&#39;</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">ln</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
 
-# Add a Fonts-TLWG (formerly ThaiFonts-Scalable) (uses UTF-8)
-pdf.add_font('waree', '', 'Waree.ttf', uni=True)
-pdf.set_font('waree', '', 14)
-pdf.write(8, u'Thai: สวัสดีชาวโลก')
-pdf.ln(20)
+<span class="c1"># Add a Fonts-TLWG (formerly ThaiFonts-Scalable) (uses UTF-8)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">add_font</span><span class="p">(</span><span class="s1">&#39;waree&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;Waree.ttf&#39;</span><span class="p">,</span> <span class="n">uni</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;waree&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Thai: สวัสดีชาวโลก&#39;</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">ln</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
 
-# Select a standard font (uses windows-1252)
-pdf.set_font('Arial', '', 14)
-pdf.ln(10)
-pdf.write(5, 'This is standard built-in font')
+<span class="c1"># Select a standard font (uses windows-1252)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">ln</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;This is standard built-in font&#39;</span><span class="p">)</span>
 
-pdf.output(&quot;unicode.pdf&quot;, 'F')
-</code></pre>
+<span class="n">pdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s2">&quot;unicode.pdf&quot;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">)</span>
+</code></pre></div>
 <p>View the result here: 
 <a href="https://github.com/reingart/pyfpdf/raw/master/tutorial/unicode.pdf">unicode.pdf</a></p>
 <h2 id="metric-files">Metric Files</h2>

@@ -293,6 +293,19 @@
 
 
   <li class="md-nav__item">
+    <a href="../Logging.html" class="md-nav__link">
+      Logging
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
     <a href="../Development.html" class="md-nav__link">
       Development
     </a>
@@ -350,14 +363,14 @@
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-10" type="checkbox" id="nav-10" checked>
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-11" type="checkbox" id="nav-11" checked>
     
-    <label class="md-nav__link" for="nav-10">
+    <label class="md-nav__link" for="nav-11">
       ReferenceManual
       <span class="md-nav__icon md-icon"></span>
     </label>
     <nav class="md-nav" aria-label="ReferenceManual" data-md-level="1">
-      <label class="md-nav__title" for="nav-10">
+      <label class="md-nav__title" for="nav-11">
         <span class="md-nav__icon md-icon"></span>
         ReferenceManual
       </label>
@@ -1248,8 +1261,8 @@
                   <h1>write</h1>
                 
                 <h2 id="write">write</h2>
-<pre><code class="language-python">write(h: float, txt: str, link)
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">write</span><span class="p">(</span><span class="n">h</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">txt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">link</span><span class="p">)</span>
+</code></pre></div>
 <h3 id="description">Description</h3>
 <p>This method prints text from the current position. When the right margin is 
 reached (or the \n character is met), a line break occurs and text continues 
@@ -1270,14 +1283,14 @@ the end of the text.</p>
 <p>URL or identifier returned by <a href="add_link.html">add_link</a>.</p>
 </blockquote>
 <h3 id="example">Example</h3>
-<pre><code class="language-python"># Begin with regular font
-pdf.set_font('Arial', '', 14)
-pdf.write(5, 'Visit ')
-# Then put a blue underlined link
-pdf.set_text_color(0, 0, 255)
-pdf.set_font('', 'U')
-pdf.write(5, 'www.fpdf.org', 'http://www.fpdf.org')
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="c1"># Begin with regular font</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;Visit &#39;</span><span class="p">)</span>
+<span class="c1"># Then put a blue underlined link</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">set_text_color</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;www.fpdf.org&#39;</span><span class="p">,</span> <span class="s1">&#39;http://www.fpdf.org&#39;</span><span class="p">)</span>
+</code></pre></div>
 <h3 id="see-also">See also</h3>
 <p><a href="set_doc_option.html">set_doc_option</a>, <a href="set_font.html">set_font</a>, 
 <a href="set_text_color.html">set_text_color</a>, <a href="add_link.html">add_link</a>, 

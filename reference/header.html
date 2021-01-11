@@ -293,6 +293,19 @@
 
 
   <li class="md-nav__item">
+    <a href="../Logging.html" class="md-nav__link">
+      Logging
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
     <a href="../Development.html" class="md-nav__link">
       Development
     </a>
@@ -350,14 +363,14 @@
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-10" type="checkbox" id="nav-10" checked>
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-11" type="checkbox" id="nav-11" checked>
     
-    <label class="md-nav__link" for="nav-10">
+    <label class="md-nav__link" for="nav-11">
       ReferenceManual
       <span class="md-nav__icon md-icon"></span>
     </label>
     <nav class="md-nav" aria-label="ReferenceManual" data-md-level="1">
-      <label class="md-nav__title" for="nav-10">
+      <label class="md-nav__title" for="nav-11">
         <span class="md-nav__icon md-icon"></span>
         ReferenceManual
       </label>
@@ -1234,22 +1247,22 @@
                   <h1>header</h1>
                 
                 <h2 id="header">header</h2>
-<pre><code class="language-python">fpdf.header()
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">fpdf</span><span class="o">.</span><span class="n">header</span><span class="p">()</span>
+</code></pre></div>
 <h3 id="description">Description</h3>
 <p>This method is used to render the page header. It is automatically called by <a href="add_page.html">add_page</a> and should not be called directly by the application. The implementation in FPDF is empty, so you have to subclass it and override the method if you want a specific processing.</p>
 <h3 id="example">Example</h3>
-<pre><code class="language-python">class PDF(FPDF):
-    def header(self):
-        # Select Arial bold 15
-        self.set_font('Arial', 'B', 15)
-        # Move to the right
-        self.cell(80)
-        # Framed title
-        self.cell(30, 10, 'Title', 1, 0, 'C')
-        # Line break
-        self.ln(20)
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">PDF</span><span class="p">(</span><span class="n">FPDF</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Select Arial bold 15</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+        <span class="c1"># Move to the right</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span>
+        <span class="c1"># Framed title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Title&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span>
+        <span class="c1"># Line break</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ln</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+</code></pre></div>
 <h3 id="see-also">See also</h3>
 <p><a href="add_page.html">add_page</a>, <a href="footer.html">footer</a>.</p>
                 

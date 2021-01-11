@@ -263,13 +263,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#installation-notes" class="md-nav__link">
-    Installation Notes
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -352,6 +345,19 @@
 
 
   <li class="md-nav__item">
+    <a href="Logging.html" class="md-nav__link">
+      Logging
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
     <a href="Development.html" class="md-nav__link">
       Development
     </a>
@@ -407,14 +413,14 @@
   <li class="md-nav__item md-nav__item--nested">
     
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-10" type="checkbox" id="nav-10" >
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-11" type="checkbox" id="nav-11" >
     
-    <label class="md-nav__link" for="nav-10">
+    <label class="md-nav__link" for="nav-11">
       ReferenceManual
       <span class="md-nav__icon md-icon"></span>
     </label>
     <nav class="md-nav" aria-label="ReferenceManual" data-md-level="1">
-      <label class="md-nav__title" for="nav-10">
+      <label class="md-nav__title" for="nav-11">
         <span class="md-nav__icon md-icon"></span>
         ReferenceManual
       </label>
@@ -1199,13 +1205,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#installation-notes" class="md-nav__link">
-    Installation Notes
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1231,28 +1230,27 @@
 <li><a href="#minimal-example">Minimal Example</a></li>
 <li><a href="#header-footer-page-break-and-image">Header, footer, page break and image</a></li>
 <li><a href="#line-breaks-and-colors">Line breaks and colors</a></li>
-<li><a href="#installation-notes">Installation Notes</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <h2 id="minimal-example">Minimal Example</h2>
 <p>Let's start with the classic example:</p>
-<pre><code class="language-python">from fpdf import FPDF
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fpdf</span> <span class="kn">import</span> <span class="n">FPDF</span>
 
-pdf = FPDF()
-pdf.add_page()
-pdf.set_font('Arial', 'B', 16)
-pdf.cell(40, 10, 'Hello World!')
-pdf.output('tuto1.pdf', 'F')
-</code></pre>
-<p><a href="https://github.com/reingart/pyfpdf/raw/master/tutorial/tuto1.pdf">Demo</a></p>
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">FPDF</span><span class="p">()</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Hello World!&#39;</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;tuto1.pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><a href="https://github.com/alexanderankin/pyfpdf/raw/master/tutorial/tuto1.pdf">Demo</a></p>
 <p>After including the library file, we create an FPDF object. The 
 <a href="reference/FPDF.html">FPDF</a> constructor is used here with the default values: 
 pages are in A4 portrait and the measure unit is millimeter. It could have been
 specified explicitly with:</p>
-<pre><code class="language-python">pdf = FPDF('P', 'mm', 'A4')
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">pdf</span> <span class="o">=</span> <span class="n">FPDF</span><span class="p">(</span><span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;mm&#39;</span><span class="p">,</span> <span class="s1">&#39;A4&#39;</span><span class="p">)</span>
+</code></pre></div>
 <p>It is possible to use landscape (<code>L</code>), other page formats (such as <code>Letter</code> and
  <code>Legal</code>) and measure units (<code>pt</code>, <code>cm</code>, <code>in</code>).</p>
 <p>There is no page for the moment, so we have to add one with 
@@ -1262,8 +1260,8 @@ be changed with <a href="reference/set_margins.html">set_margins</a>.</p>
 <p>Before we can print text, it is mandatory to select a font with 
 <a href="reference/set_font.html">set_font</a>, otherwise the document would be invalid. We
 choose Arial bold 16:</p>
-<pre><code class="language-python">pdf.set_font('Arial', 'B', 16)
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+</code></pre></div>
 <p>We could have specified italics with <code>I</code>, underlined with <code>U</code> or a regular font
 with an empty string (or any combination). Note that the font size is given in
 points, not millimeters (or another user unit); it is the only exception. The
@@ -1273,12 +1271,12 @@ area, possibly framed, which contains some text. It is output at the current
 position. We specify its dimensions, its text (centered or aligned), if borders
 should be drawn, and where the current position moves after it (to the right,
 below or to the beginning of the next line). To add a frame, we would do this:</p>
-<pre><code class="language-python">pdf.cell(40, 10, 'Hello World!', 1)
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">pdf</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Hello World!&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
 <p>To add a new cell next to it with centered text and go to the next line, we
 would do:</p>
-<pre><code class="language-python">pdf.cell(60, 10, 'Powered by FPDF.', 0, 1, 'C')
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">pdf</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Powered by FPDF.&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span>
+</code></pre></div>
 <p><strong>Remark</strong>: the line break can also be done with <a href="reference/ln.html">ln</a>. This
 method allows to specify in addition the height of the break.</p>
 <p>Finally, the document is closed and sent to the browser with
@@ -1291,40 +1289,40 @@ already been output to browser, can't send PDF file". If you send after, your
 browser may display a blank page.</p>
 <h2 id="header-footer-page-break-and-image">Header, footer, page break and image</h2>
 <p>Here is a two page example with header, footer and logo:</p>
-<pre><code class="language-python">from fpdf import FPDF
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fpdf</span> <span class="kn">import</span> <span class="n">FPDF</span>
 
-class PDF(FPDF):
-    def header(self):
-        # Logo
-        self.image('logo_pb.png', 10, 8, 33)
-        # Arial bold 15
-        self.set_font('Arial', 'B', 15)
-        # Move to the right
-        self.cell(80)
-        # Title
-        self.cell(30, 10, 'Title', 1, 0, 'C')
-        # Line break
-        self.ln(20)
+<span class="k">class</span> <span class="nc">PDF</span><span class="p">(</span><span class="n">FPDF</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Logo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;logo_pb.png&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">33</span><span class="p">)</span>
+        <span class="c1"># Arial bold 15</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+        <span class="c1"># Move to the right</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span>
+        <span class="c1"># Title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Title&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span>
+        <span class="c1"># Line break</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ln</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
 
-    # Page footer
-    def footer(self):
-        # Position at 1.5 cm from bottom
-        self.set_y(-15)
-        # Arial italic 8
-        self.set_font('Arial', 'I', 8)
-        # Page number
-        self.cell(0, 10, 'Page ' + str(self.page_no()) + '/{nb}', 0, 0, 'C')
+    <span class="c1"># Page footer</span>
+    <span class="k">def</span> <span class="nf">footer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Position at 1.5 cm from bottom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_y</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">)</span>
+        <span class="c1"># Arial italic 8</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="c1"># Page number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Page &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page_no</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39;/</span><span class="si">{nb}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span>
 
-# Instantiation of inherited class
-pdf = PDF()
-pdf.alias_nb_pages()
-pdf.add_page()
-pdf.set_font('Times', '', 12)
-for i in range(1, 41):
-    pdf.cell(0, 10, 'Printing line number ' + str(i), 0, 1)
-pdf.output('tuto2.pdf', 'F')
-</code></pre>
-<p><a href="https://github.com/reingart/pyfpdf/raw/master/tutorial/tuto2.pdf">Demo</a></p>
+<span class="c1"># Instantiation of inherited class</span>
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">alias_nb_pages</span><span class="p">()</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Times&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">41</span><span class="p">):</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Printing line number &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;tuto2.pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><a href="https://github.com/alexanderankin/pyfpdf/raw/master/tutorial/tuto2.pdf">Demo</a></p>
 <p>This example makes use of the <a href="reference/header.html">header</a> and 
 <a href="reference/footer.html">footer</a> methods to process page headers and footers. They
 are called automatically. They already exist in the FPDF class but do nothing,
@@ -1352,75 +1350,75 @@ limit which triggers page breaks can be set with
 <h2 id="line-breaks-and-colors">Line breaks and colors</h2>
 <p>Let's continue with an example which prints justified paragraphs. It also
 illustrates the use of colors.</p>
-<pre><code class="language-python">from fpdf import FPDF
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fpdf</span> <span class="kn">import</span> <span class="n">FPDF</span>
 
-title = '20000 Leagues Under the Seas'
+<span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;20000 Leagues Under the Seas&#39;</span>
 
-class PDF(FPDF):
-    def header(self):
-        # Arial bold 15
-        self.set_font('Arial', 'B', 15)
-        # Calculate width of title and position
-        w = self.get_string_width(title) + 6
-        self.set_x((210 - w) / 2)
-        # Colors of frame, background and text
-        self.set_draw_color(0, 80, 180)
-        self.set_fill_color(230, 230, 0)
-        self.set_text_color(220, 50, 50)
-        # Thickness of frame (1 mm)
-        self.set_line_width(1)
-        # Title
-        self.cell(w, 9, title, 1, 1, 'C', 1)
-        # Line break
-        self.ln(10)
+<span class="k">class</span> <span class="nc">PDF</span><span class="p">(</span><span class="n">FPDF</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Arial bold 15</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+        <span class="c1"># Calculate width of title and position</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_string_width</span><span class="p">(</span><span class="n">title</span><span class="p">)</span> <span class="o">+</span> <span class="mi">6</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_x</span><span class="p">((</span><span class="mi">210</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="c1"># Colors of frame, background and text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_draw_color</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_fill_color</span><span class="p">(</span><span class="mi">230</span><span class="p">,</span> <span class="mi">230</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_text_color</span><span class="p">(</span><span class="mi">220</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+        <span class="c1"># Thickness of frame (1 mm)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_line_width</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Line break</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ln</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 
-    def footer(self):
-        # Position at 1.5 cm from bottom
-        self.set_y(-15)
-        # Arial italic 8
-        self.set_font('Arial', 'I', 8)
-        # Text color in gray
-        self.set_text_color(128)
-        # Page number
-        self.cell(0, 10, 'Page ' + str(self.page_no()), 0, 0, 'C')
+    <span class="k">def</span> <span class="nf">footer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Position at 1.5 cm from bottom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_y</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">)</span>
+        <span class="c1"># Arial italic 8</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="c1"># Text color in gray</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_text_color</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span>
+        <span class="c1"># Page number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Page &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page_no</span><span class="p">()),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span>
 
-    def chapter_title(self, num, label):
-        # Arial 12
-        self.set_font('Arial', '', 12)
-        # Background color
-        self.set_fill_color(200, 220, 255)
-        # Title
-        self.cell(0, 6, 'Chapter %d : %s' % (num, label), 0, 1, 'L', 1)
-        # Line break
-        self.ln(4)
+    <span class="k">def</span> <span class="nf">chapter_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="c1"># Arial 12</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+        <span class="c1"># Background color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_fill_color</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">220</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+        <span class="c1"># Title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;Chapter </span><span class="si">%d</span><span class="s1"> : </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">label</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Line break</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ln</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 
-    def chapter_body(self, name):
-        # Read text file
-        with open(name, 'rb') as fh:
-            txt = fh.read().decode('latin-1')
-        # Times 12
-        self.set_font('Times', '', 12)
-        # Output justified text
-        self.multi_cell(0, 5, txt)
-        # Line break
-        self.ln()
-        # Mention in italics
-        self.set_font('', 'I')
-        self.cell(0, 5, '(end of excerpt)')
+    <span class="k">def</span> <span class="nf">chapter_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="c1"># Read text file</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">txt</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;latin-1&#39;</span><span class="p">)</span>
+        <span class="c1"># Times 12</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Times&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+        <span class="c1"># Output justified text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">multi_cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">txt</span><span class="p">)</span>
+        <span class="c1"># Line break</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ln</span><span class="p">()</span>
+        <span class="c1"># Mention in italics</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;(end of excerpt)&#39;</span><span class="p">)</span>
 
-    def print_chapter(self, num, title, name):
-        self.add_page()
-        self.chapter_title(num, title)
-        self.chapter_body(name)
+    <span class="k">def</span> <span class="nf">print_chapter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chapter_title</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chapter_body</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-pdf = PDF()
-pdf.set_title(title)
-pdf.set_author('Jules Verne')
-pdf.print_chapter(1, 'A RUNAWAY REEF', '20k_c1.txt')
-pdf.print_chapter(2, 'THE PROS AND CONS', '20k_c2.txt')
-pdf.output('tuto3.pdf', 'F')
-</code></pre>
-<p><a href="https://github.com/reingart/pyfpdf/raw/master/tutorial/tuto3.pdf">Demo</a></p>
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">set_author</span><span class="p">(</span><span class="s1">&#39;Jules Verne&#39;</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">print_chapter</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;A RUNAWAY REEF&#39;</span><span class="p">,</span> <span class="s1">&#39;20k_c1.txt&#39;</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">print_chapter</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;THE PROS AND CONS&#39;</span><span class="p">,</span> <span class="s1">&#39;20k_c2.txt&#39;</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;tuto3.pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><a href="https://github.com/alexanderankin/pyfpdf/raw/master/tutorial/tuto3.pdf">Demo</a></p>
 <p>The <a href="reference/get_string_width.html">get_string_width</a> method allows determining
 the length of a string in the current font, which is used here to calculate the
 position and the width of the frame surrounding the title. Then colors are set
@@ -1440,13 +1438,6 @@ under the current one. Text is justified by default.</p>
 First is to open the document directly with Acrobat Reader, go to the File menu
 and choose the Document Properties option. The second, also available from the
 plug-in, is to right-click and select Document Properties.</p>
-<h2 id="installation-notes">Installation Notes</h2>
-<p>Previously, to import the object you should use the pyfpdf package:</p>
-<pre><code class="language-python">from pyfpdf import FPDF
-</code></pre>
-<p>After version 1.7, to import it you should use the fpdf package:</p>
-<pre><code class="language-python">from fpdf import FPDF
-</code></pre>
                 
               
               

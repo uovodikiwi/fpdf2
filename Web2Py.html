@@ -293,6 +293,19 @@
 
 
   <li class="md-nav__item">
+    <a href="Logging.html" class="md-nav__link">
+      Logging
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
     <a href="Development.html" class="md-nav__link">
       Development
     </a>
@@ -357,14 +370,14 @@
   <li class="md-nav__item md-nav__item--nested">
     
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-10" type="checkbox" id="nav-10" >
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-11" type="checkbox" id="nav-11" >
     
-    <label class="md-nav__link" for="nav-10">
+    <label class="md-nav__link" for="nav-11">
       ReferenceManual
       <span class="md-nav__icon md-icon"></span>
     </label>
     <nav class="md-nav" aria-label="ReferenceManual" data-md-level="1">
-      <label class="md-nav__title" for="nav-10">
+      <label class="md-nav__title" for="nav-11">
         <span class="md-nav__icon md-icon"></span>
         ReferenceManual
       </label>
@@ -1154,53 +1167,52 @@
 <li><a href="http://www.web2py.com.ar/fpdf/default/report">http://www.web2py.com.ar/fpdf/default/report</a></li>
 <li><a href="http://www.web2py.com.ar/fpdf/default/report.pdf">http://www.web2py.com.ar/fpdf/default/report.pdf</a></li>
 </ul>
-<pre><code class="language-python">def report():
-    response.title = &quot;web2py sample report&quot;
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">report</span><span class="p">():</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;web2py sample report&quot;</span>
 
-    # include a google chart (download it dynamically!)
-    url = &quot;http://chart.apis.google.com/chart?cht=p3&amp;chd=t:60,40&amp;chs=500x200&amp;chl=Hello|World&amp;.png&quot;
-    chart = IMG(_src=url, _width=&quot;250&quot;, _height=&quot;100&quot;)
+    <span class="c1"># include a google chart (download it dynamically!)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://chart.apis.google.com/chart?cht=p3&amp;chd=t:60,40&amp;chs=500x200&amp;chl=Hello|World&amp;.png&quot;</span>
+    <span class="n">chart</span> <span class="o">=</span> <span class="n">IMG</span><span class="p">(</span><span class="n">_src</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">_width</span><span class="o">=</span><span class="s2">&quot;250&quot;</span><span class="p">,</span> <span class="n">_height</span><span class="o">=</span><span class="s2">&quot;100&quot;</span><span class="p">)</span>
 
-    # create a small table with some data:
-    rows = [THEAD(TR(TH(&quot;Key&quot;, _width=&quot;70%&quot;), TH(&quot;Value&quot;, _width=&quot;30%&quot;))),
-            TBODY(TR(TD(&quot;Hello&quot;), TD(&quot;60&quot;)), 
-                  TR(TD(&quot;World&quot;), TD(&quot;40&quot;)))]
-    table = TABLE(*rows, _border=&quot;0&quot;, _align=&quot;center&quot;, _width=&quot;50%&quot;)
+    <span class="c1"># create a small table with some data:</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">THEAD</span><span class="p">(</span><span class="n">TR</span><span class="p">(</span><span class="n">TH</span><span class="p">(</span><span class="s2">&quot;Key&quot;</span><span class="p">,</span> <span class="n">_width</span><span class="o">=</span><span class="s2">&quot;70%&quot;</span><span class="p">),</span> <span class="n">TH</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">,</span> <span class="n">_width</span><span class="o">=</span><span class="s2">&quot;30%&quot;</span><span class="p">))),</span>
+            <span class="n">TBODY</span><span class="p">(</span><span class="n">TR</span><span class="p">(</span><span class="n">TD</span><span class="p">(</span><span class="s2">&quot;Hello&quot;</span><span class="p">),</span> <span class="n">TD</span><span class="p">(</span><span class="s2">&quot;60&quot;</span><span class="p">)),</span> 
+                  <span class="n">TR</span><span class="p">(</span><span class="n">TD</span><span class="p">(</span><span class="s2">&quot;World&quot;</span><span class="p">),</span> <span class="n">TD</span><span class="p">(</span><span class="s2">&quot;40&quot;</span><span class="p">)))]</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">TABLE</span><span class="p">(</span><span class="o">*</span><span class="n">rows</span><span class="p">,</span> <span class="n">_border</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">_align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">_width</span><span class="o">=</span><span class="s2">&quot;50%&quot;</span><span class="p">)</span>
 
-    if request.extension == &quot;pdf&quot;:
-        from gluon.contrib.pyfpdf import FPDF, HTMLMixin
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="s2">&quot;pdf&quot;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">gluon.contrib.pyfpdf</span> <span class="kn">import</span> <span class="n">FPDF</span><span class="p">,</span> <span class="n">HTMLMixin</span>
 
-        # create a custom class with the required functionality 
-        class MyFPDF(FPDF, HTMLMixin):
-            def header(self): 
-                &quot;hook to draw custom page header (logo and title)&quot;
-                logo = os.path.join(request.env.web2py_path, &quot;gluon&quot;, &quot;contrib&quot;, &quot;pyfpdf&quot;, &quot;tutorial&quot;, &quot;logo_pb.png&quot;)
-                self.image(logo, 10, 8, 33)
-                self.set_font('Arial', 'B', 15)
-                self.cell(65) # padding
-                self.cell(60, 10, response.title, 1, 0, 'C')
-                self.ln(20)
+        <span class="c1"># create a custom class with the required functionality </span>
+        <span class="k">class</span> <span class="nc">MyFPDF</span><span class="p">(</span><span class="n">FPDF</span><span class="p">,</span> <span class="n">HTMLMixin</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+                <span class="s2">&quot;hook to draw custom page header (logo and title)&quot;</span>
+                <span class="n">logo</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">web2py_path</span><span class="p">,</span> <span class="s2">&quot;gluon&quot;</span><span class="p">,</span> <span class="s2">&quot;contrib&quot;</span><span class="p">,</span> <span class="s2">&quot;pyfpdf&quot;</span><span class="p">,</span> <span class="s2">&quot;tutorial&quot;</span><span class="p">,</span> <span class="s2">&quot;logo_pb.png&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">logo</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">33</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span> <span class="c1"># padding</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ln</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
 
-            def footer(self):
-                &quot;hook to draw custom page footer (printing page numbers)&quot;
-                self.set_y(-15)
-                self.set_font('Arial', 'I', 8)
-                txt = 'Page %s of %s' % (self.page_no(), self.alias_nb_pages())
-                self.cell(0, 10, txt, 0, 0, 'C')
+            <span class="k">def</span> <span class="nf">footer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="s2">&quot;hook to draw custom page footer (printing page numbers)&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_y</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+                <span class="n">txt</span> <span class="o">=</span> <span class="s1">&#39;Page </span><span class="si">%s</span><span class="s1"> of </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page_no</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">alias_nb_pages</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span>
 
-        pdf = MyFPDF()
-        # create a page and serialize/render HTML objects
-        pdf.add_page()
-        pdf.write_html(str(XML(table, sanitize=False)))
-        pdf.write_html(str(XML(CENTER(chart), sanitize=False)))
-        # prepare PDF to download:
-        response.headers['Content-Type'] = 'application/pdf'
-        return pdf.output(dest='S')
-    else:
-        # normal html view:
-        return dict(chart=chart, table=table)
-
-</code></pre>
+        <span class="n">pdf</span> <span class="o">=</span> <span class="n">MyFPDF</span><span class="p">()</span>
+        <span class="c1"># create a page and serialize/render HTML objects</span>
+        <span class="n">pdf</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
+        <span class="n">pdf</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">XML</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">sanitize</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>
+        <span class="n">pdf</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">XML</span><span class="p">(</span><span class="n">CENTER</span><span class="p">(</span><span class="n">chart</span><span class="p">),</span> <span class="n">sanitize</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>
+        <span class="c1"># prepare PDF to download:</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;application/pdf&#39;</span>
+        <span class="k">return</span> <span class="n">pdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">dest</span><span class="o">=</span><span class="s1">&#39;S&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># normal html view:</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">chart</span><span class="o">=</span><span class="n">chart</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">)</span>
+</code></pre></div>
 <h1 id="sample-table-listing">Sample Table Listing</h1>
 <p>Also, you can make nice tables that automatically spreads over several pages, with headers and footers, column and row highlighting, etc., in a very pythonic way:</p>
 <p>Sample: <a href="http://pyfpdf.googlecode.com/files/listing.pdf">listing.pdf</a></p>
@@ -1209,59 +1221,59 @@
 <li><a href="http://www.web2py.com.ar/fpdf/default/listing">http://www.web2py.com.ar/fpdf/default/listing</a></li>
 <li><a href="http://www.web2py.com.ar/fpdf/default/listing.pdf">http://www.web2py.com.ar/fpdf/default/listing.pdf</a></li>
 </ul>
-<pre><code class="language-python">def listing():
-    response.title = &quot;web2py sample listing&quot;
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">listing</span><span class="p">():</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;web2py sample listing&quot;</span>
 
-    # define header and footers:
-    head = THEAD(TR(TH(&quot;Header 1&quot;, _width=&quot;50%&quot;), 
-                    TH(&quot;Header 2&quot;, _width=&quot;30%&quot;),
-                    TH(&quot;Header 3&quot;, _width=&quot;20%&quot;), 
-                    _bgcolor=&quot;#A0A0A0&quot;))
-    foot = TFOOT(TR(TH(&quot;Footer 1&quot;, _width=&quot;50%&quot;), 
-                    TH(&quot;Footer 2&quot;, _width=&quot;30%&quot;),
-                    TH(&quot;Footer 3&quot;, _width=&quot;20%&quot;),
-                    _bgcolor=&quot;#E0E0E0&quot;))
+    <span class="c1"># define header and footers:</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="n">THEAD</span><span class="p">(</span><span class="n">TR</span><span class="p">(</span><span class="n">TH</span><span class="p">(</span><span class="s2">&quot;Header 1&quot;</span><span class="p">,</span> <span class="n">_width</span><span class="o">=</span><span class="s2">&quot;50%&quot;</span><span class="p">),</span> 
+                    <span class="n">TH</span><span class="p">(</span><span class="s2">&quot;Header 2&quot;</span><span class="p">,</span> <span class="n">_width</span><span class="o">=</span><span class="s2">&quot;30%&quot;</span><span class="p">),</span>
+                    <span class="n">TH</span><span class="p">(</span><span class="s2">&quot;Header 3&quot;</span><span class="p">,</span> <span class="n">_width</span><span class="o">=</span><span class="s2">&quot;20%&quot;</span><span class="p">),</span> 
+                    <span class="n">_bgcolor</span><span class="o">=</span><span class="s2">&quot;#A0A0A0&quot;</span><span class="p">))</span>
+    <span class="n">foot</span> <span class="o">=</span> <span class="n">TFOOT</span><span class="p">(</span><span class="n">TR</span><span class="p">(</span><span class="n">TH</span><span class="p">(</span><span class="s2">&quot;Footer 1&quot;</span><span class="p">,</span> <span class="n">_width</span><span class="o">=</span><span class="s2">&quot;50%&quot;</span><span class="p">),</span> 
+                    <span class="n">TH</span><span class="p">(</span><span class="s2">&quot;Footer 2&quot;</span><span class="p">,</span> <span class="n">_width</span><span class="o">=</span><span class="s2">&quot;30%&quot;</span><span class="p">),</span>
+                    <span class="n">TH</span><span class="p">(</span><span class="s2">&quot;Footer 3&quot;</span><span class="p">,</span> <span class="n">_width</span><span class="o">=</span><span class="s2">&quot;20%&quot;</span><span class="p">),</span>
+                    <span class="n">_bgcolor</span><span class="o">=</span><span class="s2">&quot;#E0E0E0&quot;</span><span class="p">))</span>
 
-    # create several rows:
-    rows = []
-    for i in range(1000):
-        col = i % 2 and &quot;#F0F0F0&quot; or &quot;#FFFFFF&quot;
-        rows.append(TR(TD(&quot;Row %s&quot; %i),
-                       TD(&quot;something&quot;, _align=&quot;center&quot;),
-                       TD(&quot;%s&quot; % i, _align=&quot;right&quot;),
-                       _bgcolor=col)) 
+    <span class="c1"># create several rows:</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="ow">and</span> <span class="s2">&quot;#F0F0F0&quot;</span> <span class="ow">or</span> <span class="s2">&quot;#FFFFFF&quot;</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TR</span><span class="p">(</span><span class="n">TD</span><span class="p">(</span><span class="s2">&quot;Row </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="n">i</span><span class="p">),</span>
+                       <span class="n">TD</span><span class="p">(</span><span class="s2">&quot;something&quot;</span><span class="p">,</span> <span class="n">_align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">),</span>
+                       <span class="n">TD</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="n">_align</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">),</span>
+                       <span class="n">_bgcolor</span><span class="o">=</span><span class="n">col</span><span class="p">))</span> 
 
-    # make the table object
-    body = TBODY(*rows)
-    table = TABLE(*[head, foot, body], 
-                  _border=&quot;1&quot;, _align=&quot;center&quot;, _width=&quot;100%&quot;)
+    <span class="c1"># make the table object</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">TBODY</span><span class="p">(</span><span class="o">*</span><span class="n">rows</span><span class="p">)</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">TABLE</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">head</span><span class="p">,</span> <span class="n">foot</span><span class="p">,</span> <span class="n">body</span><span class="p">],</span> 
+                  <span class="n">_border</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">_align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">_width</span><span class="o">=</span><span class="s2">&quot;100%&quot;</span><span class="p">)</span>
 
-    if request.extension == &quot;pdf&quot;:
-        from gluon.contrib.pyfpdf import FPDF, HTMLMixin
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="s2">&quot;pdf&quot;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">gluon.contrib.pyfpdf</span> <span class="kn">import</span> <span class="n">FPDF</span><span class="p">,</span> <span class="n">HTMLMixin</span>
 
-        # define our FPDF class (move to modules if it is reused frequently)
-        class MyFPDF(FPDF, HTMLMixin):
-            def header(self):
-                self.set_font('Arial', 'B', 15)
-                self.cell(0, 10, response.title, 1, 0, 'C')
-                self.ln(20)
+        <span class="c1"># define our FPDF class (move to modules if it is reused frequently)</span>
+        <span class="k">class</span> <span class="nc">MyFPDF</span><span class="p">(</span><span class="n">FPDF</span><span class="p">,</span> <span class="n">HTMLMixin</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ln</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
 
-            def footer(self):
-                self.set_y(-15)
-                self.set_font('Arial', 'I', 8)
-                txt = 'Page %s of %s' % (self.page_no(), self.alias_nb_pages())
-                self.cell(0, 10, txt, 0, 0, 'C')
+            <span class="k">def</span> <span class="nf">footer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_y</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+                <span class="n">txt</span> <span class="o">=</span> <span class="s1">&#39;Page </span><span class="si">%s</span><span class="s1"> of </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page_no</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">alias_nb_pages</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span>
 
-        pdf = MyFPDF()
-        # first page:
-        pdf.add_page()
-        pdf.write_html(str(XML(table, sanitize=False)))
-        response.headers['Content-Type'] = 'application/pdf'
-        return pdf.output(dest='S')
-    else:
-        # normal html view:
-        return dict(table=table)}}}
-</code></pre>
+        <span class="n">pdf</span> <span class="o">=</span> <span class="n">MyFPDF</span><span class="p">()</span>
+        <span class="c1"># first page:</span>
+        <span class="n">pdf</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
+        <span class="n">pdf</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">XML</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">sanitize</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;application/pdf&#39;</span>
+        <span class="k">return</span> <span class="n">pdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">dest</span><span class="o">=</span><span class="s1">&#39;S&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># normal html view:</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">)}}}</span>
+</code></pre></div>
 <h1 id="samples-template-definitions">Samples Template Definitions</h1>
 <p>As stated in the <a href="Templates.html">Templates</a> page, there are 3 ways of putting your templates in place. As in that page there are samples for the manually hardcoded way and CSV document loading. Here we will only show a sample of the template engine.</p>
 <h1 id="sample-templating-engine">Sample Templating Engine</h1>
@@ -1273,172 +1285,172 @@
 <li>pdf_template: general document information (name, paper size, etc.)</li>
 <li>pdf_element: several rows for each document, describing graphics primitives and placeholders.</li>
 </ul>
-<p>In <code>db.py</code> write:</p>
-<pre><code class="language-python">db.define_table(&quot;pdf_template&quot;,
-    Field(&quot;pdf_template_id&quot;, &quot;id&quot;),
-    Field(&quot;title&quot;),
-    Field(&quot;format&quot;, requires=IS_IN_SET([&quot;A4&quot;, &quot;legal&quot;, &quot;letter&quot;])),
-)
+<p>In <code>db.py</code> write:
+<div class="highlight"><pre><span></span><code><span class="n">db</span><span class="o">.</span><span class="n">define_table</span><span class="p">(</span><span class="s2">&quot;pdf_template&quot;</span><span class="p">,</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;pdf_template_id&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">),</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">),</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;format&quot;</span><span class="p">,</span> <span class="n">requires</span><span class="o">=</span><span class="n">IS_IN_SET</span><span class="p">([</span><span class="s2">&quot;A4&quot;</span><span class="p">,</span> <span class="s2">&quot;legal&quot;</span><span class="p">,</span> <span class="s2">&quot;letter&quot;</span><span class="p">])),</span>
+<span class="p">)</span>
 
-db.define_table(&quot;pdf_element&quot;,
-    Field(&quot;pdf_template_id&quot;, db.pdf_template, requires=IS_IN_DB(db, 'pdf_template.pdf_template_id', 'pdf_template.title')),
-    Field(&quot;name&quot;, requires=IS_NOT_EMPTY()),
-    Field(&quot;type&quot;, length=2, requires=IS_IN_SET(['T', 'L', 'I', 'B', 'BC'])),
-    Field(&quot;x1&quot;, &quot;double&quot;, requires=IS_NOT_EMPTY()),
-    Field(&quot;y1&quot;, &quot;double&quot;, requires=IS_NOT_EMPTY()),
-    Field(&quot;x2&quot;, &quot;double&quot;, requires=IS_NOT_EMPTY()),
-    Field(&quot;y2&quot;, &quot;double&quot;, requires=IS_NOT_EMPTY()),
-    Field(&quot;font&quot;, default=&quot;Arial&quot;, requires=IS_IN_SET(['Courier', 'Arial', 'Times', 'Symbol', 'Zapfdingbats'])),
-    Field(&quot;size&quot;, &quot;double&quot;, default=&quot;10&quot;, requires=IS_NOT_EMPTY()),
-    Field(&quot;bold&quot;, &quot;boolean&quot;),
-    Field(&quot;italic&quot;, &quot;boolean&quot;),
-    Field(&quot;underline&quot;, &quot;boolean&quot;),
-    Field(&quot;foreground&quot;, &quot;integer&quot;, default=0x000000, comment=&quot;Color text&quot;),
-    Field(&quot;background&quot;, &quot;integer&quot;, default=0xFFFFFF, comment=&quot;Fill color&quot;),
-    Field(&quot;align&quot;, &quot;string&quot;, length=1, default=&quot;L&quot;, requires=IS_IN_SET(['L', 'R', 'C', 'J'])),
-    Field(&quot;text&quot;, &quot;text&quot;, comment=&quot;Default text&quot;),
-    Field(&quot;priority&quot;, &quot;integer&quot;, default=0, comment=&quot;Z-Order&quot;),
-    )
-</code></pre>
+<span class="n">db</span><span class="o">.</span><span class="n">define_table</span><span class="p">(</span><span class="s2">&quot;pdf_element&quot;</span><span class="p">,</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;pdf_template_id&quot;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">pdf_template</span><span class="p">,</span> <span class="n">requires</span><span class="o">=</span><span class="n">IS_IN_DB</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="s1">&#39;pdf_template.pdf_template_id&#39;</span><span class="p">,</span> <span class="s1">&#39;pdf_template.title&#39;</span><span class="p">)),</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">requires</span><span class="o">=</span><span class="n">IS_NOT_EMPTY</span><span class="p">()),</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">requires</span><span class="o">=</span><span class="n">IS_IN_SET</span><span class="p">([</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;BC&#39;</span><span class="p">])),</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;double&quot;</span><span class="p">,</span> <span class="n">requires</span><span class="o">=</span><span class="n">IS_NOT_EMPTY</span><span class="p">()),</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;y1&quot;</span><span class="p">,</span> <span class="s2">&quot;double&quot;</span><span class="p">,</span> <span class="n">requires</span><span class="o">=</span><span class="n">IS_NOT_EMPTY</span><span class="p">()),</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="s2">&quot;double&quot;</span><span class="p">,</span> <span class="n">requires</span><span class="o">=</span><span class="n">IS_NOT_EMPTY</span><span class="p">()),</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;y2&quot;</span><span class="p">,</span> <span class="s2">&quot;double&quot;</span><span class="p">,</span> <span class="n">requires</span><span class="o">=</span><span class="n">IS_NOT_EMPTY</span><span class="p">()),</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;font&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Arial&quot;</span><span class="p">,</span> <span class="n">requires</span><span class="o">=</span><span class="n">IS_IN_SET</span><span class="p">([</span><span class="s1">&#39;Courier&#39;</span><span class="p">,</span> <span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;Times&#39;</span><span class="p">,</span> <span class="s1">&#39;Symbol&#39;</span><span class="p">,</span> <span class="s1">&#39;Zapfdingbats&#39;</span><span class="p">])),</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="s2">&quot;double&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;10&quot;</span><span class="p">,</span> <span class="n">requires</span><span class="o">=</span><span class="n">IS_NOT_EMPTY</span><span class="p">()),</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="s2">&quot;boolean&quot;</span><span class="p">),</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;italic&quot;</span><span class="p">,</span> <span class="s2">&quot;boolean&quot;</span><span class="p">),</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;underline&quot;</span><span class="p">,</span> <span class="s2">&quot;boolean&quot;</span><span class="p">),</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;foreground&quot;</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mh">0x000000</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;Color text&quot;</span><span class="p">),</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;background&quot;</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mh">0xFFFFFF</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;Fill color&quot;</span><span class="p">),</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;align&quot;</span><span class="p">,</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="n">requires</span><span class="o">=</span><span class="n">IS_IN_SET</span><span class="p">([</span><span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;J&#39;</span><span class="p">])),</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;Default text&quot;</span><span class="p">),</span>
+    <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;priority&quot;</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;Z-Order&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+</code></pre></div></p>
 <p><strong>Warning</strong>: the fields "type", "size" and "text" are reserved words for some DB engines, so validation:</p>
-<pre><code class="language-python">db = DAL('sqlite://storage.sqlite', pool_size=1, check_reserved=['ALL'])
-</code></pre>
-<p>will fail. sqlite, MySQL and postgres work OK. Proposals for new naming ideas are welcome.</p>
+<p><div class="highlight"><pre><span></span><code><span class="n">db</span> <span class="o">=</span> <span class="n">DAL</span><span class="p">(</span><span class="s1">&#39;sqlite://storage.sqlite&#39;</span><span class="p">,</span> <span class="n">pool_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">check_reserved</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ALL&#39;</span><span class="p">])</span>
+</code></pre></div>
+will fail. sqlite, MySQL and postgres work OK. Proposals for new naming ideas are welcome.</p>
 <p>At this point you could go to web2py AppAdmin and start to define your document templates, or use import/export functions to reuse your already defined formats!</p>
 <p>Note: if you used designer.py to create the templates, and you want to import the templates with the Web2Py database admin, you will have to modify the file.</p>
-<p>So, designer.py outputs a file like this:</p>
-<pre><code>line0;T;20.0;13.0;190.0;13.0;times;10.0;0;0;0;0;65535;C;;0
+<p>So, designer.py outputs a file like this:
+<div class="highlight"><pre><span></span><code>line0;T;20.0;13.0;190.0;13.0;times;10.0;0;0;0;0;65535;C;;0
 line1;T;20.0;67.0;190.0;67.0;times;10.0;0;0;0;0;65535;C;;0
 name0;T;21;14;104;25;times;16.0;0;0;0;0;0;C;;2
 title0;T;64;26;104;30;times;10.0;0;0;0;0;0;C;;2
-</code></pre>
+</code></pre></div></p>
 <p>You will have to make it look lke this:</p>
-<pre><code>pdf_element.pdf_template_id, pdf_element.name, pdf_element.type, pdf_element.x1, pdf_element.y1, pdf_element.x2, pdf_element.y2, pdf_element.font, pdf_element.size, pdf_element.bold, pdf_element.italic, pdf_element.underline, pdf_element.foreground, pdf_element.background, pdf_element.align, pdf_element.text, pdf_element.priority
+<p><div class="highlight"><pre><span></span><code>pdf_element.pdf_template_id, pdf_element.name, pdf_element.type, pdf_element.x1, pdf_element.y1, pdf_element.x2, pdf_element.y2, pdf_element.font, pdf_element.size, pdf_element.bold, pdf_element.italic, pdf_element.underline, pdf_element.foreground, pdf_element.background, pdf_element.align, pdf_element.text, pdf_element.priority
 1,line0,T,20.0,283.0,190.0,283.0,times,10.0,0,0,0,0,65535,C,,0
 1,line1,T,20.0,337.0,190.0,337.0,times,10.0,0,0,0,0,65535,C,,0
 1,name0,T,21,14,104,25,times,16.0,0,0,0,0,0,C,,2
 1,title0,T,64,26,104,30,times,10.0,0,0,0,0,0,C,,2
-</code></pre>
-<p>Where the first number indicates the template ID (important for the database system), and the first line indicates the database fields to fill.</p>
+</code></pre></div>
+Where the first number indicates the template ID (important for the database system), and the first line indicates the database fields to fill.</p>
 <p>A simple Python script should do the trick.</p>
 <p>After defining and filling your database, you can use PyFPDF <a href="Templates.html">Templates</a> directly reading row elements from the web2py database:</p>
-<p>For example, for an invoice, in a controller you could write:</p>
-<pre><code class="language-python">def invoice():
-    from gluon.contrib.pyfpdf import Template
-    import os.path
+<p>For example, for an invoice, in a controller you could write:
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">invoice</span><span class="p">():</span>
+    <span class="kn">from</span> <span class="nn">gluon.contrib.pyfpdf</span> <span class="kn">import</span> <span class="n">Template</span>
+    <span class="kn">import</span> <span class="nn">os.path</span>
 
-    # generate sample invoice (according Argentina's regulations)
+    <span class="c1"># generate sample invoice (according Argentina&#39;s regulations)</span>
 
-    import random
-    from decimal import Decimal
+    <span class="kn">import</span> <span class="nn">random</span>
+    <span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
 
-    # read elements from db 
+    <span class="c1"># read elements from db </span>
 
-    elements = db(db.pdf_element.pdf_template_id == 1).select(orderby=db.pdf_element.priority)
+    <span class="n">elements</span> <span class="o">=</span> <span class="n">db</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">pdf_element</span><span class="o">.</span><span class="n">pdf_template_id</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">orderby</span><span class="o">=</span><span class="n">db</span><span class="o">.</span><span class="n">pdf_element</span><span class="o">.</span><span class="n">priority</span><span class="p">)</span>
 
-    f = Template(format=&quot;A4&quot;,
-             elements = elements,
-             title=&quot;Sample Invoice&quot;, author=&quot;Sample Company&quot;,
-             subject=&quot;Sample Customer&quot;, keywords=&quot;Electronic TAX Invoice&quot;)
+    <span class="n">f</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;A4&quot;</span><span class="p">,</span>
+             <span class="n">elements</span> <span class="o">=</span> <span class="n">elements</span><span class="p">,</span>
+             <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Sample Invoice&quot;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s2">&quot;Sample Company&quot;</span><span class="p">,</span>
+             <span class="n">subject</span><span class="o">=</span><span class="s2">&quot;Sample Customer&quot;</span><span class="p">,</span> <span class="n">keywords</span><span class="o">=</span><span class="s2">&quot;Electronic TAX Invoice&quot;</span><span class="p">)</span>
 
-    # create some random invoice line items and detail data
-    detail = &quot;Lorem ipsum dolor sit amet, consectetur. &quot; * 5
-    items = []
-    for i in range(1, 30):
-        ds = &quot;Sample product %s&quot; % i
-        qty = random.randint(1, 10)
-        price = round(random.random() * 100, 3)
-        code = &quot;%s%s%02d&quot; % (chr(random.randint(65, 90)), chr(random.randint(65, 90)), i)
-        items.append(dict(code=code, unit='u',
-                          qty=qty, price=price, 
-                          amount=qty * price,
-                          ds=&quot;%s: %s&quot; % (i, ds)))
+    <span class="c1"># create some random invoice line items and detail data</span>
+    <span class="n">detail</span> <span class="o">=</span> <span class="s2">&quot;Lorem ipsum dolor sit amet, consectetur. &quot;</span> <span class="o">*</span> <span class="mi">5</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">):</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="s2">&quot;Sample product </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span>
+        <span class="n">qty</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="n">price</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s%s%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="mi">90</span><span class="p">)),</span> <span class="nb">chr</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="mi">90</span><span class="p">)),</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;u&#39;</span><span class="p">,</span>
+                          <span class="n">qty</span><span class="o">=</span><span class="n">qty</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="n">price</span><span class="p">,</span> 
+                          <span class="n">amount</span><span class="o">=</span><span class="n">qty</span> <span class="o">*</span> <span class="n">price</span><span class="p">,</span>
+                          <span class="n">ds</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ds</span><span class="p">)))</span>
 
-    # divide and count lines
-    lines = 0
-    li_items = []
-    for it in items:
-        qty = it['qty']
-        code = it['code']
-        unit = it['unit']
-        for ds in f.split_multicell(it['ds'], 'item_description01'):
-            # add item description line (without price nor amount)
-            li_items.append(dict(code=code, ds=ds, qty=qty, unit=unit, price=None, amount=None))
-            # clean qty and code (show only at first)
-            unit = qty = code = None
-        # set last item line price and amount
-        li_items[-1].update(amount = it['amount'],
-                            price = it['price'])
+    <span class="c1"># divide and count lines</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">li_items</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+        <span class="n">qty</span> <span class="o">=</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;qty&#39;</span><span class="p">]</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span>
+        <span class="n">unit</span> <span class="o">=</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;unit&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">split_multicell</span><span class="p">(</span><span class="n">it</span><span class="p">[</span><span class="s1">&#39;ds&#39;</span><span class="p">],</span> <span class="s1">&#39;item_description01&#39;</span><span class="p">):</span>
+            <span class="c1"># add item description line (without price nor amount)</span>
+            <span class="n">li_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">,</span> <span class="n">ds</span><span class="o">=</span><span class="n">ds</span><span class="p">,</span> <span class="n">qty</span><span class="o">=</span><span class="n">qty</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="n">unit</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+            <span class="c1"># clean qty and code (show only at first)</span>
+            <span class="n">unit</span> <span class="o">=</span> <span class="n">qty</span> <span class="o">=</span> <span class="n">code</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># set last item line price and amount</span>
+        <span class="n">li_items</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">amount</span> <span class="o">=</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;amount&#39;</span><span class="p">],</span>
+                            <span class="n">price</span> <span class="o">=</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">])</span>
 
-    # split detail into each line description
-    obs=&quot;\n&lt;U&gt;Detail:&lt;/U&gt;\n\n&quot; + detail
-    for ds in f.split_multicell(obs, 'item_description01'):
-        li_items.append(dict(code=code, ds=ds, qty=qty, unit=unit, price=None, amount=None))
+    <span class="c1"># split detail into each line description</span>
+    <span class="n">obs</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&lt;U&gt;Detail:&lt;/U&gt;</span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">detail</span>
+    <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">split_multicell</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="s1">&#39;item_description01&#39;</span><span class="p">):</span>
+        <span class="n">li_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">,</span> <span class="n">ds</span><span class="o">=</span><span class="n">ds</span><span class="p">,</span> <span class="n">qty</span><span class="o">=</span><span class="n">qty</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="n">unit</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">amount</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
 
-    # calculate pages:
-    lines = len(li_items)
-    max_lines_per_page = 24
-    pages = lines / (max_lines_per_page - 1)
-    if lines % (max_lines_per_page - 1): pages = pages + 1
+    <span class="c1"># calculate pages:</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">li_items</span><span class="p">)</span>
+    <span class="n">max_lines_per_page</span> <span class="o">=</span> <span class="mi">24</span>
+    <span class="n">pages</span> <span class="o">=</span> <span class="n">lines</span> <span class="o">/</span> <span class="p">(</span><span class="n">max_lines_per_page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">lines</span> <span class="o">%</span> <span class="p">(</span><span class="n">max_lines_per_page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span> <span class="n">pages</span> <span class="o">=</span> <span class="n">pages</span> <span class="o">+</span> <span class="mi">1</span>
 
-    # fill placeholders for each page
-    for page in range(1, pages + 1):
-        f.add_page()
-        f['page'] = 'Page %s of %s' % (page, pages)
-        if pages &gt; 1 and page &lt; pages:
-            s = 'Continues on page %s' % (page + 1)
-        else:
-            s = ''
-        f['item_description%02d' % (max_lines_per_page + 1)] = s
+    <span class="c1"># fill placeholders for each page</span>
+    <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">pages</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
+        <span class="n">f</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Page </span><span class="si">%s</span><span class="s1"> of </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">pages</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pages</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">page</span> <span class="o">&lt;</span> <span class="n">pages</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;Continues on page </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">page</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">f</span><span class="p">[</span><span class="s1">&#39;item_description</span><span class="si">%02d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">max_lines_per_page</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="n">s</span>
 
-        f[&quot;company_name&quot;] = &quot;Sample Company&quot;
-        f[&quot;company_logo&quot;] = os.path.join(request.env.web2py_path, &quot;gluon&quot;, &quot;contrib&quot;, &quot;pyfpdf&quot;, &quot;tutorial&quot;, &quot;logo.png&quot;)
-        f[&quot;company_header1&quot;] = &quot;Some Address - somewhere -&quot;
-        f[&quot;company_header2&quot;] = &quot;http://www.example.com&quot;        
-        f[&quot;company_footer1&quot;] = &quot;Tax Code ...&quot;
-        f[&quot;company_footer2&quot;] = &quot;Tax/VAT ID ...&quot;
-        f['number'] = '0001-00001234'
-        f['issue_date'] = '2010-09-10'
-        f['due_date'] = '2099-09-10'
-        f['customer_name'] = &quot;Sample Client&quot;
-        f['customer_address'] = &quot;Siempreviva 1234&quot;
+        <span class="n">f</span><span class="p">[</span><span class="s2">&quot;company_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Sample Company&quot;</span>
+        <span class="n">f</span><span class="p">[</span><span class="s2">&quot;company_logo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">web2py_path</span><span class="p">,</span> <span class="s2">&quot;gluon&quot;</span><span class="p">,</span> <span class="s2">&quot;contrib&quot;</span><span class="p">,</span> <span class="s2">&quot;pyfpdf&quot;</span><span class="p">,</span> <span class="s2">&quot;tutorial&quot;</span><span class="p">,</span> <span class="s2">&quot;logo.png&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="p">[</span><span class="s2">&quot;company_header1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Some Address - somewhere -&quot;</span>
+        <span class="n">f</span><span class="p">[</span><span class="s2">&quot;company_header2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;http://www.example.com&quot;</span>        
+        <span class="n">f</span><span class="p">[</span><span class="s2">&quot;company_footer1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Tax Code ...&quot;</span>
+        <span class="n">f</span><span class="p">[</span><span class="s2">&quot;company_footer2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Tax/VAT ID ...&quot;</span>
+        <span class="n">f</span><span class="p">[</span><span class="s1">&#39;number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0001-00001234&#39;</span>
+        <span class="n">f</span><span class="p">[</span><span class="s1">&#39;issue_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2010-09-10&#39;</span>
+        <span class="n">f</span><span class="p">[</span><span class="s1">&#39;due_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2099-09-10&#39;</span>
+        <span class="n">f</span><span class="p">[</span><span class="s1">&#39;customer_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Sample Client&quot;</span>
+        <span class="n">f</span><span class="p">[</span><span class="s1">&#39;customer_address&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Siempreviva 1234&quot;</span>
 
-        # print line item...
-        li = 0 
-        k = 0
-        total = Decimal(&quot;0.00&quot;)
-        for it in li_items:
-            k = k + 1
-            if k &gt; page * (max_lines_per_page - 1):
-                break
-            if it['amount']:
-                total += Decimal(&quot;%.6f&quot; % it['amount'])
-            if k &gt; (page - 1) * (max_lines_per_page - 1):
-                li += 1
-                if it['qty'] is not None:
-                    f['item_quantity%02d' % li] = it['qty']
-                if it['code'] is not None:
-                    f['item_code%02d' % li] = it['code']
-                if it['unit'] is not None:
-                    f['item_unit%02d' % li] = it['unit']
-                f['item_description%02d' % li] = it['ds']
-                if it['price'] is not None:
-                    f['item_price%02d' % li] = &quot;%0.3f&quot; % it['price']
-                if it['amount'] is not None:
-                    f['item_amount%02d' % li] = &quot;%0.2f&quot; % it['amount']
+        <span class="c1"># print line item...</span>
+        <span class="n">li</span> <span class="o">=</span> <span class="mi">0</span> 
+        <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;0.00&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">li_items</span><span class="p">:</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="n">page</span> <span class="o">*</span> <span class="p">(</span><span class="n">max_lines_per_page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;amount&#39;</span><span class="p">]:</span>
+                <span class="n">total</span> <span class="o">+=</span> <span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.6f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;amount&#39;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">max_lines_per_page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">li</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;qty&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">f</span><span class="p">[</span><span class="s1">&#39;item_quantity</span><span class="si">%02d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">li</span><span class="p">]</span> <span class="o">=</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;qty&#39;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">f</span><span class="p">[</span><span class="s1">&#39;item_code</span><span class="si">%02d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">li</span><span class="p">]</span> <span class="o">=</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;unit&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">f</span><span class="p">[</span><span class="s1">&#39;item_unit</span><span class="si">%02d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">li</span><span class="p">]</span> <span class="o">=</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;unit&#39;</span><span class="p">]</span>
+                <span class="n">f</span><span class="p">[</span><span class="s1">&#39;item_description</span><span class="si">%02d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">li</span><span class="p">]</span> <span class="o">=</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;ds&#39;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">f</span><span class="p">[</span><span class="s1">&#39;item_price</span><span class="si">%02d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">li</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%0.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;amount&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">f</span><span class="p">[</span><span class="s1">&#39;item_amount</span><span class="si">%02d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">li</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">it</span><span class="p">[</span><span class="s1">&#39;amount&#39;</span><span class="p">]</span>
 
-        # last page? print totals:
-        if pages == page:
-            f['net'] = &quot;%0.2f&quot; % (total / Decimal(&quot;1.21&quot;))
-            f['vat'] = &quot;%0.2f&quot; % (total * (1 - 1 / Decimal(&quot;1.21&quot;)))
-            f['total_label'] = 'Total:'
-        else:
-            f['total_label'] = 'SubTotal:'
-        f['total'] = &quot;%0.2f&quot; % total
+        <span class="c1"># last page? print totals:</span>
+        <span class="k">if</span> <span class="n">pages</span> <span class="o">==</span> <span class="n">page</span><span class="p">:</span>
+            <span class="n">f</span><span class="p">[</span><span class="s1">&#39;net&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">total</span> <span class="o">/</span> <span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;1.21&quot;</span><span class="p">))</span>
+            <span class="n">f</span><span class="p">[</span><span class="s1">&#39;vat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">total</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;1.21&quot;</span><span class="p">)))</span>
+            <span class="n">f</span><span class="p">[</span><span class="s1">&#39;total_label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Total:&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">f</span><span class="p">[</span><span class="s1">&#39;total_label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;SubTotal:&#39;</span>
+        <span class="n">f</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">total</span>
 
-    response.headers['Content-Type'] = 'application/pdf'
-    return f.render('invoice.pdf', dest='S')
-</code></pre>
+    <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;application/pdf&#39;</span>
+    <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s1">&#39;invoice.pdf&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;S&#39;</span><span class="p">)</span>
+</code></pre></div></p>
 <p>Of course, this is a hardcoded example. You can use the database to store invoices or any other data; there is no rigid class hierachy to follow, just fill your template like a dict!</p>
                 
               

@@ -293,6 +293,19 @@
 
 
   <li class="md-nav__item">
+    <a href="../Logging.html" class="md-nav__link">
+      Logging
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
     <a href="../Development.html" class="md-nav__link">
       Development
     </a>
@@ -350,14 +363,14 @@
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-10" type="checkbox" id="nav-10" checked>
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-11" type="checkbox" id="nav-11" checked>
     
-    <label class="md-nav__link" for="nav-10">
+    <label class="md-nav__link" for="nav-11">
       ReferenceManual
       <span class="md-nav__icon md-icon"></span>
     </label>
     <nav class="md-nav" aria-label="ReferenceManual" data-md-level="1">
-      <label class="md-nav__title" for="nav-10">
+      <label class="md-nav__title" for="nav-11">
         <span class="md-nav__icon md-icon"></span>
         ReferenceManual
       </label>
@@ -1262,8 +1275,8 @@
                   <h1>write_html</h1>
                 
                 <h2 id="write_html">write_html</h2>
-<pre><code class="language-python">HTMLMixin.write_html(text: str, image_map = None)
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">HTMLMixin</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">image_map</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
 <h3 id="description">Description</h3>
 <p>PyFPDF supports basic HTML, mainly intended to write reports from web frameworks.</p>
 <p>It understands a limited subset of the HTML language, and it doesn't support advanced features nor CSS (look below).</p>
@@ -1303,43 +1316,43 @@
 </ul>
 <p>Note: Tables should have at least a first TH row with a width attribute.</p>
 <h3 id="example">Example</h3>
-<pre><code class="language-python">html = &quot;&quot;&quot;
-&lt;H1 align=&quot;center&quot;&gt;html2fpdf&lt;/H1&gt;
-&lt;h2&gt;Basic usage&lt;/h2&gt;
-&lt;p&gt;You can now easily print text mixing different
-styles : &lt;B&gt;bold&lt;/B&gt;, &lt;I&gt;italic&lt;/I&gt;, &lt;U&gt;underlined&lt;/U&gt;, or
-&lt;B&gt;&lt;I&gt;&lt;U&gt;all at once&lt;/U&gt;&lt;/I&gt;&lt;/B&gt;!&lt;BR&gt;You can also insert links
-on text, such as &lt;A HREF=&quot;http://www.fpdf.org&quot;&gt;www.fpdf.org&lt;/A&gt;,
-or on an image: click on the logo.&lt;br&gt;
-&lt;center&gt;
-&lt;A HREF=&quot;http://www.fpdf.org&quot;&gt;&lt;img src=&quot;tutorial/logo.png&quot; width=&quot;104&quot; height=&quot;71&quot;&gt;&lt;/A&gt;
-&lt;/center&gt;
-&lt;h3&gt;Sample List&lt;/h3&gt;
-&lt;ul&gt;&lt;li&gt;option 1&lt;/li&gt;
-&lt;ol&gt;&lt;li&gt;option 2&lt;/li&gt;&lt;/ol&gt;
-&lt;li&gt;option 3&lt;/li&gt;&lt;/ul&gt;
+<p><div class="highlight"><pre><span></span><code><span class="n">html</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">&lt;H1 align=&quot;center&quot;&gt;html2fpdf&lt;/H1&gt;</span>
+<span class="s2">&lt;h2&gt;Basic usage&lt;/h2&gt;</span>
+<span class="s2">&lt;p&gt;You can now easily print text mixing different</span>
+<span class="s2">styles : &lt;B&gt;bold&lt;/B&gt;, &lt;I&gt;italic&lt;/I&gt;, &lt;U&gt;underlined&lt;/U&gt;, or</span>
+<span class="s2">&lt;B&gt;&lt;I&gt;&lt;U&gt;all at once&lt;/U&gt;&lt;/I&gt;&lt;/B&gt;!&lt;BR&gt;You can also insert links</span>
+<span class="s2">on text, such as &lt;A HREF=&quot;http://www.fpdf.org&quot;&gt;www.fpdf.org&lt;/A&gt;,</span>
+<span class="s2">or on an image: click on the logo.&lt;br&gt;</span>
+<span class="s2">&lt;center&gt;</span>
+<span class="s2">&lt;A HREF=&quot;http://www.fpdf.org&quot;&gt;&lt;img src=&quot;tutorial/logo.png&quot; width=&quot;104&quot; height=&quot;71&quot;&gt;&lt;/A&gt;</span>
+<span class="s2">&lt;/center&gt;</span>
+<span class="s2">&lt;h3&gt;Sample List&lt;/h3&gt;</span>
+<span class="s2">&lt;ul&gt;&lt;li&gt;option 1&lt;/li&gt;</span>
+<span class="s2">&lt;ol&gt;&lt;li&gt;option 2&lt;/li&gt;&lt;/ol&gt;</span>
+<span class="s2">&lt;li&gt;option 3&lt;/li&gt;&lt;/ul&gt;</span>
 
-&lt;table border=&quot;0&quot; align=&quot;center&quot; width=&quot;50%&quot;&gt;
-&lt;thead&gt;&lt;tr&gt;&lt;th width=&quot;30%&quot;&gt;Header 1&lt;/th&gt;&lt;th width=&quot;70%&quot;&gt;header 2&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;&lt;td&gt;cell 1&lt;/td&gt;&lt;td&gt;cell 2&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;cell 2&lt;/td&gt;&lt;td&gt;cell 3&lt;/td&gt;&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&quot;&quot;&quot;
+<span class="s2">&lt;table border=&quot;0&quot; align=&quot;center&quot; width=&quot;50%&quot;&gt;</span>
+<span class="s2">&lt;thead&gt;&lt;tr&gt;&lt;th width=&quot;30%&quot;&gt;Header 1&lt;/th&gt;&lt;th width=&quot;70%&quot;&gt;header 2&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;</span>
+<span class="s2">&lt;tbody&gt;</span>
+<span class="s2">&lt;tr&gt;&lt;td&gt;cell 1&lt;/td&gt;&lt;td&gt;cell 2&lt;/td&gt;&lt;/tr&gt;</span>
+<span class="s2">&lt;tr&gt;&lt;td&gt;cell 2&lt;/td&gt;&lt;td&gt;cell 3&lt;/td&gt;&lt;/tr&gt;</span>
+<span class="s2">&lt;/tbody&gt;</span>
+<span class="s2">&lt;/table&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span>
 
-from pyfpdf import FPDF, HTMLMixin
+<span class="kn">from</span> <span class="nn">pyfpdf</span> <span class="kn">import</span> <span class="n">FPDF</span><span class="p">,</span> <span class="n">HTMLMixin</span>
 
-class MyFPDF(FPDF, HTMLMixin):
-    pass
+<span class="k">class</span> <span class="nc">MyFPDF</span><span class="p">(</span><span class="n">FPDF</span><span class="p">,</span> <span class="n">HTMLMixin</span><span class="p">):</span>
+    <span class="k">pass</span>
 
-pdf = MyFPDF()
-#First page
-pdf.add_page()
-pdf.write_html(html)
-pdf.output('html.pdf', 'F')
-</code></pre>
-<p>See html.py or [Web2Py] (../Web2Py.md) for a complete example. <code># TODO fix links</code></p>
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">MyFPDF</span><span class="p">()</span>
+<span class="c1">#First page</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;html.pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">)</span>
+</code></pre></div>
+See html.py or [Web2Py] (../Web2Py.md) for a complete example. <code># TODO fix links</code></p>
 <h3 id="see-also">See also</h3>
 <p><a href="write.html">write</a>, <a href="add_font.html">add_font</a>, <a href="image.html">image</a>.</p>
                 
