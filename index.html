@@ -1237,35 +1237,33 @@
 </ul>
 <p>This repository is a fork of the library's <a href="http://www.fpdf.org/dl.php?id=94">original port by Max Pat</a>, with the following enhancements:</p>
 <ul>
-<li>Python 2.7 to 3.5+ support</li>
-<li><a href="Unicode.html">Unicode</a> (UTF-8) TrueType font subset embedding (Central European, Cyrillic, Greek, Baltic, Thai, Chinese, Japanese, Korean, Hindi and almost any other language in the world) *<em>New!</em>  * based on <a href="http://www.fpdf.org/en/script/script91.php">sFPDF</a> LGPL3 PHP version from <a href="mailto:ian@bpm1.com?subject=sFPDF">Ian Back</a></li>
-<li>Improved installers (Python wheel) support</li>
-<li>Barcode I2of5 and code39, QR code coming soon ...</li>
-<li>PNG, GIF and JPG support (including transparency and alpha channel) <strong>New!</strong></li>
-<li>Exceptions support, other minor fixes, improvements and PEP8 code cleanups</li>
-<li>Port of the <a href="Tutorial.html">Tutorial</a> and <a href="reference">ReferenceManual</a>  (Spanish translation available)</li>
+<li>Python 3.6+ support</li>
+<li><a href="Unicode.html">Unicode</a> (UTF-8) TrueType font subset embedding (Central European, Cyrillic, Greek, Baltic, Thai, Chinese, Japanese, Korean, Hindi and almost any other language in the world)</li>
+<li>PNG, GIF and JPG support (including transparency and alpha channel)</li>
+<li>Shape, Line Drawing</li>
+<li>Generate <a href="https://fr.wikipedia.org/wiki/Code_39">Code 39</a> &amp; <a href="https://en.wikipedia.org/wiki/Interleaved_2_of_5">Interleaved 2 of 5</a> barcodes</li>
+<li>Cell/Multi-cell/Plaintext writing, Automatic page breaks</li>
+<li>Basic conversion from HTML to PDF</li>
+<li>Clean error handling through exceptions</li>
+<li>Only <strong>one</strong> dependency so far: <a href="https://pillow.readthedocs.io/en/stable/">Pillow</a></li>
+<li>Unit tests with <code>qpdf</code>-based PDF diffing</li>
 </ul>
 <p>FPDF original features:</p>
 <ul>
 <li>Choice of measurement unit, page format and margins</li>
 <li>Page header and footer management</li>
-<li>Automatic page break</li>
-<li>Automatic line break and text justification</li>
+<li>Automatic page break, line break and text justification</li>
 <li>Image, colors and links support</li>
 <li>Page compression</li>
 <li>Extensive <a href="http://www.fpdf.org/en/tutorial/index.php">Tutorial</a> and complete online <a href="http://www.fpdf.org/en/doc/index.php">documentation</a></li>
 </ul>
 <h2 id="installation">Installation</h2>
 <ul>
-<li>Using <a href="https://pypi.python.org/pypi/fpdf2">PyPI</a><ul>
-<li>Become super user if necessary: <code>sudo su</code></li>
-<li><code>pip install fpdf2</code></li>
-</ul>
-</li>
+<li>From <a href="https://pypi.python.org/pypi/fpdf2">PyPI</a>: <code>pip install fpdf2</code></li>
 <li>From source:<ul>
 <li>Clone the repository: <code>git clone --depth 1 --branch master https://github.com/PyFPDF/fpdf2.git</code></li>
 <li>Optional: Check out the version you want, <code>git tag -n</code></li>
-<li>This will require Pillow and other dependencies to be satisfied, or it will download the sources of those and compile those. On ubuntu this requires the following header packages: <code>sudo apt-get install libjpeg-dev libpython-dev zlib1g-dev # libpython3.3-dev #(if necessary)</code></li>
+<li>On ubuntu the following packages are required: <code>sudo apt-get install libjpeg-dev libpython-dev zlib1g-dev # libpython3.3-dev #(if necessary)</code></li>
 <li>Run <code>python setup.py install</code></li>
 </ul>
 </li>
