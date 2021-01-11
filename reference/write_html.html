@@ -18,7 +18,7 @@
     
     
       
-        <title>write_html - PyFPDF</title>
+        <title>write_html - fpdf2</title>
       
     
     
@@ -75,7 +75,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid" aria-label="Header">
-    <a href="https://pyfpdf.github.io/fpdf2/" title="PyFPDF" class="md-header-nav__button md-logo" aria-label="PyFPDF">
+    <a href="https://pyfpdf.github.io/fpdf2/" title="fpdf2" class="md-header-nav__button md-logo" aria-label="fpdf2">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -88,7 +88,7 @@
       <div class="md-header-nav__ellipsis">
         <div class="md-header-nav__topic">
           <span class="md-ellipsis">
-            PyFPDF
+            fpdf2
           </span>
         </div>
         <div class="md-header-nav__topic">
@@ -168,13 +168,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="https://pyfpdf.github.io/fpdf2/" title="PyFPDF" class="md-nav__button md-logo" aria-label="PyFPDF">
+    <a href="https://pyfpdf.github.io/fpdf2/" title="fpdf2" class="md-nav__button md-logo" aria-label="fpdf2">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
 
     </a>
-    PyFPDF
+    fpdf2
   </label>
   
     <div class="md-nav__source">
@@ -1278,10 +1278,9 @@
 <div class="highlight"><pre><span></span><code><span class="n">HTMLMixin</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">image_map</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="description">Description</h3>
-<p>PyFPDF supports basic HTML, mainly intended to write reports from web frameworks.</p>
+<p><code>fpdf2</code> supports basic HTML, mainly intended to write reports from web frameworks.</p>
 <p>It understands a limited subset of the HTML language, and it doesn't support advanced features nor CSS (look below).</p>
 <p>HTMLMixin could be used along with FPDF class to implement this functionality (see the example).</p>
-<p>Sample: <a href="http://pyfpdf.googlecode.com/files/html.pdf">html.pdf</a></p>
 <h3 id="parameters">Parameters</h3>
 <p>test:</p>
 <blockquote>
@@ -1341,7 +1340,7 @@
 <span class="s2">&lt;/table&gt;</span>
 <span class="s2">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">pyfpdf</span> <span class="kn">import</span> <span class="n">FPDF</span><span class="p">,</span> <span class="n">HTMLMixin</span>
+<span class="kn">from</span> <span class="nn">fpdf</span> <span class="kn">import</span> <span class="n">FPDF</span><span class="p">,</span> <span class="n">HTMLMixin</span>
 
 <span class="k">class</span> <span class="nc">MyFPDF</span><span class="p">(</span><span class="n">FPDF</span><span class="p">,</span> <span class="n">HTMLMixin</span><span class="p">):</span>
     <span class="k">pass</span>

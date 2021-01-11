@@ -18,7 +18,7 @@
     
     
       
-        <title>Tutorial (Spanish translation) - PyFPDF</title>
+        <title>Tutorial (Spanish translation) - fpdf2</title>
       
     
     
@@ -75,7 +75,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid" aria-label="Header">
-    <a href="https://pyfpdf.github.io/fpdf2/" title="PyFPDF" class="md-header-nav__button md-logo" aria-label="PyFPDF">
+    <a href="https://pyfpdf.github.io/fpdf2/" title="fpdf2" class="md-header-nav__button md-logo" aria-label="fpdf2">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -88,7 +88,7 @@
       <div class="md-header-nav__ellipsis">
         <div class="md-header-nav__topic">
           <span class="md-ellipsis">
-            PyFPDF
+            fpdf2
           </span>
         </div>
         <div class="md-header-nav__topic">
@@ -168,13 +168,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="https://pyfpdf.github.io/fpdf2/" title="PyFPDF" class="md-nav__button md-logo" aria-label="PyFPDF">
+    <a href="https://pyfpdf.github.io/fpdf2/" title="fpdf2" class="md-nav__button md-logo" aria-label="fpdf2">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
 
     </a>
-    PyFPDF
+    fpdf2
   </label>
   
     <div class="md-nav__source">
@@ -294,13 +294,6 @@
         <li class="md-nav__item">
   <a href="#saltos-de-linea-y-colores" class="md-nav__link">
     Saltos de línea y colores
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#notas-de-instalacion" class="md-nav__link">
-    Notas de instalación
   </a>
   
 </li>
@@ -1208,13 +1201,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#notas-de-instalacion" class="md-nav__link">
-    Notas de instalación
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1234,14 +1220,13 @@
                 
                   <h1>Tutorial (Spanish translation)</h1>
                 
-                <p>Los diferentes ejemplos muestran rápidamente como usar PyFPDF. Encontrará todas las características principales explicadas.</p>
+                <p>Los diferentes ejemplos muestran rápidamente como usar fpdf2. Encontrará todas las características principales explicadas.</p>
 <p>English: <a href="Tutorial.html">Tutorial</a></p>
 <div class="toc">
 <ul>
 <li><a href="#ejemplo-basico">Ejemplo básico</a></li>
 <li><a href="#encabezado-pie-de-pagina-salto-de-pagina-e-imagen">Encabezado, pie de página, salto de página e imagen</a></li>
 <li><a href="#saltos-de-linea-y-colores">Saltos de línea y colores</a></li>
-<li><a href="#notas-de-instalacion">Notas de instalación</a></li>
 </ul>
 </div>
 <h2 id="ejemplo-basico">Ejemplo básico</h2>
@@ -1254,7 +1239,7 @@
 <span class="n">pdf</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Hola Mundo!&#39;</span><span class="p">)</span>
 <span class="n">pdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;tuto1.pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">)</span>
 </code></pre></div>
-<p><a href="https://github.com/alexanderankin/pyfpdf/raw/master/tutorial/tuto1.pdf">Demo</a></p>
+<p><a href="https://github.com/PyFPDF/fpdf2/raw/master/tutorial/tuto1.pdf">Demo</a></p>
 <p>Luego de incluir la biblioteca, creamos un objeto FPDF. El constructor <a href="reference/FPDF.html">FPDF</a> es usado aquí con los valores predeterminados: páginas en A4 portrait -vertical- y la unidad de medida en milímetros. Podría haberlos especificado explícitamente: </p>
 <div class="highlight"><pre><span></span><code><span class="n">pdf</span><span class="o">=</span><span class="n">FPDF</span><span class="p">(</span><span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;mm&#39;</span><span class="p">,</span> <span class="s1">&#39;A4&#39;</span><span class="p">)</span>
 </code></pre></div>
@@ -1308,7 +1293,7 @@
     <span class="n">pdf</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Printing line number &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">pdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;tuto2.pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">)</span>
 </code></pre></div>
-<a href="https://github.com/alexanderankin/pyfpdf/raw/master/tutorial/tuto2.pdf">Demo</a></p>
+<a href="https://github.com/PyFPDF/fpdf2/raw/master/tutorial/tuto2.pdf">Demo</a></p>
 <p>Este ejemplo hace uso de métodos  <a href="reference/header.html">header</a> y  <a href="reference/footer.html">footer</a> para procesar el encabezado y pie de página. Son llamados automáticamente. Ya existen en la clase FPDF pero no hacen nada por sí solos, por lo tanto tenemos que extender la clase y sobreescribirlos. </p>
 <p>El logo es impreso con el método <a href="reference/image.html">image</a> especificando su esquina superior izquierda y su ancho. La altura es calculada automáticamente para respetar las proporciones de la imagen. </p>
 <p>Para imprimir el número de página, un valor nulo es pasado como ancho de celda. Significa que la celda deberá ser extendida hasta el margen derecho de la página; es útil centrar texto. El número de página actual es devuelto por el método <a href="reference/page_no.html">page_no</a>; y para el número total de páginas, éste será obtenido mediante el valor especial {nb} que será sustituido al cerrar el documento (si de antemano se llamó <a href="reference/alias_nb_pages.html">alias_nb_pages</a>). 
@@ -1384,17 +1369,10 @@ Notar el uso del método <a href="reference/set_y.html">set_y</a> que permite es
 <span class="n">pdf</span><span class="o">.</span><span class="n">print_chapter</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;THE PROS AND CONS&#39;</span><span class="p">,</span> <span class="s1">&#39;20k_c2.txt&#39;</span><span class="p">)</span>
 <span class="n">pdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;tuto3.pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">)</span>
 </code></pre></div>
-<a href="https://github.com/alexanderankin/pyfpdf/raw/master/tutorial/tuto3.pdf">Demo</a></p>
+<a href="https://github.com/PyFPDF/fpdf2/raw/master/tutorial/tuto3.pdf">Demo</a></p>
 <p>El método <a href="reference/get_string_width.html">get_string_width</a> permite determinar la longitud de una cadena en la fuente actual, usado aquí para calcular la posición y el ancho del marco que rodea al título. Los colores son establecidos (vía <a href="reference/set_draw_color.html">set_draw_color</a>, <a href="reference/set_fill_color.html">set_fill_color</a> y <a href="reference/set_text_color.html">set_text_color</a>) y el grosor de la línea es establecido a 1 mm (contra 0.2 por defecto) con <a href="reference/set_line_width.html">set_line_width</a>. Finalmente, emitimos la celda (el último parámetro es True para indicar que el fondo debe ser rellenado). </p>
 <p>El método usado para imprimir párrafos es <a href="reference/multi_cell.html">multi_cell</a>. Cada vez que una línea alcanza el extremo derecho de la celda o un caracter de retorno de línea, un salto de línea es emitido y una nueva celda es automáticamente creada bajo la actual. El texto es justificado por defecto. </p>
 <p>Dos propiedades del documento son definidas: el título (<a href="reference/set_title.html">set_title</a>) y el autor (<a href="reference/set_author.html">set_author</a>). Las propiedades pueden ser vistas de dos formas. La primera es abrir el documento directamente con Acrobat Reader, ir al menú Archivo y elegir la opción Propiedades del Documento. La segunda, también disponible en el plug-in, es hacer clic izquierdo y seleccionar Propiedades del documento (Document Properties).</p>
-<h2 id="notas-de-instalacion">Notas de instalación</h2>
-<p>Anteriormente, para importar el objeto se debía usar el paquete pyfpdf:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pyfpdf</span> <span class="kn">import</span> <span class="n">FPDF</span>
-</code></pre></div>
-<p>A partir de la versión 1.7, para importar el objeto se debe usar el paquete fpdf:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fpdf</span> <span class="kn">import</span> <span class="n">FPDF</span>
-</code></pre></div>
                 
               
               

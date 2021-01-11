@@ -18,7 +18,7 @@
     
     
       
-        <title>FAQ - PyFPDF</title>
+        <title>FAQ - fpdf2</title>
       
     
     
@@ -75,7 +75,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid" aria-label="Header">
-    <a href="https://pyfpdf.github.io/fpdf2/" title="PyFPDF" class="md-header-nav__button md-logo" aria-label="PyFPDF">
+    <a href="https://pyfpdf.github.io/fpdf2/" title="fpdf2" class="md-header-nav__button md-logo" aria-label="fpdf2">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -88,7 +88,7 @@
       <div class="md-header-nav__ellipsis">
         <div class="md-header-nav__topic">
           <span class="md-ellipsis">
-            PyFPDF
+            fpdf2
           </span>
         </div>
         <div class="md-header-nav__topic">
@@ -168,13 +168,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="https://pyfpdf.github.io/fpdf2/" title="PyFPDF" class="md-nav__button md-logo" aria-label="PyFPDF">
+    <a href="https://pyfpdf.github.io/fpdf2/" title="fpdf2" class="md-nav__button md-logo" aria-label="fpdf2">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
 
     </a>
-    PyFPDF
+    fpdf2
   </label>
   
     <div class="md-nav__source">
@@ -353,8 +353,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-is-the-license-of-this-library-pyfpdf" class="md-nav__link">
-    What is the license of this library (pyfpdf)?
+  <a href="#what-is-the-license-of-this-library-fpdf2" class="md-nav__link">
+    What is the license of this library (fpdf2)?
   </a>
   
 </li>
@@ -1255,8 +1255,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-is-the-license-of-this-library-pyfpdf" class="md-nav__link">
-    What is the license of this library (pyfpdf)?
+  <a href="#what-is-the-license-of-this-library-fpdf2" class="md-nav__link">
+    What is the license of this library (fpdf2)?
   </a>
   
 </li>
@@ -1289,18 +1289,17 @@
 <li><a href="#what-does-the-code-look-like">What does the code look like?</a></li>
 <li><a href="#does-this-library-have-any-framework-integration">Does this library have any framework integration?</a></li>
 <li><a href="#what-is-the-development-status-of-this-library">What is the development status of this library?</a></li>
-<li><a href="#what-is-the-license-of-this-library-pyfpdf">What is the license of this library (pyfpdf)?</a></li>
+<li><a href="#what-is-the-license-of-this-library-fpdf2">What is the license of this library (fpdf2)?</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <h2 id="what-is-fpdf">What is FPDF?</h2>
-<p><a href="http://www.fpdf.org">FPDF</a> (and PyFPDF) is a library with low-level
-primitives to easily generate PDF documents. This is similar to ReportLab's
-graphics canvas, but with some methods to output "fluid" cells ("flowables"
-that can span multiple rows, pages, tables, columns, etc).</p>
-<p>It has two methods ("hooks") that can be implemented in a subclass, headers
-and footers.</p>
+<p><code>fpdf2</code> is a library with low-level primitives to easily generate PDF documents.
+This is similar to ReportLab's graphics canvas, but with some methods to output "fluid" cells
+("flowables" that can span multiple rows, pages, tables, columns, etc).</p>
+<p>It has two methods ("hooks") that can be implemented in a subclass, <code>headers</code>
+and <code>footers</code>.</p>
 <p>Originally developed in PHP several years ago (as a free alternative to
 proprietary C libraries), it has been ported to many programming languages,
 including ASP, C++, Java, Pl/SQL, Ruby, Visual Basic, and of course, Python.</p>
@@ -1345,10 +1344,9 @@ document (including advanced features and extensions).</p>
 <p>Following is an example similar to the Reportlab one in the book of web2py. Note
 the simplified import and usage:
 (<a href="http://www.web2py.com/book/default/chapter/09?search=pdf#ReportLab-and-PDF">http://www.web2py.com/book/default/chapter/09?search=pdf#ReportLab-and-PDF</a>)</p>
-<p>PyFPDF:
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fpdf</span> <span class="kn">import</span> <span class="n">FPDF</span>
 
-<span class="k">def</span> <span class="nf">get_me_a_pyfpdf</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">get_me_a_pdf</span><span class="p">():</span>
     <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;This The Doc Title&quot;</span>
     <span class="n">heading</span> <span class="o">=</span> <span class="s2">&quot;First Paragraph&quot;</span>
     <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;bla &#39;</span> <span class="o">*</span> <span class="mi">10000</span>
@@ -1363,8 +1361,8 @@ the simplified import and usage:
     <span class="n">pdf</span><span class="o">.</span><span class="n">multi_cell</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">txt</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
     <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;application/pdf&#39;</span>
     <span class="k">return</span> <span class="n">pdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">dest</span><span class="o">=</span><span class="s1">&#39;S&#39;</span><span class="p">)</span>
-</code></pre></div></p>
-<p>Reportlab:
+</code></pre></div>
+<p>With Reportlab:
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">reportlab.platypus</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">reportlab.lib.styles</span> <span class="kn">import</span> <span class="n">getSampleStyleSheet</span>
 <span class="kn">from</span> <span class="nn">reportlab.rl_config</span> <span class="kn">import</span> <span class="n">defaultPageSize</span>
@@ -1420,7 +1418,7 @@ downloads to date.</p>
 <p>In contrast, <em>write_html</em> support is not complete, so it must be considered in 
 alpha state. Further enhancements using web2py helpers and an XML parser will 
 enable parsing more complex HTML files.</p>
-<h2 id="what-is-the-license-of-this-library-pyfpdf">What is the license of this library (pyfpdf)?</h2>
+<h2 id="what-is-the-license-of-this-library-fpdf2">What is the license of this library (fpdf2)?</h2>
 <p>LGPL v3.0.</p>
 <p>Original FPDF uses a permissive license:
 <a href="http://www.fpdf.org/en/FAQ.php#q1">http://www.fpdf.org/en/FAQ.php#q1</a></p>

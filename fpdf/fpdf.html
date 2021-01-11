@@ -2088,8 +2088,7 @@ class FPDF:
 
     def _putinfo(self):
         info_d = o_dict()
-        # info_d[pdf_name(&#39;producer&#39;)] = ts(&#39;PyFPDF &#39; + FPDF_VERSION + \
-        #     &#39; https://github.com/PyFPDF/fpdf2&#39;)
+        # info_d[pdf_name(&#34;producer&#34;)] = enclose_in_parens(&#34;fpdf{} https://github.com/PyFPDF/fpdf2&#34;.format(FPDF_VERSION))
         info_d[pdf_name(&#34;title&#34;)] = enclose_in_parens(getattr(self, &#34;title&#34;, None))
         info_d[pdf_name(&#34;subject&#34;)] = enclose_in_parens(getattr(self, &#34;subject&#34;, None))
         info_d[pdf_name(&#34;author&#34;)] = enclose_in_parens(getattr(self, &#34;author&#34;, None))
@@ -4443,8 +4442,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
     def _putinfo(self):
         info_d = o_dict()
-        # info_d[pdf_name(&#39;producer&#39;)] = ts(&#39;PyFPDF &#39; + FPDF_VERSION + \
-        #     &#39; https://github.com/PyFPDF/fpdf2&#39;)
+        # info_d[pdf_name(&#34;producer&#34;)] = enclose_in_parens(&#34;fpdf{} https://github.com/PyFPDF/fpdf2&#34;.format(FPDF_VERSION))
         info_d[pdf_name(&#34;title&#34;)] = enclose_in_parens(getattr(self, &#34;title&#34;, None))
         info_d[pdf_name(&#34;subject&#34;)] = enclose_in_parens(getattr(self, &#34;subject&#34;, None))
         info_d[pdf_name(&#34;author&#34;)] = enclose_in_parens(getattr(self, &#34;author&#34;, None))
