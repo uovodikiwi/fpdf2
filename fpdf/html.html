@@ -59,31 +59,39 @@ def hex2dec(color=&#34;#000000&#34;):
 class HTML2FPDF(HTMLParser):
     &#34;Render basic HTML to FPDF&#34;
 
-    def __init__(self, pdf, image_map=None):
-        HTMLParser.__init__(self)
+    def __init__(self, pdf, image_map=None, table_line_separators=False):
+        &#34;&#34;&#34;
+        Args:
+            pdf (FPDF): an instance of `fpdf.FPDF`
+            image_map (function): an optional one-argument function that map &lt;img&gt; &#34;src&#34; to new image URLs
+            table_line_separators (bool): enable horizontal line separators in &lt;table&gt;
+        &#34;&#34;&#34;
+        super().__init__()
+        self.pdf = pdf
+        self.image_map = image_map or (lambda src: src)
+        self.table_line_separators = table_line_separators
         self.style = dict(b=False, i=False, u=False)
         self.href = &#34;&#34;
         self.align = &#34;&#34;
         self.page_links = {}
         self.font_stack = []
-        self.pdf = pdf
-        self.image_map = image_map or (lambda src: src)
         self.indent = 0
         self.bullet = []
-        self.font_size = 12  # initialize font size
+        self.font_size = pdf.font_size_pt
         self.font_face = &#34;times&#34;  # initialize font face
-        self.set_font(&#34;times&#34;, 12)
+        self.set_font(&#34;times&#34;, self.font_size)
         self.font_color = 0, 0, 0  # initialize font color, r,g,b format
         self.table = None  # table attributes
         self.table_col_width = None  # column (header) widths
         self.table_col_index = None  # current column index
-        self.td = None  # cell attributes
-        self.th = False  # header enabled
-        self.tr = None
+        self.td = None  # inside a &lt;td&gt;, attributes dict
+        self.th = None  # inside a &lt;th&gt;, attributes dict
+        self.tr = None  # inside a &lt;tr&gt;, attributes dict
+        self.thead = None  # inside a &lt;thead&gt;, attributes dict
+        self.tfoot = None  # inside a &lt;tfoot&gt;, attributes dict
+        self.tr_index = None  # row index
         self.theader = None  # table header cells
         self.tfooter = None  # table footer cells
-        self.thead = None
-        self.tfoot = None
         self.theader_out = self.tfooter_out = False
         self.hsize = dict(h1=2, h2=1.5, h3=1.17, h4=1, h5=0.83, h6=0.67)
 
@@ -173,7 +181,7 @@ class HTML2FPDF(HTMLParser):
             self.set_style(&#34;b&#34;, True)
             for cell, bgcolor in self.theader:
                 self.box_shadow(cell[0], cell[1], bgcolor)
-                self.pdf.cell(*cell)
+                self.pdf.cell(*cell)  # includes the border
             self.set_style(&#34;b&#34;, b)
             self.pdf.ln(self.theader[0][0][1])
             self.pdf.set_x(self.table_offset)
@@ -184,22 +192,20 @@ class HTML2FPDF(HTMLParser):
         if self.tfooter:
             x = self.pdf.x
             self.pdf.set_x(self.table_offset)
-            # TODO: self.output_table_sep()
             for cell, bgcolor in self.tfooter:
                 self.box_shadow(cell[0], cell[1], bgcolor)
                 self.pdf.cell(*cell)
             self.pdf.ln(self.tfooter[0][0][1])
             self.pdf.set_x(x)
-        if int(self.table.get(&#34;border&#34;, 0)):
+        if self.table.get(&#34;border&#34;):
             self.output_table_sep()
         self.tfooter_out = True
 
     def output_table_sep(self):
-        self.pdf.set_x(self.table_offset)
         x1 = self.pdf.x
         y1 = self.pdf.y
-        w = sum([self.width2mm(lenght) for lenght in self.table_col_width])
-        self.pdf.line(x1, y1, x1 + w, y1)
+        width = sum([self.width2mm(length) for length in self.table_col_width])
+        self.pdf.line(x1, y1, x1 + width, y1)
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
@@ -262,8 +268,7 @@ class HTML2FPDF(HTMLParser):
                 except RuntimeError:
                     pass  # font not found, ignore
             if &#34;size&#34; in attrs:
-                size = int(attrs.get(&#34;size&#34;))
-                self.font_size = size
+                self.font_size = int(attrs.get(&#34;size&#34;))
             self.set_font()
             self.set_text_color()
         if tag == &#34;table&#34;:
@@ -283,9 +288,13 @@ class HTML2FPDF(HTMLParser):
             self.table_h = 0
             self.pdf.ln()
         if tag == &#34;tr&#34;:
+            self.tr_index = 0 if self.tr_index is None else (self.tr_index + 1)
             self.tr = {k.lower(): v for k, v in attrs.items()}
             self.table_col_index = 0
             self.pdf.set_x(self.table_offset)
+            # Adding an horizontal line separator between rows:
+            if self.table_line_separators and self.tr_index &gt; 0:
+                self.output_table_sep()
         if tag == &#34;td&#34;:
             self.td = {k.lower(): v for k, v in attrs.items()}
         if tag == &#34;th&#34;:
@@ -319,7 +328,7 @@ class HTML2FPDF(HTMLParser):
         # Closing tag
         if DEBUG:
             print(&#34;ENDTAG&#34;, tag)
-        if tag in (&#34;h1&#34;, &#34;h2&#34;, &#34;h3&#34;, &#34;h4&#34;):
+        if tag in (&#34;h1&#34;, &#34;h2&#34;, &#34;h3&#34;, &#34;h4&#34;, &#34;h5&#34;, &#34;h6&#34;):
             self.pdf.ln(self.h)
             self.set_font()
             self.set_text_color()
@@ -354,18 +363,19 @@ class HTML2FPDF(HTMLParser):
             self.theader = None
             self.tfooter = None
             self.pdf.ln(self.h)
+            self.tr_index = None
         if tag == &#34;thead&#34;:
             self.thead = None
+            self.tr_index = None
         if tag == &#34;tfoot&#34;:
             self.tfoot = None
+            self.tr_index = None
         if tag == &#34;tbody&#34;:
-            # draw a line separator between table bodies
-            self.pdf.set_x(self.table_offset)
-            self.output_table_sep()
+            self.tbody = None
+            self.tr_index = None
         if tag == &#34;tr&#34;:
-            h = self.table_h
             if self.tfoot is None:
-                self.pdf.ln(h)
+                self.pdf.ln(self.table_h)
             self.tr = None
         if tag in (&#34;td&#34;, &#34;th&#34;):
             if self.th:
@@ -431,9 +441,9 @@ class HTML2FPDF(HTMLParser):
 
 
 class HTMLMixin:
-    def write_html(self, text, image_map=None):
+    def write_html(self, text, *args, **kwargs):
         &#34;Parse HTML and convert it to PDF&#34;
-        h2p = HTML2FPDF(self, image_map)
+        h2p = HTML2FPDF(self, *args, **kwargs)
         text = html.unescape(text)  # To deal with HTML entities
         h2p.feed(text)</code></pre>
 </details>
@@ -483,13 +493,19 @@ class HTMLMixin:
 <dl>
 <dt id="fpdf.html.HTML2FPDF"><code class="flex name class">
 <span>class <span class="ident">HTML2FPDF</span></span>
-<span>(</span><span>pdf, image_map=None)</span>
+<span>(</span><span>pdf, image_map=None, table_line_separators=False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Render basic HTML to FPDF</p>
-<p>Initialize and reset this instance.</p>
-<p>If convert_charrefs is True (the default), all character references
-are automatically converted to the corresponding Unicode characters.</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>pdf</code></strong> :&ensp;<code>FPDF</code></dt>
+<dd>an instance of <code><a title="fpdf.FPDF" href="index.html#fpdf.FPDF">FPDF</a></code></dd>
+<dt><strong><code>image_map</code></strong> :&ensp;<code>function</code></dt>
+<dd>an optional one-argument function that map <img> "src" to new image URLs</dd>
+<dt><strong><code>table_line_separators</code></strong> :&ensp;<code>bool</code></dt>
+<dd>enable horizontal line separators in <table></dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -497,31 +513,39 @@ are automatically converted to the corresponding Unicode characters.</p></div>
 <pre><code class="python">class HTML2FPDF(HTMLParser):
     &#34;Render basic HTML to FPDF&#34;
 
-    def __init__(self, pdf, image_map=None):
-        HTMLParser.__init__(self)
+    def __init__(self, pdf, image_map=None, table_line_separators=False):
+        &#34;&#34;&#34;
+        Args:
+            pdf (FPDF): an instance of `fpdf.FPDF`
+            image_map (function): an optional one-argument function that map &lt;img&gt; &#34;src&#34; to new image URLs
+            table_line_separators (bool): enable horizontal line separators in &lt;table&gt;
+        &#34;&#34;&#34;
+        super().__init__()
+        self.pdf = pdf
+        self.image_map = image_map or (lambda src: src)
+        self.table_line_separators = table_line_separators
         self.style = dict(b=False, i=False, u=False)
         self.href = &#34;&#34;
         self.align = &#34;&#34;
         self.page_links = {}
         self.font_stack = []
-        self.pdf = pdf
-        self.image_map = image_map or (lambda src: src)
         self.indent = 0
         self.bullet = []
-        self.font_size = 12  # initialize font size
+        self.font_size = pdf.font_size_pt
         self.font_face = &#34;times&#34;  # initialize font face
-        self.set_font(&#34;times&#34;, 12)
+        self.set_font(&#34;times&#34;, self.font_size)
         self.font_color = 0, 0, 0  # initialize font color, r,g,b format
         self.table = None  # table attributes
         self.table_col_width = None  # column (header) widths
         self.table_col_index = None  # current column index
-        self.td = None  # cell attributes
-        self.th = False  # header enabled
-        self.tr = None
+        self.td = None  # inside a &lt;td&gt;, attributes dict
+        self.th = None  # inside a &lt;th&gt;, attributes dict
+        self.tr = None  # inside a &lt;tr&gt;, attributes dict
+        self.thead = None  # inside a &lt;thead&gt;, attributes dict
+        self.tfoot = None  # inside a &lt;tfoot&gt;, attributes dict
+        self.tr_index = None  # row index
         self.theader = None  # table header cells
         self.tfooter = None  # table footer cells
-        self.thead = None
-        self.tfoot = None
         self.theader_out = self.tfooter_out = False
         self.hsize = dict(h1=2, h2=1.5, h3=1.17, h4=1, h5=0.83, h6=0.67)
 
@@ -611,7 +635,7 @@ are automatically converted to the corresponding Unicode characters.</p></div>
             self.set_style(&#34;b&#34;, True)
             for cell, bgcolor in self.theader:
                 self.box_shadow(cell[0], cell[1], bgcolor)
-                self.pdf.cell(*cell)
+                self.pdf.cell(*cell)  # includes the border
             self.set_style(&#34;b&#34;, b)
             self.pdf.ln(self.theader[0][0][1])
             self.pdf.set_x(self.table_offset)
@@ -622,22 +646,20 @@ are automatically converted to the corresponding Unicode characters.</p></div>
         if self.tfooter:
             x = self.pdf.x
             self.pdf.set_x(self.table_offset)
-            # TODO: self.output_table_sep()
             for cell, bgcolor in self.tfooter:
                 self.box_shadow(cell[0], cell[1], bgcolor)
                 self.pdf.cell(*cell)
             self.pdf.ln(self.tfooter[0][0][1])
             self.pdf.set_x(x)
-        if int(self.table.get(&#34;border&#34;, 0)):
+        if self.table.get(&#34;border&#34;):
             self.output_table_sep()
         self.tfooter_out = True
 
     def output_table_sep(self):
-        self.pdf.set_x(self.table_offset)
         x1 = self.pdf.x
         y1 = self.pdf.y
-        w = sum([self.width2mm(lenght) for lenght in self.table_col_width])
-        self.pdf.line(x1, y1, x1 + w, y1)
+        width = sum([self.width2mm(length) for length in self.table_col_width])
+        self.pdf.line(x1, y1, x1 + width, y1)
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
@@ -700,8 +722,7 @@ are automatically converted to the corresponding Unicode characters.</p></div>
                 except RuntimeError:
                     pass  # font not found, ignore
             if &#34;size&#34; in attrs:
-                size = int(attrs.get(&#34;size&#34;))
-                self.font_size = size
+                self.font_size = int(attrs.get(&#34;size&#34;))
             self.set_font()
             self.set_text_color()
         if tag == &#34;table&#34;:
@@ -721,9 +742,13 @@ are automatically converted to the corresponding Unicode characters.</p></div>
             self.table_h = 0
             self.pdf.ln()
         if tag == &#34;tr&#34;:
+            self.tr_index = 0 if self.tr_index is None else (self.tr_index + 1)
             self.tr = {k.lower(): v for k, v in attrs.items()}
             self.table_col_index = 0
             self.pdf.set_x(self.table_offset)
+            # Adding an horizontal line separator between rows:
+            if self.table_line_separators and self.tr_index &gt; 0:
+                self.output_table_sep()
         if tag == &#34;td&#34;:
             self.td = {k.lower(): v for k, v in attrs.items()}
         if tag == &#34;th&#34;:
@@ -757,7 +782,7 @@ are automatically converted to the corresponding Unicode characters.</p></div>
         # Closing tag
         if DEBUG:
             print(&#34;ENDTAG&#34;, tag)
-        if tag in (&#34;h1&#34;, &#34;h2&#34;, &#34;h3&#34;, &#34;h4&#34;):
+        if tag in (&#34;h1&#34;, &#34;h2&#34;, &#34;h3&#34;, &#34;h4&#34;, &#34;h5&#34;, &#34;h6&#34;):
             self.pdf.ln(self.h)
             self.set_font()
             self.set_text_color()
@@ -792,18 +817,19 @@ are automatically converted to the corresponding Unicode characters.</p></div>
             self.theader = None
             self.tfooter = None
             self.pdf.ln(self.h)
+            self.tr_index = None
         if tag == &#34;thead&#34;:
             self.thead = None
+            self.tr_index = None
         if tag == &#34;tfoot&#34;:
             self.tfoot = None
+            self.tr_index = None
         if tag == &#34;tbody&#34;:
-            # draw a line separator between table bodies
-            self.pdf.set_x(self.table_offset)
-            self.output_table_sep()
+            self.tbody = None
+            self.tr_index = None
         if tag == &#34;tr&#34;:
-            h = self.table_h
             if self.tfoot is None:
-                self.pdf.ln(h)
+                self.pdf.ln(self.table_h)
             self.tr = None
         if tag in (&#34;td&#34;, &#34;th&#34;):
             if self.th:
@@ -991,7 +1017,7 @@ are automatically converted to the corresponding Unicode characters.</p></div>
     # Closing tag
     if DEBUG:
         print(&#34;ENDTAG&#34;, tag)
-    if tag in (&#34;h1&#34;, &#34;h2&#34;, &#34;h3&#34;, &#34;h4&#34;):
+    if tag in (&#34;h1&#34;, &#34;h2&#34;, &#34;h3&#34;, &#34;h4&#34;, &#34;h5&#34;, &#34;h6&#34;):
         self.pdf.ln(self.h)
         self.set_font()
         self.set_text_color()
@@ -1026,18 +1052,19 @@ are automatically converted to the corresponding Unicode characters.</p></div>
         self.theader = None
         self.tfooter = None
         self.pdf.ln(self.h)
+        self.tr_index = None
     if tag == &#34;thead&#34;:
         self.thead = None
+        self.tr_index = None
     if tag == &#34;tfoot&#34;:
         self.tfoot = None
+        self.tr_index = None
     if tag == &#34;tbody&#34;:
-        # draw a line separator between table bodies
-        self.pdf.set_x(self.table_offset)
-        self.output_table_sep()
+        self.tbody = None
+        self.tr_index = None
     if tag == &#34;tr&#34;:
-        h = self.table_h
         if self.tfoot is None:
-            self.pdf.ln(h)
+            self.pdf.ln(self.table_h)
         self.tr = None
     if tag in (&#34;td&#34;, &#34;th&#34;):
         if self.th:
@@ -1127,8 +1154,7 @@ are automatically converted to the corresponding Unicode characters.</p></div>
             except RuntimeError:
                 pass  # font not found, ignore
         if &#34;size&#34; in attrs:
-            size = int(attrs.get(&#34;size&#34;))
-            self.font_size = size
+            self.font_size = int(attrs.get(&#34;size&#34;))
         self.set_font()
         self.set_text_color()
     if tag == &#34;table&#34;:
@@ -1148,9 +1174,13 @@ are automatically converted to the corresponding Unicode characters.</p></div>
         self.table_h = 0
         self.pdf.ln()
     if tag == &#34;tr&#34;:
+        self.tr_index = 0 if self.tr_index is None else (self.tr_index + 1)
         self.tr = {k.lower(): v for k, v in attrs.items()}
         self.table_col_index = 0
         self.pdf.set_x(self.table_offset)
+        # Adding an horizontal line separator between rows:
+        if self.table_line_separators and self.tr_index &gt; 0:
+            self.output_table_sep()
     if tag == &#34;td&#34;:
         self.td = {k.lower(): v for k, v in attrs.items()}
     if tag == &#34;th&#34;:
@@ -1194,13 +1224,12 @@ are automatically converted to the corresponding Unicode characters.</p></div>
     if self.tfooter:
         x = self.pdf.x
         self.pdf.set_x(self.table_offset)
-        # TODO: self.output_table_sep()
         for cell, bgcolor in self.tfooter:
             self.box_shadow(cell[0], cell[1], bgcolor)
             self.pdf.cell(*cell)
         self.pdf.ln(self.tfooter[0][0][1])
         self.pdf.set_x(x)
-    if int(self.table.get(&#34;border&#34;, 0)):
+    if self.table.get(&#34;border&#34;):
         self.output_table_sep()
     self.tfooter_out = True</code></pre>
 </details>
@@ -1221,7 +1250,7 @@ are automatically converted to the corresponding Unicode characters.</p></div>
         self.set_style(&#34;b&#34;, True)
         for cell, bgcolor in self.theader:
             self.box_shadow(cell[0], cell[1], bgcolor)
-            self.pdf.cell(*cell)
+            self.pdf.cell(*cell)  # includes the border
         self.set_style(&#34;b&#34;, b)
         self.pdf.ln(self.theader[0][0][1])
         self.pdf.set_x(self.table_offset)
@@ -1239,11 +1268,10 @@ are automatically converted to the corresponding Unicode characters.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def output_table_sep(self):
-    self.pdf.set_x(self.table_offset)
     x1 = self.pdf.x
     y1 = self.pdf.y
-    w = sum([self.width2mm(lenght) for lenght in self.table_col_width])
-    self.pdf.line(x1, y1, x1 + w, y1)</code></pre>
+    width = sum([self.width2mm(length) for length in self.table_col_width])
+    self.pdf.line(x1, y1, x1 + width, y1)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.html.HTML2FPDF.put_link"><code class="name flex">
@@ -1357,16 +1385,16 @@ are automatically converted to the corresponding Unicode characters.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class HTMLMixin:
-    def write_html(self, text, image_map=None):
+    def write_html(self, text, *args, **kwargs):
         &#34;Parse HTML and convert it to PDF&#34;
-        h2p = HTML2FPDF(self, image_map)
+        h2p = HTML2FPDF(self, *args, **kwargs)
         text = html.unescape(text)  # To deal with HTML entities
         h2p.feed(text)</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
 <dt id="fpdf.html.HTMLMixin.write_html"><code class="name flex">
-<span>def <span class="ident">write_html</span></span>(<span>self, text, image_map=None)</span>
+<span>def <span class="ident">write_html</span></span>(<span>self, text, *args, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Parse HTML and convert it to PDF</p></div>
@@ -1374,9 +1402,9 @@ are automatically converted to the corresponding Unicode characters.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def write_html(self, text, image_map=None):
+<pre><code class="python">def write_html(self, text, *args, **kwargs):
     &#34;Parse HTML and convert it to PDF&#34;
-    h2p = HTML2FPDF(self, image_map)
+    h2p = HTML2FPDF(self, *args, **kwargs)
     text = html.unescape(text)  # To deal with HTML entities
     h2p.feed(text)</code></pre>
 </details>
