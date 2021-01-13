@@ -53,8 +53,13 @@ def load_resource(filename, reason=&#34;image&#34;):
     raise FPDFException(&#39;Unknown resource loading reason &#34;%s&#34;&#39; % reason)
 
 
-def get_img_info(bytesio):
-    img = Image.open(bytesio)
+def get_img_info(img):
+    &#34;&#34;&#34;
+    Args:
+        input_img: `BytesIO` or `PIL.Image.Image` instance
+    &#34;&#34;&#34;
+    if not isinstance(img, Image.Image):
+        img = Image.open(img)
     if img.mode not in [&#34;L&#34;, &#34;LA&#34;, &#34;RGBA&#34;]:
         img = img.convert(&#34;RGBA&#34;)
     w, h = img.size
@@ -123,16 +128,25 @@ def to_zdata(img, remove_slice=None, select_slice=None):
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="fpdf.image_parsing.get_img_info"><code class="name flex">
-<span>def <span class="ident">get_img_info</span></span>(<span>bytesio)</span>
+<span>def <span class="ident">get_img_info</span></span>(<span>img)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>input_img</code></strong></dt>
+<dd><code>BytesIO</code> or <code>PIL.Image.Image</code> instance</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_img_info(bytesio):
-    img = Image.open(bytesio)
+<pre><code class="python">def get_img_info(img):
+    &#34;&#34;&#34;
+    Args:
+        input_img: `BytesIO` or `PIL.Image.Image` instance
+    &#34;&#34;&#34;
+    if not isinstance(img, Image.Image):
+        img = Image.open(img)
     if img.mode not in [&#34;L&#34;, &#34;LA&#34;, &#34;RGBA&#34;]:
         img = img.convert(&#34;RGBA&#34;)
     w, h = img.size

@@ -51,6 +51,7 @@ from contextlib import contextmanager
 from datetime import datetime
 from collections import OrderedDict
 from functools import wraps
+from uuid import uuid4
 import errno
 import logging
 import math
@@ -1369,20 +1370,29 @@ class FPDF:
         type=&#34;&#34;,
         link=&#34;&#34;,
     ):
-        # def image(self, name, x = None, y = None, w = 0, h = 0, type = &#39;&#39;, link = &#39;&#39;):  # noqa: E501
         &#34;&#34;&#34;
         Put an image on the page
 
         Args:
+            name: either a string representing a file path to an image, or a instance of `PIL.Image.Image`
+            x (int): optional horizontal position where to put the image on the page
+            y (int): optional vertical position where to put the image on the page
+            w (int): optional width of the image
+            h (int): optional height of the image
             type (str): [**DEPRECATED**] unused, will be removed in a later version
+            link (str): optional link, internal or external, to add on the image
         &#34;&#34;&#34;
         if type:
             warnings.warn(
                 &#39;&#34;type&#34; is unused and will soon be deprecated&#39;,
                 PendingDeprecationWarning,
             )
+        if isinstance(name, str):
+            img = load_resource(name)
+        else:
+            name, img = uuid4(), name
         if name not in self.images:
-            info = get_img_info(load_resource(name))
+            info = get_img_info(img)
             info[&#34;i&#34;] = len(self.images) + 1
             self.images[name] = info
         else:
@@ -3723,20 +3733,29 @@ case insensitive key (the name of the new format) and 2-tuple value of
         type=&#34;&#34;,
         link=&#34;&#34;,
     ):
-        # def image(self, name, x = None, y = None, w = 0, h = 0, type = &#39;&#39;, link = &#39;&#39;):  # noqa: E501
         &#34;&#34;&#34;
         Put an image on the page
 
         Args:
+            name: either a string representing a file path to an image, or a instance of `PIL.Image.Image`
+            x (int): optional horizontal position where to put the image on the page
+            y (int): optional vertical position where to put the image on the page
+            w (int): optional width of the image
+            h (int): optional height of the image
             type (str): [**DEPRECATED**] unused, will be removed in a later version
+            link (str): optional link, internal or external, to add on the image
         &#34;&#34;&#34;
         if type:
             warnings.warn(
                 &#39;&#34;type&#34; is unused and will soon be deprecated&#39;,
                 PendingDeprecationWarning,
             )
+        if isinstance(name, str):
+            img = load_resource(name)
+        else:
+            name, img = uuid4(), name
         if name not in self.images:
-            info = get_img_info(load_resource(name))
+            info = get_img_info(img)
             info[&#34;i&#34;] = len(self.images) + 1
             self.images[name] = info
         else:
@@ -5469,8 +5488,20 @@ def ellipse(self, x, y, w, h, style=None):
 <div class="desc"><p>Put an image on the page</p>
 <h2 id="args">Args</h2>
 <dl>
+<dt><strong><code>name</code></strong></dt>
+<dd>either a string representing a file path to an image, or a instance of <code>PIL.Image.Image</code></dd>
+<dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
+<dd>optional horizontal position where to put the image on the page</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
+<dd>optional vertical position where to put the image on the page</dd>
+<dt><strong><code>w</code></strong> :&ensp;<code>int</code></dt>
+<dd>optional width of the image</dd>
+<dt><strong><code>h</code></strong> :&ensp;<code>int</code></dt>
+<dd>optional height of the image</dd>
 <dt><strong><code>type</code></strong> :&ensp;<code>str</code></dt>
 <dd>[<strong>DEPRECATED</strong>] unused, will be removed in a later version</dd>
+<dt><strong><code>link</code></strong> :&ensp;<code>str</code></dt>
+<dd>optional link, internal or external, to add on the image</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -5487,20 +5518,29 @@ def image(
     type=&#34;&#34;,
     link=&#34;&#34;,
 ):
-    # def image(self, name, x = None, y = None, w = 0, h = 0, type = &#39;&#39;, link = &#39;&#39;):  # noqa: E501
     &#34;&#34;&#34;
     Put an image on the page
 
     Args:
+        name: either a string representing a file path to an image, or a instance of `PIL.Image.Image`
+        x (int): optional horizontal position where to put the image on the page
+        y (int): optional vertical position where to put the image on the page
+        w (int): optional width of the image
+        h (int): optional height of the image
         type (str): [**DEPRECATED**] unused, will be removed in a later version
+        link (str): optional link, internal or external, to add on the image
     &#34;&#34;&#34;
     if type:
         warnings.warn(
             &#39;&#34;type&#34; is unused and will soon be deprecated&#39;,
             PendingDeprecationWarning,
         )
+    if isinstance(name, str):
+        img = load_resource(name)
+    else:
+        name, img = uuid4(), name
     if name not in self.images:
-        info = get_img_info(load_resource(name))
+        info = get_img_info(img)
         info[&#34;i&#34;] = len(self.images) + 1
         self.images[name] = info
     else:
