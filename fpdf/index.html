@@ -2100,7 +2100,6 @@ containing meta-data and stuffs.</p></div>
 
     def _putinfo(self):
         info_d = OrderedDict()
-        # info_d[pdf_name(&#34;producer&#34;)] = enclose_in_parens(&#34;fpdf{} https://github.com/PyFPDF/fpdf2&#34;.format(FPDF_VERSION))
         info_d[pdf_name(&#34;title&#34;)] = enclose_in_parens(getattr(self, &#34;title&#34;, None))
         info_d[pdf_name(&#34;subject&#34;)] = enclose_in_parens(getattr(self, &#34;subject&#34;, None))
         info_d[pdf_name(&#34;author&#34;)] = enclose_in_parens(getattr(self, &#34;author&#34;, None))
