@@ -840,9 +840,9 @@ containing meta-data and stuffs.</p></div>
             raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
         txt = self.normalize_text(txt)
         if self.unifontsubset:
-            txt2 = UTF8ToUTF16BE(escape_parens(txt), False).decode(&#34;latin-1&#34;)
-            for uni in UTF8StringToArray(txt):
-                self.current_font[&#34;subset&#34;].append(uni)
+            txt2 = escape_parens(txt).encode(&#34;UTF-16BE&#34;).decode(&#34;latin-1&#34;)
+            for char in txt:
+                self.current_font[&#34;subset&#34;].append(ord(char))
         else:
             txt2 = escape_parens(txt)
         s = sprintf(
@@ -1036,9 +1036,9 @@ containing meta-data and stuffs.</p></div>
             # If multibyte, Tw has no effect - do word spacing using an
             # adjustment before each space
             if self.ws and self.unifontsubset:
-                for uni in UTF8StringToArray(txt):
-                    self.current_font[&#34;subset&#34;].append(uni)
-                space = escape_parens(UTF8ToUTF16BE(&#34; &#34;, False).decode(&#34;latin-1&#34;))
+                for char in txt:
+                    self.current_font[&#34;subset&#34;].append(ord(char))
+                space = escape_parens(&#34; &#34;.encode(&#34;UTF-16BE&#34;).decode(&#34;latin-1&#34;))
 
                 s += sprintf(
                     &#34;BT 0 Tw %.2F %.2F Td [&#34;,
@@ -1051,7 +1051,7 @@ containing meta-data and stuffs.</p></div>
                 for i in range(numt):
                     tx = t[i]
                     tx = enclose_in_parens(
-                        escape_parens(UTF8ToUTF16BE(tx, False).decode(&#34;latin-1&#34;))
+                        escape_parens(tx.encode(&#34;UTF-16BE&#34;).decode(&#34;latin-1&#34;))
                     )
                     s += sprintf(&#34;%s &#34;, tx)
                     if (i + 1) &lt; numt:
@@ -1061,9 +1061,9 @@ containing meta-data and stuffs.</p></div>
                 s += &#34; ET&#34;
             else:
                 if self.unifontsubset:
-                    txt2 = escape_parens(UTF8ToUTF16BE(txt, False).decode(&#34;latin-1&#34;))
-                    for uni in UTF8StringToArray(txt):
-                        self.current_font[&#34;subset&#34;].append(uni)
+                    txt2 = escape_parens(txt.encode(&#34;UTF-16BE&#34;).decode(&#34;latin-1&#34;))
+                    for char in txt:
+                        self.current_font[&#34;subset&#34;].append(ord(char))
                 else:
                     txt2 = escape_parens(txt)
 
@@ -1511,8 +1511,8 @@ containing meta-data and stuffs.</p></div>
         nb = self.page
         if hasattr(self, &#34;str_alias_nb_pages&#34;):
             # Replace number of pages in fonts using subsets (unicode)
-            alias = UTF8ToUTF16BE(self.str_alias_nb_pages, False)
-            r = UTF8ToUTF16BE(str(nb), False)
+            alias = self.str_alias_nb_pages.encode(&#34;UTF-16BE&#34;)
+            r = str(nb).encode(&#34;UTF-16BE&#34;)
             for n in range(1, nb + 1):
                 self.pages[n][&#34;content&#34;] = self.pages[n][&#34;content&#34;].replace(alias, r)
             # Now repeat for no pages in non-subset fonts
@@ -2090,7 +2090,7 @@ containing meta-data and stuffs.</p></div>
             self._out(&#34;endobj&#34;)
 
     def _putinfo(self):
-        info_d = o_dict()
+        info_d = OrderedDict()
         # info_d[pdf_name(&#34;producer&#34;)] = enclose_in_parens(&#34;fpdf{} https://github.com/PyFPDF/fpdf2&#34;.format(FPDF_VERSION))
         info_d[pdf_name(&#34;title&#34;)] = enclose_in_parens(getattr(self, &#34;title&#34;, None))
         info_d[pdf_name(&#34;subject&#34;)] = enclose_in_parens(getattr(self, &#34;subject&#34;, None))
@@ -2115,7 +2115,7 @@ containing meta-data and stuffs.</p></div>
         self._out(pdf_d(info_d, open_dict=&#34;&#34;, close_dict=&#34;&#34;, has_empty_fields=True))
 
     def _putcatalog(self):
-        catalog_d = o_dict()
+        catalog_d = OrderedDict()
         catalog_d[pdf_name(&#34;type&#34;)] = pdf_name(&#34;catalog&#34;)
         catalog_d[pdf_name(&#34;pages&#34;)] = pdf_ref(1)
 
@@ -2772,9 +2772,9 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
         # If multibyte, Tw has no effect - do word spacing using an
         # adjustment before each space
         if self.ws and self.unifontsubset:
-            for uni in UTF8StringToArray(txt):
-                self.current_font[&#34;subset&#34;].append(uni)
-            space = escape_parens(UTF8ToUTF16BE(&#34; &#34;, False).decode(&#34;latin-1&#34;))
+            for char in txt:
+                self.current_font[&#34;subset&#34;].append(ord(char))
+            space = escape_parens(&#34; &#34;.encode(&#34;UTF-16BE&#34;).decode(&#34;latin-1&#34;))
 
             s += sprintf(
                 &#34;BT 0 Tw %.2F %.2F Td [&#34;,
@@ -2787,7 +2787,7 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
             for i in range(numt):
                 tx = t[i]
                 tx = enclose_in_parens(
-                    escape_parens(UTF8ToUTF16BE(tx, False).decode(&#34;latin-1&#34;))
+                    escape_parens(tx.encode(&#34;UTF-16BE&#34;).decode(&#34;latin-1&#34;))
                 )
                 s += sprintf(&#34;%s &#34;, tx)
                 if (i + 1) &lt; numt:
@@ -2797,9 +2797,9 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
             s += &#34; ET&#34;
         else:
             if self.unifontsubset:
-                txt2 = escape_parens(UTF8ToUTF16BE(txt, False).decode(&#34;latin-1&#34;))
-                for uni in UTF8StringToArray(txt):
-                    self.current_font[&#34;subset&#34;].append(uni)
+                txt2 = escape_parens(txt.encode(&#34;UTF-16BE&#34;).decode(&#34;latin-1&#34;))
+                for char in txt:
+                    self.current_font[&#34;subset&#34;].append(ord(char))
             else:
                 txt2 = escape_parens(txt)
 
@@ -4272,9 +4272,9 @@ def text(self, x, y, txt=&#34;&#34;):
         raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
     txt = self.normalize_text(txt)
     if self.unifontsubset:
-        txt2 = UTF8ToUTF16BE(escape_parens(txt), False).decode(&#34;latin-1&#34;)
-        for uni in UTF8StringToArray(txt):
-            self.current_font[&#34;subset&#34;].append(uni)
+        txt2 = escape_parens(txt).encode(&#34;UTF-16BE&#34;).decode(&#34;latin-1&#34;)
+        for char in txt:
+            self.current_font[&#34;subset&#34;].append(ord(char))
     else:
         txt2 = escape_parens(txt)
     s = sprintf(

@@ -43,21 +43,6 @@ def sprintf(fmt, *args):
     return fmt % args
 
 
-def UTF8ToUTF16BE(instr, setbom=True):
-    &#34;Converts UTF-8 strings to UTF16-BE.&#34;
-    outstr = b&#34;&#34;
-    if setbom:
-        outstr += &#34;\xFE\xFF&#34;.encode(&#34;latin1&#34;)
-    if not isinstance(instr, str):
-        instr = instr.decode(&#34;UTF-8&#34;)
-    return outstr + instr.encode(&#34;UTF-16BE&#34;)
-
-
-def UTF8StringToArray(instr):
-    &#34;Converts UTF-8 strings to codepoints array&#34;
-    return [ord(c) for c in instr]
-
-
 def enclose_in_parens(s):
     &#34;Format a text string&#34;
     if s:
@@ -119,39 +104,6 @@ dochecks()</code></pre>
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="fpdf.util.UTF8StringToArray"><code class="name flex">
-<span>def <span class="ident">UTF8StringToArray</span></span>(<span>instr)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Converts UTF-8 strings to codepoints array</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def UTF8StringToArray(instr):
-    &#34;Converts UTF-8 strings to codepoints array&#34;
-    return [ord(c) for c in instr]</code></pre>
-</details>
-</dd>
-<dt id="fpdf.util.UTF8ToUTF16BE"><code class="name flex">
-<span>def <span class="ident">UTF8ToUTF16BE</span></span>(<span>instr, setbom=True)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Converts UTF-8 strings to UTF16-BE.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def UTF8ToUTF16BE(instr, setbom=True):
-    &#34;Converts UTF-8 strings to UTF16-BE.&#34;
-    outstr = b&#34;&#34;
-    if setbom:
-        outstr += &#34;\xFE\xFF&#34;.encode(&#34;latin1&#34;)
-    if not isinstance(instr, str):
-        instr = instr.decode(&#34;UTF-8&#34;)
-    return outstr + instr.encode(&#34;UTF-16BE&#34;)</code></pre>
-</details>
-</dd>
 <dt id="fpdf.util.b"><code class="name flex">
 <span>def <span class="ident">b</span></span>(<span>s)</span>
 </code></dt>
@@ -281,8 +233,6 @@ dochecks()</code></pre>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="two-column">
-<li><code><a title="fpdf.util.UTF8StringToArray" href="#fpdf.util.UTF8StringToArray">UTF8StringToArray</a></code></li>
-<li><code><a title="fpdf.util.UTF8ToUTF16BE" href="#fpdf.util.UTF8ToUTF16BE">UTF8ToUTF16BE</a></code></li>
 <li><code><a title="fpdf.util.b" href="#fpdf.util.b">b</a></code></li>
 <li><code><a title="fpdf.util.dochecks" href="#fpdf.util.dochecks">dochecks</a></code></li>
 <li><code><a title="fpdf.util.enclose_in_parens" href="#fpdf.util.enclose_in_parens">enclose_in_parens</a></code></li>
