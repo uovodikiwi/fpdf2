@@ -419,7 +419,7 @@ class HTML2FPDF(HTMLParser):
                 style += s
         if DEBUG:
             print(&#34;SET_FONT_STYLE&#34;, style)
-        self.pdf.set_font(&#34;&#34;, style)
+        self.pdf.set_font(style=style)
 
     def set_text_color(self, r=None, g=0, b=0):
         if r is None:
@@ -873,7 +873,7 @@ class HTMLMixin:
                 style += s
         if DEBUG:
             print(&#34;SET_FONT_STYLE&#34;, style)
-        self.pdf.set_font(&#34;&#34;, style)
+        self.pdf.set_font(style=style)
 
     def set_text_color(self, r=None, g=0, b=0):
         if r is None:
@@ -1336,7 +1336,7 @@ class HTMLMixin:
             style += s
     if DEBUG:
         print(&#34;SET_FONT_STYLE&#34;, style)
-    self.pdf.set_font(&#34;&#34;, style)</code></pre>
+    self.pdf.set_font(style=style)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.html.HTML2FPDF.set_text_color"><code class="name flex">

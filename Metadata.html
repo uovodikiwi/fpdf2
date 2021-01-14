@@ -238,21 +238,8 @@
 
 
   <li class="md-nav__item">
-    <a href="https://pyfpdf.github.io/fpdf2/fpdf/" class="md-nav__link">
-      API
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-
-  <li class="md-nav__item">
-    <a href="FAQ.html" class="md-nav__link">
-      FAQ
+    <a href="ExistingPDFs.html" class="md-nav__link">
+      Existing PDFs
     </a>
   </li>
 
@@ -312,19 +299,6 @@
 
 
   <li class="md-nav__item">
-    <a href="Development.html" class="md-nav__link">
-      Development
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-
-  <li class="md-nav__item">
     <a href="Templates.html" class="md-nav__link">
       Templates
     </a>
@@ -363,18 +337,31 @@
 
 
 
+  <li class="md-nav__item">
+    <a href="https://pyfpdf.github.io/fpdf2/fpdf/" class="md-nav__link">
+      API
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
   
   <li class="md-nav__item md-nav__item--nested">
     
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-12" type="checkbox" id="nav-12" >
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-11" type="checkbox" id="nav-11" >
     
-    <label class="md-nav__link" for="nav-12">
+    <label class="md-nav__link" for="nav-11">
       ReferenceManual
       <span class="md-nav__icon md-icon"></span>
     </label>
     <nav class="md-nav" aria-label="ReferenceManual" data-md-level="1">
-      <label class="md-nav__title" for="nav-12">
+      <label class="md-nav__title" for="nav-11">
         <span class="md-nav__icon md-icon"></span>
         ReferenceManual
       </label>
@@ -1114,6 +1101,32 @@
   </li>
 
     
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="Development.html" class="md-nav__link">
+      Development
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="FAQ.html" class="md-nav__link">
+      FAQ
+    </a>
+  </li>
+
+    
   </ul>
 </nav>
                   </div>
@@ -1163,15 +1176,14 @@ in the <code>DocumentInformation</code> dictionary:</p>
 </ul>
 <p>In order to be fully compliant with the recent PDF specs,
 we recommend using <code>pikepdf</code> that will set both XMP &amp; <code>DocumentInformation</code> metadata:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">fpdf</span> <span class="kn">import</span> <span class="n">FPDF_VERSION</span>
 <span class="kn">import</span> <span class="nn">pikepdf</span>
 
-<span class="n">start_size</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">st_size</span>
-<span class="k">with</span> <span class="n">pikepdf</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">allow_overwriting_input</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">pdf</span><span class="p">:</span>
+<span class="k">with</span> <span class="n">pikepdf</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">allow_overwriting_input</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">pdf</span><span class="p">:</span>
     <span class="k">with</span> <span class="n">pdf</span><span class="o">.</span><span class="n">open_metadata</span><span class="p">(</span><span class="n">set_pikepdf_as_editor</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">meta</span><span class="p">:</span>
-        <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;dc:title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Title&quot;</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;dc:title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Title&quot;</span>
         <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;dc:description&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Description&quot;</span>
         <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;dc:creator&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Author&quot;</span>
         <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;pdf:Keywords&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;keyword1 keyword2 keyword3&quot;</span>
@@ -1179,8 +1191,6 @@ we recommend using <code>pikepdf</code> that will set both XMP &amp; <code>Docum
         <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;xmp:CreatorTool&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="vm">__file__</span>
         <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;xmp:MetadataDate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">astimezone</span><span class="p">()</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
     <span class="n">pdf</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-<span class="n">end_size</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">st_size</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final file size: </span><span class="si">{</span><span class="n">end_size</span> <span class="o">/</span> <span class="mi">1024</span><span class="o">**</span><span class="mi">2</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">Mb (metada addition added </span><span class="si">{</span><span class="p">(</span><span class="n">end_size</span> <span class="o">-</span> <span class="n">start_size</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1024</span><span class="o">**</span><span class="mi">2</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">Mb)&quot;</span><span class="p">)</span>
 </code></pre></div>
                 
               

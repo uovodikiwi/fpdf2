@@ -727,7 +727,7 @@ class FPDF:
                         &#34;length2&#34;: font_dict[&#34;size2&#34;],
                     }
 
-    def set_font(self, family, style=&#34;&#34;, size=0):
+    def set_font(self, family=None, style=&#34;&#34;, size=0):
         &#34;Select a font; size given in points&#34;
         if not family:
             family = self.font_family
@@ -2073,6 +2073,11 @@ class FPDF:
             self._out(&#34;/I&#34; + str(idx) + &#34; &#34; + str(n) + &#34; 0 R&#34;)
 
     def _putresourcedict(self):
+        # From section 10.1, &#34;Procedure Sets&#34;, of PDF 1.7 spec:
+        # &gt; Beginning with PDF 1.4, this feature is considered obsolete.
+        # &gt; For compatibility with existing consumer applications,
+        # &gt; PDF producer applications should continue to specify procedure sets
+        # &gt; (preferably, all of those listed in Table 10.1).
         self._out(&#34;/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]&#34;)
         self._out(&#34;/Font &lt;&lt;&#34;)
         f = [(x[&#34;i&#34;], x[&#34;n&#34;]) for x in self.fonts.values()]
@@ -3095,7 +3100,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
                         &#34;length2&#34;: font_dict[&#34;size2&#34;],
                     }
 
-    def set_font(self, family, style=&#34;&#34;, size=0):
+    def set_font(self, family=None, style=&#34;&#34;, size=0):
         &#34;Select a font; size given in points&#34;
         if not family:
             family = self.font_family
@@ -4441,6 +4446,11 @@ case insensitive key (the name of the new format) and 2-tuple value of
             self._out(&#34;/I&#34; + str(idx) + &#34; &#34; + str(n) + &#34; 0 R&#34;)
 
     def _putresourcedict(self):
+        # From section 10.1, &#34;Procedure Sets&#34;, of PDF 1.7 spec:
+        # &gt; Beginning with PDF 1.4, this feature is considered obsolete.
+        # &gt; For compatibility with existing consumer applications,
+        # &gt; PDF producer applications should continue to specify procedure sets
+        # &gt; (preferably, all of those listed in Table 10.1).
         self._out(&#34;/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]&#34;)
         self._out(&#34;/Font &lt;&lt;&#34;)
         f = [(x[&#34;i&#34;], x[&#34;n&#34;]) for x in self.fonts.values()]
@@ -6344,7 +6354,7 @@ def rotation(self, angle, x=None, y=None):
 </details>
 </dd>
 <dt id="fpdf.fpdf.FPDF.set_font"><code class="name flex">
-<span>def <span class="ident">set_font</span></span>(<span>self, family, style='', size=0)</span>
+<span>def <span class="ident">set_font</span></span>(<span>self, family=None, style='', size=0)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Select a font; size given in points</p></div>
@@ -6352,7 +6362,7 @@ def rotation(self, angle, x=None, y=None):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def set_font(self, family, style=&#34;&#34;, size=0):
+<pre><code class="python">def set_font(self, family=None, style=&#34;&#34;, size=0):
     &#34;Select a font; size given in points&#34;
     if not family:
         family = self.font_family

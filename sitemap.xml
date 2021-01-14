@@ -8,7 +8,7 @@
      <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://pyfpdf.github.io/fpdf2/FAQ.html</loc>
+     <loc>https://pyfpdf.github.io/fpdf2/ExistingPDFs.html</loc>
      <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
@@ -21,10 +21,6 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/Logging.html</loc>
-     <lastmod>2021-01-14</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://pyfpdf.github.io/fpdf2/Development.html</loc>
      <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
@@ -261,6 +257,14 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/write_html.html</loc>
+     <lastmod>2021-01-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://pyfpdf.github.io/fpdf2/Development.html</loc>
+     <lastmod>2021-01-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://pyfpdf.github.io/fpdf2/FAQ.html</loc>
      <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
