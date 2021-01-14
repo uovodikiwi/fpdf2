@@ -611,10 +611,6 @@ containing meta-data and stuffs.</p></div>
         &#34;Add a TrueType or Type1 font&#34;
         if not fname:
             fname = family.replace(&#34; &#34;, &#34;&#34;) + style.lower() + &#34;.pkl&#34;
-
-        if family.lower() == &#34;arial&#34;:
-            warnings.warn(&#34;Substitutting Arial by core font Helvetica&#34;)
-            family = &#34;helvetica&#34;
         style = style.upper()
         if style == &#34;IB&#34;:
             style = &#34;BI&#34;
@@ -738,12 +734,15 @@ containing meta-data and stuffs.</p></div>
 
     def set_font(self, family, style=&#34;&#34;, size=0):
         &#34;Select a font; size given in points&#34;
-        if family == &#34;&#34;:
+        if not family:
             family = self.font_family
-        if family.lower() == &#34;arial&#34;:
+        if family.lower() == &#34;arial&#34; and (family + style) not in self.fonts:
             warnings.warn(&#34;Substitutting Arial by core font Helvetica&#34;)
             family = &#34;helvetica&#34;
-        elif family in (&#34;symbol&#34;, &#34;zapfdingbats&#34;):
+        elif family.lower() in (&#34;symbol&#34;, &#34;zapfdingbats&#34;) and style:
+            warnings.warn(
+                &#39;Built-in fonts Symbol &amp; Zapfdingbats only have a single &#34;style&#34;&#39;
+            )
             style = &#34;&#34;
         style = style.upper()
         if &#34;U&#34; in style:
@@ -768,7 +767,14 @@ containing meta-data and stuffs.</p></div>
         fontkey = family + style
         if fontkey not in self.fonts:
             if fontkey not in self.core_fonts or fontkey not in fpdf_charwidths:
-                raise FPDFException(&#34;Undefined font: &#34; + fontkey)
+                # Being flexible: try a fontkey with lowercase family:
+                fontkey = family.lower() + style
+                if fontkey not in self.core_fonts or fontkey not in fpdf_charwidths:
+                    raise FPDFException(
+                        &#34;Undefined font: &#34;
+                        + fontkey
+                        + &#34; - Use built-in fonts or FPDF.add_font() beforehand&#34;
+                    )
             i = len(self.fonts) + 1
             self.fonts[fontkey] = {
                 &#34;i&#34;: i,
@@ -1481,32 +1487,32 @@ containing meta-data and stuffs.</p></div>
         self.set_x(x)
 
     def output(self, name=&#34;&#34;, dest=&#34;&#34;):
-        &#34;&#34;&#34;Output PDF to some destination
+        &#34;&#34;&#34;
+        Output PDF to some destination.
 
-        By default the PDF is written to sys.stdout. If a name is given, the
-        PDF is written to a new file. If dest=&#39;S&#39; is given, the PDF data is
-        returned as a byte string.&#34;&#34;&#34;
-        # pylint: disable=inconsistent-return-statements
-        # Finish document if necessary
+        By default the bytearray buffer is returned.
+        If a `name` is given, the PDF is written to a new file.
+
+        Args:
+            name (str): optional File object or file path where to save the PDF under
+            dest (str): [**DEPRECATED**] unused, will be removed in a later version
+        &#34;&#34;&#34;
+        if dest:
+            warnings.warn(
+                &#39;&#34;dest&#34; is unused and will soon be deprecated&#39;,
+                PendingDeprecationWarning,
+            )
+        # Finish document if necessary:
         if self.state &lt; 3:
             self.close()
-        dest = dest.upper()
-        if dest == &#34;&#34;:
-            dest = &#34;I&#34; if name == &#34;&#34; else &#34;F&#34;
-        if dest in (&#34;I&#34;, &#34;D&#34;):
-            # Python &lt; 3 writes byte data transparently without &#34;buffer&#34;
-            stdout = getattr(sys.stdout, &#34;buffer&#34;, sys.stdout)
-            stdout.write(self.buffer)
+        if name:
+            if isinstance(name, str):
+                with open(name, &#34;wb&#34;) as file:
+                    file.write(self.buffer)
+            else:
+                name.write(self.buffer)
             return None
-        if dest == &#34;F&#34;:
-            # Save to local file
-            with open(name, &#34;wb&#34;) as f:
-                f.write(self.buffer)
-            return None
-        # Return as a byte string
-        if dest == &#34;S&#34;:
-            return self.buffer
-        raise FPDFException(&#34;Incorrect output destination: &#34; + dest)
+        return self.buffer
 
     def normalize_text(self, txt):
         &#34;Check that text input is in the correct format/encoding&#34;
@@ -2438,10 +2444,6 @@ def accept_page_break(self):
     &#34;Add a TrueType or Type1 font&#34;
     if not fname:
         fname = family.replace(&#34; &#34;, &#34;&#34;) + style.lower() + &#34;.pkl&#34;
-
-    if family.lower() == &#34;arial&#34;:
-        warnings.warn(&#34;Substitutting Arial by core font Helvetica&#34;)
-        family = &#34;helvetica&#34;
     style = style.upper()
     if style == &#34;IB&#34;:
         style = &#34;BI&#34;
@@ -3605,41 +3607,47 @@ def multi_cell(
 <span>def <span class="ident">output</span></span>(<span>self, name='', dest='')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Output PDF to some destination</p>
-<p>By default the PDF is written to sys.stdout. If a name is given, the
-PDF is written to a new file. If dest='S' is given, the PDF data is
-returned as a byte string.</p></div>
+<div class="desc"><p>Output PDF to some destination.</p>
+<p>By default the bytearray buffer is returned.
+If a <code>name</code> is given, the PDF is written to a new file.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>optional File object or file path where to save the PDF under</dd>
+<dt><strong><code>dest</code></strong> :&ensp;<code>str</code></dt>
+<dd>[<strong>DEPRECATED</strong>] unused, will be removed in a later version</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def output(self, name=&#34;&#34;, dest=&#34;&#34;):
-    &#34;&#34;&#34;Output PDF to some destination
+    &#34;&#34;&#34;
+    Output PDF to some destination.
 
-    By default the PDF is written to sys.stdout. If a name is given, the
-    PDF is written to a new file. If dest=&#39;S&#39; is given, the PDF data is
-    returned as a byte string.&#34;&#34;&#34;
-    # pylint: disable=inconsistent-return-statements
-    # Finish document if necessary
+    By default the bytearray buffer is returned.
+    If a `name` is given, the PDF is written to a new file.
+
+    Args:
+        name (str): optional File object or file path where to save the PDF under
+        dest (str): [**DEPRECATED**] unused, will be removed in a later version
+    &#34;&#34;&#34;
+    if dest:
+        warnings.warn(
+            &#39;&#34;dest&#34; is unused and will soon be deprecated&#39;,
+            PendingDeprecationWarning,
+        )
+    # Finish document if necessary:
     if self.state &lt; 3:
         self.close()
-    dest = dest.upper()
-    if dest == &#34;&#34;:
-        dest = &#34;I&#34; if name == &#34;&#34; else &#34;F&#34;
-    if dest in (&#34;I&#34;, &#34;D&#34;):
-        # Python &lt; 3 writes byte data transparently without &#34;buffer&#34;
-        stdout = getattr(sys.stdout, &#34;buffer&#34;, sys.stdout)
-        stdout.write(self.buffer)
+    if name:
+        if isinstance(name, str):
+            with open(name, &#34;wb&#34;) as file:
+                file.write(self.buffer)
+        else:
+            name.write(self.buffer)
         return None
-    if dest == &#34;F&#34;:
-        # Save to local file
-        with open(name, &#34;wb&#34;) as f:
-            f.write(self.buffer)
-        return None
-    # Return as a byte string
-    if dest == &#34;S&#34;:
-        return self.buffer
-    raise FPDFException(&#34;Incorrect output destination: &#34; + dest)</code></pre>
+    return self.buffer</code></pre>
 </details>
 </dd>
 <dt id="fpdf.FPDF.page_no"><code class="name flex">
@@ -3983,12 +3991,15 @@ def rotation(self, angle, x=None, y=None):
 </summary>
 <pre><code class="python">def set_font(self, family, style=&#34;&#34;, size=0):
     &#34;Select a font; size given in points&#34;
-    if family == &#34;&#34;:
+    if not family:
         family = self.font_family
-    if family.lower() == &#34;arial&#34;:
+    if family.lower() == &#34;arial&#34; and (family + style) not in self.fonts:
         warnings.warn(&#34;Substitutting Arial by core font Helvetica&#34;)
         family = &#34;helvetica&#34;
-    elif family in (&#34;symbol&#34;, &#34;zapfdingbats&#34;):
+    elif family.lower() in (&#34;symbol&#34;, &#34;zapfdingbats&#34;) and style:
+        warnings.warn(
+            &#39;Built-in fonts Symbol &amp; Zapfdingbats only have a single &#34;style&#34;&#39;
+        )
         style = &#34;&#34;
     style = style.upper()
     if &#34;U&#34; in style:
@@ -4013,7 +4024,14 @@ def rotation(self, angle, x=None, y=None):
     fontkey = family + style
     if fontkey not in self.fonts:
         if fontkey not in self.core_fonts or fontkey not in fpdf_charwidths:
-            raise FPDFException(&#34;Undefined font: &#34; + fontkey)
+            # Being flexible: try a fontkey with lowercase family:
+            fontkey = family.lower() + style
+            if fontkey not in self.core_fonts or fontkey not in fpdf_charwidths:
+                raise FPDFException(
+                    &#34;Undefined font: &#34;
+                    + fontkey
+                    + &#34; - Use built-in fonts or FPDF.add_font() beforehand&#34;
+                )
         i = len(self.fonts) + 1
         self.fonts[fontkey] = {
             &#34;i&#34;: i,
@@ -4607,11 +4625,10 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         pdf = self.pdf
         for pg in range(1, self.pg_no + 1):
             pdf.add_page()
-            pdf.set_font(&#34;Arial&#34;, &#34;B&#34;, 16)
+            pdf.set_font(&#34;helvetica&#34;, &#34;B&#34;, 16)
             pdf.set_auto_page_break(False, margin=0)
 
             for element in sorted(self.elements, key=lambda x: x[&#34;priority&#34;]):
-                # print &#34;dib&#34;,element[&#39;type&#39;], element[&#39;name&#39;], element[&#39;x1&#39;], element[&#39;y1&#39;], element[&#39;x2&#39;], element[&#39;y2&#39;]
                 element = element.copy()
                 element[&#34;text&#34;] = self.texts[pg].get(
                     element[&#34;name&#34;].lower(), element[&#34;text&#34;]
@@ -4623,7 +4640,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
                 else:
                     self.handlers[handler_name](pdf, **element)
         if outfile:
-            pdf.output(outfile, dest=&#34;F&#34;)
+            pdf.output(outfile)
 
     @staticmethod
     def text(
@@ -4634,7 +4651,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         x2=0,
         y2=0,
         text=&#34;&#34;,
-        font=&#34;arial&#34;,
+        font=&#34;helvetica&#34;,
         size=10,
         bold=False,
         italic=False,
@@ -4652,8 +4669,8 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
                 pdf.set_fill_color(*rgb(backgroud))
 
             font = font.strip().lower()
-            if font == &#34;arial black&#34;:
-                font = &#34;arial&#34;
+            if font == &#34;helvetica black&#34;:
+                font = &#34;helvetica&#34;
             style = &#34;&#34;
             for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
                 if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
@@ -4722,7 +4739,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         x2=0,
         y2=0,
         text=&#34;&#34;,
-        font=&#34;arial&#34;,
+        font=&#34;helvetica&#34;,
         size=1,
         foreground=0,
         **__
@@ -4744,7 +4761,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         x2=0,
         y2=0,
         text=&#34;&#34;,
-        font=&#34;arial&#34;,
+        font=&#34;helvetica&#34;,
         size=1,
         bold=False,
         italic=False,
@@ -4758,8 +4775,8 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         if pdf.text_color != rgb(foreground):
             pdf.set_text_color(*rgb(foreground))
         font = font.strip().lower()
-        if font == &#34;arial black&#34;:
-            font = &#34;arial&#34;
+        if font == &#34;helvetica black&#34;:
+            font = &#34;helvetica&#34;
         style = &#34;&#34;
         for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
             if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
@@ -4783,7 +4800,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
 <h3>Static methods</h3>
 <dl>
 <dt id="fpdf.Template.barcode"><code class="name flex">
-<span>def <span class="ident">barcode</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', font='arial', size=1, foreground=0, **__)</span>
+<span>def <span class="ident">barcode</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', font='helvetica', size=1, foreground=0, **__)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4800,7 +4817,7 @@ def barcode(
     x2=0,
     y2=0,
     text=&#34;&#34;,
-    font=&#34;arial&#34;,
+    font=&#34;helvetica&#34;,
     size=1,
     foreground=0,
     **__
@@ -4869,7 +4886,7 @@ def rect(
 </details>
 </dd>
 <dt id="fpdf.Template.text"><code class="name flex">
-<span>def <span class="ident">text</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', font='arial', size=10, bold=False, italic=False, underline=False, align='', foreground=0, backgroud=65535, multiline=None, **__)</span>
+<span>def <span class="ident">text</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', font='helvetica', size=10, bold=False, italic=False, underline=False, align='', foreground=0, backgroud=65535, multiline=None, **__)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4886,7 +4903,7 @@ def text(
     x2=0,
     y2=0,
     text=&#34;&#34;,
-    font=&#34;arial&#34;,
+    font=&#34;helvetica&#34;,
     size=10,
     bold=False,
     italic=False,
@@ -4904,8 +4921,8 @@ def text(
             pdf.set_fill_color(*rgb(backgroud))
 
         font = font.strip().lower()
-        if font == &#34;arial black&#34;:
-            font = &#34;arial&#34;
+        if font == &#34;helvetica black&#34;:
+            font = &#34;helvetica&#34;
         style = &#34;&#34;
         for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
             if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
@@ -4942,7 +4959,7 @@ def text(
 </details>
 </dd>
 <dt id="fpdf.Template.write"><code class="name flex">
-<span>def <span class="ident">write</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', font='arial', size=1, bold=False, italic=False, underline=False, align='', link='http://example.com', foreground=0, **__)</span>
+<span>def <span class="ident">write</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', font='helvetica', size=1, bold=False, italic=False, underline=False, align='', link='http://example.com', foreground=0, **__)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4959,7 +4976,7 @@ def write(
     x2=0,
     y2=0,
     text=&#34;&#34;,
-    font=&#34;arial&#34;,
+    font=&#34;helvetica&#34;,
     size=1,
     bold=False,
     italic=False,
@@ -4973,8 +4990,8 @@ def write(
     if pdf.text_color != rgb(foreground):
         pdf.set_text_color(*rgb(foreground))
     font = font.strip().lower()
-    if font == &#34;arial black&#34;:
-        font = &#34;arial&#34;
+    if font == &#34;helvetica black&#34;:
+        font = &#34;helvetica&#34;
     style = &#34;&#34;
     for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
         if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
@@ -5116,11 +5133,10 @@ If ommited, the <code>.pdf.output(&hellip;)</code> method can be manuallyy calle
     pdf = self.pdf
     for pg in range(1, self.pg_no + 1):
         pdf.add_page()
-        pdf.set_font(&#34;Arial&#34;, &#34;B&#34;, 16)
+        pdf.set_font(&#34;helvetica&#34;, &#34;B&#34;, 16)
         pdf.set_auto_page_break(False, margin=0)
 
         for element in sorted(self.elements, key=lambda x: x[&#34;priority&#34;]):
-            # print &#34;dib&#34;,element[&#39;type&#39;], element[&#39;name&#39;], element[&#39;x1&#39;], element[&#39;y1&#39;], element[&#39;x2&#39;], element[&#39;y2&#39;]
             element = element.copy()
             element[&#34;text&#34;] = self.texts[pg].get(
                 element[&#34;name&#34;].lower(), element[&#34;text&#34;]
@@ -5132,7 +5148,7 @@ If ommited, the <code>.pdf.output(&hellip;)</code> method can be manuallyy calle
             else:
                 self.handlers[handler_name](pdf, **element)
     if outfile:
-        pdf.output(outfile, dest=&#34;F&#34;)</code></pre>
+        pdf.output(outfile)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.Template.set"><code class="name flex">

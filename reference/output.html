@@ -237,48 +237,6 @@
 
 
 
-  
-  <li class="md-nav__item md-nav__item--nested">
-    
-    
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" >
-    
-    <label class="md-nav__link" for="nav-3">
-      Tutorial Translations
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="Tutorial Translations" data-md-level="1">
-      <label class="md-nav__title" for="nav-3">
-        <span class="md-nav__icon md-icon"></span>
-        Tutorial Translations
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
-          
-          
-          
-
-
-
-  <li class="md-nav__item">
-    <a href="../Tutorial-es.html" class="md-nav__link">
-      Tutorial (Spanish translation)
-    </a>
-  </li>
-
-        
-      </ul>
-    </nav>
-  </li>
-
-    
-      
-      
-      
-
-
-
   <li class="md-nav__item">
     <a href="https://pyfpdf.github.io/fpdf2/fpdf/" class="md-nav__link">
       API
@@ -402,14 +360,14 @@
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-13" type="checkbox" id="nav-13" checked>
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-12" type="checkbox" id="nav-12" checked>
     
-    <label class="md-nav__link" for="nav-13">
+    <label class="md-nav__link" for="nav-12">
       ReferenceManual
       <span class="md-nav__icon md-icon"></span>
     </label>
     <nav class="md-nav" aria-label="ReferenceManual" data-md-level="1">
-      <label class="md-nav__title" for="nav-13">
+      <label class="md-nav__title" for="nav-12">
         <span class="md-nav__icon md-icon"></span>
         ReferenceManual
       </label>
@@ -1286,28 +1244,17 @@
                   <h1>output</h1>
                 
                 <h2 id="output">output</h2>
-<div class="highlight"><pre><span></span><code><span class="n">fpdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">dest</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">fpdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="description">Description</h3>
 <p>Send the document to some destination: standard output, a file or a byte string.</p>
 <p>The method first calls <a href="close.html">close</a> if necessary to terminate the document.</p>
 <p><strong>NOTICE:</strong>
-In Python 2 strings were raw data but in Python 3 strings are now unicode by default. If you are using Python 3.x you have to use <code>pdf.output(dest='S').encode('latin-1')</code> in order to get the output, if you don't do so the generated PDF will be invalid and depending on the viewer either not open at all or show up as some blank pages.</p>
+In Python 2 strings were raw data but in Python 3 strings are now unicode by default. If you are using Python 3.x you have to use <code>pdf.output().encode('latin-1')</code> in order to get the output, if you don't do so the generated PDF will be invalid and depending on the viewer either not open at all or show up as some blank pages.</p>
 <h3 id="parameters">Parameters</h3>
 <p>name:</p>
 <blockquote>
 <p>The name of the file. Only used when writing to a file.</p>
-</blockquote>
-<p>dest:</p>
-<blockquote>
-<p>Destination to send the document. It can take one of the following values:</p>
-<blockquote>
-<ul>
-<li><code>I</code> or <code>D</code>: write the document to <em>sys.stdout</em>. This is the default if no file name is given.</li>
-<li><code>F</code>: save to a local file with the given name (may include a path). This is the default if a file name is given.</li>
-<li><code>S</code>: return the document as a byte string.</li>
-</ul>
-</blockquote>
 </blockquote>
 <h3 id="see-also">See also</h3>
 <p><a href="close.html">close</a>.</p>

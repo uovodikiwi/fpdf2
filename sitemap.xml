@@ -1,271 +1,267 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
      <loc>https://pyfpdf.github.io/fpdf2/index.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/Tutorial.html</loc>
-     <lastmod>2021-01-13</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://pyfpdf.github.io/fpdf2/Tutorial-es.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/FAQ.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/Barcodes.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/Metadata.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/Logging.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/Development.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/Templates.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/Unicode.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/Web2Py.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/ReferenceManual.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/accept_page_break.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/add_font.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/add_link.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/add_page.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/alias_nb_pages.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/cell.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/close.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/dashed_line.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/ellipse.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/error.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/FPDF.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/footer.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/get_string_width.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/get_x.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/get_y.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/header.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/image.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/load_resource.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/line.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/link.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/ln.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/multi_cell.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/open.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/output.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/page_no.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/rect.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_author.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/rotate.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/rotation.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_auto_page_break.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_compression.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_creator.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_doc_option.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_display_mode.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_draw_color.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_fill_color.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_font.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_font_size.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_keywords.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_left_margin.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_line_width.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_link.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_margins.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_right_margin.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_stretching.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_subject.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_text_color.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_title.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_top_margin.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_x.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_xy.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/set_y.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/text.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/write.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pyfpdf.github.io/fpdf2/reference/write_html.html</loc>
-     <lastmod>2021-01-13</lastmod>
+     <lastmod>2021-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>

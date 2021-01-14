@@ -202,11 +202,10 @@ class Template:
         pdf = self.pdf
         for pg in range(1, self.pg_no + 1):
             pdf.add_page()
-            pdf.set_font(&#34;Arial&#34;, &#34;B&#34;, 16)
+            pdf.set_font(&#34;helvetica&#34;, &#34;B&#34;, 16)
             pdf.set_auto_page_break(False, margin=0)
 
             for element in sorted(self.elements, key=lambda x: x[&#34;priority&#34;]):
-                # print &#34;dib&#34;,element[&#39;type&#39;], element[&#39;name&#39;], element[&#39;x1&#39;], element[&#39;y1&#39;], element[&#39;x2&#39;], element[&#39;y2&#39;]
                 element = element.copy()
                 element[&#34;text&#34;] = self.texts[pg].get(
                     element[&#34;name&#34;].lower(), element[&#34;text&#34;]
@@ -218,7 +217,7 @@ class Template:
                 else:
                     self.handlers[handler_name](pdf, **element)
         if outfile:
-            pdf.output(outfile, dest=&#34;F&#34;)
+            pdf.output(outfile)
 
     @staticmethod
     def text(
@@ -229,7 +228,7 @@ class Template:
         x2=0,
         y2=0,
         text=&#34;&#34;,
-        font=&#34;arial&#34;,
+        font=&#34;helvetica&#34;,
         size=10,
         bold=False,
         italic=False,
@@ -247,8 +246,8 @@ class Template:
                 pdf.set_fill_color(*rgb(backgroud))
 
             font = font.strip().lower()
-            if font == &#34;arial black&#34;:
-                font = &#34;arial&#34;
+            if font == &#34;helvetica black&#34;:
+                font = &#34;helvetica&#34;
             style = &#34;&#34;
             for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
                 if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
@@ -317,7 +316,7 @@ class Template:
         x2=0,
         y2=0,
         text=&#34;&#34;,
-        font=&#34;arial&#34;,
+        font=&#34;helvetica&#34;,
         size=1,
         foreground=0,
         **__
@@ -339,7 +338,7 @@ class Template:
         x2=0,
         y2=0,
         text=&#34;&#34;,
-        font=&#34;arial&#34;,
+        font=&#34;helvetica&#34;,
         size=1,
         bold=False,
         italic=False,
@@ -353,8 +352,8 @@ class Template:
         if pdf.text_color != rgb(foreground):
             pdf.set_text_color(*rgb(foreground))
         font = font.strip().lower()
-        if font == &#34;arial black&#34;:
-            font = &#34;arial&#34;
+        if font == &#34;helvetica black&#34;:
+            font = &#34;helvetica&#34;
         style = &#34;&#34;
         for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
             if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
@@ -574,11 +573,10 @@ class Template:
         pdf = self.pdf
         for pg in range(1, self.pg_no + 1):
             pdf.add_page()
-            pdf.set_font(&#34;Arial&#34;, &#34;B&#34;, 16)
+            pdf.set_font(&#34;helvetica&#34;, &#34;B&#34;, 16)
             pdf.set_auto_page_break(False, margin=0)
 
             for element in sorted(self.elements, key=lambda x: x[&#34;priority&#34;]):
-                # print &#34;dib&#34;,element[&#39;type&#39;], element[&#39;name&#39;], element[&#39;x1&#39;], element[&#39;y1&#39;], element[&#39;x2&#39;], element[&#39;y2&#39;]
                 element = element.copy()
                 element[&#34;text&#34;] = self.texts[pg].get(
                     element[&#34;name&#34;].lower(), element[&#34;text&#34;]
@@ -590,7 +588,7 @@ class Template:
                 else:
                     self.handlers[handler_name](pdf, **element)
         if outfile:
-            pdf.output(outfile, dest=&#34;F&#34;)
+            pdf.output(outfile)
 
     @staticmethod
     def text(
@@ -601,7 +599,7 @@ class Template:
         x2=0,
         y2=0,
         text=&#34;&#34;,
-        font=&#34;arial&#34;,
+        font=&#34;helvetica&#34;,
         size=10,
         bold=False,
         italic=False,
@@ -619,8 +617,8 @@ class Template:
                 pdf.set_fill_color(*rgb(backgroud))
 
             font = font.strip().lower()
-            if font == &#34;arial black&#34;:
-                font = &#34;arial&#34;
+            if font == &#34;helvetica black&#34;:
+                font = &#34;helvetica&#34;
             style = &#34;&#34;
             for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
                 if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
@@ -689,7 +687,7 @@ class Template:
         x2=0,
         y2=0,
         text=&#34;&#34;,
-        font=&#34;arial&#34;,
+        font=&#34;helvetica&#34;,
         size=1,
         foreground=0,
         **__
@@ -711,7 +709,7 @@ class Template:
         x2=0,
         y2=0,
         text=&#34;&#34;,
-        font=&#34;arial&#34;,
+        font=&#34;helvetica&#34;,
         size=1,
         bold=False,
         italic=False,
@@ -725,8 +723,8 @@ class Template:
         if pdf.text_color != rgb(foreground):
             pdf.set_text_color(*rgb(foreground))
         font = font.strip().lower()
-        if font == &#34;arial black&#34;:
-            font = &#34;arial&#34;
+        if font == &#34;helvetica black&#34;:
+            font = &#34;helvetica&#34;
         style = &#34;&#34;
         for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
             if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
@@ -750,7 +748,7 @@ class Template:
 <h3>Static methods</h3>
 <dl>
 <dt id="fpdf.template.Template.barcode"><code class="name flex">
-<span>def <span class="ident">barcode</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', font='arial', size=1, foreground=0, **__)</span>
+<span>def <span class="ident">barcode</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', font='helvetica', size=1, foreground=0, **__)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -767,7 +765,7 @@ def barcode(
     x2=0,
     y2=0,
     text=&#34;&#34;,
-    font=&#34;arial&#34;,
+    font=&#34;helvetica&#34;,
     size=1,
     foreground=0,
     **__
@@ -836,7 +834,7 @@ def rect(
 </details>
 </dd>
 <dt id="fpdf.template.Template.text"><code class="name flex">
-<span>def <span class="ident">text</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', font='arial', size=10, bold=False, italic=False, underline=False, align='', foreground=0, backgroud=65535, multiline=None, **__)</span>
+<span>def <span class="ident">text</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', font='helvetica', size=10, bold=False, italic=False, underline=False, align='', foreground=0, backgroud=65535, multiline=None, **__)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -853,7 +851,7 @@ def text(
     x2=0,
     y2=0,
     text=&#34;&#34;,
-    font=&#34;arial&#34;,
+    font=&#34;helvetica&#34;,
     size=10,
     bold=False,
     italic=False,
@@ -871,8 +869,8 @@ def text(
             pdf.set_fill_color(*rgb(backgroud))
 
         font = font.strip().lower()
-        if font == &#34;arial black&#34;:
-            font = &#34;arial&#34;
+        if font == &#34;helvetica black&#34;:
+            font = &#34;helvetica&#34;
         style = &#34;&#34;
         for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
             if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
@@ -909,7 +907,7 @@ def text(
 </details>
 </dd>
 <dt id="fpdf.template.Template.write"><code class="name flex">
-<span>def <span class="ident">write</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', font='arial', size=1, bold=False, italic=False, underline=False, align='', link='http://example.com', foreground=0, **__)</span>
+<span>def <span class="ident">write</span></span>(<span>pdf, *_, x1=0, y1=0, x2=0, y2=0, text='', font='helvetica', size=1, bold=False, italic=False, underline=False, align='', link='http://example.com', foreground=0, **__)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -926,7 +924,7 @@ def write(
     x2=0,
     y2=0,
     text=&#34;&#34;,
-    font=&#34;arial&#34;,
+    font=&#34;helvetica&#34;,
     size=1,
     bold=False,
     italic=False,
@@ -940,8 +938,8 @@ def write(
     if pdf.text_color != rgb(foreground):
         pdf.set_text_color(*rgb(foreground))
     font = font.strip().lower()
-    if font == &#34;arial black&#34;:
-        font = &#34;arial&#34;
+    if font == &#34;helvetica black&#34;:
+        font = &#34;helvetica&#34;
     style = &#34;&#34;
     for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
         if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
@@ -1083,11 +1081,10 @@ If ommited, the <code>.pdf.output(&hellip;)</code> method can be manuallyy calle
     pdf = self.pdf
     for pg in range(1, self.pg_no + 1):
         pdf.add_page()
-        pdf.set_font(&#34;Arial&#34;, &#34;B&#34;, 16)
+        pdf.set_font(&#34;helvetica&#34;, &#34;B&#34;, 16)
         pdf.set_auto_page_break(False, margin=0)
 
         for element in sorted(self.elements, key=lambda x: x[&#34;priority&#34;]):
-            # print &#34;dib&#34;,element[&#39;type&#39;], element[&#39;name&#39;], element[&#39;x1&#39;], element[&#39;y1&#39;], element[&#39;x2&#39;], element[&#39;y2&#39;]
             element = element.copy()
             element[&#34;text&#34;] = self.texts[pg].get(
                 element[&#34;name&#34;].lower(), element[&#34;text&#34;]
@@ -1099,7 +1096,7 @@ If ommited, the <code>.pdf.output(&hellip;)</code> method can be manuallyy calle
             else:
                 self.handlers[handler_name](pdf, **element)
     if outfile:
-        pdf.output(outfile, dest=&#34;F&#34;)</code></pre>
+        pdf.output(outfile)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.template.Template.set"><code class="name flex">

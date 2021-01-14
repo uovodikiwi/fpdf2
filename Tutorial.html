@@ -256,22 +256,22 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#minimal-example" class="md-nav__link">
-    Minimal Example
+  <a href="#tuto-1-minimal-example" class="md-nav__link">
+    Tuto 1 - Minimal Example
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#header-footer-page-break-and-image" class="md-nav__link">
-    Header, footer, page break and image
+  <a href="#tuto-2-header-footer-page-break-and-image" class="md-nav__link">
+    Tuto 2 - Header, footer, page break and image
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#line-breaks-and-colors" class="md-nav__link">
-    Line breaks and colors
+  <a href="#tuto-3-line-breaks-and-colors" class="md-nav__link">
+    Tuto 3 - Line breaks and colors
   </a>
   
 </li>
@@ -280,48 +280,6 @@
   
 </nav>
     
-  </li>
-
-    
-      
-      
-      
-
-
-
-  
-  <li class="md-nav__item md-nav__item--nested">
-    
-    
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" >
-    
-    <label class="md-nav__link" for="nav-3">
-      Tutorial Translations
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="Tutorial Translations" data-md-level="1">
-      <label class="md-nav__title" for="nav-3">
-        <span class="md-nav__icon md-icon"></span>
-        Tutorial Translations
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
-          
-          
-          
-
-
-
-  <li class="md-nav__item">
-    <a href="Tutorial-es.html" class="md-nav__link">
-      Tutorial (Spanish translation)
-    </a>
-  </li>
-
-        
-      </ul>
-    </nav>
   </li>
 
     
@@ -452,14 +410,14 @@
   <li class="md-nav__item md-nav__item--nested">
     
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-13" type="checkbox" id="nav-13" >
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-12" type="checkbox" id="nav-12" >
     
-    <label class="md-nav__link" for="nav-13">
+    <label class="md-nav__link" for="nav-12">
       ReferenceManual
       <span class="md-nav__icon md-icon"></span>
     </label>
     <nav class="md-nav" aria-label="ReferenceManual" data-md-level="1">
-      <label class="md-nav__title" for="nav-13">
+      <label class="md-nav__title" for="nav-12">
         <span class="md-nav__icon md-icon"></span>
         ReferenceManual
       </label>
@@ -1224,22 +1182,22 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#minimal-example" class="md-nav__link">
-    Minimal Example
+  <a href="#tuto-1-minimal-example" class="md-nav__link">
+    Tuto 1 - Minimal Example
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#header-footer-page-break-and-image" class="md-nav__link">
-    Header, footer, page break and image
+  <a href="#tuto-2-header-footer-page-break-and-image" class="md-nav__link">
+    Tuto 2 - Header, footer, page break and image
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#line-breaks-and-colors" class="md-nav__link">
-    Line breaks and colors
+  <a href="#tuto-3-line-breaks-and-colors" class="md-nav__link">
+    Tuto 3 - Line breaks and colors
   </a>
   
 </li>
@@ -1266,47 +1224,47 @@
 <div class="toc">
 <ul>
 <li><a href="#tutorial">Tutorial</a><ul>
-<li><a href="#minimal-example">Minimal Example</a></li>
-<li><a href="#header-footer-page-break-and-image">Header, footer, page break and image</a></li>
-<li><a href="#line-breaks-and-colors">Line breaks and colors</a></li>
+<li><a href="#tuto-1-minimal-example">Tuto 1 - Minimal Example</a></li>
+<li><a href="#tuto-2-header-footer-page-break-and-image">Tuto 2 - Header, footer, page break and image</a></li>
+<li><a href="#tuto-3-line-breaks-and-colors">Tuto 3 - Line breaks and colors</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<h2 id="minimal-example">Minimal Example</h2>
+<h2 id="tuto-1-minimal-example">Tuto 1 - Minimal Example</h2>
 <p>Let's start with the classic example:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fpdf</span> <span class="kn">import</span> <span class="n">FPDF</span>
 
 <span class="n">pdf</span> <span class="o">=</span> <span class="n">FPDF</span><span class="p">()</span>
 <span class="n">pdf</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
-<span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;helvetica&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
 <span class="n">pdf</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Hello World!&#39;</span><span class="p">)</span>
-<span class="n">pdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;tuto1.pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;tuto1.pdf&#39;</span><span class="p">)</span>
 </code></pre></div>
 <p><a href="https://github.com/PyFPDF/fpdf2/raw/master/tutorial/tuto1.pdf">Demo</a></p>
-<p>After including the library file, we create an FPDF object. The 
+<p>After including the library file, we create an <code>FPDF</code> object. The 
 <a href="reference/FPDF.html">FPDF</a> constructor is used here with the default values: 
-pages are in A4 portrait and the measure unit is millimeter. It could have been
-specified explicitly with:</p>
-<div class="highlight"><pre><span></span><code><span class="n">pdf</span> <span class="o">=</span> <span class="n">FPDF</span><span class="p">(</span><span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;mm&#39;</span><span class="p">,</span> <span class="s1">&#39;A4&#39;</span><span class="p">)</span>
+pages are in A4 portrait and the measure unit is millimeter.
+It could have been specified explicitly with:</p>
+<div class="highlight"><pre><span></span><code><span class="n">pdf</span> <span class="o">=</span> <span class="n">FPDF</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;mm&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;A4&quot;</span><span class="p">)</span>
 </code></pre></div>
-<p>It is possible to use landscape (<code>L</code>), other page formats (such as <code>Letter</code> and
- <code>Legal</code>) and measure units (<code>pt</code>, <code>cm</code>, <code>in</code>).</p>
+<p>It is possible to set the PDF in landscape mode (<code>L</code>) or to use other page formats
+(such as <code>Letter</code> and <code>Legal</code>) and measure units (<code>pt</code>, <code>cm</code>, <code>in</code>).</p>
 <p>There is no page for the moment, so we have to add one with 
 <a href="reference/add_page.html">add_page</a>. The origin is at the upper-left corner and the
 current position is by default placed at 1 cm from the borders; the margins can
 be changed with <a href="reference/set_margins.html">set_margins</a>.</p>
 <p>Before we can print text, it is mandatory to select a font with 
-<a href="reference/set_font.html">set_font</a>, otherwise the document would be invalid. We
-choose Arial bold 16:</p>
-<div class="highlight"><pre><span></span><code><span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+<a href="reference/set_font.html">set_font</a>, otherwise the document would be invalid.
+We choose Helvetica bold 16:</p>
+<div class="highlight"><pre><span></span><code><span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;helvetica&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
 </code></pre></div>
 <p>We could have specified italics with <code>I</code>, underlined with <code>U</code> or a regular font
 with an empty string (or any combination). Note that the font size is given in
-points, not millimeters (or another user unit); it is the only exception. The
-other standard fonts are <code>Times</code>, <code>Courier</code>, <code>Symbol</code> and <code>ZapfDingbats</code>.</p>
+points, not millimeters (or another user unit); it is the only exception.
+The other built-in fonts are <code>Times</code>, <code>Courier</code>, <code>Symbol</code> and <code>ZapfDingbats</code>.</p>
 <p>We can now print a cell with <a href="reference/cell.html">cell</a>. A cell is a rectangular
-area, possibly framed, which contains some text. It is output at the current
+area, possibly framed, which contains some text. It is rendered at the current
 position. We specify its dimensions, its text (centered or aligned), if borders
 should be drawn, and where the current position moves after it (to the right,
 below or to the beginning of the next line). To add a frame, we would do this:</p>
@@ -1314,19 +1272,14 @@ below or to the beginning of the next line). To add a frame, we would do this:</
 </code></pre></div>
 <p>To add a new cell next to it with centered text and go to the next line, we
 would do:</p>
-<div class="highlight"><pre><span></span><code><span class="n">pdf</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Powered by FPDF.&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">pdf</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Powered by FPDF.&#39;</span><span class="p">,</span> <span class="n">ln</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
 </code></pre></div>
 <p><strong>Remark</strong>: the line break can also be done with <a href="reference/ln.html">ln</a>. This
 method allows to specify in addition the height of the break.</p>
-<p>Finally, the document is closed and sent to the browser with
-<a href="reference/output.html">output</a>. We could have saved it in a file by passing the
-desired file name.</p>
-<p><strong>Caution</strong>: in case when the PDF is sent to the browser, nothing else must be
-output, not before nor after (the least space or carriage return matters).
-If you send some data before, you will get the error message: "Some data has
-already been output to browser, can't send PDF file". If you send after, your
-browser may display a blank page.</p>
-<h2 id="header-footer-page-break-and-image">Header, footer, page break and image</h2>
+<p>Finally, the document is closed and saved under the provided file path using
+<a href="reference/output.html">output</a>. Without any parameter provided, <code>output()</code>
+returns the PDF <code>bytearray</code> buffer.</p>
+<h2 id="tuto-2-header-footer-page-break-and-image">Tuto 2 - Header, footer, page break and image</h2>
 <p>Here is a two page example with header, footer and logo:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fpdf</span> <span class="kn">import</span> <span class="n">FPDF</span>
 
@@ -1334,8 +1287,8 @@ browser may display a blank page.</p>
     <span class="k">def</span> <span class="nf">header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Logo</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;logo_pb.png&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">33</span><span class="p">)</span>
-        <span class="c1"># Arial bold 15</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+        <span class="c1"># helvetica bold 15</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;helvetica&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
         <span class="c1"># Move to the right</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span>
         <span class="c1"># Title</span>
@@ -1347,8 +1300,8 @@ browser may display a blank page.</p>
     <span class="k">def</span> <span class="nf">footer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Position at 1.5 cm from bottom</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_y</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">)</span>
-        <span class="c1"># Arial italic 8</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="c1"># helvetica italic 8</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;helvetica&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
         <span class="c1"># Page number</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Page &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page_no</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39;/</span><span class="si">{nb}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span>
 
@@ -1359,7 +1312,7 @@ browser may display a blank page.</p>
 <span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Times&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">41</span><span class="p">):</span>
     <span class="n">pdf</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Printing line number &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">pdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;tuto2.pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;tuto2.pdf&#39;</span><span class="p">)</span>
 </code></pre></div>
 <p><a href="https://github.com/PyFPDF/fpdf2/raw/master/tutorial/tuto2.pdf">Demo</a></p>
 <p>This example makes use of the <a href="reference/header.html">header</a> and 
@@ -1382,11 +1335,11 @@ bottom.</p>
 <p>Another interesting feature is used here: the automatic page breaking. As soon
 as a cell would cross a limit in the page (at 2 centimeters from the bottom by
 default), a break is performed and the font restored. Although the header and
-footer select their own font (<code>Arial</code>), the body continues with <code>Times</code>. This
-mechanism of automatic restoration also applies to colors and line width. The
-limit which triggers page breaks can be set with 
+footer select their own font (<code>helvetica</code>), the body continues with <code>Times</code>.
+This mechanism of automatic restoration also applies to colors and line width.
+The limit which triggers page breaks can be set with 
 <a href="reference/set_auto_page_break.html">set_auto_page_break</a>.</p>
-<h2 id="line-breaks-and-colors">Line breaks and colors</h2>
+<h2 id="tuto-3-line-breaks-and-colors">Tuto 3 - Line breaks and colors</h2>
 <p>Let's continue with an example which prints justified paragraphs. It also
 illustrates the use of colors.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fpdf</span> <span class="kn">import</span> <span class="n">FPDF</span>
@@ -1395,8 +1348,8 @@ illustrates the use of colors.</p>
 
 <span class="k">class</span> <span class="nc">PDF</span><span class="p">(</span><span class="n">FPDF</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># Arial bold 15</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+        <span class="c1"># helvetica bold 15</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;helvetica&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
         <span class="c1"># Calculate width of title and position</span>
         <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_string_width</span><span class="p">(</span><span class="n">title</span><span class="p">)</span> <span class="o">+</span> <span class="mi">6</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_x</span><span class="p">((</span><span class="mi">210</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
@@ -1414,16 +1367,16 @@ illustrates the use of colors.</p>
     <span class="k">def</span> <span class="nf">footer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Position at 1.5 cm from bottom</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_y</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">)</span>
-        <span class="c1"># Arial italic 8</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="c1"># helvetica italic 8</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;helvetica&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
         <span class="c1"># Text color in gray</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_text_color</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span>
         <span class="c1"># Page number</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Page &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page_no</span><span class="p">()),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">chapter_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
-        <span class="c1"># Arial 12</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+        <span class="c1"># helvetica 12</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;helvetica&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
         <span class="c1"># Background color</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_fill_color</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">220</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
         <span class="c1"># Title</span>
@@ -1455,7 +1408,7 @@ illustrates the use of colors.</p>
 <span class="n">pdf</span><span class="o">.</span><span class="n">set_author</span><span class="p">(</span><span class="s1">&#39;Jules Verne&#39;</span><span class="p">)</span>
 <span class="n">pdf</span><span class="o">.</span><span class="n">print_chapter</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;A RUNAWAY REEF&#39;</span><span class="p">,</span> <span class="s1">&#39;20k_c1.txt&#39;</span><span class="p">)</span>
 <span class="n">pdf</span><span class="o">.</span><span class="n">print_chapter</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;THE PROS AND CONS&#39;</span><span class="p">,</span> <span class="s1">&#39;20k_c2.txt&#39;</span><span class="p">)</span>
-<span class="n">pdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;tuto3.pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s1">&#39;tuto3.pdf&#39;</span><span class="p">)</span>
 </code></pre></div>
 <p><a href="https://github.com/PyFPDF/fpdf2/raw/master/tutorial/tuto3.pdf">Demo</a></p>
 <p>The <a href="reference/get_string_width.html">get_string_width</a> method allows determining
@@ -1510,13 +1463,13 @@ plug-in, is to right-click and select Document Properties.</p>
           </a>
         
         
-          <a href="Tutorial-es.html" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="FAQ.html" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Tutorial (Spanish translation)
+                FAQ
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">
