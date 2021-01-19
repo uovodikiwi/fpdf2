@@ -182,6 +182,7 @@ class FPDF:
         self.font_style = &#34;&#34;  # current font style
         self.font_size_pt = 12  # current font size in points
         self.font_stretching = 100  # current font stretching
+        self.str_alias_nb_pages = &#34;{nb}&#34;
         self.unifontsubset = False
         self.underline = 0  # underlining flag
         self.draw_color = &#34;0 G&#34;
@@ -334,10 +335,9 @@ class FPDF:
         else:
             raise FPDFException(&#39;Unknown document option &#34;%s&#34;&#39; % str(opt))
 
-    def alias_nb_pages(self, alias=&#34;{nb}&#34;):
+    def alias_nb_pages(self, alias):
         &#34;Define an alias for total number of pages&#34;
         self.str_alias_nb_pages = alias
-        return alias
 
     def open(self):
         &#34;Begin document&#34;
@@ -675,8 +675,7 @@ class FPDF:
                 del ttf
 
             # include numbers in the subset! (if alias present)
-            have_page_alias = lambda: hasattr(self, &#34;str_alias_nb_pages&#34;)
-            sbarr = list(range(0, 57 if have_page_alias() else 32))
+            sbarr = list(range(0, 57 if self.str_alias_nb_pages else 32))
 
             self.fonts[fontkey] = {
                 &#34;i&#34;: len(self.fonts) + 1,
@@ -1567,16 +1566,20 @@ class FPDF:
 
     def _putpages(self):
         nb = self.page
-        if hasattr(self, &#34;str_alias_nb_pages&#34;):
+        if self.str_alias_nb_pages:
             # Replace number of pages in fonts using subsets (unicode)
             alias = self.str_alias_nb_pages.encode(&#34;UTF-16BE&#34;)
-            r = str(nb).encode(&#34;UTF-16BE&#34;)
+            encoded_nb = str(nb).encode(&#34;UTF-16BE&#34;)
             for n in range(1, nb + 1):
-                self.pages[n][&#34;content&#34;] = self.pages[n][&#34;content&#34;].replace(alias, r)
+                self.pages[n][&#34;content&#34;] = self.pages[n][&#34;content&#34;].replace(
+                    alias, encoded_nb
+                )
             # Now repeat for no pages in non-subset fonts
+            alias = self.str_alias_nb_pages.encode(&#34;latin-1&#34;)
+            encoded_nb = str(nb).encode(&#34;latin-1&#34;)
             for n in range(1, nb + 1):
-                self.pages[n][&#34;content&#34;].replace(
-                    self.str_alias_nb_pages.encode(&#34;latin-1&#34;), str(nb).encode(&#34;latin-1&#34;)
+                self.pages[n][&#34;content&#34;] = self.pages[n][&#34;content&#34;].replace(
+                    alias, encoded_nb
                 )
         if self.def_orientation == &#34;P&#34;:
             dw_pt = self.dw_pt
@@ -2604,6 +2607,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
         self.font_style = &#34;&#34;  # current font style
         self.font_size_pt = 12  # current font size in points
         self.font_stretching = 100  # current font stretching
+        self.str_alias_nb_pages = &#34;{nb}&#34;
         self.unifontsubset = False
         self.underline = 0  # underlining flag
         self.draw_color = &#34;0 G&#34;
@@ -2756,10 +2760,9 @@ case insensitive key (the name of the new format) and 2-tuple value of
         else:
             raise FPDFException(&#39;Unknown document option &#34;%s&#34;&#39; % str(opt))
 
-    def alias_nb_pages(self, alias=&#34;{nb}&#34;):
+    def alias_nb_pages(self, alias):
         &#34;Define an alias for total number of pages&#34;
         self.str_alias_nb_pages = alias
-        return alias
 
     def open(self):
         &#34;Begin document&#34;
@@ -3097,8 +3100,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 del ttf
 
             # include numbers in the subset! (if alias present)
-            have_page_alias = lambda: hasattr(self, &#34;str_alias_nb_pages&#34;)
-            sbarr = list(range(0, 57 if have_page_alias() else 32))
+            sbarr = list(range(0, 57 if self.str_alias_nb_pages else 32))
 
             self.fonts[fontkey] = {
                 &#34;i&#34;: len(self.fonts) + 1,
@@ -3989,16 +3991,20 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
     def _putpages(self):
         nb = self.page
-        if hasattr(self, &#34;str_alias_nb_pages&#34;):
+        if self.str_alias_nb_pages:
             # Replace number of pages in fonts using subsets (unicode)
             alias = self.str_alias_nb_pages.encode(&#34;UTF-16BE&#34;)
-            r = str(nb).encode(&#34;UTF-16BE&#34;)
+            encoded_nb = str(nb).encode(&#34;UTF-16BE&#34;)
             for n in range(1, nb + 1):
-                self.pages[n][&#34;content&#34;] = self.pages[n][&#34;content&#34;].replace(alias, r)
+                self.pages[n][&#34;content&#34;] = self.pages[n][&#34;content&#34;].replace(
+                    alias, encoded_nb
+                )
             # Now repeat for no pages in non-subset fonts
+            alias = self.str_alias_nb_pages.encode(&#34;latin-1&#34;)
+            encoded_nb = str(nb).encode(&#34;latin-1&#34;)
             for n in range(1, nb + 1):
-                self.pages[n][&#34;content&#34;].replace(
-                    self.str_alias_nb_pages.encode(&#34;latin-1&#34;), str(nb).encode(&#34;latin-1&#34;)
+                self.pages[n][&#34;content&#34;] = self.pages[n][&#34;content&#34;].replace(
+                    alias, encoded_nb
                 )
         if self.def_orientation == &#34;P&#34;:
             dw_pt = self.dw_pt
@@ -4984,8 +4990,7 @@ def accept_page_break(self):
             del ttf
 
         # include numbers in the subset! (if alias present)
-        have_page_alias = lambda: hasattr(self, &#34;str_alias_nb_pages&#34;)
-        sbarr = list(range(0, 57 if have_page_alias() else 32))
+        sbarr = list(range(0, 57 if self.str_alias_nb_pages else 32))
 
         self.fonts[fontkey] = {
             &#34;i&#34;: len(self.fonts) + 1,
@@ -5127,7 +5132,7 @@ def accept_page_break(self):
 </details>
 </dd>
 <dt id="fpdf.fpdf.FPDF.alias_nb_pages"><code class="name flex">
-<span>def <span class="ident">alias_nb_pages</span></span>(<span>self, alias='{nb}')</span>
+<span>def <span class="ident">alias_nb_pages</span></span>(<span>self, alias)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Define an alias for total number of pages</p></div>
@@ -5135,10 +5140,9 @@ def accept_page_break(self):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def alias_nb_pages(self, alias=&#34;{nb}&#34;):
+<pre><code class="python">def alias_nb_pages(self, alias):
     &#34;Define an alias for total number of pages&#34;
-    self.str_alias_nb_pages = alias
-    return alias</code></pre>
+    self.str_alias_nb_pages = alias</code></pre>
 </details>
 </dd>
 <dt id="fpdf.fpdf.FPDF.cell"><code class="name flex">
