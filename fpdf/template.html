@@ -235,7 +235,7 @@ class Template:
         foreground=0,
         backgroud=65535,
         multiline=None,
-        **__
+        **__,
     ):
         if text:
             if pdf.text_color != rgb(foreground):
@@ -248,7 +248,7 @@ class Template:
                 font = &#34;helvetica&#34;
             style = &#34;&#34;
             for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
-                if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
+                if text.startswith(f&#34;&lt;{tag}&gt;&#34;) and text.endswith(f&#34;&lt;/{tag}&gt;&#34;):
                     text = text[3:-4]
                     style += tag
             if bold:
@@ -275,7 +275,7 @@ class Template:
                 text = pdf.multi_cell(
                     w=x2 - x1, h=y2 - y1, txt=text, align=align, split_only=True
                 )[0]
-                print(&#34;trimming: *%s*&#34; % text)
+                print(f&#34;trimming: *{text}*&#34;)
                 pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
 
             # pdf.Text(x=x1,y=y1,txt=text)
@@ -317,7 +317,7 @@ class Template:
         font=&#34;helvetica&#34;,
         size=1,
         foreground=0,
-        **__
+        **__,
     ):
         # pylint: disable=unused-argument
         if pdf.draw_color != rgb(foreground):
@@ -344,7 +344,7 @@ class Template:
         align=&#34;&#34;,
         link=&#34;http://example.com&#34;,
         foreground=0,
-        **__
+        **__,
     ):
         # pylint: disable=unused-argument
         if pdf.text_color != rgb(foreground):
@@ -354,7 +354,7 @@ class Template:
             font = &#34;helvetica&#34;
         style = &#34;&#34;
         for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
-            if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
+            if text.startswith(f&#34;&lt;{tag}&gt;&#34;) and text.endswith(f&#34;&lt;/{tag}&gt;&#34;):
                 text = text[3:-4]
                 style += tag
         if bold:
@@ -606,7 +606,7 @@ class Template:
         foreground=0,
         backgroud=65535,
         multiline=None,
-        **__
+        **__,
     ):
         if text:
             if pdf.text_color != rgb(foreground):
@@ -619,7 +619,7 @@ class Template:
                 font = &#34;helvetica&#34;
             style = &#34;&#34;
             for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
-                if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
+                if text.startswith(f&#34;&lt;{tag}&gt;&#34;) and text.endswith(f&#34;&lt;/{tag}&gt;&#34;):
                     text = text[3:-4]
                     style += tag
             if bold:
@@ -646,7 +646,7 @@ class Template:
                 text = pdf.multi_cell(
                     w=x2 - x1, h=y2 - y1, txt=text, align=align, split_only=True
                 )[0]
-                print(&#34;trimming: *%s*&#34; % text)
+                print(f&#34;trimming: *{text}*&#34;)
                 pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
 
             # pdf.Text(x=x1,y=y1,txt=text)
@@ -688,7 +688,7 @@ class Template:
         font=&#34;helvetica&#34;,
         size=1,
         foreground=0,
-        **__
+        **__,
     ):
         # pylint: disable=unused-argument
         if pdf.draw_color != rgb(foreground):
@@ -715,7 +715,7 @@ class Template:
         align=&#34;&#34;,
         link=&#34;http://example.com&#34;,
         foreground=0,
-        **__
+        **__,
     ):
         # pylint: disable=unused-argument
         if pdf.text_color != rgb(foreground):
@@ -725,7 +725,7 @@ class Template:
             font = &#34;helvetica&#34;
         style = &#34;&#34;
         for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
-            if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
+            if text.startswith(f&#34;&lt;{tag}&gt;&#34;) and text.endswith(f&#34;&lt;/{tag}&gt;&#34;):
                 text = text[3:-4]
                 style += tag
         if bold:
@@ -766,7 +766,7 @@ def barcode(
     font=&#34;helvetica&#34;,
     size=1,
     foreground=0,
-    **__
+    **__,
 ):
     # pylint: disable=unused-argument
     if pdf.draw_color != rgb(foreground):
@@ -858,7 +858,7 @@ def text(
     foreground=0,
     backgroud=65535,
     multiline=None,
-    **__
+    **__,
 ):
     if text:
         if pdf.text_color != rgb(foreground):
@@ -871,7 +871,7 @@ def text(
             font = &#34;helvetica&#34;
         style = &#34;&#34;
         for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
-            if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
+            if text.startswith(f&#34;&lt;{tag}&gt;&#34;) and text.endswith(f&#34;&lt;/{tag}&gt;&#34;):
                 text = text[3:-4]
                 style += tag
         if bold:
@@ -898,7 +898,7 @@ def text(
             text = pdf.multi_cell(
                 w=x2 - x1, h=y2 - y1, txt=text, align=align, split_only=True
             )[0]
-            print(&#34;trimming: *%s*&#34; % text)
+            print(f&#34;trimming: *{text}*&#34;)
             pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
 
         # pdf.Text(x=x1,y=y1,txt=text)</code></pre>
@@ -930,7 +930,7 @@ def write(
     align=&#34;&#34;,
     link=&#34;http://example.com&#34;,
     foreground=0,
-    **__
+    **__,
 ):
     # pylint: disable=unused-argument
     if pdf.text_color != rgb(foreground):
@@ -940,7 +940,7 @@ def write(
         font = &#34;helvetica&#34;
     style = &#34;&#34;
     for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
-        if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
+        if text.startswith(f&#34;&lt;{tag}&gt;&#34;) and text.endswith(f&#34;&lt;/{tag}&gt;&#34;):
             text = text[3:-4]
             style += tag
     if bold:

@@ -48,7 +48,7 @@ def load_resource(filename, reason=&#34;image&#34;):
             with open(filename, &#34;rb&#34;) as fl:
                 f = BytesIO(fl.read())
         return f
-    raise FPDFException(&#39;Unknown resource loading reason &#34;%s&#34;&#39; % reason)
+    raise FPDFException(f&#39;Unknown resource loading reason &#34;{reason}&#34;&#39;)
 
 
 def get_img_info(img):
@@ -76,15 +76,7 @@ def get_img_info(img):
         info[&#34;data&#34;] = to_zdata(img, remove_slice=alpha_channel)
         info[&#34;smask&#34;] = to_zdata(img, select_slice=alpha_channel)
 
-    dp = (
-        &#34;/Predictor 15 /Colors &#34;
-        + str(dpn)
-        + &#34; /BitsPerComponent &#34;
-        + str(bpc)
-        + &#34; /Columns &#34;
-        + str(w)
-        + &#34;&#34;
-    )
+    dp = f&#34;/Predictor 15 /Colors {dpn} /BitsPerComponent {bpc} /Columns {w}&#34;
 
     info.update(
         {
@@ -163,15 +155,7 @@ def to_zdata(img, remove_slice=None, select_slice=None):
         info[&#34;data&#34;] = to_zdata(img, remove_slice=alpha_channel)
         info[&#34;smask&#34;] = to_zdata(img, select_slice=alpha_channel)
 
-    dp = (
-        &#34;/Predictor 15 /Colors &#34;
-        + str(dpn)
-        + &#34; /BitsPerComponent &#34;
-        + str(bpc)
-        + &#34; /Columns &#34;
-        + str(w)
-        + &#34;&#34;
-    )
+    dp = f&#34;/Predictor 15 /Colors {dpn} /BitsPerComponent {bpc} /Columns {w}&#34;
 
     info.update(
         {
@@ -211,7 +195,7 @@ def to_zdata(img, remove_slice=None, select_slice=None):
             with open(filename, &#34;rb&#34;) as fl:
                 f = BytesIO(fl.read())
         return f
-    raise FPDFException(&#39;Unknown resource loading reason &#34;%s&#34;&#39; % reason)</code></pre>
+    raise FPDFException(f&#39;Unknown resource loading reason &#34;{reason}&#34;&#39;)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.image_parsing.to_zdata"><code class="name flex">

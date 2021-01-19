@@ -249,8 +249,8 @@ class HTML2FPDF(HTMLParser):
             if not isinstance(bullet, str):
                 bullet += 1
                 self.bullet[self.indent - 1] = bullet
-                bullet = &#34;%s. &#34; % bullet
-            self.pdf.write(self.h, &#34;%s%s &#34; % (&#34; &#34; * 5 * self.indent, bullet))
+                bullet = f&#34;{bullet}. &#34;
+            self.pdf.write(self.h, f&#34;{&#39; &#39; * 5 * self.indent}{bullet} &#34;)
             self.set_text_color()
         if tag == &#34;font&#34;:
             # save previous font state:
@@ -703,8 +703,8 @@ class HTMLMixin:
             if not isinstance(bullet, str):
                 bullet += 1
                 self.bullet[self.indent - 1] = bullet
-                bullet = &#34;%s. &#34; % bullet
-            self.pdf.write(self.h, &#34;%s%s &#34; % (&#34; &#34; * 5 * self.indent, bullet))
+                bullet = f&#34;{bullet}. &#34;
+            self.pdf.write(self.h, f&#34;{&#39; &#39; * 5 * self.indent}{bullet} &#34;)
             self.set_text_color()
         if tag == &#34;font&#34;:
             # save previous font state:
@@ -1135,8 +1135,8 @@ class HTMLMixin:
         if not isinstance(bullet, str):
             bullet += 1
             self.bullet[self.indent - 1] = bullet
-            bullet = &#34;%s. &#34; % bullet
-        self.pdf.write(self.h, &#34;%s%s &#34; % (&#34; &#34; * 5 * self.indent, bullet))
+            bullet = f&#34;{bullet}. &#34;
+        self.pdf.write(self.h, f&#34;{&#39; &#39; * 5 * self.indent}{bullet} &#34;)
         self.set_text_color()
     if tag == &#34;font&#34;:
         # save previous font state:

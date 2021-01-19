@@ -45,19 +45,19 @@ class FPDFPageFormatException(FPDFException):
         self.one = one
 
     def __repr__(self):
-        inputs = [self.argument, self.unknown, self.one]
-        arguments = &#34;, &#34;.join(list(map(repr, inputs)))
-        return &#34;&#34;.join([self.__class__.__name__, &#34;(&#34;, arguments, &#34;)&#34;])
+        return (
+            f&#34;{self.__class__.__name__}&#34;
+            f&#34;({self.argument!r}, {self.unknown!r}, {self.one!r})&#34;
+        )
 
     def __str__(self):
-        out = self.__class__.__name__ + &#34;: &#34;
         if self.unknown:
-            return out + &#34;Unknown page format: &#34; + self.argument
-        if self.one:
-            return (
-                out + &#34;Only one argument given: %s. Need (height,width)&#34; % self.argument
-            )
-        return out + self.argument</code></pre>
+            res = f&#34;Unknown page format: {self.argument}&#34;
+        elif self.one:
+            res = f&#34;Only one argument given: {self.argument}. Need (height,width)&#34;
+        else:
+            res = self.argument
+        return f&#34;{self.__class__.__name__ }: {res}&#34;</code></pre>
 </details>
 </section>
 <section>
@@ -117,19 +117,19 @@ class FPDFPageFormatException(FPDFException):
         self.one = one
 
     def __repr__(self):
-        inputs = [self.argument, self.unknown, self.one]
-        arguments = &#34;, &#34;.join(list(map(repr, inputs)))
-        return &#34;&#34;.join([self.__class__.__name__, &#34;(&#34;, arguments, &#34;)&#34;])
+        return (
+            f&#34;{self.__class__.__name__}&#34;
+            f&#34;({self.argument!r}, {self.unknown!r}, {self.one!r})&#34;
+        )
 
     def __str__(self):
-        out = self.__class__.__name__ + &#34;: &#34;
         if self.unknown:
-            return out + &#34;Unknown page format: &#34; + self.argument
-        if self.one:
-            return (
-                out + &#34;Only one argument given: %s. Need (height,width)&#34; % self.argument
-            )
-        return out + self.argument</code></pre>
+            res = f&#34;Unknown page format: {self.argument}&#34;
+        elif self.one:
+            res = f&#34;Only one argument given: {self.argument}. Need (height,width)&#34;
+        else:
+            res = self.argument
+        return f&#34;{self.__class__.__name__ }: {res}&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">

@@ -37,15 +37,11 @@ def substr(s, start, length=-1):
     return s[start : start + length]
 
 
-def sprintf(fmt, *args):
-    return fmt % args
-
-
 def enclose_in_parens(s):
     &#34;Format a text string&#34;
     if s:
         assert isinstance(s, str)
-        return &#34;(&#34; + escape_parens(s) + &#34;)&#34;
+        return f&#34;({escape_parens(s)})&#34;
     return &#34;&#34;
 
 
@@ -72,7 +68,7 @@ def b(s):
         return s.encode(&#34;latin1&#34;)
     if isinstance(s, int):
         return bytes([s])  # http://bugs.python.org/issue4588
-    raise ValueError(&#34;Invalid input: {}&#34;.format(s))
+    raise ValueError(f&#34;Invalid input: {s}&#34;)
 
 
 def dochecks():
@@ -80,7 +76,7 @@ def dochecks():
     # if (1.1==1):
     #     raise FPDFException(&#34;Don\&#39;t alter the locale before including class file&#34;)
     # Check for decimal separator
-    if sprintf(&#34;%.1f&#34;, 1.0) != &#34;1.0&#34;:
+    if f&#34;{1.0:.1f}&#34; != &#34;1.0&#34;:
         locale.setlocale(locale.LC_NUMERIC, &#34;C&#34;)
 
 
@@ -116,7 +112,7 @@ dochecks()</code></pre>
         return s.encode(&#34;latin1&#34;)
     if isinstance(s, int):
         return bytes([s])  # http://bugs.python.org/issue4588
-    raise ValueError(&#34;Invalid input: {}&#34;.format(s))</code></pre>
+    raise ValueError(f&#34;Invalid input: {s}&#34;)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.util.dochecks"><code class="name flex">
@@ -133,7 +129,7 @@ dochecks()</code></pre>
     # if (1.1==1):
     #     raise FPDFException(&#34;Don\&#39;t alter the locale before including class file&#34;)
     # Check for decimal separator
-    if sprintf(&#34;%.1f&#34;, 1.0) != &#34;1.0&#34;:
+    if f&#34;{1.0:.1f}&#34; != &#34;1.0&#34;:
         locale.setlocale(locale.LC_NUMERIC, &#34;C&#34;)</code></pre>
 </details>
 </dd>
@@ -150,7 +146,7 @@ dochecks()</code></pre>
     &#34;Format a text string&#34;
     if s:
         assert isinstance(s, str)
-        return &#34;(&#34; + escape_parens(s) + &#34;)&#34;
+        return f&#34;({escape_parens(s)})&#34;
     return &#34;&#34;</code></pre>
 </details>
 </dd>
@@ -178,19 +174,6 @@ dochecks()</code></pre>
         .replace(b&#34;(&#34;, b&#34;\\(&#34;)
         .replace(b&#34;\r&#34;, b&#34;\\r&#34;)
     )</code></pre>
-</details>
-</dd>
-<dt id="fpdf.util.sprintf"><code class="name flex">
-<span>def <span class="ident">sprintf</span></span>(<span>fmt, *args)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def sprintf(fmt, *args):
-    return fmt % args</code></pre>
 </details>
 </dd>
 <dt id="fpdf.util.substr"><code class="name flex">
@@ -230,12 +213,11 @@ dochecks()</code></pre>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="two-column">
+<ul class="">
 <li><code><a title="fpdf.util.b" href="#fpdf.util.b">b</a></code></li>
 <li><code><a title="fpdf.util.dochecks" href="#fpdf.util.dochecks">dochecks</a></code></li>
 <li><code><a title="fpdf.util.enclose_in_parens" href="#fpdf.util.enclose_in_parens">enclose_in_parens</a></code></li>
 <li><code><a title="fpdf.util.escape_parens" href="#fpdf.util.escape_parens">escape_parens</a></code></li>
-<li><code><a title="fpdf.util.sprintf" href="#fpdf.util.sprintf">sprintf</a></code></li>
 <li><code><a title="fpdf.util.substr" href="#fpdf.util.substr">substr</a></code></li>
 </ul>
 </li>

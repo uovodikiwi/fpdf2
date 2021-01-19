@@ -228,7 +228,7 @@ containing meta-data and stuffs.</p></div>
         elif unit == &#34;in&#34;:
             self.k = 72.0
         else:
-            raise FPDFException(&#34;Incorrect unit: &#34; + unit)
+            raise FPDFException(f&#34;Incorrect unit: {unit}&#34;)
 
         # Page format
         self.dw_pt, self.dh_pt = get_page_format(format, self.k)
@@ -244,7 +244,7 @@ containing meta-data and stuffs.</p></div>
             self.w_pt = self.dh_pt
             self.h_pt = self.dw_pt
         else:
-            raise FPDFException(&#34;Incorrect orientation: &#34; + orientation)
+            raise FPDFException(f&#34;Incorrect orientation: {orientation}&#34;)
         self.cur_orientation = self.def_orientation
         self.w = self.w_pt / self.k
         self.h = self.h_pt / self.k
@@ -299,12 +299,12 @@ containing meta-data and stuffs.</p></div>
         elif not isinstance(zoom, str):
             self.zoom_mode = zoom
         else:
-            raise FPDFException(&#34;Incorrect zoom display mode: &#34; + zoom)
+            raise FPDFException(f&#34;Incorrect zoom display mode: {zoom}&#34;)
 
         if layout in [&#34;single&#34;, &#34;continuous&#34;, &#34;two&#34;, &#34;default&#34;]:
             self.layout_mode = layout
         else:
-            raise FPDFException(&#34;Incorrect layout display mode: &#34; + layout)
+            raise FPDFException(f&#34;Incorrect layout display mode: {layout}&#34;)
 
     def set_compression(self, compress):
         &#34;Set page compression&#34;
@@ -339,7 +339,7 @@ containing meta-data and stuffs.</p></div>
         if opt == &#34;core_fonts_encoding&#34;:
             self.core_fonts_encoding = value
         else:
-            raise FPDFException(&#39;Unknown document option &#34;%s&#34;&#39; % str(opt))
+            raise FPDFException(f&#39;Unknown document option &#34;{opt}&#34;&#39;)
 
     def alias_nb_pages(self, alias):
         &#34;Define an alias for total number of pages&#34;
@@ -369,7 +369,7 @@ containing meta-data and stuffs.</p></div>
         if self.state == 0:
             self.open()
         family = self.font_family
-        style = self.font_style + &#34;U&#34; if self.underline else self.font_style
+        style = f&#34;{self.font_style}U&#34; if self.underline else self.font_style
         size = self.font_size_pt
         lw = self.line_width
         dc = self.draw_color
@@ -389,7 +389,7 @@ containing meta-data and stuffs.</p></div>
         self._beginpage(orientation, format, same)
         self._out(&#34;2 J&#34;)  # Set line cap style to square
         self.line_width = lw  # Set line width
-        self._out(sprintf(&#34;%.2f w&#34;, lw * self.k))
+        self._out(f&#34;{lw * self.k:.2f} w&#34;)
 
         # Set font
         if family:
@@ -410,7 +410,7 @@ containing meta-data and stuffs.</p></div>
 
         if self.line_width != lw:  # Restore line width
             self.line_width = lw
-            self._out(sprintf(&#34;%.2f w&#34;, lw * self.k))
+            self._out(f&#34;{lw * self.k:.2f} w&#34;)
 
         if family:
             self.set_font(family, style, size)  # Restore font
@@ -441,22 +441,18 @@ containing meta-data and stuffs.</p></div>
     def set_draw_color(self, r, g=-1, b=-1):
         &#34;Set color for all stroking operations&#34;
         if (r == 0 and g == 0 and b == 0) or g == -1:
-            self.draw_color = sprintf(&#34;%.3f G&#34;, r / 255.0)
+            self.draw_color = f&#34;{r / 255:.3f} G&#34;
         else:
-            self.draw_color = sprintf(
-                &#34;%.3f %.3f %.3f RG&#34;, r / 255.0, g / 255.0, b / 255.0
-            )
+            self.draw_color = f&#34;{r / 255:.3f} {g / 255:.3f} {b / 255:.3f} RG&#34;
         if self.page &gt; 0:
             self._out(self.draw_color)
 
     def set_fill_color(self, r, g=-1, b=-1):
         &#34;Set color for all filling operations&#34;
         if (r == 0 and g == 0 and b == 0) or g == -1:
-            self.fill_color = sprintf(&#34;%.3f g&#34;, r / 255.0)
+            self.fill_color = f&#34;{r / 255:.3f} g&#34;
         else:
-            self.fill_color = sprintf(
-                &#34;%.3f %.3f %.3f rg&#34;, r / 255.0, g / 255.0, b / 255.0
-            )
+            self.fill_color = f&#34;{r / 255:.3f} {g / 255:.3f} {b / 255:.3f} rg&#34;
         self.color_flag = self.fill_color != self.text_color
         if self.page &gt; 0:
             self._out(self.fill_color)
@@ -464,11 +460,9 @@ containing meta-data and stuffs.</p></div>
     def set_text_color(self, r, g=-1, b=-1):
         &#34;Set color for text&#34;
         if (r == 0 and g == 0 and b == 0) or g == -1:
-            self.text_color = sprintf(&#34;%.3f g&#34;, r / 255.0)
+            self.text_color = f&#34;{r / 255:.3f} g&#34;
         else:
-            self.text_color = sprintf(
-                &#34;%.3f %.3f %.3f rg&#34;, r / 255.0, g / 255.0, b / 255.0
-            )
+            self.text_color = f&#34;{r / 255:.3f} {g / 255:.3f} {b / 255:.3f} rg&#34;
         self.color_flag = self.fill_color != self.text_color
 
     def get_string_width(self, s, normalized=False):
@@ -498,14 +492,13 @@ containing meta-data and stuffs.</p></div>
         &#34;Set line width&#34;
         self.line_width = width
         if self.page &gt; 0:
-            self._out(sprintf(&#34;%.2f w&#34;, width * self.k))
+            self._out(f&#34;{width * self.k:.2f} w&#34;)
 
     @check_page
     def line(self, x1, y1, x2, y2):
         &#34;Draw a line&#34;
         self._out(
-            sprintf(
-                &#34;%.2f %.2f m %.2f %.2f l S&#34;,
+            &#34;{:.2f} {:.2f} m {:.2f} {:.2f} l S&#34;.format(
                 x1 * self.k,
                 (self.h - y1) * self.k,
                 x2 * self.k,
@@ -515,7 +508,7 @@ containing meta-data and stuffs.</p></div>
 
     def _set_dash(self, dash_length=False, space_length=False):
         if dash_length and space_length:
-            s = sprintf(&#34;[%.3f %.3f] 0 d&#34;, dash_length * self.k, space_length * self.k)
+            s = f&#34;[{dash_length * self.k:.3f} {space_length * self.k:.3f}] 0 d&#34;
         else:
             s = &#34;[] 0 d&#34;
         self._out(s)
@@ -535,8 +528,7 @@ containing meta-data and stuffs.</p></div>
         style_to_operators = {&#34;F&#34;: &#34;f&#34;, &#34;FD&#34;: &#34;B&#34;, &#34;DF&#34;: &#34;B&#34;}
         op = style_to_operators.get(style, &#34;S&#34;)
         self._out(
-            sprintf(
-                &#34;%.2f %.2f %.2f %.2f re %s&#34;,
+            &#34;{:.2f} {:.2f} {:.2f} {:.2f} re {}&#34;.format(
                 x * self.k,
                 (self.h - y) * self.k,
                 w * self.k,
@@ -560,8 +552,7 @@ containing meta-data and stuffs.</p></div>
         ly = 4 / 3 * (math.sqrt(2) - 1) * ry
 
         self._out(
-            sprintf(
-                &#34;%.2f %.2f m %.2f %.2f %.2f %.2f %.2f %.2f c&#34;,
+            &#34;{:.2f} {:.2f} m {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c&#34;.format(
                 (cx + rx) * self.k,
                 (self.h - cy) * self.k,
                 (cx + rx) * self.k,
@@ -573,8 +564,7 @@ containing meta-data and stuffs.</p></div>
             )
         )
         self._out(
-            sprintf(
-                &#34;%.2f %.2f %.2f %.2f %.2f %.2f c&#34;,
+            &#34;{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c&#34;.format(
                 (cx - lx) * self.k,
                 (self.h - (cy - ry)) * self.k,
                 (cx - rx) * self.k,
@@ -584,8 +574,7 @@ containing meta-data and stuffs.</p></div>
             )
         )
         self._out(
-            sprintf(
-                &#34;%.2f %.2f %.2f %.2f %.2f %.2f c&#34;,
+            &#34;{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c&#34;.format(
                 (cx - rx) * self.k,
                 (self.h - (cy + ly)) * self.k,
                 (cx - lx) * self.k,
@@ -595,8 +584,7 @@ containing meta-data and stuffs.</p></div>
             )
         )
         self._out(
-            sprintf(
-                &#34;%.2f %.2f %.2f %.2f %.2f %.2f c %s&#34;,
+            &#34;{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c {}&#34;.format(
                 (cx + lx) * self.k,
                 (self.h - (cy + ry)) * self.k,
                 (cx + rx) * self.k,
@@ -610,11 +598,11 @@ containing meta-data and stuffs.</p></div>
     def add_font(self, family, style=&#34;&#34;, fname=None, uni=False):
         &#34;Add a TrueType or Type1 font&#34;
         if not fname:
-            fname = family.replace(&#34; &#34;, &#34;&#34;) + style.lower() + &#34;.pkl&#34;
+            fname = family.replace(&#34; &#34;, &#34;&#34;) + f&#34;{style.lower()}.pkl&#34;
         style = style.upper()
         if style == &#34;IB&#34;:
             style = &#34;BI&#34;
-        fontkey = family + style
+        fontkey = f&#34;{family}{style}&#34;
 
         # Font already added!
         if fontkey in self.fonts:
@@ -627,12 +615,12 @@ containing meta-data and stuffs.</p></div>
             elif SYSTEM_TTFONTS and os.path.exists(os.path.join(SYSTEM_TTFONTS, fname)):
                 ttffilename = os.path.join(SYSTEM_TTFONTS, fname)
             else:
-                raise RuntimeError(&#34;TTF Font file not found: %s&#34; % fname)
+                raise RuntimeError(f&#34;TTF Font file not found: {fname}&#34;)
             if FPDF_CACHE_MODE == 0:
-                unifilename = os.path.splitext(ttffilename)[0] + &#34;.pkl&#34;
+                unifilename = f&#34;{os.path.splitext(ttffilename)[0]}.pkl&#34;
             elif FPDF_CACHE_MODE == 2:
                 unifilename = os.path.join(
-                    FPDF_CACHE_DIR, _hashpath(ttffilename) + &#34;.pkl&#34;
+                    FPDF_CACHE_DIR, f&#34;{_hashpath(ttffilename)}.pkl&#34;
                 )
             else:
                 unifilename = None
@@ -646,12 +634,9 @@ containing meta-data and stuffs.</p></div>
                     &#34;Descent&#34;: round(ttf.descent),
                     &#34;CapHeight&#34;: round(ttf.capHeight),
                     &#34;Flags&#34;: ttf.flags,
-                    &#34;FontBBox&#34;: &#34;[%s %s %s %s]&#34;
-                    % (
-                        round(ttf.bbox[0]),
-                        round(ttf.bbox[1]),
-                        round(ttf.bbox[2]),
-                        round(ttf.bbox[3]),
+                    &#34;FontBBox&#34;: (
+                        f&#34;[{ttf.bbox[0]:.0f} {ttf.bbox[1]:.0f}&#34;
+                        f&#34; {ttf.bbox[2]:.0f} {ttf.bbox[3]:.0f}]&#34;
                     ),
                     &#34;ItalicAngle&#34;: int(ttf.italicAngle),
                     &#34;StemV&#34;: round(ttf.stemV),
@@ -796,9 +781,7 @@ containing meta-data and stuffs.</p></div>
         self.current_font = self.fonts[fontkey]
         self.unifontsubset = self.current_font[&#34;type&#34;] == &#34;TTF&#34;
         if self.page &gt; 0:
-            self._out(
-                sprintf(&#34;BT /F%d %.2f Tf ET&#34;, self.current_font[&#34;i&#34;], self.font_size_pt)
-            )
+            self._out(f&#34;BT /F{self.current_font[&#39;i&#39;]} {self.font_size_pt:.2f} Tf ET&#34;)
 
     def set_font_size(self, size):
         &#34;Set font size in points&#34;
@@ -807,9 +790,7 @@ containing meta-data and stuffs.</p></div>
         self.font_size_pt = size
         self.font_size = size / self.k
         if self.page &gt; 0:
-            self._out(
-                sprintf(&#34;BT /F%d %.2f Tf ET&#34;, self.current_font[&#34;i&#34;], self.font_size_pt)
-            )
+            self._out(f&#34;BT /F{self.current_font[&#39;i&#39;]} {self.font_size_pt:.2f} Tf ET&#34;)
 
     def set_stretching(self, factor):
         &#34;Set from stretch factor percents (default: 100.0)&#34;
@@ -817,7 +798,7 @@ containing meta-data and stuffs.</p></div>
             return
         self.font_stretching = factor
         if self.page &gt; 0:
-            self._out(sprintf(&#34;BT %.2f Tz ET&#34;, self.font_stretching))
+            self._out(f&#34;BT {self.font_stretching:.2f} Tz ET&#34;)
 
     def add_link(self):
         &#34;Create a new internal link&#34;
@@ -854,13 +835,11 @@ containing meta-data and stuffs.</p></div>
                 self.current_font[&#34;subset&#34;].append(ord(char))
         else:
             txt2 = escape_parens(txt)
-        s = sprintf(
-            &#34;BT %.2f %.2f Td (%s) Tj ET&#34;, x * self.k, (self.h - y) * self.k, txt2
-        )
+        s = f&#34;BT {x * self.k:.2f} {(self.h - y) * self.k:.2f} Td ({txt2}) Tj ET&#34;
         if self.underline and txt != &#34;&#34;:
             s += &#34; &#34; + self._dounderline(x, y, txt)
         if self.color_flag:
-            s = &#34;q &#34; + self.text_color + &#34; &#34; + s + &#34; Q&#34;
+            s = f&#34;q {self.text_color} {s} Q&#34;
         self._out(s)
 
     @check_page
@@ -887,16 +866,9 @@ containing meta-data and stuffs.</p></div>
             s = math.sin(angle)
             cx = x * self.k
             cy = (self.h - y) * self.k
-            s = sprintf(
-                &#34;q %.5F %.5F %.5F %.5F %.2F %.2F &#34; + &#34;cm 1 0 0 1 %.2F %.2F cm&#34;,
-                c,
-                s,
-                -s,
-                c,
-                cx,
-                cy,
-                -cx,
-                -cy,
+            s = (
+                f&#34;q {c:.5F} {s:.5F} {-s:.5F} {c:.5F} {cx:.2F} {cy:.2F} cm &#34;
+                f&#34;1 0 0 1 {-cx:.2F} {-cy:.2F} cm&#34;
             )
             self._out(s)
 
@@ -922,19 +894,11 @@ containing meta-data and stuffs.</p></div>
         angle *= math.pi / 180
         c, s = math.cos(angle), math.sin(angle)
         cx, cy = x * self.k, (self.h - y) * self.k
-        self._out(
-            sprintf(
-                &#34;q %.5F %.5F %.5F %.5F %.2F %.2F cm 1 0 0 1 %.2F %.2F cm\n&#34;,
-                c,
-                s,
-                -s,
-                c,
-                cx,
-                cy,
-                -cx,
-                -cy,
-            )
+        s = (
+            f&#34;q {c:.5F} {s:.5F} {-s:.5F} {c:.5F} {cx:.2F} {cy:.2F} cm &#34;
+            f&#34;1 0 0 1 {-cx:.2F} {-cy:.2F} cm\n&#34;
         )
+        self._out(s)
         yield
         self._out(&#34;Q\n&#34;)
 
@@ -997,7 +961,7 @@ containing meta-data and stuffs.</p></div>
 
             if ws &gt; 0:
                 self.ws = ws
-                self._out(sprintf(&#34;%.3f Tw&#34;, ws * k))
+                self._out(f&#34;{ws * k:.3f} Tw&#34;)
         if w == 0:
             w = self.w - self.r_margin - self.x
         s = &#34;&#34;
@@ -1010,49 +974,33 @@ containing meta-data and stuffs.</p></div>
                     op = &#34;f&#34;
             else:
                 op = &#34;S&#34;
-            s = sprintf(
-                &#34;%.2f %.2f %.2f %.2f re %s &#34;,
-                self.x * k,
-                (self.h - self.y) * k,
-                w * k,
-                -h * k,
-                op,
+            s = (
+                f&#34;{self.x * k:.2f} {(self.h - self.y) * k:.2f} &#34;
+                f&#34;{w * k:.2f} {-h * k:.2f} re {op} &#34;
             )
 
         if isinstance(border, str):
             x = self.x
             y = self.y
             if &#34;L&#34; in border:
-                s += sprintf(
-                    &#34;%.2f %.2f m %.2f %.2f l S &#34;,
-                    x * k,
-                    (self.h - y) * k,
-                    x * k,
-                    (self.h - (y + h)) * k,
+                s += (
+                    f&#34;{x * k:.2f} {(self.h - y) * k:.2f} m &#34;
+                    f&#34;{x * k:.2f} {(self.h - (y + h)) * k:.2f} l S &#34;
                 )
             if &#34;T&#34; in border:
-                s += sprintf(
-                    &#34;%.2f %.2f m %.2f %.2f l S &#34;,
-                    x * k,
-                    (self.h - y) * k,
-                    (x + w) * k,
-                    (self.h - y) * k,
+                s += (
+                    f&#34;{x * k:.2f} {(self.h - y) * k:.2f} m &#34;
+                    f&#34;{(x + w) * k:.2f} {(self.h - y) * k:.2f} l S &#34;
                 )
             if &#34;R&#34; in border:
-                s += sprintf(
-                    &#34;%.2f %.2f m %.2f %.2f l S &#34;,
-                    (x + w) * k,
-                    (self.h - y) * k,
-                    (x + w) * k,
-                    (self.h - (y + h)) * k,
+                s += (
+                    f&#34;{(x + w) * k:.2f} {(self.h - y) * k:.2f} m &#34;
+                    f&#34;{(x + w) * k:.2f} {(self.h - (y + h)) * k:.2f} l S &#34;
                 )
             if &#34;B&#34; in border:
-                s += sprintf(
-                    &#34;%.2f %.2f m %.2f %.2f l S &#34;,
-                    x * k,
-                    (self.h - (y + h)) * k,
-                    (x + w) * k,
-                    (self.h - (y + h)) * k,
+                s += (
+                    f&#34;{x * k:.2f} {(self.h - (y + h)) * k:.2f} m &#34;
+                    f&#34;{(x + w) * k:.2f} {(self.h - (y + h)) * k:.2f} l S &#34;
                 )
 
         if txt != &#34;&#34;:
@@ -1063,7 +1011,7 @@ containing meta-data and stuffs.</p></div>
             else:
                 dx = self.c_margin
             if self.color_flag:
-                s += &#34;q &#34; + self.text_color + &#34; &#34;
+                s += f&#34;q {self.text_color} &#34;
 
             # If multibyte, Tw has no effect - do word spacing using an
             # adjustment before each space
@@ -1072,8 +1020,7 @@ containing meta-data and stuffs.</p></div>
                     self.current_font[&#34;subset&#34;].append(ord(char))
                 space = escape_parens(&#34; &#34;.encode(&#34;UTF-16BE&#34;).decode(&#34;latin-1&#34;))
 
-                s += sprintf(
-                    &#34;BT 0 Tw %.2F %.2F Td [&#34;,
+                s += &#34;BT 0 Tw {:.2F} {:.2F} Td [&#34;.format(
                     (self.x + dx) * k,
                     (self.h - (self.y + (0.5 * h) + (0.3 * self.font_size))) * k,
                 )
@@ -1085,10 +1032,10 @@ containing meta-data and stuffs.</p></div>
                     tx = enclose_in_parens(
                         escape_parens(tx.encode(&#34;UTF-16BE&#34;).decode(&#34;latin-1&#34;))
                     )
-                    s += sprintf(&#34;%s &#34;, tx)
+                    s += f&#34;{tx} &#34;
                     if (i + 1) &lt; numt:
                         adj = -(self.ws * self.k) * 1000 / self.font_size_pt
-                        s += sprintf(&#34;%d(%s) &#34;, adj, space)
+                        s += f&#34;{adj}({space}) &#34;
                 s += &#34;] TJ&#34;
                 s += &#34; ET&#34;
             else:
@@ -1099,8 +1046,7 @@ containing meta-data and stuffs.</p></div>
                 else:
                     txt2 = escape_parens(txt)
 
-                s += sprintf(
-                    &#34;BT %.2f %.2f Td (%s) Tj ET&#34;,
+                s += &#34;BT {:.2f} {:.2f} Td ({}) Tj ET&#34;.format(
                     (self.x + dx) * k,
                     (self.h - (self.y + (0.5 * h) + (0.3 * self.font_size))) * k,
                     txt2,
@@ -1279,7 +1225,7 @@ containing meta-data and stuffs.</p></div>
                             self.ws = (wmax - ls) / 1000 * self.font_size / (ns - 1)
                         else:
                             self.ws = 0
-                        self._out(sprintf(&#34;%.3f Tw&#34;, self.ws * self.k))
+                        self._out(f&#34;{self.ws * self.k:.3f} Tw&#34;)
 
                     new_page = self.cell(
                         w,
@@ -1476,8 +1422,7 @@ containing meta-data and stuffs.</p></div>
         if x is None:
             x = self.x
         self._out(
-            sprintf(
-                &#34;q %.2f 0 0 %.2f %.2f %.2f cm /I%d Do Q&#34;,
+            &#34;q {:.2f} 0 0 {:.2f} {:.2f} {:.2f} cm /I{} Do Q&#34;.format(
                 w * self.k,
                 h * self.k,
                 x * self.k,
@@ -1609,7 +1554,7 @@ containing meta-data and stuffs.</p></div>
             w_pt = self.pages[n][&#34;w_pt&#34;]
             h_pt = self.pages[n][&#34;h_pt&#34;]
             if w_pt != dw_pt or h_pt != dh_pt:
-                self._out(sprintf(&#34;/MediaBox [0 0 %.2f %.2f]&#34;, w_pt, h_pt))
+                self._out(f&#34;/MediaBox [0 0 {w_pt:.2f} {h_pt:.2f}]&#34;)
             self._out(&#34;/Resources 2 0 R&#34;)
 
             if self.page_links and n in self.page_links:
@@ -1617,48 +1562,40 @@ containing meta-data and stuffs.</p></div>
                 annots = &#34;/Annots [&#34;
                 for pl in self.page_links[n]:
                     # first four things in &#39;link&#39; list are coordinates?
-                    rect = sprintf(
-                        &#34;%.2f %.2f %.2f %.2f&#34;,
-                        pl[0],
-                        pl[1],
-                        pl[0] + pl[2],
-                        pl[1] - pl[3],
+                    rect = (
+                        f&#34;{pl[0]:.2f} {pl[1]:.2f} &#34;
+                        f&#34;{pl[0] + pl[2]:.2f} {pl[1] - pl[3]:.2f}&#34;
                     )
 
                     # start the annotation entry
                     annots += (
-                        &#34;&lt;&lt;/Type /Annot /Subtype /Link /Rect [&#34;
-                        + rect
-                        + &#34;] /Border [0 0 0] &#34;
+                        f&#34;&lt;&lt;/Type /Annot /Subtype /Link /Rect &#34;
+                        f&#34;[{rect}] /Border [0 0 0] &#34;
                     )
 
                     # HTML ending of annotation entry
                     if isinstance(pl[4], str):
-                        annots += (
-                            &#34;/A &lt;&lt;/S /URI /URI &#34; + enclose_in_parens(pl[4]) + &#34;&gt;&gt;&gt;&gt;&#34;
-                        )
+                        annots += f&#34;/A &lt;&lt;/S /URI /URI {enclose_in_parens(pl[4])}&gt;&gt;&gt;&gt;&#34;
 
                     # Dest type ending of annotation entry
                     else:
-                        assert (
-                            pl[4] in self.links
-                        ), &#34;Page {} has a link with an invalid index: {} (doc #links={})&#34;.format(
-                            n, pl[4], len(self.links)
+                        assert pl[4] in self.links, (
+                            f&#34;Page {n} has a link with an invalid index: &#34;
+                            f&#34;{pl[4]} (doc #links={len(self.links)})&#34;
                         )
                         l = self.links[pl[4]]
                         # if l[0] in self.orientation_changes: h = w_pt
                         # else:                                h = h_pt
-                        annots += sprintf(
-                            &#34;/Dest [%d 0 R /XYZ 0 %.2f null]&gt;&gt;&#34;,
-                            1 + 2 * l[0],
-                            h_pt - l[1] * self.k,
+                        annots += (
+                            f&#34;/Dest [{1 + 2 * l[0]} 0 R /XYZ 0 &#34;
+                            f&#34;{h_pt - l[1] * self.k:.2f} null]&gt;&gt;&#34;
                         )
 
                 # End links list
-                self._out(annots + &#34;]&#34;)
+                self._out(f&#34;{annots}]&#34;)
             if self.pdf_version &gt; &#34;1.3&#34;:
                 self._out(&#34;/Group &lt;&lt;/Type /Group /S /Transparency&#34; &#34;/CS /DeviceRGB&gt;&gt;&#34;)
-            self._out(&#34;/Contents &#34; + str(self.n + 1) + &#34; 0 R&gt;&gt;&#34;)
+            self._out(f&#34;/Contents {self.n + 1} 0 R&gt;&gt;&#34;)
             self._out(&#34;endobj&#34;)
 
             # Page content
@@ -1668,7 +1605,7 @@ containing meta-data and stuffs.</p></div>
             else:
                 p = content
             self._newobj()
-            self._out(&#34;&lt;&lt;&#34; + filter + &#34;/Length &#34; + str(len(p)) + &#34;&gt;&gt;&#34;)
+            self._out(f&#34;&lt;&lt;{filter}/Length {len(p)}&gt;&gt;&#34;)
             self._out(pdf_stream(p))
             self._out(&#34;endobj&#34;)
         # Pages root
@@ -1677,10 +1614,10 @@ containing meta-data and stuffs.</p></div>
         self._out(&#34;&lt;&lt;/Type /Pages&#34;)
         kids = &#34;/Kids [&#34;
         for i in range(0, nb):
-            kids += str(3 + 2 * i) + &#34; 0 R &#34;
+            kids += f&#34;{3 + 2 * i} 0 R &#34;
         self._out(kids + &#34;]&#34;)
-        self._out(&#34;/Count &#34; + str(nb))
-        self._out(sprintf(&#34;/MediaBox [0 0 %.2f %.2f]&#34;, dw_pt, dh_pt))
+        self._out(f&#34;/Count {nb}&#34;)
+        self._out(f&#34;/MediaBox [0 0 {dw_pt:.2f} {dh_pt:.2f}]&#34;)
         self._out(&#34;&gt;&gt;&#34;)
         self._out(&#34;endobj&#34;)
 
@@ -1690,12 +1627,10 @@ containing meta-data and stuffs.</p></div>
             # Encodings
             self._newobj()
             self._out(
-                (
-                    &#34;&lt;&lt;/Type /Encoding /BaseEncoding /WinAnsiEncoding &#34;
-                    + &#34;/Differences [&#34;
-                    + self.diffs[diff]
-                    + &#34;]&gt;&gt;&#34;
-                )
+                &#34;&lt;&lt;/Type /Encoding /BaseEncoding /WinAnsiEncoding &#34;
+                + &#34;/Differences [&#34;
+                + self.diffs[diff]
+                + &#34;]&gt;&gt;&#34;
             )
             self._out(&#34;endobj&#34;)
 
@@ -1718,14 +1653,12 @@ containing meta-data and stuffs.</p></div>
                             font, info[&#34;length1&#34;] + 6
                         )
 
-                self._out(&#34;&lt;&lt;/Length &#34; + str(len(font)))
+                self._out(f&#34;&lt;&lt;/Length {len(font)}&#34;)
                 if compressed:
                     self._out(&#34;/Filter /FlateDecode&#34;)
-                self._out(&#34;/Length1 &#34; + str(info[&#34;length1&#34;]))
+                self._out(f&#34;/Length1 {info[&#39;length1&#39;]}&#34;)
                 if &#34;length2&#34; in info:
-                    self._out(
-                        &#34;/Length2 &#34; + str(info[&#34;length2&#34;]) + &#34; /Length3 0&#34;
-                    )  # noqa: E501
+                    self._out(f&#34;/Length2 {info[&#39;length2&#39;]} /Length3 0&#34;)
                 self._out(&#34;&gt;&gt;&#34;)
                 self._out(pdf_stream(font))
                 self._out(&#34;endobj&#34;)
@@ -1741,7 +1674,7 @@ containing meta-data and stuffs.</p></div>
             if my_type == &#34;core&#34;:
                 self._newobj()
                 self._out(&#34;&lt;&lt;/Type /Font&#34;)
-                self._out(&#34;/BaseFont /&#34; + name)
+                self._out(f&#34;/BaseFont /{name}&#34;)
                 self._out(&#34;/Subtype /Type1&#34;)
                 if name not in (&#34;Symbol&#34;, &#34;ZapfDingbats&#34;):
                     self._out(&#34;/Encoding /WinAnsiEncoding&#34;)
@@ -1752,16 +1685,14 @@ containing meta-data and stuffs.</p></div>
             elif my_type in (&#34;Type1&#34;, &#34;TrueType&#34;):
                 self._newobj()
                 self._out(&#34;&lt;&lt;/Type /Font&#34;)
-                self._out(&#34;/BaseFont /&#34; + name)
-                self._out(&#34;/Subtype /&#34; + my_type)
+                self._out(f&#34;/BaseFont /{name}&#34;)
+                self._out(f&#34;/Subtype /{my_type}&#34;)
                 self._out(&#34;/FirstChar 32 /LastChar 255&#34;)
-                self._out(&#34;/Widths &#34; + str(self.n + 1) + &#34; 0 R&#34;)
-                self._out(&#34;/FontDescriptor &#34; + str(self.n + 2) + &#34; 0 R&#34;)
+                self._out(f&#34;/Widths {self.n + 1} 0 R&#34;)
+                self._out(f&#34;/FontDescriptor {self.n + 2} 0 R&#34;)
                 if font[&#34;enc&#34;]:
                     if &#34;diff&#34; in font:
-                        self._out(
-                            &#34;/Encoding &#34; + str(nf + font[&#34;diff&#34;]) + &#34; 0 R&#34;
-                        )  # noqa: E501
+                        self._out(f&#34;/Encoding {nf + font[&#39;diff&#39;]} 0 R&#34;)
                     else:
                         self._out(&#34;/Encoding /WinAnsiEncoding&#34;)
                 self._out(&#34;&gt;&gt;&#34;)
@@ -1774,13 +1705,13 @@ containing meta-data and stuffs.</p></div>
                 for i in range(32, 256):
                     # Get doesn&#39;t raise exception;
                     # returns 0 instead of None if not set
-                    s += str(cw.get(chr(i), 0)) + &#34; &#34;
-                self._out(s + &#34;]&#34;)
+                    s += f&#34;{cw.get(chr(i), 0)} &#34;
+                self._out(f&#34;{s}]&#34;)
                 self._out(&#34;endobj&#34;)
 
                 # Descriptor
                 self._newobj()
-                s = &#34;&lt;&lt;/Type /FontDescriptor /FontName /&#34; + name
+                s = f&#34;&lt;&lt;/Type /FontDescriptor /FontName /{name}&#34;
                 for k in (
                     &#34;Ascent&#34;,
                     &#34;Descent&#34;,
@@ -1791,20 +1722,20 @@ containing meta-data and stuffs.</p></div>
                     &#34;StemV&#34;,
                     &#34;MissingWidth&#34;,
                 ):
-                    s += &#34; /%s %s&#34; % (k, font[&#34;desc&#34;][k])
+                    s += f&#34; /{k} {font[&#39;desc&#39;][k]}&#34;
 
                 filename = font[&#34;file&#34;]
                 if filename:
                     s += &#34; /FontFile&#34;
                     if my_type != &#34;Type1&#34;:
                         s += &#34;2&#34;
-                    s += &#34; &#34; + str(self.font_files[filename][&#34;n&#34;]) + &#34; 0 R&#34;
-                self._out(s + &#34;&gt;&gt;&#34;)
+                    s += f&#34; {self.font_files[filename][&#39;n&#39;]} 0 R&#34;
+                self._out(f&#34;{s}&gt;&gt;&#34;)
                 self._out(&#34;endobj&#34;)
             elif my_type == &#34;TTF&#34;:
                 self.fonts[font_name][&#34;n&#34;] = self.n + 1
                 ttf = TTFontFile()
-                fontname = &#34;MPDFAA&#34; + &#34;+&#34; + font[&#34;name&#34;]
+                fontname = f&#34;MPDFAA+{font[&#39;name&#39;]}&#34;
                 subset = font[&#34;subset&#34;]
                 del subset[0]
                 ttfontstream = ttf.makeSubset(font[&#34;ttffile&#34;], subset)
@@ -1819,10 +1750,10 @@ containing meta-data and stuffs.</p></div>
                 self._newobj()
                 self._out(&#34;&lt;&lt;/Type /Font&#34;)
                 self._out(&#34;/Subtype /Type0&#34;)
-                self._out(&#34;/BaseFont /&#34; + fontname + &#34;&#34;)
+                self._out(f&#34;/BaseFont /{fontname}&#34;)
                 self._out(&#34;/Encoding /Identity-H&#34;)
-                self._out(&#34;/DescendantFonts [&#34; + str(self.n + 1) + &#34; 0 R&#34; + &#34;]&#34;)
-                self._out(&#34;/ToUnicode &#34; + str(self.n + 2) + &#34; 0 R&#34;)
+                self._out(f&#34;/DescendantFonts [{self.n + 1} 0 R]&#34;)
+                self._out(f&#34;/ToUnicode {self.n + 2} 0 R&#34;)
                 self._out(&#34;&gt;&gt;&#34;)
                 self._out(&#34;endobj&#34;)
 
@@ -1832,13 +1763,13 @@ containing meta-data and stuffs.</p></div>
                 self._newobj()
                 self._out(&#34;&lt;&lt;/Type /Font&#34;)
                 self._out(&#34;/Subtype /CIDFontType2&#34;)
-                self._out(&#34;/BaseFont /&#34; + fontname + &#34;&#34;)
-                self._out(&#34;/CIDSystemInfo &#34; + str(self.n + 2) + &#34; 0 R&#34;)
-                self._out(&#34;/FontDescriptor &#34; + str(self.n + 3) + &#34; 0 R&#34;)
+                self._out(f&#34;/BaseFont /{fontname}&#34;)
+                self._out(f&#34;/CIDSystemInfo {self.n + 2} 0 R&#34;)
+                self._out(f&#34;/FontDescriptor {self.n + 3} 0 R&#34;)
                 if font[&#34;desc&#34;].get(&#34;MissingWidth&#34;):
-                    self._out(&#34;/DW %d&#34; % font[&#34;desc&#34;][&#34;MissingWidth&#34;])
+                    self._out(f&#34;/DW {font[&#39;desc&#39;][&#39;MissingWidth&#39;]}&#34;)
                 self._putTTfontwidths(font, ttf.maxUni)
-                self._out(&#34;/CIDToGIDMap &#34; + str(self.n + 4) + &#34; 0 R&#34;)
+                self._out(f&#34;/CIDToGIDMap {self.n + 4} 0 R&#34;)
                 self._out(&#34;&gt;&gt;&#34;)
                 self._out(&#34;endobj&#34;)
 
@@ -1866,7 +1797,7 @@ containing meta-data and stuffs.</p></div>
                     &#34;end\n&#34;
                     &#34;end&#34;
                 )
-                self._out(&#34;&lt;&lt;/Length &#34; + str(len(toUni)) + &#34;&gt;&gt;&#34;)
+                self._out(f&#34;&lt;&lt;/Length {len(toUni)}&gt;&gt;&#34;)
                 self._out(pdf_stream(toUni))
                 self._out(&#34;endobj&#34;)
 
@@ -1896,8 +1827,8 @@ containing meta-data and stuffs.</p></div>
                     if kd == &#34;Flags&#34;:
                         v = v | 4
                         v = v &amp; ~32  # SYMBOLIC font flag
-                    self._out(&#34; /%s %s&#34; % (kd, v))
-                self._out(&#34;/FontFile2 &#34; + str(self.n + 2) + &#34; 0 R&#34;)
+                    self._out(f&#34; /{kd} {v}&#34;)
+                self._out(f&#34;/FontFile2 {self.n + 2} 0 R&#34;)
                 self._out(&#34;&gt;&gt;&#34;)
                 self._out(&#34;endobj&#34;)
 
@@ -1912,7 +1843,7 @@ containing meta-data and stuffs.</p></div>
                 # manage binary data as latin1 until PEP461-like function is implemented
                 cidtogidmap = zlib.compress(cidtogidmap.encode(&#34;latin1&#34;))
                 self._newobj()
-                self._out(&#34;&lt;&lt;/Length &#34; + str(len(cidtogidmap)) + &#34;&#34;)
+                self._out(f&#34;&lt;&lt;/Length {len(cidtogidmap)}&#34;)
                 self._out(&#34;/Filter /FlateDecode&#34;)
                 self._out(&#34;&gt;&gt;&#34;)
                 self._out(pdf_stream(cidtogidmap))
@@ -1920,26 +1851,26 @@ containing meta-data and stuffs.</p></div>
 
                 # Font file
                 self._newobj()
-                self._out(&#34;&lt;&lt;/Length &#34; + str(len(fontstream)))
+                self._out(f&#34;&lt;&lt;/Length {len(fontstream)}&#34;)
                 self._out(&#34;/Filter /FlateDecode&#34;)
-                self._out(&#34;/Length1 &#34; + str(ttfontsize))
+                self._out(f&#34;/Length1 {ttfontsize}&#34;)
                 self._out(&#34;&gt;&gt;&#34;)
                 self._out(pdf_stream(fontstream))
                 self._out(&#34;endobj&#34;)
                 del ttf
             else:
                 # Allow for additional types
-                mtd = &#34;_put&#34; + my_type.lower()
+                mtd = f&#34;_put{my_type.lower()}&#34;
                 # check if self has a attr mtd which is callable (method)
                 if not callable(getattr(self, mtd, None)):
-                    raise FPDFException(&#34;Unsupported font type: &#34; + my_type)
+                    raise FPDFException(f&#34;Unsupported font type: {my_type}&#34;)
                 # pylint: disable=no-member
                 self.mtd(font)
 
     def _putTTfontwidths(self, font, maxUni):
         if font[&#34;unifilename&#34;]:
             ops = os.path.splitext
-            cw127fname = ops(font[&#34;unifilename&#34;])[0] + &#34;.cw127.pkl&#34;
+            cw127fname = f&#34;{ops(font[&#39;unifilename&#39;])[0]}.cw127.pkl&#34;
         else:
             cw127fname = None
         font_dict = load_cache(cw127fname)
@@ -2037,10 +1968,10 @@ containing meta-data and stuffs.</p></div>
         w = []
         for k, ws in sorted(range_.items()):
             if len(set(ws)) == 1:
-                w.append(&#34; %s %s %s&#34; % (k, k + len(ws) - 1, ws[0]))
+                w.append(f&#34; {k} {k + len(ws) - 1} {ws[0]}&#34;)
             else:
-                w.append(&#34; %s [ %s ]\n&#34; % (k, &#34; &#34;.join([str(int(h)) for h in ws])))
-        self._out(&#34;/W [%s]&#34; % &#34;&#34;.join(w))
+                w.append(f&#34; {k} [ {&#39; &#39;.join(str(int(h)) for h in ws)} ]\n&#34;)
+        self._out(f&#34;/W [{&#39;&#39;.join(w)}]&#34;)
 
     def _putimages(self):
         i = [(x[1][&#34;i&#34;], x[1]) for x in self.images.items()]
@@ -2057,48 +1988,44 @@ containing meta-data and stuffs.</p></div>
             info[&#34;n&#34;] = self.n
             self._out(&#34;&lt;&lt;/Type /XObject&#34;)
             self._out(&#34;/Subtype /Image&#34;)
-            self._out(&#34;/Width &#34; + str(info[&#34;w&#34;]))
-            self._out(&#34;/Height &#34; + str(info[&#34;h&#34;]))
+            self._out(f&#34;/Width {info[&#39;w&#39;]}&#34;)
+            self._out(f&#34;/Height {info[&#39;h&#39;]}&#34;)
 
             if info[&#34;cs&#34;] == &#34;Indexed&#34;:
                 self._out(
-                    &#34;/ColorSpace [/Indexed /DeviceRGB &#34;
-                    + str(len(info[&#34;pal&#34;]) // 3 - 1)
-                    + &#34; &#34;
-                    + str(self.n + 1)
-                    + &#34; 0 R]&#34;
+                    f&#34;/ColorSpace [/Indexed /DeviceRGB &#34;
+                    f&#34;{len(info[&#39;pal&#39;]) // 3 - 1} {self.n + 1} 0 R]&#34;
                 )
             else:
-                self._out(&#34;/ColorSpace /&#34; + info[&#34;cs&#34;])
+                self._out(f&#34;/ColorSpace /{info[&#39;cs&#39;]}&#34;)
                 if info[&#34;cs&#34;] == &#34;DeviceCMYK&#34;:
                     self._out(&#34;/Decode [1 0 1 0 1 0 1 0]&#34;)
 
-            self._out(&#34;/BitsPerComponent &#34; + str(info[&#34;bpc&#34;]))
+            self._out(f&#34;/BitsPerComponent {info[&#39;bpc&#39;]}&#34;)
 
             if &#34;f&#34; in info:
-                self._out(&#34;/Filter /&#34; + info[&#34;f&#34;])
+                self._out(f&#34;/Filter /{info[&#39;f&#39;]}&#34;)
             if &#34;dp&#34; in info:
-                self._out(&#34;/DecodeParms &lt;&lt;&#34; + info[&#34;dp&#34;] + &#34;&gt;&gt;&#34;)
+                self._out(f&#34;/DecodeParms &lt;&lt;{info[&#39;dp&#39;]}&gt;&gt;&#34;)
 
             if &#34;trns&#34; in info and isinstance(info[&#34;trns&#34;], list):
                 trns = &#34;&#34;
                 for i in range(0, len(info[&#34;trns&#34;])):
-                    trns += str(info[&#34;trns&#34;][i]) + &#34; &#34; + str(info[&#34;trns&#34;][i]) + &#34; &#34;
-                self._out(&#34;/Mask [&#34; + trns + &#34;]&#34;)
+                    trns += f&#34;{info[&#39;trns&#39;][i]} {info[&#39;trns&#39;][i]} &#34;
+                self._out(f&#34;/Mask [{trns}]&#34;)
 
             if &#34;smask&#34; in info:
-                self._out(&#34;/SMask &#34; + str(self.n + 1) + &#34; 0 R&#34;)
+                self._out(f&#34;/SMask {self.n + 1} 0 R&#34;)
 
-            self._out(&#34;/Length &#34; + str(len(info[&#34;data&#34;])) + &#34;&gt;&gt;&#34;)
+            self._out(f&#34;/Length {len(info[&#39;data&#39;])}&gt;&gt;&#34;)
             self._out(pdf_stream(info[&#34;data&#34;]))
             self._out(&#34;endobj&#34;)
 
             # Soft mask
             if &#34;smask&#34; in info:
                 dp = (
-                    &#34;/Predictor 15 /Colors 1 /BitsPerComponent 8 &#34;
-                    + &#34;/Columns &#34;
-                    + str(info[&#34;w&#34;])
+                    f&#34;/Predictor 15 /Colors 1 /BitsPerComponent 8 &#34;
+                    f&#34;/Columns {info[&#39;w&#39;]}&#34;
                 )
                 smask = {
                     &#34;w&#34;: info[&#34;w&#34;],
@@ -2119,7 +2046,7 @@ containing meta-data and stuffs.</p></div>
                     if self.compress
                     else (&#34;&#34;, info[&#34;pal&#34;])
                 )
-                self._out(&#34;&lt;&lt;&#34; + filter + &#34;/Length &#34; + str(len(pal)) + &#34;&gt;&gt;&#34;)
+                self._out(f&#34;&lt;&lt;{filter}/Length {len(pal)}&gt;&gt;&#34;)
                 self._out(pdf_stream(pal))
                 self._out(&#34;endobj&#34;)
 
@@ -2127,7 +2054,7 @@ containing meta-data and stuffs.</p></div>
         i = [(x[&#34;i&#34;], x[&#34;n&#34;]) for x in self.images.values()]
         i.sort()
         for idx, n in i:
-            self._out(&#34;/I&#34; + str(idx) + &#34; &#34; + str(n) + &#34; 0 R&#34;)
+            self._out(f&#34;/I{idx} {n} 0 R&#34;)
 
     def _putresourcedict(self):
         # From section 10.1, &#34;Procedure Sets&#34;, of PDF 1.7 spec:
@@ -2140,7 +2067,7 @@ containing meta-data and stuffs.</p></div>
         f = [(x[&#34;i&#34;], x[&#34;n&#34;]) for x in self.fonts.values()]
         f.sort()
         for idx, n in f:
-            self._out(&#34;/F&#34; + str(idx) + &#34; &#34; + pdf_ref(n))
+            self._out(f&#34;/F{idx} {pdf_ref(n)}&#34;)
         self._out(&#34;&gt;&gt;&#34;)
         self._out(&#34;/XObject &lt;&lt;&#34;)
         self._putxobjectdict()
@@ -2174,14 +2101,14 @@ containing meta-data and stuffs.</p></div>
         if hasattr(self, &#34;creation_date&#34;):
             try:
                 creation_date = self.creation_date
-                date_string = creation_date.strftime(&#34;%Y%m%d%H%M%S&#34;)
+                date_string = f&#34;{creation_date:%Y%m%d%H%M%S}&#34;
             except Exception as error:
                 raise FPDFException(
-                    &#34;Could not format date: &#34; + str(creation_date)
+                    f&#34;Could not format date: {creation_date}&#34;
                 ) from error
         else:
-            date_string = datetime.now().strftime(&#34;%Y%m%d%H%M%S&#34;)
-        info_d[pdf_name(&#34;CreationDate&#34;)] = enclose_in_parens(&#34;D:&#34; + date_string)
+            date_string = f&#34;{datetime.now():%Y%m%d%H%M%S}&#34;
+        info_d[pdf_name(&#34;CreationDate&#34;)] = enclose_in_parens(f&#34;D:{date_string}&#34;)
 
         self._out(pdf_d(info_d, open_dict=&#34;&#34;, close_dict=&#34;&#34;, has_empty_fields=True))
 
@@ -2217,12 +2144,12 @@ containing meta-data and stuffs.</p></div>
         self._out(pdf_d(catalog_d, open_dict=&#34;&#34;, close_dict=&#34;&#34;))
 
     def _putheader(self):
-        self._out(&#34;%PDF-&#34; + self.pdf_version)
+        self._out(f&#34;%PDF-{self.pdf_version}&#34;)
 
     def _puttrailer(self):
-        self._out(&#34;/Size &#34; + str(self.n + 1))
-        self._out(&#34;/Root &#34; + pdf_ref(self.n))
-        self._out(&#34;/Info &#34; + pdf_ref(self.n - 1))
+        self._out(f&#34;/Size {self.n + 1}&#34;)
+        self._out(f&#34;/Root {pdf_ref(self.n)}&#34;)
+        self._out(f&#34;/Info {pdf_ref(self.n - 1)}&#34;)
 
     def _enddoc(self):
         LOGGER.debug(&#34;Final doc sections size summary:&#34;)
@@ -2249,10 +2176,10 @@ containing meta-data and stuffs.</p></div>
         with self._trace_size(&#34;xref&#34;):
             o = len(self.buffer)
             self._out(&#34;xref&#34;)
-            self._out(&#34;0 &#34; + (str(self.n + 1)))
+            self._out(f&#34;0 {self.n + 1}&#34;)
             self._out(&#34;0000000000 65535 f &#34;)
             for i in range(1, self.n + 1):
-                self._out(sprintf(&#34;%010d 00000 n &#34;, self.offsets[i]))
+                self._out(f&#34;{self.offsets[i]:010} 00000 n &#34;)
         # Trailer
         with self._trace_size(&#34;trailer&#34;):
             self._out(&#34;trailer&#34;)
@@ -2307,15 +2234,14 @@ containing meta-data and stuffs.</p></div>
         # Begin a new object
         self.n += 1
         self.offsets[self.n] = len(self.buffer)
-        self._out(str(self.n) + &#34; 0 obj&#34;)
+        self._out(f&#34;{self.n} 0 obj&#34;)
 
     def _dounderline(self, x, y, txt):
         # Underline text
         up = self.current_font[&#34;up&#34;]
         ut = self.current_font[&#34;ut&#34;]
         w = self.get_string_width(txt, True) + self.ws * txt.count(&#34; &#34;)
-        return sprintf(
-            &#34;%.2f %.2f %.2f %.2f re f&#34;,
+        return &#34;{:.2f} {:.2f} {:.2f} {:.2f} re f&#34;.format(
             x * self.k,
             (self.h - (y - up / 1000 * self.font_size)) * self.k,
             w * self.k,
@@ -2359,10 +2285,10 @@ containing meta-data and stuffs.</p></div>
         code = txt
         # add leading zero if code-length is odd
         if len(code) % 2 != 0:
-            code = &#34;0&#34; + code
+            code = f&#34;0{code}&#34;
 
         # add start and stop codes
-        code = &#34;AA&#34; + code.lower() + &#34;ZA&#34;
+        code = f&#34;AA{code.lower()}ZA&#34;
 
         for i in range(0, len(code), 2):
             # choose next pair of digits
@@ -2370,9 +2296,9 @@ containing meta-data and stuffs.</p></div>
             char_space = code[i + 1]
             # check whether it is a valid digit
             if char_bar not in bar_char.keys():
-                raise RuntimeError(&#39;Char &#34;%s&#34; invalid for I25: &#39; % char_bar)
+                raise RuntimeError(f&#39;Char &#34;{char_bar}&#34; invalid for I25:&#39;)
             if not char_space in bar_char.keys():
-                raise RuntimeError(&#39;Char &#34;%s&#34; invalid for I25: &#39; % char_space)
+                raise RuntimeError(f&#39;Char &#34;{char_space}&#34; invalid for I25: &#39;)
 
             # create a wide/narrow-seq (first digit=bars, second digit=spaces)
             seq = &#34;&#34;
@@ -2442,7 +2368,7 @@ containing meta-data and stuffs.</p></div>
         self.set_fill_color(0)
         for c in txt.upper():
             if c not in chars:
-                raise RuntimeError(&#39;Invalid char &#34;%s&#34; for Code39&#39; % c)
+                raise RuntimeError(f&#39;Invalid char &#34;{c}&#34; for Code39&#39;)
             for i, d in enumerate(chars[c]):
                 if i % 2 == 0:
                     self.rect(x, y, dim[d], h, &#34;F&#34;)
@@ -2453,8 +2379,7 @@ containing meta-data and stuffs.</p></div>
     @contextmanager
     def rect_clip(self, x, y, w, h):
         self._out(
-            sprintf(
-                &#34;q %.2f %.2f %.2f %.2f re W n\n&#34;,
+            &#34;q {:.2f} {:.2f} {:.2f} {:.2f} re W n\n&#34;.format(
                 x * self.k,
                 (self.h - (y + h)) * self.k,
                 w * self.k,
@@ -2500,11 +2425,11 @@ def accept_page_break(self):
 <pre><code class="python">def add_font(self, family, style=&#34;&#34;, fname=None, uni=False):
     &#34;Add a TrueType or Type1 font&#34;
     if not fname:
-        fname = family.replace(&#34; &#34;, &#34;&#34;) + style.lower() + &#34;.pkl&#34;
+        fname = family.replace(&#34; &#34;, &#34;&#34;) + f&#34;{style.lower()}.pkl&#34;
     style = style.upper()
     if style == &#34;IB&#34;:
         style = &#34;BI&#34;
-    fontkey = family + style
+    fontkey = f&#34;{family}{style}&#34;
 
     # Font already added!
     if fontkey in self.fonts:
@@ -2517,12 +2442,12 @@ def accept_page_break(self):
         elif SYSTEM_TTFONTS and os.path.exists(os.path.join(SYSTEM_TTFONTS, fname)):
             ttffilename = os.path.join(SYSTEM_TTFONTS, fname)
         else:
-            raise RuntimeError(&#34;TTF Font file not found: %s&#34; % fname)
+            raise RuntimeError(f&#34;TTF Font file not found: {fname}&#34;)
         if FPDF_CACHE_MODE == 0:
-            unifilename = os.path.splitext(ttffilename)[0] + &#34;.pkl&#34;
+            unifilename = f&#34;{os.path.splitext(ttffilename)[0]}.pkl&#34;
         elif FPDF_CACHE_MODE == 2:
             unifilename = os.path.join(
-                FPDF_CACHE_DIR, _hashpath(ttffilename) + &#34;.pkl&#34;
+                FPDF_CACHE_DIR, f&#34;{_hashpath(ttffilename)}.pkl&#34;
             )
         else:
             unifilename = None
@@ -2536,12 +2461,9 @@ def accept_page_break(self):
                 &#34;Descent&#34;: round(ttf.descent),
                 &#34;CapHeight&#34;: round(ttf.capHeight),
                 &#34;Flags&#34;: ttf.flags,
-                &#34;FontBBox&#34;: &#34;[%s %s %s %s]&#34;
-                % (
-                    round(ttf.bbox[0]),
-                    round(ttf.bbox[1]),
-                    round(ttf.bbox[2]),
-                    round(ttf.bbox[3]),
+                &#34;FontBBox&#34;: (
+                    f&#34;[{ttf.bbox[0]:.0f} {ttf.bbox[1]:.0f}&#34;
+                    f&#34; {ttf.bbox[2]:.0f} {ttf.bbox[3]:.0f}]&#34;
                 ),
                 &#34;ItalicAngle&#34;: int(ttf.italicAngle),
                 &#34;StemV&#34;: round(ttf.stemV),
@@ -2652,7 +2574,7 @@ def accept_page_break(self):
     if self.state == 0:
         self.open()
     family = self.font_family
-    style = self.font_style + &#34;U&#34; if self.underline else self.font_style
+    style = f&#34;{self.font_style}U&#34; if self.underline else self.font_style
     size = self.font_size_pt
     lw = self.line_width
     dc = self.draw_color
@@ -2672,7 +2594,7 @@ def accept_page_break(self):
     self._beginpage(orientation, format, same)
     self._out(&#34;2 J&#34;)  # Set line cap style to square
     self.line_width = lw  # Set line width
-    self._out(sprintf(&#34;%.2f w&#34;, lw * self.k))
+    self._out(f&#34;{lw * self.k:.2f} w&#34;)
 
     # Set font
     if family:
@@ -2693,7 +2615,7 @@ def accept_page_break(self):
 
     if self.line_width != lw:  # Restore line width
         self.line_width = lw
-        self._out(sprintf(&#34;%.2f w&#34;, lw * self.k))
+        self._out(f&#34;{lw * self.k:.2f} w&#34;)
 
     if family:
         self.set_font(family, style, size)  # Restore font
@@ -2818,7 +2740,7 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
 
         if ws &gt; 0:
             self.ws = ws
-            self._out(sprintf(&#34;%.3f Tw&#34;, ws * k))
+            self._out(f&#34;{ws * k:.3f} Tw&#34;)
     if w == 0:
         w = self.w - self.r_margin - self.x
     s = &#34;&#34;
@@ -2831,49 +2753,33 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
                 op = &#34;f&#34;
         else:
             op = &#34;S&#34;
-        s = sprintf(
-            &#34;%.2f %.2f %.2f %.2f re %s &#34;,
-            self.x * k,
-            (self.h - self.y) * k,
-            w * k,
-            -h * k,
-            op,
+        s = (
+            f&#34;{self.x * k:.2f} {(self.h - self.y) * k:.2f} &#34;
+            f&#34;{w * k:.2f} {-h * k:.2f} re {op} &#34;
         )
 
     if isinstance(border, str):
         x = self.x
         y = self.y
         if &#34;L&#34; in border:
-            s += sprintf(
-                &#34;%.2f %.2f m %.2f %.2f l S &#34;,
-                x * k,
-                (self.h - y) * k,
-                x * k,
-                (self.h - (y + h)) * k,
+            s += (
+                f&#34;{x * k:.2f} {(self.h - y) * k:.2f} m &#34;
+                f&#34;{x * k:.2f} {(self.h - (y + h)) * k:.2f} l S &#34;
             )
         if &#34;T&#34; in border:
-            s += sprintf(
-                &#34;%.2f %.2f m %.2f %.2f l S &#34;,
-                x * k,
-                (self.h - y) * k,
-                (x + w) * k,
-                (self.h - y) * k,
+            s += (
+                f&#34;{x * k:.2f} {(self.h - y) * k:.2f} m &#34;
+                f&#34;{(x + w) * k:.2f} {(self.h - y) * k:.2f} l S &#34;
             )
         if &#34;R&#34; in border:
-            s += sprintf(
-                &#34;%.2f %.2f m %.2f %.2f l S &#34;,
-                (x + w) * k,
-                (self.h - y) * k,
-                (x + w) * k,
-                (self.h - (y + h)) * k,
+            s += (
+                f&#34;{(x + w) * k:.2f} {(self.h - y) * k:.2f} m &#34;
+                f&#34;{(x + w) * k:.2f} {(self.h - (y + h)) * k:.2f} l S &#34;
             )
         if &#34;B&#34; in border:
-            s += sprintf(
-                &#34;%.2f %.2f m %.2f %.2f l S &#34;,
-                x * k,
-                (self.h - (y + h)) * k,
-                (x + w) * k,
-                (self.h - (y + h)) * k,
+            s += (
+                f&#34;{x * k:.2f} {(self.h - (y + h)) * k:.2f} m &#34;
+                f&#34;{(x + w) * k:.2f} {(self.h - (y + h)) * k:.2f} l S &#34;
             )
 
     if txt != &#34;&#34;:
@@ -2884,7 +2790,7 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
         else:
             dx = self.c_margin
         if self.color_flag:
-            s += &#34;q &#34; + self.text_color + &#34; &#34;
+            s += f&#34;q {self.text_color} &#34;
 
         # If multibyte, Tw has no effect - do word spacing using an
         # adjustment before each space
@@ -2893,8 +2799,7 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
                 self.current_font[&#34;subset&#34;].append(ord(char))
             space = escape_parens(&#34; &#34;.encode(&#34;UTF-16BE&#34;).decode(&#34;latin-1&#34;))
 
-            s += sprintf(
-                &#34;BT 0 Tw %.2F %.2F Td [&#34;,
+            s += &#34;BT 0 Tw {:.2F} {:.2F} Td [&#34;.format(
                 (self.x + dx) * k,
                 (self.h - (self.y + (0.5 * h) + (0.3 * self.font_size))) * k,
             )
@@ -2906,10 +2811,10 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
                 tx = enclose_in_parens(
                     escape_parens(tx.encode(&#34;UTF-16BE&#34;).decode(&#34;latin-1&#34;))
                 )
-                s += sprintf(&#34;%s &#34;, tx)
+                s += f&#34;{tx} &#34;
                 if (i + 1) &lt; numt:
                     adj = -(self.ws * self.k) * 1000 / self.font_size_pt
-                    s += sprintf(&#34;%d(%s) &#34;, adj, space)
+                    s += f&#34;{adj}({space}) &#34;
             s += &#34;] TJ&#34;
             s += &#34; ET&#34;
         else:
@@ -2920,8 +2825,7 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
             else:
                 txt2 = escape_parens(txt)
 
-            s += sprintf(
-                &#34;BT %.2f %.2f Td (%s) Tj ET&#34;,
+            s += &#34;BT {:.2f} {:.2f} Td ({}) Tj ET&#34;.format(
                 (self.x + dx) * k,
                 (self.h - (self.y + (0.5 * h) + (0.3 * self.font_size))) * k,
                 txt2,
@@ -3042,7 +2946,7 @@ def code39(self, txt, x, y, w=1.5, h=5):
     self.set_fill_color(0)
     for c in txt.upper():
         if c not in chars:
-            raise RuntimeError(&#39;Invalid char &#34;%s&#34; for Code39&#39; % c)
+            raise RuntimeError(f&#39;Invalid char &#34;{c}&#34; for Code39&#39;)
         for i, d in enumerate(chars[c]):
             if i % 2 == 0:
                 self.rect(x, y, dim[d], h, &#34;F&#34;)
@@ -3095,8 +2999,7 @@ def ellipse(self, x, y, w, h, style=None):
     ly = 4 / 3 * (math.sqrt(2) - 1) * ry
 
     self._out(
-        sprintf(
-            &#34;%.2f %.2f m %.2f %.2f %.2f %.2f %.2f %.2f c&#34;,
+        &#34;{:.2f} {:.2f} m {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c&#34;.format(
             (cx + rx) * self.k,
             (self.h - cy) * self.k,
             (cx + rx) * self.k,
@@ -3108,8 +3011,7 @@ def ellipse(self, x, y, w, h, style=None):
         )
     )
     self._out(
-        sprintf(
-            &#34;%.2f %.2f %.2f %.2f %.2f %.2f c&#34;,
+        &#34;{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c&#34;.format(
             (cx - lx) * self.k,
             (self.h - (cy - ry)) * self.k,
             (cx - rx) * self.k,
@@ -3119,8 +3021,7 @@ def ellipse(self, x, y, w, h, style=None):
         )
     )
     self._out(
-        sprintf(
-            &#34;%.2f %.2f %.2f %.2f %.2f %.2f c&#34;,
+        &#34;{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c&#34;.format(
             (cx - rx) * self.k,
             (self.h - (cy + ly)) * self.k,
             (cx - lx) * self.k,
@@ -3130,8 +3031,7 @@ def ellipse(self, x, y, w, h, style=None):
         )
     )
     self._out(
-        sprintf(
-            &#34;%.2f %.2f %.2f %.2f %.2f %.2f c %s&#34;,
+        &#34;{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c {}&#34;.format(
             (cx + lx) * self.k,
             (self.h - (cy + ry)) * self.k,
             (cx + rx) * self.k,
@@ -3322,8 +3222,7 @@ def image(
     if x is None:
         x = self.x
     self._out(
-        sprintf(
-            &#34;q %.2f 0 0 %.2f %.2f %.2f cm /I%d Do Q&#34;,
+        &#34;q {:.2f} 0 0 {:.2f} {:.2f} {:.2f} cm /I{} Do Q&#34;.format(
             w * self.k,
             h * self.k,
             x * self.k,
@@ -3372,10 +3271,10 @@ def interleaved2of5(self, txt, x, y, w=1, h=10):
     code = txt
     # add leading zero if code-length is odd
     if len(code) % 2 != 0:
-        code = &#34;0&#34; + code
+        code = f&#34;0{code}&#34;
 
     # add start and stop codes
-    code = &#34;AA&#34; + code.lower() + &#34;ZA&#34;
+    code = f&#34;AA{code.lower()}ZA&#34;
 
     for i in range(0, len(code), 2):
         # choose next pair of digits
@@ -3383,9 +3282,9 @@ def interleaved2of5(self, txt, x, y, w=1, h=10):
         char_space = code[i + 1]
         # check whether it is a valid digit
         if char_bar not in bar_char.keys():
-            raise RuntimeError(&#39;Char &#34;%s&#34; invalid for I25: &#39; % char_bar)
+            raise RuntimeError(f&#39;Char &#34;{char_bar}&#34; invalid for I25:&#39;)
         if not char_space in bar_char.keys():
-            raise RuntimeError(&#39;Char &#34;%s&#34; invalid for I25: &#39; % char_space)
+            raise RuntimeError(f&#39;Char &#34;{char_space}&#34; invalid for I25: &#39;)
 
         # create a wide/narrow-seq (first digit=bars, second digit=spaces)
         seq = &#34;&#34;
@@ -3416,8 +3315,7 @@ def interleaved2of5(self, txt, x, y, w=1, h=10):
 def line(self, x1, y1, x2, y2):
     &#34;Draw a line&#34;
     self._out(
-        sprintf(
-            &#34;%.2f %.2f m %.2f %.2f l S&#34;,
+        &#34;{:.2f} {:.2f} m {:.2f} {:.2f} l S&#34;.format(
             x1 * self.k,
             (self.h - y1) * self.k,
             x2 * self.k,
@@ -3664,7 +3562,7 @@ def multi_cell(
                         self.ws = (wmax - ls) / 1000 * self.font_size / (ns - 1)
                     else:
                         self.ws = 0
-                    self._out(sprintf(&#34;%.3f Tw&#34;, self.ws * self.k))
+                    self._out(f&#34;{self.ws * self.k:.3f} Tw&#34;)
 
                 new_page = self.cell(
                     w,
@@ -3834,8 +3732,7 @@ def rect(self, x, y, w, h, style=None):
     style_to_operators = {&#34;F&#34;: &#34;f&#34;, &#34;FD&#34;: &#34;B&#34;, &#34;DF&#34;: &#34;B&#34;}
     op = style_to_operators.get(style, &#34;S&#34;)
     self._out(
-        sprintf(
-            &#34;%.2f %.2f %.2f %.2f re %s&#34;,
+        &#34;{:.2f} {:.2f} {:.2f} {:.2f} re {}&#34;.format(
             x * self.k,
             (self.h - y) * self.k,
             w * self.k,
@@ -3858,8 +3755,7 @@ def rect(self, x, y, w, h, style=None):
 @contextmanager
 def rect_clip(self, x, y, w, h):
     self._out(
-        sprintf(
-            &#34;q %.2f %.2f %.2f %.2f re W n\n&#34;,
+        &#34;q {:.2f} {:.2f} {:.2f} {:.2f} re W n\n&#34;.format(
             x * self.k,
             (self.h - (y + h)) * self.k,
             w * self.k,
@@ -3906,16 +3802,9 @@ def rotate(self, angle, x=None, y=None):
         s = math.sin(angle)
         cx = x * self.k
         cy = (self.h - y) * self.k
-        s = sprintf(
-            &#34;q %.5F %.5F %.5F %.5F %.2F %.2F &#34; + &#34;cm 1 0 0 1 %.2F %.2F cm&#34;,
-            c,
-            s,
-            -s,
-            c,
-            cx,
-            cy,
-            -cx,
-            -cy,
+        s = (
+            f&#34;q {c:.5F} {s:.5F} {-s:.5F} {c:.5F} {cx:.2F} {cy:.2F} cm &#34;
+            f&#34;1 0 0 1 {-cx:.2F} {-cy:.2F} cm&#34;
         )
         self._out(s)</code></pre>
 </details>
@@ -3956,19 +3845,11 @@ def rotation(self, angle, x=None, y=None):
     angle *= math.pi / 180
     c, s = math.cos(angle), math.sin(angle)
     cx, cy = x * self.k, (self.h - y) * self.k
-    self._out(
-        sprintf(
-            &#34;q %.5F %.5F %.5F %.5F %.2F %.2F cm 1 0 0 1 %.2F %.2F cm\n&#34;,
-            c,
-            s,
-            -s,
-            c,
-            cx,
-            cy,
-            -cx,
-            -cy,
-        )
+    s = (
+        f&#34;q {c:.5F} {s:.5F} {-s:.5F} {c:.5F} {cx:.2F} {cy:.2F} cm &#34;
+        f&#34;1 0 0 1 {-cx:.2F} {-cy:.2F} cm\n&#34;
     )
+    self._out(s)
     yield
     self._out(&#34;Q\n&#34;)</code></pre>
 </details>
@@ -4067,12 +3948,12 @@ def rotation(self, angle, x=None, y=None):
     elif not isinstance(zoom, str):
         self.zoom_mode = zoom
     else:
-        raise FPDFException(&#34;Incorrect zoom display mode: &#34; + zoom)
+        raise FPDFException(f&#34;Incorrect zoom display mode: {zoom}&#34;)
 
     if layout in [&#34;single&#34;, &#34;continuous&#34;, &#34;two&#34;, &#34;default&#34;]:
         self.layout_mode = layout
     else:
-        raise FPDFException(&#34;Incorrect layout display mode: &#34; + layout)</code></pre>
+        raise FPDFException(f&#34;Incorrect layout display mode: {layout}&#34;)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.FPDF.set_doc_option"><code class="name flex">
@@ -4089,7 +3970,7 @@ def rotation(self, angle, x=None, y=None):
     if opt == &#34;core_fonts_encoding&#34;:
         self.core_fonts_encoding = value
     else:
-        raise FPDFException(&#39;Unknown document option &#34;%s&#34;&#39; % str(opt))</code></pre>
+        raise FPDFException(f&#39;Unknown document option &#34;{opt}&#34;&#39;)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.FPDF.set_draw_color"><code class="name flex">
@@ -4104,11 +3985,9 @@ def rotation(self, angle, x=None, y=None):
 <pre><code class="python">def set_draw_color(self, r, g=-1, b=-1):
     &#34;Set color for all stroking operations&#34;
     if (r == 0 and g == 0 and b == 0) or g == -1:
-        self.draw_color = sprintf(&#34;%.3f G&#34;, r / 255.0)
+        self.draw_color = f&#34;{r / 255:.3f} G&#34;
     else:
-        self.draw_color = sprintf(
-            &#34;%.3f %.3f %.3f RG&#34;, r / 255.0, g / 255.0, b / 255.0
-        )
+        self.draw_color = f&#34;{r / 255:.3f} {g / 255:.3f} {b / 255:.3f} RG&#34;
     if self.page &gt; 0:
         self._out(self.draw_color)</code></pre>
 </details>
@@ -4125,11 +4004,9 @@ def rotation(self, angle, x=None, y=None):
 <pre><code class="python">def set_fill_color(self, r, g=-1, b=-1):
     &#34;Set color for all filling operations&#34;
     if (r == 0 and g == 0 and b == 0) or g == -1:
-        self.fill_color = sprintf(&#34;%.3f g&#34;, r / 255.0)
+        self.fill_color = f&#34;{r / 255:.3f} g&#34;
     else:
-        self.fill_color = sprintf(
-            &#34;%.3f %.3f %.3f rg&#34;, r / 255.0, g / 255.0, b / 255.0
-        )
+        self.fill_color = f&#34;{r / 255:.3f} {g / 255:.3f} {b / 255:.3f} rg&#34;
     self.color_flag = self.fill_color != self.text_color
     if self.page &gt; 0:
         self._out(self.fill_color)</code></pre>
@@ -4209,9 +4086,7 @@ def rotation(self, angle, x=None, y=None):
     self.current_font = self.fonts[fontkey]
     self.unifontsubset = self.current_font[&#34;type&#34;] == &#34;TTF&#34;
     if self.page &gt; 0:
-        self._out(
-            sprintf(&#34;BT /F%d %.2f Tf ET&#34;, self.current_font[&#34;i&#34;], self.font_size_pt)
-        )</code></pre>
+        self._out(f&#34;BT /F{self.current_font[&#39;i&#39;]} {self.font_size_pt:.2f} Tf ET&#34;)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.FPDF.set_font_size"><code class="name flex">
@@ -4230,9 +4105,7 @@ def rotation(self, angle, x=None, y=None):
     self.font_size_pt = size
     self.font_size = size / self.k
     if self.page &gt; 0:
-        self._out(
-            sprintf(&#34;BT /F%d %.2f Tf ET&#34;, self.current_font[&#34;i&#34;], self.font_size_pt)
-        )</code></pre>
+        self._out(f&#34;BT /F{self.current_font[&#39;i&#39;]} {self.font_size_pt:.2f} Tf ET&#34;)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.FPDF.set_keywords"><code class="name flex">
@@ -4278,7 +4151,7 @@ def rotation(self, angle, x=None, y=None):
     &#34;Set line width&#34;
     self.line_width = width
     if self.page &gt; 0:
-        self._out(sprintf(&#34;%.2f w&#34;, width * self.k))</code></pre>
+        self._out(f&#34;{width * self.k:.2f} w&#34;)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.FPDF.set_link"><code class="name flex">
@@ -4347,7 +4220,7 @@ def rotation(self, angle, x=None, y=None):
         return
     self.font_stretching = factor
     if self.page &gt; 0:
-        self._out(sprintf(&#34;BT %.2f Tz ET&#34;, self.font_stretching))</code></pre>
+        self._out(f&#34;BT {self.font_stretching:.2f} Tz ET&#34;)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.FPDF.set_subject"><code class="name flex">
@@ -4376,11 +4249,9 @@ def rotation(self, angle, x=None, y=None):
 <pre><code class="python">def set_text_color(self, r, g=-1, b=-1):
     &#34;Set color for text&#34;
     if (r == 0 and g == 0 and b == 0) or g == -1:
-        self.text_color = sprintf(&#34;%.3f g&#34;, r / 255.0)
+        self.text_color = f&#34;{r / 255:.3f} g&#34;
     else:
-        self.text_color = sprintf(
-            &#34;%.3f %.3f %.3f rg&#34;, r / 255.0, g / 255.0, b / 255.0
-        )
+        self.text_color = f&#34;{r / 255:.3f} {g / 255:.3f} {b / 255:.3f} rg&#34;
     self.color_flag = self.fill_color != self.text_color</code></pre>
 </details>
 </dd>
@@ -4483,13 +4354,11 @@ def text(self, x, y, txt=&#34;&#34;):
             self.current_font[&#34;subset&#34;].append(ord(char))
     else:
         txt2 = escape_parens(txt)
-    s = sprintf(
-        &#34;BT %.2f %.2f Td (%s) Tj ET&#34;, x * self.k, (self.h - y) * self.k, txt2
-    )
+    s = f&#34;BT {x * self.k:.2f} {(self.h - y) * self.k:.2f} Td ({txt2}) Tj ET&#34;
     if self.underline and txt != &#34;&#34;:
         s += &#34; &#34; + self._dounderline(x, y, txt)
     if self.color_flag:
-        s = &#34;q &#34; + self.text_color + &#34; &#34; + s + &#34; Q&#34;
+        s = f&#34;q {self.text_color} {s} Q&#34;
     self._out(s)</code></pre>
 </details>
 </dd>
@@ -4819,7 +4688,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         foreground=0,
         backgroud=65535,
         multiline=None,
-        **__
+        **__,
     ):
         if text:
             if pdf.text_color != rgb(foreground):
@@ -4832,7 +4701,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
                 font = &#34;helvetica&#34;
             style = &#34;&#34;
             for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
-                if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
+                if text.startswith(f&#34;&lt;{tag}&gt;&#34;) and text.endswith(f&#34;&lt;/{tag}&gt;&#34;):
                     text = text[3:-4]
                     style += tag
             if bold:
@@ -4859,7 +4728,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
                 text = pdf.multi_cell(
                     w=x2 - x1, h=y2 - y1, txt=text, align=align, split_only=True
                 )[0]
-                print(&#34;trimming: *%s*&#34; % text)
+                print(f&#34;trimming: *{text}*&#34;)
                 pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
 
             # pdf.Text(x=x1,y=y1,txt=text)
@@ -4901,7 +4770,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         font=&#34;helvetica&#34;,
         size=1,
         foreground=0,
-        **__
+        **__,
     ):
         # pylint: disable=unused-argument
         if pdf.draw_color != rgb(foreground):
@@ -4928,7 +4797,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         align=&#34;&#34;,
         link=&#34;http://example.com&#34;,
         foreground=0,
-        **__
+        **__,
     ):
         # pylint: disable=unused-argument
         if pdf.text_color != rgb(foreground):
@@ -4938,7 +4807,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
             font = &#34;helvetica&#34;
         style = &#34;&#34;
         for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
-            if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
+            if text.startswith(f&#34;&lt;{tag}&gt;&#34;) and text.endswith(f&#34;&lt;/{tag}&gt;&#34;):
                 text = text[3:-4]
                 style += tag
         if bold:
@@ -4979,7 +4848,7 @@ def barcode(
     font=&#34;helvetica&#34;,
     size=1,
     foreground=0,
-    **__
+    **__,
 ):
     # pylint: disable=unused-argument
     if pdf.draw_color != rgb(foreground):
@@ -5071,7 +4940,7 @@ def text(
     foreground=0,
     backgroud=65535,
     multiline=None,
-    **__
+    **__,
 ):
     if text:
         if pdf.text_color != rgb(foreground):
@@ -5084,7 +4953,7 @@ def text(
             font = &#34;helvetica&#34;
         style = &#34;&#34;
         for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
-            if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
+            if text.startswith(f&#34;&lt;{tag}&gt;&#34;) and text.endswith(f&#34;&lt;/{tag}&gt;&#34;):
                 text = text[3:-4]
                 style += tag
         if bold:
@@ -5111,7 +4980,7 @@ def text(
             text = pdf.multi_cell(
                 w=x2 - x1, h=y2 - y1, txt=text, align=align, split_only=True
             )[0]
-            print(&#34;trimming: *%s*&#34; % text)
+            print(f&#34;trimming: *{text}*&#34;)
             pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
 
         # pdf.Text(x=x1,y=y1,txt=text)</code></pre>
@@ -5143,7 +5012,7 @@ def write(
     align=&#34;&#34;,
     link=&#34;http://example.com&#34;,
     foreground=0,
-    **__
+    **__,
 ):
     # pylint: disable=unused-argument
     if pdf.text_color != rgb(foreground):
@@ -5153,7 +5022,7 @@ def write(
         font = &#34;helvetica&#34;
     style = &#34;&#34;
     for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
-        if text.startswith(&#34;&lt;%s&gt;&#34; % tag) and text.endswith(&#34;&lt;/%s&gt;&#34; % tag):
+        if text.startswith(f&#34;&lt;{tag}&gt;&#34;) and text.endswith(f&#34;&lt;/{tag}&gt;&#34;):
             text = text[3:-4]
             style += tag
     if bold:

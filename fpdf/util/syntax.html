@@ -200,12 +200,12 @@ def create_dictionary_string(
 
 def create_list_string(list_):
     &#34;&#34;&#34;format list of strings as PDF array&#34;&#34;&#34;
-    return &#34;[&#34; + &#34; &#34;.join(list_) + &#34;]&#34;
+    return f&#34;[{&#39; &#39;.join(list_)}]&#34;
 
 
 def iobj_ref(n):
     &#34;&#34;&#34;format an indirect PDF Object reference from its id number&#34;&#34;&#34;
-    return str(n) + &#34; 0 R&#34;
+    return f&#34;{n} 0 R&#34;
 
 
 def create_stream(stream):
@@ -296,7 +296,7 @@ if __name__ == &#34;__main__&#34;:
 </summary>
 <pre><code class="python">def create_list_string(list_):
     &#34;&#34;&#34;format list of strings as PDF array&#34;&#34;&#34;
-    return &#34;[&#34; + &#34; &#34;.join(list_) + &#34;]&#34;</code></pre>
+    return f&#34;[{&#39; &#39;.join(list_)}]&#34;</code></pre>
 </details>
 </dd>
 <dt id="fpdf.util.syntax.create_name"><code class="name flex">
@@ -340,7 +340,7 @@ if __name__ == &#34;__main__&#34;:
 </summary>
 <pre><code class="python">def iobj_ref(n):
     &#34;&#34;&#34;format an indirect PDF Object reference from its id number&#34;&#34;&#34;
-    return str(n) + &#34; 0 R&#34;</code></pre>
+    return f&#34;{n} 0 R&#34;</code></pre>
 </details>
 </dd>
 </dl>
