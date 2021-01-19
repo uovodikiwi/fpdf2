@@ -761,24 +761,28 @@ class FPDF:
         # Test if used for the first time
         fontkey = family + style
         if fontkey not in self.fonts:
-            if fontkey not in self.core_fonts or fontkey not in fpdf_charwidths:
-                # Being flexible: try a fontkey with lowercase family:
-                fontkey = family.lower() + style
+            # Being flexible: try a fontkey with lowercase family:
+            fontkey_alt = family.lower() + style
+            if fontkey_alt in self.fonts:
+                fontkey = fontkey_alt
+            else:
                 if fontkey not in self.core_fonts or fontkey not in fpdf_charwidths:
-                    raise FPDFException(
-                        &#34;Undefined font: &#34;
-                        + fontkey
-                        + &#34; - Use built-in fonts or FPDF.add_font() beforehand&#34;
-                    )
-            i = len(self.fonts) + 1
-            self.fonts[fontkey] = {
-                &#34;i&#34;: i,
-                &#34;type&#34;: &#34;core&#34;,
-                &#34;name&#34;: self.core_fonts[fontkey],
-                &#34;up&#34;: -100,
-                &#34;ut&#34;: 50,
-                &#34;cw&#34;: fpdf_charwidths[fontkey],
-            }
+                    fontkey = fontkey_alt
+                    if fontkey not in self.core_fonts or fontkey not in fpdf_charwidths:
+                        raise FPDFException(
+                            &#34;Undefined font: &#34;
+                            + fontkey
+                            + &#34; - Use built-in fonts or FPDF.add_font() beforehand&#34;
+                        )
+                i = len(self.fonts) + 1
+                self.fonts[fontkey] = {
+                    &#34;i&#34;: i,
+                    &#34;type&#34;: &#34;core&#34;,
+                    &#34;name&#34;: self.core_fonts[fontkey],
+                    &#34;up&#34;: -100,
+                    &#34;ut&#34;: 50,
+                    &#34;cw&#34;: fpdf_charwidths[fontkey],
+                }
 
         # Select it
         self.font_family = family
@@ -937,7 +941,30 @@ class FPDF:
 
     @check_page
     def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0, link=&#34;&#34;):
-        &#34;Output a cell, return boolean if triggered auto page break&#34;
+        &#34;&#34;&#34;
+        Output a cell, cf. https://pyfpdf.github.io/fpdf2/reference/cell.html
+
+        Args:
+            w (int): Cell width. If 0, the cell extends up to the right margin.
+            h (int): Cell height. Default value: 0.
+            txt (str): String to print. Default value: empty string.
+            border: Indicates if borders must be drawn around the cell.
+                The value can be either a number (`0`: no border ; `1`: frame)
+                or a string containing some or all of the following characters (in any order):
+                `L`: left ; `T`: top ; `R`: right ; `B`: bottom. Default value: 0.
+            ln (int): Indicates where the current position should go after the call.
+                Possible values are: `0`: to the right ; `1`: to the beginning of the next line ;
+                `2`: below. Putting 1 is equivalent to putting 0 and calling `ln` just after.
+                Default value: 0.
+            align (str): Allows to center or align the text. Possible values are:
+                `L` or empty string: left align (default value) ; `C`: center ;
+                `R`: right align
+            fill (bool): Indicates if the cell background must be painted (`True`)
+                or transparent (`False`). Default value: False.
+            link (str): optional link to add
+
+        Returns: a boolean indicating if page break was triggered
+        &#34;&#34;&#34;
         if not self.font_family:
             raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
         if isinstance(border, int) and border not in (0, 1):
@@ -1107,15 +1134,30 @@ class FPDF:
         self, w, h, txt=&#34;&#34;, border=0, align=&#34;J&#34;, fill=0, split_only=False, link=&#34;&#34;, ln=0
     ):
         &#34;&#34;&#34;
-        Output text with automatic or explicit line breaks,
-        returns boolean if page break triggered in output mode.
+        Output text with line breaks, cf. https://pyfpdf.github.io/fpdf2/reference/multi_cell.html
 
         Args:
-            ln (int): controls cell positioning:
+            w (int): cells width. If 0, they extend up to the right margin of the page.
+            h (int): cells height.
+            txt (str): strign to print.
+            border: Indicates if borders must be drawn around the cell.
+                The value can be either a number (`0`: no border ; `1`: frame)
+                or a string containing some or all of the following characters (in any order):
+                `L`: left ; `T`: top ; `R`: right ; `B`: bottom. Default value: 0.
+            align (str): Allows to center or align the text. Possible values are:
+                `L` or empty string: left align (default value) ; `C`: center ;
+                `R`: right align
+            fill (bool): Indicates if the cell background must be painted (`True`)
+                or transparent (`False`). Default value: False.
+            split_only (bool): if `True`, does not output anything, only perform word-wrapping
+                and return the resulting multi-lines array of strings.
+            link (str): optional link to add
+            ln (int): Indicates where the current position should go after the call.
+                Possible values are: `0`: to the right ; `1`: to the beginning of the next line ;
+                `2`: below. Putting 1 is equivalent to putting 0 and calling `ln` just after.
+                Default value: 0.
 
-              - 0: stack cells horizontally, with respect to `.x` &amp; `.y`
-              - 1: one cell per line, aligned on the left with respect to `.l_margin`
-              - 2: one cell per line
+        Returns: a boolean indicating if page break was triggered.
         &#34;&#34;&#34;
         page_break_triggered = False
         if split_only:
@@ -1446,7 +1488,14 @@ class FPDF:
 
     @check_page
     def ln(self, h=None):
-        &#34;Line Feed; default value is last cell height&#34;
+        &#34;&#34;&#34;
+        Line Feed.
+        The current abscissa goes back to the left margin and the ordinate increases by the amount passed as parameter.
+
+        Args:
+            h (int): The height of the break.
+                By default, the value equals the height of the last printed cell.
+        &#34;&#34;&#34;
         self.x = self.l_margin
         if h is None:
             self.y += self.lasth
@@ -3134,24 +3183,28 @@ case insensitive key (the name of the new format) and 2-tuple value of
         # Test if used for the first time
         fontkey = family + style
         if fontkey not in self.fonts:
-            if fontkey not in self.core_fonts or fontkey not in fpdf_charwidths:
-                # Being flexible: try a fontkey with lowercase family:
-                fontkey = family.lower() + style
+            # Being flexible: try a fontkey with lowercase family:
+            fontkey_alt = family.lower() + style
+            if fontkey_alt in self.fonts:
+                fontkey = fontkey_alt
+            else:
                 if fontkey not in self.core_fonts or fontkey not in fpdf_charwidths:
-                    raise FPDFException(
-                        &#34;Undefined font: &#34;
-                        + fontkey
-                        + &#34; - Use built-in fonts or FPDF.add_font() beforehand&#34;
-                    )
-            i = len(self.fonts) + 1
-            self.fonts[fontkey] = {
-                &#34;i&#34;: i,
-                &#34;type&#34;: &#34;core&#34;,
-                &#34;name&#34;: self.core_fonts[fontkey],
-                &#34;up&#34;: -100,
-                &#34;ut&#34;: 50,
-                &#34;cw&#34;: fpdf_charwidths[fontkey],
-            }
+                    fontkey = fontkey_alt
+                    if fontkey not in self.core_fonts or fontkey not in fpdf_charwidths:
+                        raise FPDFException(
+                            &#34;Undefined font: &#34;
+                            + fontkey
+                            + &#34; - Use built-in fonts or FPDF.add_font() beforehand&#34;
+                        )
+                i = len(self.fonts) + 1
+                self.fonts[fontkey] = {
+                    &#34;i&#34;: i,
+                    &#34;type&#34;: &#34;core&#34;,
+                    &#34;name&#34;: self.core_fonts[fontkey],
+                    &#34;up&#34;: -100,
+                    &#34;ut&#34;: 50,
+                    &#34;cw&#34;: fpdf_charwidths[fontkey],
+                }
 
         # Select it
         self.font_family = family
@@ -3310,7 +3363,30 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
     @check_page
     def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0, link=&#34;&#34;):
-        &#34;Output a cell, return boolean if triggered auto page break&#34;
+        &#34;&#34;&#34;
+        Output a cell, cf. https://pyfpdf.github.io/fpdf2/reference/cell.html
+
+        Args:
+            w (int): Cell width. If 0, the cell extends up to the right margin.
+            h (int): Cell height. Default value: 0.
+            txt (str): String to print. Default value: empty string.
+            border: Indicates if borders must be drawn around the cell.
+                The value can be either a number (`0`: no border ; `1`: frame)
+                or a string containing some or all of the following characters (in any order):
+                `L`: left ; `T`: top ; `R`: right ; `B`: bottom. Default value: 0.
+            ln (int): Indicates where the current position should go after the call.
+                Possible values are: `0`: to the right ; `1`: to the beginning of the next line ;
+                `2`: below. Putting 1 is equivalent to putting 0 and calling `ln` just after.
+                Default value: 0.
+            align (str): Allows to center or align the text. Possible values are:
+                `L` or empty string: left align (default value) ; `C`: center ;
+                `R`: right align
+            fill (bool): Indicates if the cell background must be painted (`True`)
+                or transparent (`False`). Default value: False.
+            link (str): optional link to add
+
+        Returns: a boolean indicating if page break was triggered
+        &#34;&#34;&#34;
         if not self.font_family:
             raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
         if isinstance(border, int) and border not in (0, 1):
@@ -3480,15 +3556,30 @@ case insensitive key (the name of the new format) and 2-tuple value of
         self, w, h, txt=&#34;&#34;, border=0, align=&#34;J&#34;, fill=0, split_only=False, link=&#34;&#34;, ln=0
     ):
         &#34;&#34;&#34;
-        Output text with automatic or explicit line breaks,
-        returns boolean if page break triggered in output mode.
+        Output text with line breaks, cf. https://pyfpdf.github.io/fpdf2/reference/multi_cell.html
 
         Args:
-            ln (int): controls cell positioning:
+            w (int): cells width. If 0, they extend up to the right margin of the page.
+            h (int): cells height.
+            txt (str): strign to print.
+            border: Indicates if borders must be drawn around the cell.
+                The value can be either a number (`0`: no border ; `1`: frame)
+                or a string containing some or all of the following characters (in any order):
+                `L`: left ; `T`: top ; `R`: right ; `B`: bottom. Default value: 0.
+            align (str): Allows to center or align the text. Possible values are:
+                `L` or empty string: left align (default value) ; `C`: center ;
+                `R`: right align
+            fill (bool): Indicates if the cell background must be painted (`True`)
+                or transparent (`False`). Default value: False.
+            split_only (bool): if `True`, does not output anything, only perform word-wrapping
+                and return the resulting multi-lines array of strings.
+            link (str): optional link to add
+            ln (int): Indicates where the current position should go after the call.
+                Possible values are: `0`: to the right ; `1`: to the beginning of the next line ;
+                `2`: below. Putting 1 is equivalent to putting 0 and calling `ln` just after.
+                Default value: 0.
 
-              - 0: stack cells horizontally, with respect to `.x` &amp; `.y`
-              - 1: one cell per line, aligned on the left with respect to `.l_margin`
-              - 2: one cell per line
+        Returns: a boolean indicating if page break was triggered.
         &#34;&#34;&#34;
         page_break_triggered = False
         if split_only:
@@ -3819,7 +3910,14 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
     @check_page
     def ln(self, h=None):
-        &#34;Line Feed; default value is last cell height&#34;
+        &#34;&#34;&#34;
+        Line Feed.
+        The current abscissa goes back to the left margin and the ordinate increases by the amount passed as parameter.
+
+        Args:
+            h (int): The height of the break.
+                By default, the value equals the height of the last printed cell.
+        &#34;&#34;&#34;
         self.x = self.l_margin
         if h is None:
             self.y += self.lasth
@@ -5048,14 +5146,66 @@ def accept_page_break(self):
 <span>def <span class="ident">cell</span></span>(<span>self, w, h=0, txt='', border=0, ln=0, align='', fill=0, link='')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Output a cell, return boolean if triggered auto page break</p></div>
+<div class="desc"><p>Output a cell, cf. <a href="https://pyfpdf.github.io/fpdf2/reference/cell.html">https://pyfpdf.github.io/fpdf2/reference/cell.html</a></p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>w</code></strong> :&ensp;<code>int</code></dt>
+<dd>Cell width. If 0, the cell extends up to the right margin.</dd>
+<dt><strong><code>h</code></strong> :&ensp;<code>int</code></dt>
+<dd>Cell height. Default value: 0.</dd>
+<dt><strong><code>txt</code></strong> :&ensp;<code>str</code></dt>
+<dd>String to print. Default value: empty string.</dd>
+<dt><strong><code>border</code></strong></dt>
+<dd>Indicates if borders must be drawn around the cell.
+The value can be either a number (<code>0</code>: no border ; <code>1</code>: frame)
+or a string containing some or all of the following characters (in any order):
+<code>L</code>: left ; <code>T</code>: top ; <code>R</code>: right ; <code>B</code>: bottom. Default value: 0.</dd>
+<dt><strong><code>ln</code></strong> :&ensp;<code>int</code></dt>
+<dd>Indicates where the current position should go after the call.
+Possible values are: <code>0</code>: to the right ; <code>1</code>: to the beginning of the next line ;
+<code>2</code>: below. Putting 1 is equivalent to putting 0 and calling <code>ln</code> just after.
+Default value: 0.</dd>
+<dt><strong><code>align</code></strong> :&ensp;<code>str</code></dt>
+<dd>Allows to center or align the text. Possible values are:
+<code>L</code> or empty string: left align (default value) ; <code>C</code>: center ;
+<code>R</code>: right align</dd>
+<dt><strong><code>fill</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Indicates if the cell background must be painted (<code>True</code>)
+or transparent (<code>False</code>). Default value: False.</dd>
+<dt><strong><code>link</code></strong> :&ensp;<code>str</code></dt>
+<dd>optional link to add</dd>
+</dl>
+<p>Returns: a boolean indicating if page break was triggered</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@check_page
 def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0, link=&#34;&#34;):
-    &#34;Output a cell, return boolean if triggered auto page break&#34;
+    &#34;&#34;&#34;
+    Output a cell, cf. https://pyfpdf.github.io/fpdf2/reference/cell.html
+
+    Args:
+        w (int): Cell width. If 0, the cell extends up to the right margin.
+        h (int): Cell height. Default value: 0.
+        txt (str): String to print. Default value: empty string.
+        border: Indicates if borders must be drawn around the cell.
+            The value can be either a number (`0`: no border ; `1`: frame)
+            or a string containing some or all of the following characters (in any order):
+            `L`: left ; `T`: top ; `R`: right ; `B`: bottom. Default value: 0.
+        ln (int): Indicates where the current position should go after the call.
+            Possible values are: `0`: to the right ; `1`: to the beginning of the next line ;
+            `2`: below. Putting 1 is equivalent to putting 0 and calling `ln` just after.
+            Default value: 0.
+        align (str): Allows to center or align the text. Possible values are:
+            `L` or empty string: left align (default value) ; `C`: center ;
+            `R`: right align
+        fill (bool): Indicates if the cell background must be painted (`True`)
+            or transparent (`False`). Default value: False.
+        link (str): optional link to add
+
+    Returns: a boolean indicating if page break was triggered
+    &#34;&#34;&#34;
     if not self.font_family:
         raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
     if isinstance(border, int) and border not in (0, 1):
@@ -5714,14 +5864,28 @@ def line(self, x1, y1, x2, y2):
 <span>def <span class="ident">ln</span></span>(<span>self, h=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Line Feed; default value is last cell height</p></div>
+<div class="desc"><p>Line Feed.
+The current abscissa goes back to the left margin and the ordinate increases by the amount passed as parameter.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>h</code></strong> :&ensp;<code>int</code></dt>
+<dd>The height of the break.
+By default, the value equals the height of the last printed cell.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@check_page
 def ln(self, h=None):
-    &#34;Line Feed; default value is last cell height&#34;
+    &#34;&#34;&#34;
+    Line Feed.
+    The current abscissa goes back to the left margin and the ordinate increases by the amount passed as parameter.
+
+    Args:
+        h (int): The height of the break.
+            By default, the value equals the height of the last printed cell.
+    &#34;&#34;&#34;
     self.x = self.l_margin
     if h is None:
         self.y += self.lasth
@@ -5733,20 +5897,39 @@ def ln(self, h=None):
 <span>def <span class="ident">multi_cell</span></span>(<span>self, w, h, txt='', border=0, align='J', fill=0, split_only=False, link='', ln=0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Output text with automatic or explicit line breaks,
-returns boolean if page break triggered in output mode.</p>
+<div class="desc"><p>Output text with line breaks, cf. <a href="https://pyfpdf.github.io/fpdf2/reference/multi_cell.html">https://pyfpdf.github.io/fpdf2/reference/multi_cell.html</a></p>
 <h2 id="args">Args</h2>
 <dl>
+<dt><strong><code>w</code></strong> :&ensp;<code>int</code></dt>
+<dd>cells width. If 0, they extend up to the right margin of the page.</dd>
+<dt><strong><code>h</code></strong> :&ensp;<code>int</code></dt>
+<dd>cells height.</dd>
+<dt><strong><code>txt</code></strong> :&ensp;<code>str</code></dt>
+<dd>strign to print.</dd>
+<dt><strong><code>border</code></strong></dt>
+<dd>Indicates if borders must be drawn around the cell.
+The value can be either a number (<code>0</code>: no border ; <code>1</code>: frame)
+or a string containing some or all of the following characters (in any order):
+<code>L</code>: left ; <code>T</code>: top ; <code>R</code>: right ; <code>B</code>: bottom. Default value: 0.</dd>
+<dt><strong><code>align</code></strong> :&ensp;<code>str</code></dt>
+<dd>Allows to center or align the text. Possible values are:
+<code>L</code> or empty string: left align (default value) ; <code>C</code>: center ;
+<code>R</code>: right align</dd>
+<dt><strong><code>fill</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Indicates if the cell background must be painted (<code>True</code>)
+or transparent (<code>False</code>). Default value: False.</dd>
+<dt><strong><code>split_only</code></strong> :&ensp;<code>bool</code></dt>
+<dd>if <code>True</code>, does not output anything, only perform word-wrapping
+and return the resulting multi-lines array of strings.</dd>
+<dt><strong><code>link</code></strong> :&ensp;<code>str</code></dt>
+<dd>optional link to add</dd>
 <dt><strong><code>ln</code></strong> :&ensp;<code>int</code></dt>
-<dd>
-<p>controls cell positioning:</p>
-<ul>
-<li>0: stack cells horizontally, with respect to <code>.x</code> &amp; <code>.y</code></li>
-<li>1: one cell per line, aligned on the left with respect to <code>.l_margin</code></li>
-<li>2: one cell per line</li>
-</ul>
-</dd>
-</dl></div>
+<dd>Indicates where the current position should go after the call.
+Possible values are: <code>0</code>: to the right ; <code>1</code>: to the beginning of the next line ;
+<code>2</code>: below. Putting 1 is equivalent to putting 0 and calling <code>ln</code> just after.
+Default value: 0.</dd>
+</dl>
+<p>Returns: a boolean indicating if page break was triggered.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5756,15 +5939,30 @@ def multi_cell(
     self, w, h, txt=&#34;&#34;, border=0, align=&#34;J&#34;, fill=0, split_only=False, link=&#34;&#34;, ln=0
 ):
     &#34;&#34;&#34;
-    Output text with automatic or explicit line breaks,
-    returns boolean if page break triggered in output mode.
+    Output text with line breaks, cf. https://pyfpdf.github.io/fpdf2/reference/multi_cell.html
 
     Args:
-        ln (int): controls cell positioning:
+        w (int): cells width. If 0, they extend up to the right margin of the page.
+        h (int): cells height.
+        txt (str): strign to print.
+        border: Indicates if borders must be drawn around the cell.
+            The value can be either a number (`0`: no border ; `1`: frame)
+            or a string containing some or all of the following characters (in any order):
+            `L`: left ; `T`: top ; `R`: right ; `B`: bottom. Default value: 0.
+        align (str): Allows to center or align the text. Possible values are:
+            `L` or empty string: left align (default value) ; `C`: center ;
+            `R`: right align
+        fill (bool): Indicates if the cell background must be painted (`True`)
+            or transparent (`False`). Default value: False.
+        split_only (bool): if `True`, does not output anything, only perform word-wrapping
+            and return the resulting multi-lines array of strings.
+        link (str): optional link to add
+        ln (int): Indicates where the current position should go after the call.
+            Possible values are: `0`: to the right ; `1`: to the beginning of the next line ;
+            `2`: below. Putting 1 is equivalent to putting 0 and calling `ln` just after.
+            Default value: 0.
 
-          - 0: stack cells horizontally, with respect to `.x` &amp; `.y`
-          - 1: one cell per line, aligned on the left with respect to `.l_margin`
-          - 2: one cell per line
+    Returns: a boolean indicating if page break was triggered.
     &#34;&#34;&#34;
     page_break_triggered = False
     if split_only:
@@ -6396,24 +6594,28 @@ def rotation(self, angle, x=None, y=None):
     # Test if used for the first time
     fontkey = family + style
     if fontkey not in self.fonts:
-        if fontkey not in self.core_fonts or fontkey not in fpdf_charwidths:
-            # Being flexible: try a fontkey with lowercase family:
-            fontkey = family.lower() + style
+        # Being flexible: try a fontkey with lowercase family:
+        fontkey_alt = family.lower() + style
+        if fontkey_alt in self.fonts:
+            fontkey = fontkey_alt
+        else:
             if fontkey not in self.core_fonts or fontkey not in fpdf_charwidths:
-                raise FPDFException(
-                    &#34;Undefined font: &#34;
-                    + fontkey
-                    + &#34; - Use built-in fonts or FPDF.add_font() beforehand&#34;
-                )
-        i = len(self.fonts) + 1
-        self.fonts[fontkey] = {
-            &#34;i&#34;: i,
-            &#34;type&#34;: &#34;core&#34;,
-            &#34;name&#34;: self.core_fonts[fontkey],
-            &#34;up&#34;: -100,
-            &#34;ut&#34;: 50,
-            &#34;cw&#34;: fpdf_charwidths[fontkey],
-        }
+                fontkey = fontkey_alt
+                if fontkey not in self.core_fonts or fontkey not in fpdf_charwidths:
+                    raise FPDFException(
+                        &#34;Undefined font: &#34;
+                        + fontkey
+                        + &#34; - Use built-in fonts or FPDF.add_font() beforehand&#34;
+                    )
+            i = len(self.fonts) + 1
+            self.fonts[fontkey] = {
+                &#34;i&#34;: i,
+                &#34;type&#34;: &#34;core&#34;,
+                &#34;name&#34;: self.core_fonts[fontkey],
+                &#34;up&#34;: -100,
+                &#34;ut&#34;: 50,
+                &#34;cw&#34;: fpdf_charwidths[fontkey],
+            }
 
     # Select it
     self.font_family = family
