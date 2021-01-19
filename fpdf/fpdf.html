@@ -464,7 +464,6 @@ class FPDF:
         s = s if normalized else self.normalize_text(s)
         cw = self.current_font[&#34;cw&#34;]
         w = 0
-        l = len(s)
         if self.unifontsubset:
             for char in s:
                 char = ord(char)
@@ -475,8 +474,7 @@ class FPDF:
                 else:
                     w += 500
         else:
-            for i in range(0, l):
-                w += cw.get(s[i], 0)
+            w += sum(cw.get(char, 0) for char in s)
         if self.font_stretching != 100:
             w = w * self.font_stretching / 100
         return w * self.font_size / 1000
@@ -659,7 +657,7 @@ class FPDF:
                 del ttf
 
             # include numbers in the subset! (if alias present)
-            sbarr = list(range(0, 57 if self.str_alias_nb_pages else 32))
+            sbarr = list(range(57 if self.str_alias_nb_pages else 32))
 
             self.fonts[fontkey] = {
                 &#34;i&#34;: len(self.fonts) + 1,
@@ -694,7 +692,7 @@ class FPDF:
                     if self.diffs[i] == diff:
                         d = i
                         break
-                if d == 0:
+                else:
                     d = nb + 1
                     self.diffs[d] = diff
                 self.fonts[fontkey][&#34;diff&#34;] = d
@@ -1606,7 +1604,7 @@ class FPDF:
         self._out(&#34;1 0 obj&#34;)
         self._out(&#34;&lt;&lt;/Type /Pages&#34;)
         kids = &#34;/Kids [&#34;
-        for i in range(0, nb):
+        for i in range(nb):
             kids += f&#34;{3 + 2 * i} 0 R &#34;
         self._out(kids + &#34;]&#34;)
         self._out(f&#34;/Count {nb}&#34;)
@@ -2002,9 +2000,7 @@ class FPDF:
                 self._out(f&#34;/DecodeParms &lt;&lt;{info[&#39;dp&#39;]}&gt;&gt;&#34;)
 
             if &#34;trns&#34; in info and isinstance(info[&#34;trns&#34;], list):
-                trns = &#34;&#34;
-                for i in range(0, len(info[&#34;trns&#34;])):
-                    trns += f&#34;{info[&#39;trns&#39;][i]} {info[&#39;trns&#39;][i]} &#34;
+                trns = &#34; &#34;.join(f&#34;{x} {x}&#34; for x in info[&#34;trns&#34;])
                 self._out(f&#34;/Mask [{trns}]&#34;)
 
             if &#34;smask&#34; in info:
@@ -2288,15 +2284,15 @@ class FPDF:
             char_bar = code[i]
             char_space = code[i + 1]
             # check whether it is a valid digit
-            if char_bar not in bar_char.keys():
+            if char_bar not in bar_char:
                 raise RuntimeError(f&#39;Char &#34;{char_bar}&#34; invalid for I25:&#39;)
-            if not char_space in bar_char.keys():
+            if char_space not in bar_char:
                 raise RuntimeError(f&#39;Char &#34;{char_space}&#34; invalid for I25: &#39;)
 
             # create a wide/narrow-seq (first digit=bars, second digit=spaces)
-            seq = &#34;&#34;
-            for s in range(0, len(bar_char[char_bar])):
-                seq += bar_char[char_bar][s] + bar_char[char_space][s]
+            seq = &#34;&#34;.join(
+                f&#34;{cb}{cs}&#34; for cb, cs in zip(bar_char[char_bar], bar_char[char_space])
+            )
 
             for bar, char in enumerate(seq):
                 # set line_width depending on value
@@ -2814,7 +2810,6 @@ case insensitive key (the name of the new format) and 2-tuple value of
         s = s if normalized else self.normalize_text(s)
         cw = self.current_font[&#34;cw&#34;]
         w = 0
-        l = len(s)
         if self.unifontsubset:
             for char in s:
                 char = ord(char)
@@ -2825,8 +2820,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 else:
                     w += 500
         else:
-            for i in range(0, l):
-                w += cw.get(s[i], 0)
+            w += sum(cw.get(char, 0) for char in s)
         if self.font_stretching != 100:
             w = w * self.font_stretching / 100
         return w * self.font_size / 1000
@@ -3009,7 +3003,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 del ttf
 
             # include numbers in the subset! (if alias present)
-            sbarr = list(range(0, 57 if self.str_alias_nb_pages else 32))
+            sbarr = list(range(57 if self.str_alias_nb_pages else 32))
 
             self.fonts[fontkey] = {
                 &#34;i&#34;: len(self.fonts) + 1,
@@ -3044,7 +3038,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
                     if self.diffs[i] == diff:
                         d = i
                         break
-                if d == 0:
+                else:
                     d = nb + 1
                     self.diffs[d] = diff
                 self.fonts[fontkey][&#34;diff&#34;] = d
@@ -3956,7 +3950,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
         self._out(&#34;1 0 obj&#34;)
         self._out(&#34;&lt;&lt;/Type /Pages&#34;)
         kids = &#34;/Kids [&#34;
-        for i in range(0, nb):
+        for i in range(nb):
             kids += f&#34;{3 + 2 * i} 0 R &#34;
         self._out(kids + &#34;]&#34;)
         self._out(f&#34;/Count {nb}&#34;)
@@ -4352,9 +4346,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 self._out(f&#34;/DecodeParms &lt;&lt;{info[&#39;dp&#39;]}&gt;&gt;&#34;)
 
             if &#34;trns&#34; in info and isinstance(info[&#34;trns&#34;], list):
-                trns = &#34;&#34;
-                for i in range(0, len(info[&#34;trns&#34;])):
-                    trns += f&#34;{info[&#39;trns&#39;][i]} {info[&#39;trns&#39;][i]} &#34;
+                trns = &#34; &#34;.join(f&#34;{x} {x}&#34; for x in info[&#34;trns&#34;])
                 self._out(f&#34;/Mask [{trns}]&#34;)
 
             if &#34;smask&#34; in info:
@@ -4638,15 +4630,15 @@ case insensitive key (the name of the new format) and 2-tuple value of
             char_bar = code[i]
             char_space = code[i + 1]
             # check whether it is a valid digit
-            if char_bar not in bar_char.keys():
+            if char_bar not in bar_char:
                 raise RuntimeError(f&#39;Char &#34;{char_bar}&#34; invalid for I25:&#39;)
-            if not char_space in bar_char.keys():
+            if char_space not in bar_char:
                 raise RuntimeError(f&#39;Char &#34;{char_space}&#34; invalid for I25: &#39;)
 
             # create a wide/narrow-seq (first digit=bars, second digit=spaces)
-            seq = &#34;&#34;
-            for s in range(0, len(bar_char[char_bar])):
-                seq += bar_char[char_bar][s] + bar_char[char_space][s]
+            seq = &#34;&#34;.join(
+                f&#34;{cb}{cs}&#34; for cb, cs in zip(bar_char[char_bar], bar_char[char_space])
+            )
 
             for bar, char in enumerate(seq):
                 # set line_width depending on value
@@ -4836,7 +4828,7 @@ def accept_page_break(self):
             del ttf
 
         # include numbers in the subset! (if alias present)
-        sbarr = list(range(0, 57 if self.str_alias_nb_pages else 32))
+        sbarr = list(range(57 if self.str_alias_nb_pages else 32))
 
         self.fonts[fontkey] = {
             &#34;i&#34;: len(self.fonts) + 1,
@@ -4871,7 +4863,7 @@ def accept_page_break(self):
                 if self.diffs[i] == diff:
                     d = i
                     break
-            if d == 0:
+            else:
                 d = nb + 1
                 self.diffs[d] = diff
             self.fonts[fontkey][&#34;diff&#34;] = d
@@ -5414,7 +5406,6 @@ def ellipse(self, x, y, w, h, style=None):
     s = s if normalized else self.normalize_text(s)
     cw = self.current_font[&#34;cw&#34;]
     w = 0
-    l = len(s)
     if self.unifontsubset:
         for char in s:
             char = ord(char)
@@ -5425,8 +5416,7 @@ def ellipse(self, x, y, w, h, style=None):
             else:
                 w += 500
     else:
-        for i in range(0, l):
-            w += cw.get(s[i], 0)
+        w += sum(cw.get(char, 0) for char in s)
     if self.font_stretching != 100:
         w = w * self.font_stretching / 100
     return w * self.font_size / 1000</code></pre>
@@ -5624,15 +5614,15 @@ def interleaved2of5(self, txt, x, y, w=1, h=10):
         char_bar = code[i]
         char_space = code[i + 1]
         # check whether it is a valid digit
-        if char_bar not in bar_char.keys():
+        if char_bar not in bar_char:
             raise RuntimeError(f&#39;Char &#34;{char_bar}&#34; invalid for I25:&#39;)
-        if not char_space in bar_char.keys():
+        if char_space not in bar_char:
             raise RuntimeError(f&#39;Char &#34;{char_space}&#34; invalid for I25: &#39;)
 
         # create a wide/narrow-seq (first digit=bars, second digit=spaces)
-        seq = &#34;&#34;
-        for s in range(0, len(bar_char[char_bar])):
-            seq += bar_char[char_bar][s] + bar_char[char_space][s]
+        seq = &#34;&#34;.join(
+            f&#34;{cb}{cs}&#34; for cb, cs in zip(bar_char[char_bar], bar_char[char_space])
+        )
 
         for bar, char in enumerate(seq):
             # set line_width depending on value

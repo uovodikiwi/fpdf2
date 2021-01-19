@@ -233,7 +233,7 @@ class TTFontFile:
         numRecords = self.read_ushort()
         string_data_offset = name_offset + self.read_ushort()
         names = {1: &#34;&#34;, 2: &#34;&#34;, 3: &#34;&#34;, 4: &#34;&#34;, 6: &#34;&#34;}
-        K = list(names.keys())
+        K = list(names)
         nameCount = len(names)
         for _ in range(numRecords):
             platformId = self.read_ushort()
@@ -1342,7 +1342,7 @@ def str_pad(s, pad_length=0, pad_char=&#34; &#34;, pad_type=+1):
         numRecords = self.read_ushort()
         string_data_offset = name_offset + self.read_ushort()
         names = {1: &#34;&#34;, 2: &#34;&#34;, 3: &#34;&#34;, 4: &#34;&#34;, 6: &#34;&#34;}
-        K = list(names.keys())
+        K = list(names)
         nameCount = len(names)
         for _ in range(numRecords):
             platformId = self.read_ushort()
@@ -2328,7 +2328,7 @@ def splice(stream, offset, value):
     numRecords = self.read_ushort()
     string_data_offset = name_offset + self.read_ushort()
     names = {1: &#34;&#34;, 2: &#34;&#34;, 3: &#34;&#34;, 4: &#34;&#34;, 6: &#34;&#34;}
-    K = list(names.keys())
+    K = list(names)
     nameCount = len(names)
     for _ in range(numRecords):
         platformId = self.read_ushort()
