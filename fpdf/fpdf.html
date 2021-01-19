@@ -485,8 +485,8 @@ class FPDF:
             for i in range(0, l):
                 w += cw.get(s[i], 0)
         if self.font_stretching != 100:
-            w = w * self.font_stretching / 100.0
-        return w * self.font_size / 1000.0
+            w = w * self.font_stretching / 100
+        return w * self.font_size / 1000
 
     def set_line_width(self, width):
         &#34;Set line width&#34;
@@ -545,13 +545,13 @@ class FPDF:
         style_to_operators = {&#34;F&#34;: &#34;f&#34;, &#34;FD&#34;: &#34;B&#34;, &#34;DF&#34;: &#34;B&#34;}
         op = style_to_operators.get(style, &#34;S&#34;)
 
-        cx = x + w / 2.0
-        cy = y + h / 2.0
-        rx = w / 2.0
-        ry = h / 2.0
+        cx = x + w / 2
+        cy = y + h / 2
+        rx = w / 2
+        ry = h / 2
 
-        lx = 4.0 / 3.0 * (math.sqrt(2) - 1) * rx
-        ly = 4.0 / 3.0 * (math.sqrt(2) - 1) * ry
+        lx = 4 / 3 * (math.sqrt(2) - 1) * rx
+        ly = 4 / 3 * (math.sqrt(2) - 1) * ry
 
         self._out(
             sprintf(
@@ -636,20 +636,20 @@ class FPDF:
                 ttf = TTFontFile()
                 ttf.getMetrics(ttffilename)
                 desc = {
-                    &#34;Ascent&#34;: int(round(ttf.ascent, 0)),
-                    &#34;Descent&#34;: int(round(ttf.descent, 0)),
-                    &#34;CapHeight&#34;: int(round(ttf.capHeight, 0)),
+                    &#34;Ascent&#34;: round(ttf.ascent),
+                    &#34;Descent&#34;: round(ttf.descent),
+                    &#34;CapHeight&#34;: round(ttf.capHeight),
                     &#34;Flags&#34;: ttf.flags,
                     &#34;FontBBox&#34;: &#34;[%s %s %s %s]&#34;
                     % (
-                        int(round(ttf.bbox[0], 0)),
-                        int(round(ttf.bbox[1], 0)),
-                        int(round(ttf.bbox[2], 0)),
-                        int(round(ttf.bbox[3], 0)),
+                        round(ttf.bbox[0]),
+                        round(ttf.bbox[1]),
+                        round(ttf.bbox[2]),
+                        round(ttf.bbox[3]),
                     ),
                     &#34;ItalicAngle&#34;: int(ttf.italicAngle),
-                    &#34;StemV&#34;: int(round(ttf.stemV, 0)),
-                    &#34;MissingWidth&#34;: int(round(ttf.defaultWidth, 0)),
+                    &#34;StemV&#34;: round(ttf.stemV),
+                    &#34;MissingWidth&#34;: round(ttf.defaultWidth),
                 }
 
                 # Generate metrics .pkl file
@@ -1054,7 +1054,7 @@ class FPDF:
             if align == &#34;R&#34;:
                 dx = w - self.c_margin - self.get_string_width(txt, True)
             elif align == &#34;C&#34;:
-                dx = (w - self.get_string_width(txt, True)) / 2.0
+                dx = (w - self.get_string_width(txt, True)) / 2
             else:
                 dx = self.c_margin
             if self.color_flag:
@@ -1170,7 +1170,7 @@ class FPDF:
         # If width is 0, set width to available width between margins
         if w == 0:
             w = self.w - self.r_margin - self.x
-        wmax = (w - 2 * self.c_margin) * 1000.0 / self.font_size
+        wmax = (w - 2 * self.c_margin) * 1000 / self.font_size
 
         # Calculate text length
         txt = self.normalize_text(txt)
@@ -1242,7 +1242,7 @@ class FPDF:
                 ls = l
                 ns += 1
             if self.unifontsubset:
-                l += self.get_string_width(c, True) / self.font_size * 1000.0
+                l += self.get_string_width(c, True) / self.font_size * 1000
             else:
                 l += character_widths.get(c, 0)
 
@@ -1271,7 +1271,7 @@ class FPDF:
                 else:
                     if align == &#34;J&#34;:
                         if ns &gt; 1:
-                            self.ws = (wmax - ls) / 1000.0 * self.font_size / (ns - 1)
+                            self.ws = (wmax - ls) / 1000 * self.font_size / (ns - 1)
                         else:
                             self.ws = 0
                         self._out(sprintf(&#34;%.3f Tw&#34;, self.ws * self.k))
@@ -1343,7 +1343,7 @@ class FPDF:
         txt = self.normalize_text(txt)
         cw = self.current_font[&#34;cw&#34;]
         w = self.w - self.r_margin - self.x
-        wmax = (w - 2 * self.c_margin) * 1000.0 / self.font_size
+        wmax = (w - 2 * self.c_margin) * 1000 / self.font_size
         s = txt.replace(&#34;\r&#34;, &#34;&#34;)
         nb = len(s)
         sep = -1
@@ -1364,13 +1364,13 @@ class FPDF:
                 if nl == 1:
                     self.x = self.l_margin
                     w = self.w - self.r_margin - self.x
-                    wmax = (w - 2 * self.c_margin) * 1000.0 / self.font_size
+                    wmax = (w - 2 * self.c_margin) * 1000 / self.font_size
                 nl += 1
                 continue
             if c == &#34; &#34;:
                 sep = i
             if self.unifontsubset:
-                l += self.get_string_width(c, True) / self.font_size * 1000.0
+                l += self.get_string_width(c, True) / self.font_size * 1000
             else:
                 l += cw.get(c, 0)
             if l &gt; wmax:
@@ -1381,7 +1381,7 @@ class FPDF:
                         self.x = self.l_margin
                         self.y += h
                         w = self.w - self.r_margin - self.x
-                        wmax = (w - 2 * self.c_margin) * 1000.0 / self.font_size
+                        wmax = (w - 2 * self.c_margin) * 1000 / self.font_size
                         i += 1
                         nl += 1
                         continue
@@ -1397,13 +1397,13 @@ class FPDF:
                 if nl == 1:
                     self.x = self.l_margin
                     w = self.w - self.r_margin - self.x
-                    wmax = (w - 2 * self.c_margin) * 1000.0 / self.font_size
+                    wmax = (w - 2 * self.c_margin) * 1000 / self.font_size
                 nl += 1
             else:
                 i += 1
         # Last chunk
         if i != j:
-            self.cell(l / 1000.0 * self.font_size, h, substr(s, j), 0, 0, &#34;&#34;, 0, link)
+            self.cell(l / 1000 * self.font_size, h, substr(s, j), 0, 0, &#34;&#34;, 0, link)
 
     @check_page
     def image(
@@ -2308,9 +2308,9 @@ class FPDF:
         return sprintf(
             &#34;%.2f %.2f %.2f %.2f re f&#34;,
             x * self.k,
-            (self.h - (y - up / 1000.0 * self.font_size)) * self.k,
+            (self.h - (y - up / 1000 * self.font_size)) * self.k,
             w * self.k,
-            -ut / 1000.0 * self.font_size_pt,
+            -ut / 1000 * self.font_size_pt,
         )
 
     def _out(self, s):
@@ -2325,9 +2325,9 @@ class FPDF:
             self.buffer += s + b&#34;\n&#34;
 
     @check_page
-    def interleaved2of5(self, txt, x, y, w=1.0, h=10.0):
+    def interleaved2of5(self, txt, x, y, w=1, h=10):
         &#34;Barcode I2of5 (numeric), adds a 0 if odd length&#34;
-        narrow = w / 3.0
+        narrow = w / 3
         wide = w
 
         # wide/narrow codes for the digits
@@ -2381,9 +2381,9 @@ class FPDF:
                 x += line_width
 
     @check_page
-    def code39(self, txt, x, y, w=1.5, h=5.0):
+    def code39(self, txt, x, y, w=1.5, h=5):
         &#34;&#34;&#34;Barcode 3of9&#34;&#34;&#34;
-        dim = {&#34;w&#34;: w, &#34;n&#34;: w / 3.0}
+        dim = {&#34;w&#34;: w, &#34;n&#34;: w / 3}
         chars = {
             &#34;0&#34;: &#34;nnnwwnwnn&#34;,
             &#34;1&#34;: &#34;wnnwnnnnw&#34;,
@@ -2471,9 +2471,9 @@ def _hashpath(fn):
 def _sizeof_fmt(num, suffix=&#34;B&#34;):
     # Recipe from: https://stackoverflow.com/a/1094933/636849
     for unit in [&#34;&#34;, &#34;Ki&#34;, &#34;Mi&#34;, &#34;Gi&#34;, &#34;Ti&#34;, &#34;Pi&#34;, &#34;Ei&#34;, &#34;Zi&#34;]:
-        if abs(num) &lt; 1024.0:
+        if abs(num) &lt; 1024:
             return &#34;%3.1f%s%s&#34; % (num, unit, suffix)
-        num /= 1024.0
+        num /= 1024
     return &#34;%.1f%s%s&#34; % (num, &#34;Yi&#34;, suffix)
 
 
@@ -2907,8 +2907,8 @@ case insensitive key (the name of the new format) and 2-tuple value of
             for i in range(0, l):
                 w += cw.get(s[i], 0)
         if self.font_stretching != 100:
-            w = w * self.font_stretching / 100.0
-        return w * self.font_size / 1000.0
+            w = w * self.font_stretching / 100
+        return w * self.font_size / 1000
 
     def set_line_width(self, width):
         &#34;Set line width&#34;
@@ -2967,13 +2967,13 @@ case insensitive key (the name of the new format) and 2-tuple value of
         style_to_operators = {&#34;F&#34;: &#34;f&#34;, &#34;FD&#34;: &#34;B&#34;, &#34;DF&#34;: &#34;B&#34;}
         op = style_to_operators.get(style, &#34;S&#34;)
 
-        cx = x + w / 2.0
-        cy = y + h / 2.0
-        rx = w / 2.0
-        ry = h / 2.0
+        cx = x + w / 2
+        cy = y + h / 2
+        rx = w / 2
+        ry = h / 2
 
-        lx = 4.0 / 3.0 * (math.sqrt(2) - 1) * rx
-        ly = 4.0 / 3.0 * (math.sqrt(2) - 1) * ry
+        lx = 4 / 3 * (math.sqrt(2) - 1) * rx
+        ly = 4 / 3 * (math.sqrt(2) - 1) * ry
 
         self._out(
             sprintf(
@@ -3058,20 +3058,20 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 ttf = TTFontFile()
                 ttf.getMetrics(ttffilename)
                 desc = {
-                    &#34;Ascent&#34;: int(round(ttf.ascent, 0)),
-                    &#34;Descent&#34;: int(round(ttf.descent, 0)),
-                    &#34;CapHeight&#34;: int(round(ttf.capHeight, 0)),
+                    &#34;Ascent&#34;: round(ttf.ascent),
+                    &#34;Descent&#34;: round(ttf.descent),
+                    &#34;CapHeight&#34;: round(ttf.capHeight),
                     &#34;Flags&#34;: ttf.flags,
                     &#34;FontBBox&#34;: &#34;[%s %s %s %s]&#34;
                     % (
-                        int(round(ttf.bbox[0], 0)),
-                        int(round(ttf.bbox[1], 0)),
-                        int(round(ttf.bbox[2], 0)),
-                        int(round(ttf.bbox[3], 0)),
+                        round(ttf.bbox[0]),
+                        round(ttf.bbox[1]),
+                        round(ttf.bbox[2]),
+                        round(ttf.bbox[3]),
                     ),
                     &#34;ItalicAngle&#34;: int(ttf.italicAngle),
-                    &#34;StemV&#34;: int(round(ttf.stemV, 0)),
-                    &#34;MissingWidth&#34;: int(round(ttf.defaultWidth, 0)),
+                    &#34;StemV&#34;: round(ttf.stemV),
+                    &#34;MissingWidth&#34;: round(ttf.defaultWidth),
                 }
 
                 # Generate metrics .pkl file
@@ -3476,7 +3476,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
             if align == &#34;R&#34;:
                 dx = w - self.c_margin - self.get_string_width(txt, True)
             elif align == &#34;C&#34;:
-                dx = (w - self.get_string_width(txt, True)) / 2.0
+                dx = (w - self.get_string_width(txt, True)) / 2
             else:
                 dx = self.c_margin
             if self.color_flag:
@@ -3592,7 +3592,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
         # If width is 0, set width to available width between margins
         if w == 0:
             w = self.w - self.r_margin - self.x
-        wmax = (w - 2 * self.c_margin) * 1000.0 / self.font_size
+        wmax = (w - 2 * self.c_margin) * 1000 / self.font_size
 
         # Calculate text length
         txt = self.normalize_text(txt)
@@ -3664,7 +3664,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 ls = l
                 ns += 1
             if self.unifontsubset:
-                l += self.get_string_width(c, True) / self.font_size * 1000.0
+                l += self.get_string_width(c, True) / self.font_size * 1000
             else:
                 l += character_widths.get(c, 0)
 
@@ -3693,7 +3693,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 else:
                     if align == &#34;J&#34;:
                         if ns &gt; 1:
-                            self.ws = (wmax - ls) / 1000.0 * self.font_size / (ns - 1)
+                            self.ws = (wmax - ls) / 1000 * self.font_size / (ns - 1)
                         else:
                             self.ws = 0
                         self._out(sprintf(&#34;%.3f Tw&#34;, self.ws * self.k))
@@ -3765,7 +3765,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
         txt = self.normalize_text(txt)
         cw = self.current_font[&#34;cw&#34;]
         w = self.w - self.r_margin - self.x
-        wmax = (w - 2 * self.c_margin) * 1000.0 / self.font_size
+        wmax = (w - 2 * self.c_margin) * 1000 / self.font_size
         s = txt.replace(&#34;\r&#34;, &#34;&#34;)
         nb = len(s)
         sep = -1
@@ -3786,13 +3786,13 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 if nl == 1:
                     self.x = self.l_margin
                     w = self.w - self.r_margin - self.x
-                    wmax = (w - 2 * self.c_margin) * 1000.0 / self.font_size
+                    wmax = (w - 2 * self.c_margin) * 1000 / self.font_size
                 nl += 1
                 continue
             if c == &#34; &#34;:
                 sep = i
             if self.unifontsubset:
-                l += self.get_string_width(c, True) / self.font_size * 1000.0
+                l += self.get_string_width(c, True) / self.font_size * 1000
             else:
                 l += cw.get(c, 0)
             if l &gt; wmax:
@@ -3803,7 +3803,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
                         self.x = self.l_margin
                         self.y += h
                         w = self.w - self.r_margin - self.x
-                        wmax = (w - 2 * self.c_margin) * 1000.0 / self.font_size
+                        wmax = (w - 2 * self.c_margin) * 1000 / self.font_size
                         i += 1
                         nl += 1
                         continue
@@ -3819,13 +3819,13 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 if nl == 1:
                     self.x = self.l_margin
                     w = self.w - self.r_margin - self.x
-                    wmax = (w - 2 * self.c_margin) * 1000.0 / self.font_size
+                    wmax = (w - 2 * self.c_margin) * 1000 / self.font_size
                 nl += 1
             else:
                 i += 1
         # Last chunk
         if i != j:
-            self.cell(l / 1000.0 * self.font_size, h, substr(s, j), 0, 0, &#34;&#34;, 0, link)
+            self.cell(l / 1000 * self.font_size, h, substr(s, j), 0, 0, &#34;&#34;, 0, link)
 
     @check_page
     def image(
@@ -4730,9 +4730,9 @@ case insensitive key (the name of the new format) and 2-tuple value of
         return sprintf(
             &#34;%.2f %.2f %.2f %.2f re f&#34;,
             x * self.k,
-            (self.h - (y - up / 1000.0 * self.font_size)) * self.k,
+            (self.h - (y - up / 1000 * self.font_size)) * self.k,
             w * self.k,
-            -ut / 1000.0 * self.font_size_pt,
+            -ut / 1000 * self.font_size_pt,
         )
 
     def _out(self, s):
@@ -4747,9 +4747,9 @@ case insensitive key (the name of the new format) and 2-tuple value of
             self.buffer += s + b&#34;\n&#34;
 
     @check_page
-    def interleaved2of5(self, txt, x, y, w=1.0, h=10.0):
+    def interleaved2of5(self, txt, x, y, w=1, h=10):
         &#34;Barcode I2of5 (numeric), adds a 0 if odd length&#34;
-        narrow = w / 3.0
+        narrow = w / 3
         wide = w
 
         # wide/narrow codes for the digits
@@ -4803,9 +4803,9 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 x += line_width
 
     @check_page
-    def code39(self, txt, x, y, w=1.5, h=5.0):
+    def code39(self, txt, x, y, w=1.5, h=5):
         &#34;&#34;&#34;Barcode 3of9&#34;&#34;&#34;
-        dim = {&#34;w&#34;: w, &#34;n&#34;: w / 3.0}
+        dim = {&#34;w&#34;: w, &#34;n&#34;: w / 3}
         chars = {
             &#34;0&#34;: &#34;nnnwwnwnn&#34;,
             &#34;1&#34;: &#34;wnnwnnnnw&#34;,
@@ -4945,20 +4945,20 @@ def accept_page_break(self):
             ttf = TTFontFile()
             ttf.getMetrics(ttffilename)
             desc = {
-                &#34;Ascent&#34;: int(round(ttf.ascent, 0)),
-                &#34;Descent&#34;: int(round(ttf.descent, 0)),
-                &#34;CapHeight&#34;: int(round(ttf.capHeight, 0)),
+                &#34;Ascent&#34;: round(ttf.ascent),
+                &#34;Descent&#34;: round(ttf.descent),
+                &#34;CapHeight&#34;: round(ttf.capHeight),
                 &#34;Flags&#34;: ttf.flags,
                 &#34;FontBBox&#34;: &#34;[%s %s %s %s]&#34;
                 % (
-                    int(round(ttf.bbox[0], 0)),
-                    int(round(ttf.bbox[1], 0)),
-                    int(round(ttf.bbox[2], 0)),
-                    int(round(ttf.bbox[3], 0)),
+                    round(ttf.bbox[0]),
+                    round(ttf.bbox[1]),
+                    round(ttf.bbox[2]),
+                    round(ttf.bbox[3]),
                 ),
                 &#34;ItalicAngle&#34;: int(ttf.italicAngle),
-                &#34;StemV&#34;: int(round(ttf.stemV, 0)),
-                &#34;MissingWidth&#34;: int(round(ttf.defaultWidth, 0)),
+                &#34;StemV&#34;: round(ttf.stemV),
+                &#34;MissingWidth&#34;: round(ttf.defaultWidth),
             }
 
             # Generate metrics .pkl file
@@ -5295,7 +5295,7 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
         if align == &#34;R&#34;:
             dx = w - self.c_margin - self.get_string_width(txt, True)
         elif align == &#34;C&#34;:
-            dx = (w - self.get_string_width(txt, True)) / 2.0
+            dx = (w - self.get_string_width(txt, True)) / 2
         else:
             dx = self.c_margin
         if self.color_flag:
@@ -5396,7 +5396,7 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
 </details>
 </dd>
 <dt id="fpdf.fpdf.FPDF.code39"><code class="name flex">
-<span>def <span class="ident">code39</span></span>(<span>self, txt, x, y, w=1.5, h=5.0)</span>
+<span>def <span class="ident">code39</span></span>(<span>self, txt, x, y, w=1.5, h=5)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Barcode 3of9</p></div>
@@ -5405,9 +5405,9 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@check_page
-def code39(self, txt, x, y, w=1.5, h=5.0):
+def code39(self, txt, x, y, w=1.5, h=5):
     &#34;&#34;&#34;Barcode 3of9&#34;&#34;&#34;
-    dim = {&#34;w&#34;: w, &#34;n&#34;: w / 3.0}
+    dim = {&#34;w&#34;: w, &#34;n&#34;: w / 3}
     chars = {
         &#34;0&#34;: &#34;nnnwwnwnn&#34;,
         &#34;1&#34;: &#34;wnnwnnnnw&#34;,
@@ -5501,13 +5501,13 @@ def ellipse(self, x, y, w, h, style=None):
     style_to_operators = {&#34;F&#34;: &#34;f&#34;, &#34;FD&#34;: &#34;B&#34;, &#34;DF&#34;: &#34;B&#34;}
     op = style_to_operators.get(style, &#34;S&#34;)
 
-    cx = x + w / 2.0
-    cy = y + h / 2.0
-    rx = w / 2.0
-    ry = h / 2.0
+    cx = x + w / 2
+    cy = y + h / 2
+    rx = w / 2
+    ry = h / 2
 
-    lx = 4.0 / 3.0 * (math.sqrt(2) - 1) * rx
-    ly = 4.0 / 3.0 * (math.sqrt(2) - 1) * ry
+    lx = 4 / 3 * (math.sqrt(2) - 1) * rx
+    ly = 4 / 3 * (math.sqrt(2) - 1) * ry
 
     self._out(
         sprintf(
@@ -5600,8 +5600,8 @@ def ellipse(self, x, y, w, h, style=None):
         for i in range(0, l):
             w += cw.get(s[i], 0)
     if self.font_stretching != 100:
-        w = w * self.font_stretching / 100.0
-    return w * self.font_size / 1000.0</code></pre>
+        w = w * self.font_stretching / 100
+    return w * self.font_size / 1000</code></pre>
 </details>
 </dd>
 <dt id="fpdf.fpdf.FPDF.get_x"><code class="name flex">
@@ -5753,7 +5753,7 @@ def image(
 </details>
 </dd>
 <dt id="fpdf.fpdf.FPDF.interleaved2of5"><code class="name flex">
-<span>def <span class="ident">interleaved2of5</span></span>(<span>self, txt, x, y, w=1.0, h=10.0)</span>
+<span>def <span class="ident">interleaved2of5</span></span>(<span>self, txt, x, y, w=1, h=10)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Barcode I2of5 (numeric), adds a 0 if odd length</p></div>
@@ -5762,9 +5762,9 @@ def image(
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@check_page
-def interleaved2of5(self, txt, x, y, w=1.0, h=10.0):
+def interleaved2of5(self, txt, x, y, w=1, h=10):
     &#34;Barcode I2of5 (numeric), adds a 0 if odd length&#34;
-    narrow = w / 3.0
+    narrow = w / 3
     wide = w
 
     # wide/narrow codes for the digits
@@ -5975,7 +5975,7 @@ def multi_cell(
     # If width is 0, set width to available width between margins
     if w == 0:
         w = self.w - self.r_margin - self.x
-    wmax = (w - 2 * self.c_margin) * 1000.0 / self.font_size
+    wmax = (w - 2 * self.c_margin) * 1000 / self.font_size
 
     # Calculate text length
     txt = self.normalize_text(txt)
@@ -6047,7 +6047,7 @@ def multi_cell(
             ls = l
             ns += 1
         if self.unifontsubset:
-            l += self.get_string_width(c, True) / self.font_size * 1000.0
+            l += self.get_string_width(c, True) / self.font_size * 1000
         else:
             l += character_widths.get(c, 0)
 
@@ -6076,7 +6076,7 @@ def multi_cell(
             else:
                 if align == &#34;J&#34;:
                     if ns &gt; 1:
-                        self.ws = (wmax - ls) / 1000.0 * self.font_size / (ns - 1)
+                        self.ws = (wmax - ls) / 1000 * self.font_size / (ns - 1)
                     else:
                         self.ws = 0
                     self._out(sprintf(&#34;%.3f Tw&#34;, self.ws * self.k))
@@ -6925,7 +6925,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
     txt = self.normalize_text(txt)
     cw = self.current_font[&#34;cw&#34;]
     w = self.w - self.r_margin - self.x
-    wmax = (w - 2 * self.c_margin) * 1000.0 / self.font_size
+    wmax = (w - 2 * self.c_margin) * 1000 / self.font_size
     s = txt.replace(&#34;\r&#34;, &#34;&#34;)
     nb = len(s)
     sep = -1
@@ -6946,13 +6946,13 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
             if nl == 1:
                 self.x = self.l_margin
                 w = self.w - self.r_margin - self.x
-                wmax = (w - 2 * self.c_margin) * 1000.0 / self.font_size
+                wmax = (w - 2 * self.c_margin) * 1000 / self.font_size
             nl += 1
             continue
         if c == &#34; &#34;:
             sep = i
         if self.unifontsubset:
-            l += self.get_string_width(c, True) / self.font_size * 1000.0
+            l += self.get_string_width(c, True) / self.font_size * 1000
         else:
             l += cw.get(c, 0)
         if l &gt; wmax:
@@ -6963,7 +6963,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
                     self.x = self.l_margin
                     self.y += h
                     w = self.w - self.r_margin - self.x
-                    wmax = (w - 2 * self.c_margin) * 1000.0 / self.font_size
+                    wmax = (w - 2 * self.c_margin) * 1000 / self.font_size
                     i += 1
                     nl += 1
                     continue
@@ -6979,13 +6979,13 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
             if nl == 1:
                 self.x = self.l_margin
                 w = self.w - self.r_margin - self.x
-                wmax = (w - 2 * self.c_margin) * 1000.0 / self.font_size
+                wmax = (w - 2 * self.c_margin) * 1000 / self.font_size
             nl += 1
         else:
             i += 1
     # Last chunk
     if i != j:
-        self.cell(l / 1000.0 * self.font_size, h, substr(s, j), 0, 0, &#34;&#34;, 0, link)</code></pre>
+        self.cell(l / 1000 * self.font_size, h, substr(s, j), 0, 0, &#34;&#34;, 0, link)</code></pre>
 </details>
 </dd>
 </dl>
