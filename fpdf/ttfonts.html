@@ -1102,18 +1102,7 @@ class TTFontFile:
         checksum = sub32((0xB1B0, 0xAFBA), checksum)
         chk = pack(&#34;&gt;HH&#34;, checksum[0], checksum[1])
         stm = self.splice(stm, (head_start + 8), chk)
-        return stm
-
-
-def str_pad(s, pad_length=0, pad_char=&#34; &#34;, pad_type=+1):
-    # pad left
-    if pad_type &lt; 0:
-        return s.rjust(pad_length, pad_char)
-    # pad right
-    if pad_type &gt; 0:
-        return s.ljust(pad_length, pad_char)
-    # pad both
-    return s.center(pad_length, pad_char)</code></pre>
+        return stm</code></pre>
 </details>
 </section>
 <section>
@@ -1144,26 +1133,6 @@ def str_pad(s, pad_length=0, pad_char=&#34; &#34;, pad_type=+1):
         lo = lo &amp; 0xFFFF
         hi = hi &amp; 0xFFFF
     return (hi, lo)</code></pre>
-</details>
-</dd>
-<dt id="fpdf.ttfonts.str_pad"><code class="name flex">
-<span>def <span class="ident">str_pad</span></span>(<span>s, pad_length=0, pad_char=' ', pad_type=1)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def str_pad(s, pad_length=0, pad_char=&#34; &#34;, pad_type=+1):
-    # pad left
-    if pad_type &lt; 0:
-        return s.rjust(pad_length, pad_char)
-    # pad right
-    if pad_type &gt; 0:
-        return s.ljust(pad_length, pad_char)
-    # pad both
-    return s.center(pad_length, pad_char)</code></pre>
 </details>
 </dd>
 <dt id="fpdf.ttfonts.sub32"><code class="name flex">
@@ -3462,7 +3431,6 @@ def splice(stream, offset, value):
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="fpdf.ttfonts.calcChecksum" href="#fpdf.ttfonts.calcChecksum">calcChecksum</a></code></li>
-<li><code><a title="fpdf.ttfonts.str_pad" href="#fpdf.ttfonts.str_pad">str_pad</a></code></li>
 <li><code><a title="fpdf.ttfonts.sub32" href="#fpdf.ttfonts.sub32">sub32</a></code></li>
 </ul>
 </li>
