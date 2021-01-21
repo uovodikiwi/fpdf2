@@ -61,9 +61,6 @@ pdf_name('Parent'): iobj_ref(1),
 pdf_name('Resources'): iobj_ref(2),
 pdf_name('Contents'): iobj_ref(4),
 }</p>
-<p><code>collections.OrderedDict</code> is used because ultimately to test the accuracy of
-the documents created, order of the fields matters even though it probably
-doesn't in the Adobe Specification.</p>
 <p>Some additional notes:</p>
 <p>Streams are of the form:</p>
 <pre>
@@ -131,10 +128,6 @@ third_obj = {
   pdf_name(&#39;Contents&#39;): iobj_ref(4),
 }
 
-`collections.OrderedDict` is used because ultimately to test the accuracy of
-the documents created, order of the fields matters even though it probably
-doesn&#39;t in the Adobe Specification.
-
 Some additional notes:
 
 Streams are of the form:
@@ -154,9 +147,7 @@ that string.
 
 As of this writing, I am not sure how length is actually calculated, so this
 remains something to be looked into.
-
 &#34;&#34;&#34;
-from collections import OrderedDict
 
 
 def create_name(name):
@@ -166,7 +157,7 @@ def create_name(name):
 
 
 def clear_empty_fields(d):
-    return OrderedDict((k, v) for k, v in d.items() if v)
+    return {k: v for k, v in d.items() if v}
 
 
 def create_dictionary_string(
@@ -177,7 +168,7 @@ def create_dictionary_string(
     key_value_join=&#34; &#34;,
     has_empty_fields=False,
 ):
-    &#34;&#34;&#34;format ordered dictionary as PDF dictionary
+    &#34;&#34;&#34;format dictionary as PDF dictionary
 
     @param dict_: dictionary of values to render
     @param open: string to open PDF dictionary
@@ -238,14 +229,14 @@ if __name__ == &#34;__main__&#34;:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def clear_empty_fields(d):
-    return OrderedDict((k, v) for k, v in d.items() if v)</code></pre>
+    return {k: v for k, v in d.items() if v}</code></pre>
 </details>
 </dd>
 <dt id="fpdf.util.syntax.create_dictionary_string"><code class="name flex">
 <span>def <span class="ident">create_dictionary_string</span></span>(<span>dict_, open_dict=&#x27;&lt;&lt;&#x27;, close_dict=&#x27;&gt;&gt;&#x27;, field_join='\n', key_value_join=' ', has_empty_fields=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>format ordered dictionary as PDF dictionary</p>
+<div class="desc"><p>format dictionary as PDF dictionary</p>
 <p>@param dict_: dictionary of values to render
 @param open: string to open PDF dictionary
 @param close: string to close PDF dictionary
@@ -264,7 +255,7 @@ if __name__ == &#34;__main__&#34;:
     key_value_join=&#34; &#34;,
     has_empty_fields=False,
 ):
-    &#34;&#34;&#34;format ordered dictionary as PDF dictionary
+    &#34;&#34;&#34;format dictionary as PDF dictionary
 
     @param dict_: dictionary of values to render
     @param open: string to open PDF dictionary

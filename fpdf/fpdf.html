@@ -48,7 +48,6 @@ The version number is updated here (above and below in variable).
 
 from contextlib import contextmanager
 from datetime import datetime
-from collections import OrderedDict
 from functools import wraps
 from uuid import uuid4
 import errno
@@ -2078,14 +2077,13 @@ class FPDF:
             self._out(&#34;endobj&#34;)
 
     def _putinfo(self):
-        info_d = OrderedDict()
-        info_d[pdf_name(&#34;title&#34;)] = enclose_in_parens(getattr(self, &#34;title&#34;, None))
-        info_d[pdf_name(&#34;subject&#34;)] = enclose_in_parens(getattr(self, &#34;subject&#34;, None))
-        info_d[pdf_name(&#34;author&#34;)] = enclose_in_parens(getattr(self, &#34;author&#34;, None))
-        info_d[pdf_name(&#34;keywords&#34;)] = enclose_in_parens(
-            getattr(self, &#34;keywords&#34;, None)
-        )
-        info_d[pdf_name(&#34;creator&#34;)] = enclose_in_parens(getattr(self, &#34;creator&#34;, None))
+        info_d = {
+            pdf_name(&#34;title&#34;): enclose_in_parens(getattr(self, &#34;title&#34;, None)),
+            pdf_name(&#34;subject&#34;): enclose_in_parens(getattr(self, &#34;subject&#34;, None)),
+            pdf_name(&#34;author&#34;): enclose_in_parens(getattr(self, &#34;author&#34;, None)),
+            pdf_name(&#34;keywords&#34;): enclose_in_parens(getattr(self, &#34;keywords&#34;, None)),
+            pdf_name(&#34;creator&#34;): enclose_in_parens(getattr(self, &#34;creator&#34;, None)),
+        }
 
         if hasattr(self, &#34;creation_date&#34;):
             try:
@@ -2102,9 +2100,10 @@ class FPDF:
         self._out(pdf_d(info_d, open_dict=&#34;&#34;, close_dict=&#34;&#34;, has_empty_fields=True))
 
     def _putcatalog(self):
-        catalog_d = OrderedDict()
-        catalog_d[pdf_name(&#34;type&#34;)] = pdf_name(&#34;catalog&#34;)
-        catalog_d[pdf_name(&#34;pages&#34;)] = pdf_ref(1)
+        catalog_d = {
+            pdf_name(&#34;type&#34;): pdf_name(&#34;catalog&#34;),
+            pdf_name(&#34;pages&#34;): pdf_ref(1),
+        }
 
         zoom_configs = {
             &#34;default&#34;: [&#34;/Fit&#34;],  # TODO FIXME
@@ -4424,14 +4423,13 @@ case insensitive key (the name of the new format) and 2-tuple value of
             self._out(&#34;endobj&#34;)
 
     def _putinfo(self):
-        info_d = OrderedDict()
-        info_d[pdf_name(&#34;title&#34;)] = enclose_in_parens(getattr(self, &#34;title&#34;, None))
-        info_d[pdf_name(&#34;subject&#34;)] = enclose_in_parens(getattr(self, &#34;subject&#34;, None))
-        info_d[pdf_name(&#34;author&#34;)] = enclose_in_parens(getattr(self, &#34;author&#34;, None))
-        info_d[pdf_name(&#34;keywords&#34;)] = enclose_in_parens(
-            getattr(self, &#34;keywords&#34;, None)
-        )
-        info_d[pdf_name(&#34;creator&#34;)] = enclose_in_parens(getattr(self, &#34;creator&#34;, None))
+        info_d = {
+            pdf_name(&#34;title&#34;): enclose_in_parens(getattr(self, &#34;title&#34;, None)),
+            pdf_name(&#34;subject&#34;): enclose_in_parens(getattr(self, &#34;subject&#34;, None)),
+            pdf_name(&#34;author&#34;): enclose_in_parens(getattr(self, &#34;author&#34;, None)),
+            pdf_name(&#34;keywords&#34;): enclose_in_parens(getattr(self, &#34;keywords&#34;, None)),
+            pdf_name(&#34;creator&#34;): enclose_in_parens(getattr(self, &#34;creator&#34;, None)),
+        }
 
         if hasattr(self, &#34;creation_date&#34;):
             try:
@@ -4448,9 +4446,10 @@ case insensitive key (the name of the new format) and 2-tuple value of
         self._out(pdf_d(info_d, open_dict=&#34;&#34;, close_dict=&#34;&#34;, has_empty_fields=True))
 
     def _putcatalog(self):
-        catalog_d = OrderedDict()
-        catalog_d[pdf_name(&#34;type&#34;)] = pdf_name(&#34;catalog&#34;)
-        catalog_d[pdf_name(&#34;pages&#34;)] = pdf_ref(1)
+        catalog_d = {
+            pdf_name(&#34;type&#34;): pdf_name(&#34;catalog&#34;),
+            pdf_name(&#34;pages&#34;): pdf_ref(1),
+        }
 
         zoom_configs = {
             &#34;default&#34;: [&#34;/Fit&#34;],  # TODO FIXME
