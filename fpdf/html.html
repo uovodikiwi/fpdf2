@@ -27,7 +27,7 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;HTML Renderer for FPDF.py&#34;
+<pre><code class="python">&#34;&#34;&#34;HTML Renderer for FPDF.py&#34;&#34;&#34;
 
 __author__ = &#34;Mariano Reingart &lt;reingart@gmail.com&gt;&#34;
 __copyright__ = &#34;Copyright (C) 2010 Mariano Reingart&#34;
@@ -55,7 +55,7 @@ def hex2dec(color=&#34;#000000&#34;):
 
 
 class HTML2FPDF(HTMLParser):
-    &#34;Render basic HTML to FPDF&#34;
+    &#34;&#34;&#34;Render basic HTML to FPDF&#34;&#34;&#34;
 
     def __init__(self, pdf, image_map=None, table_line_separators=False):
         &#34;&#34;&#34;
@@ -117,7 +117,7 @@ class HTML2FPDF(HTMLParser):
                 l = self.table_col_width[i : i + colspan]
             else:
                 l = [self.td.get(&#34;width&#34;, &#34;240&#34;)]
-            w = sum([self.width2mm(length) for length in l])
+            w = sum(self.width2mm(length) for length in l)
             h = int(self.td.get(&#34;height&#34;, 0)) // 4 or self.h * 1.30
             self.table_h = h
             border = int(self.table.get(&#34;border&#34;, 0))
@@ -202,7 +202,7 @@ class HTML2FPDF(HTMLParser):
     def output_table_sep(self):
         x1 = self.pdf.x
         y1 = self.pdf.y
-        width = sum([self.width2mm(length) for length in self.table_col_width])
+        width = sum(self.width2mm(length) for length in self.table_col_width)
         self.pdf.line(x1, y1, x1 + width, y1)
 
     def handle_starttag(self, tag, attrs):
@@ -218,8 +218,7 @@ class HTML2FPDF(HTMLParser):
         if tag == &#34;p&#34;:
             self.pdf.ln(self.h)
             if attrs:
-                if attrs:
-                    self.align = attrs.get(&#34;align&#34;)
+                self.align = attrs.get(&#34;align&#34;)
         if tag in self.hsize:
             k = self.hsize[tag]
             self.pdf.ln(5 * k)
@@ -304,19 +303,18 @@ class HTML2FPDF(HTMLParser):
             self.thead = {}
         if tag == &#34;tfoot&#34;:
             self.tfoot = {}
-        if tag == &#34;img&#34;:
-            if &#34;src&#34; in attrs:
-                w = px2mm(attrs.get(&#34;width&#34;, 0))
-                h = px2mm(attrs.get(&#34;height&#34;, 0))
-                if self.pdf.y + h &gt; self.pdf.page_break_trigger:
-                    self.pdf.add_page(same=True)
-                x = self.pdf.get_x()
-                y = self.pdf.get_y()
-                if self.align and self.align[0].upper() == &#34;C&#34;:
-                    x = self.pdf.w / 2 - w / 2
-                self.pdf.image(self.image_map(attrs[&#34;src&#34;]), x, y, w, h, link=self.href)
-                self.pdf.set_x(x + w)
-                self.pdf.set_y(y + h)
+        if tag == &#34;img&#34; and &#34;src&#34; in attrs:
+            w = px2mm(attrs.get(&#34;width&#34;, 0))
+            h = px2mm(attrs.get(&#34;height&#34;, 0))
+            if self.pdf.y + h &gt; self.pdf.page_break_trigger:
+                self.pdf.add_page(same=True)
+            x = self.pdf.get_x()
+            y = self.pdf.get_y()
+            if self.align and self.align[0].upper() == &#34;C&#34;:
+                x = self.pdf.w / 2 - w / 2
+            self.pdf.image(self.image_map(attrs[&#34;src&#34;]), x, y, w, h, link=self.href)
+            self.pdf.set_x(x + w)
+            self.pdf.set_y(y + h)
         if tag in (&#34;b&#34;, &#34;i&#34;, &#34;u&#34;):
             self.set_style(tag, True)
         if tag == &#34;center&#34;:
@@ -400,10 +398,7 @@ class HTML2FPDF(HTMLParser):
             self.h = size / 72 * 25.4
             if DEBUG:
                 print(&#34;H&#34;, self.h)
-        style = &#34;&#34;
-        for s in (&#34;b&#34;, &#34;i&#34;, &#34;u&#34;):
-            if self.style.get(s):
-                style += s
+        style = &#34;&#34;.join(s for s in (&#34;b&#34;, &#34;i&#34;, &#34;u&#34;) if self.style.get(s))
         self.pdf.set_font(self.font_face or &#34;times&#34;, style, self.font_size or 12)
         self.pdf.set_font_size(self.font_size or 12)
 
@@ -411,10 +406,7 @@ class HTML2FPDF(HTMLParser):
         # Modify style and select corresponding font
         if tag:
             self.style[tag.lower()] = enable
-        style = &#34;&#34;
-        for s in (&#34;b&#34;, &#34;i&#34;, &#34;u&#34;):
-            if self.style.get(s):
-                style += s
+        style = &#34;&#34;.join(s for s in (&#34;b&#34;, &#34;i&#34;, &#34;u&#34;) if self.style.get(s))
         if DEBUG:
             print(&#34;SET_FONT_STYLE&#34;, style)
         self.pdf.set_font(style=style)
@@ -440,7 +432,7 @@ class HTML2FPDF(HTMLParser):
 
 class HTMLMixin:
     def write_html(self, text, *args, **kwargs):
-        &#34;Parse HTML and convert it to PDF&#34;
+        &#34;&#34;&#34;Parse HTML and convert it to PDF&#34;&#34;&#34;
         h2p = HTML2FPDF(self, *args, **kwargs)
         text = html.unescape(text)  # To deal with HTML entities
         h2p.feed(text)</code></pre>
@@ -509,7 +501,7 @@ class HTMLMixin:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class HTML2FPDF(HTMLParser):
-    &#34;Render basic HTML to FPDF&#34;
+    &#34;&#34;&#34;Render basic HTML to FPDF&#34;&#34;&#34;
 
     def __init__(self, pdf, image_map=None, table_line_separators=False):
         &#34;&#34;&#34;
@@ -571,7 +563,7 @@ class HTMLMixin:
                 l = self.table_col_width[i : i + colspan]
             else:
                 l = [self.td.get(&#34;width&#34;, &#34;240&#34;)]
-            w = sum([self.width2mm(length) for length in l])
+            w = sum(self.width2mm(length) for length in l)
             h = int(self.td.get(&#34;height&#34;, 0)) // 4 or self.h * 1.30
             self.table_h = h
             border = int(self.table.get(&#34;border&#34;, 0))
@@ -656,7 +648,7 @@ class HTMLMixin:
     def output_table_sep(self):
         x1 = self.pdf.x
         y1 = self.pdf.y
-        width = sum([self.width2mm(length) for length in self.table_col_width])
+        width = sum(self.width2mm(length) for length in self.table_col_width)
         self.pdf.line(x1, y1, x1 + width, y1)
 
     def handle_starttag(self, tag, attrs):
@@ -672,8 +664,7 @@ class HTMLMixin:
         if tag == &#34;p&#34;:
             self.pdf.ln(self.h)
             if attrs:
-                if attrs:
-                    self.align = attrs.get(&#34;align&#34;)
+                self.align = attrs.get(&#34;align&#34;)
         if tag in self.hsize:
             k = self.hsize[tag]
             self.pdf.ln(5 * k)
@@ -758,19 +749,18 @@ class HTMLMixin:
             self.thead = {}
         if tag == &#34;tfoot&#34;:
             self.tfoot = {}
-        if tag == &#34;img&#34;:
-            if &#34;src&#34; in attrs:
-                w = px2mm(attrs.get(&#34;width&#34;, 0))
-                h = px2mm(attrs.get(&#34;height&#34;, 0))
-                if self.pdf.y + h &gt; self.pdf.page_break_trigger:
-                    self.pdf.add_page(same=True)
-                x = self.pdf.get_x()
-                y = self.pdf.get_y()
-                if self.align and self.align[0].upper() == &#34;C&#34;:
-                    x = self.pdf.w / 2 - w / 2
-                self.pdf.image(self.image_map(attrs[&#34;src&#34;]), x, y, w, h, link=self.href)
-                self.pdf.set_x(x + w)
-                self.pdf.set_y(y + h)
+        if tag == &#34;img&#34; and &#34;src&#34; in attrs:
+            w = px2mm(attrs.get(&#34;width&#34;, 0))
+            h = px2mm(attrs.get(&#34;height&#34;, 0))
+            if self.pdf.y + h &gt; self.pdf.page_break_trigger:
+                self.pdf.add_page(same=True)
+            x = self.pdf.get_x()
+            y = self.pdf.get_y()
+            if self.align and self.align[0].upper() == &#34;C&#34;:
+                x = self.pdf.w / 2 - w / 2
+            self.pdf.image(self.image_map(attrs[&#34;src&#34;]), x, y, w, h, link=self.href)
+            self.pdf.set_x(x + w)
+            self.pdf.set_y(y + h)
         if tag in (&#34;b&#34;, &#34;i&#34;, &#34;u&#34;):
             self.set_style(tag, True)
         if tag == &#34;center&#34;:
@@ -854,10 +844,7 @@ class HTMLMixin:
             self.h = size / 72 * 25.4
             if DEBUG:
                 print(&#34;H&#34;, self.h)
-        style = &#34;&#34;
-        for s in (&#34;b&#34;, &#34;i&#34;, &#34;u&#34;):
-            if self.style.get(s):
-                style += s
+        style = &#34;&#34;.join(s for s in (&#34;b&#34;, &#34;i&#34;, &#34;u&#34;) if self.style.get(s))
         self.pdf.set_font(self.font_face or &#34;times&#34;, style, self.font_size or 12)
         self.pdf.set_font_size(self.font_size or 12)
 
@@ -865,10 +852,7 @@ class HTMLMixin:
         # Modify style and select corresponding font
         if tag:
             self.style[tag.lower()] = enable
-        style = &#34;&#34;
-        for s in (&#34;b&#34;, &#34;i&#34;, &#34;u&#34;):
-            if self.style.get(s):
-                style += s
+        style = &#34;&#34;.join(s for s in (&#34;b&#34;, &#34;i&#34;, &#34;u&#34;) if self.style.get(s))
         if DEBUG:
             print(&#34;SET_FONT_STYLE&#34;, style)
         self.pdf.set_font(style=style)
@@ -955,7 +939,7 @@ class HTMLMixin:
             l = self.table_col_width[i : i + colspan]
         else:
             l = [self.td.get(&#34;width&#34;, &#34;240&#34;)]
-        w = sum([self.width2mm(length) for length in l])
+        w = sum(self.width2mm(length) for length in l)
         h = int(self.td.get(&#34;height&#34;, 0)) // 4 or self.h * 1.30
         self.table_h = h
         border = int(self.table.get(&#34;border&#34;, 0))
@@ -1104,8 +1088,7 @@ class HTMLMixin:
     if tag == &#34;p&#34;:
         self.pdf.ln(self.h)
         if attrs:
-            if attrs:
-                self.align = attrs.get(&#34;align&#34;)
+            self.align = attrs.get(&#34;align&#34;)
     if tag in self.hsize:
         k = self.hsize[tag]
         self.pdf.ln(5 * k)
@@ -1190,19 +1173,18 @@ class HTMLMixin:
         self.thead = {}
     if tag == &#34;tfoot&#34;:
         self.tfoot = {}
-    if tag == &#34;img&#34;:
-        if &#34;src&#34; in attrs:
-            w = px2mm(attrs.get(&#34;width&#34;, 0))
-            h = px2mm(attrs.get(&#34;height&#34;, 0))
-            if self.pdf.y + h &gt; self.pdf.page_break_trigger:
-                self.pdf.add_page(same=True)
-            x = self.pdf.get_x()
-            y = self.pdf.get_y()
-            if self.align and self.align[0].upper() == &#34;C&#34;:
-                x = self.pdf.w / 2 - w / 2
-            self.pdf.image(self.image_map(attrs[&#34;src&#34;]), x, y, w, h, link=self.href)
-            self.pdf.set_x(x + w)
-            self.pdf.set_y(y + h)
+    if tag == &#34;img&#34; and &#34;src&#34; in attrs:
+        w = px2mm(attrs.get(&#34;width&#34;, 0))
+        h = px2mm(attrs.get(&#34;height&#34;, 0))
+        if self.pdf.y + h &gt; self.pdf.page_break_trigger:
+            self.pdf.add_page(same=True)
+        x = self.pdf.get_x()
+        y = self.pdf.get_y()
+        if self.align and self.align[0].upper() == &#34;C&#34;:
+            x = self.pdf.w / 2 - w / 2
+        self.pdf.image(self.image_map(attrs[&#34;src&#34;]), x, y, w, h, link=self.href)
+        self.pdf.set_x(x + w)
+        self.pdf.set_y(y + h)
     if tag in (&#34;b&#34;, &#34;i&#34;, &#34;u&#34;):
         self.set_style(tag, True)
     if tag == &#34;center&#34;:
@@ -1268,7 +1250,7 @@ class HTMLMixin:
 <pre><code class="python">def output_table_sep(self):
     x1 = self.pdf.x
     y1 = self.pdf.y
-    width = sum([self.width2mm(length) for length in self.table_col_width])
+    width = sum(self.width2mm(length) for length in self.table_col_width)
     self.pdf.line(x1, y1, x1 + width, y1)</code></pre>
 </details>
 </dd>
@@ -1307,10 +1289,7 @@ class HTMLMixin:
         self.h = size / 72 * 25.4
         if DEBUG:
             print(&#34;H&#34;, self.h)
-    style = &#34;&#34;
-    for s in (&#34;b&#34;, &#34;i&#34;, &#34;u&#34;):
-        if self.style.get(s):
-            style += s
+    style = &#34;&#34;.join(s for s in (&#34;b&#34;, &#34;i&#34;, &#34;u&#34;) if self.style.get(s))
     self.pdf.set_font(self.font_face or &#34;times&#34;, style, self.font_size or 12)
     self.pdf.set_font_size(self.font_size or 12)</code></pre>
 </details>
@@ -1328,10 +1307,7 @@ class HTMLMixin:
     # Modify style and select corresponding font
     if tag:
         self.style[tag.lower()] = enable
-    style = &#34;&#34;
-    for s in (&#34;b&#34;, &#34;i&#34;, &#34;u&#34;):
-        if self.style.get(s):
-            style += s
+    style = &#34;&#34;.join(s for s in (&#34;b&#34;, &#34;i&#34;, &#34;u&#34;) if self.style.get(s))
     if DEBUG:
         print(&#34;SET_FONT_STYLE&#34;, style)
     self.pdf.set_font(style=style)</code></pre>
@@ -1384,7 +1360,7 @@ class HTMLMixin:
 </summary>
 <pre><code class="python">class HTMLMixin:
     def write_html(self, text, *args, **kwargs):
-        &#34;Parse HTML and convert it to PDF&#34;
+        &#34;&#34;&#34;Parse HTML and convert it to PDF&#34;&#34;&#34;
         h2p = HTML2FPDF(self, *args, **kwargs)
         text = html.unescape(text)  # To deal with HTML entities
         h2p.feed(text)</code></pre>
@@ -1401,7 +1377,7 @@ class HTMLMixin:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def write_html(self, text, *args, **kwargs):
-    &#34;Parse HTML and convert it to PDF&#34;
+    &#34;&#34;&#34;Parse HTML and convert it to PDF&#34;&#34;&#34;
     h2p = HTML2FPDF(self, *args, **kwargs)
     text = html.unescape(text)  # To deal with HTML entities
     h2p.feed(text)</code></pre>

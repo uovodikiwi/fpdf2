@@ -27,13 +27,15 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;PDF Template Helper for FPDF.py&#34;
+<pre><code class="python">&#34;&#34;&#34;PDF Template Helper for FPDF.py&#34;&#34;&#34;
 
 __author__ = &#34;Mariano Reingart &lt;reingart@gmail.com&gt;&#34;
 __copyright__ = &#34;Copyright (C) 2010 Mariano Reingart&#34;
 __license__ = &#34;LGPL 3.0&#34;
 
-import csv, warnings
+import csv
+import warnings
+
 from .fpdf import FPDF
 
 
@@ -84,13 +86,13 @@ class Template:
         pdf.set_keywords(keywords)
 
     def load_elements(self, elements):
-        &#34;Initialize the internal element structures&#34;
+        &#34;&#34;&#34;Initialize the internal element structures&#34;&#34;&#34;
         self.pg_no = 0
         self.elements = elements
         self.keys = [v[&#34;name&#34;].lower() for v in self.elements]
 
     def parse_csv(self, infile, delimiter=&#34;,&#34;, decimal_sep=&#34;.&#34;):
-        &#34;Parse template format csv file and create elements dict&#34;
+        &#34;&#34;&#34;Parse template format csv file and create elements dict&#34;&#34;&#34;
         keys = (
             &#34;name&#34;,
             &#34;type&#34;,
@@ -128,20 +130,14 @@ class Template:
 
     def __setitem__(self, name, value):
         if name.lower() in self.keys:
-            if value is None:
-                value = &#34;&#34;
-            else:
-                value = str(value)
+            value = &#34;&#34; if value is None else str(value)
             self.texts[self.pg_no][name.lower()] = value
 
     # setitem shortcut (may be further extended)
     set = __setitem__
 
-    def has_key(self, name):
-        return name.lower() in self.keys
-
     def __contains__(self, name):
-        return self.has_key(name)
+        return name.lower() in self.keys
 
     def __getitem__(self, name):
         if name in self.keys:
@@ -158,7 +154,7 @@ class Template:
         return None
 
     def split_multicell(self, text, element_name):
-        &#34;Divide (\n) a string using a given element width&#34;
+        &#34;&#34;&#34;Divide (\n) a string using a given element width&#34;&#34;&#34;
         pdf = self.pdf
         element = [
             element
@@ -237,46 +233,47 @@ class Template:
         multiline=None,
         **__,
     ):
-        if text:
-            if pdf.text_color != rgb(foreground):
-                pdf.set_text_color(*rgb(foreground))
-            if pdf.fill_color != rgb(backgroud):
-                pdf.set_fill_color(*rgb(backgroud))
+        if not text:
+            return
+        if pdf.text_color != rgb(foreground):
+            pdf.set_text_color(*rgb(foreground))
+        if pdf.fill_color != rgb(backgroud):
+            pdf.set_fill_color(*rgb(backgroud))
 
-            font = font.strip().lower()
-            if font == &#34;helvetica black&#34;:
-                font = &#34;helvetica&#34;
-            style = &#34;&#34;
-            for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
-                if text.startswith(f&#34;&lt;{tag}&gt;&#34;) and text.endswith(f&#34;&lt;/{tag}&gt;&#34;):
-                    text = text[3:-4]
-                    style += tag
-            if bold:
-                style += &#34;B&#34;
-            if italic:
-                style += &#34;I&#34;
-            if underline:
-                style += &#34;U&#34;
-            align = {&#34;L&#34;: &#34;L&#34;, &#34;R&#34;: &#34;R&#34;, &#34;I&#34;: &#34;L&#34;, &#34;D&#34;: &#34;R&#34;, &#34;C&#34;: &#34;C&#34;, &#34;&#34;: &#34;&#34;}.get(
-                align
-            )  # D/I in spanish
-            pdf.set_font(font, style, size)
-            ##m_k = 72 / 2.54
-            ##h = (size/m_k)
-            pdf.set_xy(x1, y1)
-            if multiline is None:
-                # multiline==None: write without wrapping/trimming (default)
-                pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
-            elif multiline:
-                # multiline==True: automatic word - warp
-                pdf.multi_cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, align=align)
-            else:
-                # multiline==False: trim to fit exactly the space defined
-                text = pdf.multi_cell(
-                    w=x2 - x1, h=y2 - y1, txt=text, align=align, split_only=True
-                )[0]
-                print(f&#34;trimming: *{text}*&#34;)
-                pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
+        font = font.strip().lower()
+        if font == &#34;helvetica black&#34;:
+            font = &#34;helvetica&#34;
+        style = &#34;&#34;
+        for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
+            if text.startswith(f&#34;&lt;{tag}&gt;&#34;) and text.endswith(f&#34;&lt;/{tag}&gt;&#34;):
+                text = text[3:-4]
+                style += tag
+        if bold:
+            style += &#34;B&#34;
+        if italic:
+            style += &#34;I&#34;
+        if underline:
+            style += &#34;U&#34;
+        align = {&#34;L&#34;: &#34;L&#34;, &#34;R&#34;: &#34;R&#34;, &#34;I&#34;: &#34;L&#34;, &#34;D&#34;: &#34;R&#34;, &#34;C&#34;: &#34;C&#34;, &#34;&#34;: &#34;&#34;}.get(
+            align
+        )  # D/I in spanish
+        pdf.set_font(font, style, size)
+        # m_k = 72 / 2.54
+        # h = (size/m_k)
+        pdf.set_xy(x1, y1)
+        if multiline is None:
+            # multiline==None: write without wrapping/trimming (default)
+            pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
+        elif multiline:
+            # multiline==True: automatic word - warp
+            pdf.multi_cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, align=align)
+        else:
+            # multiline==False: trim to fit exactly the space defined
+            text = pdf.multi_cell(
+                w=x2 - x1, h=y2 - y1, txt=text, align=align, split_only=True
+            )[0]
+            print(f&#34;trimming: *{text}*&#34;)
+            pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
 
             # pdf.Text(x=x1,y=y1,txt=text)
 
@@ -367,8 +364,8 @@ class Template:
             align
         )  # D/I in spanish
         pdf.set_font(font, style, size)
-        ##m_k = 72 / 2.54
-        ##h = (size/m_k)
+        # m_k = 72 / 2.54
+        # h = (size/m_k)
         pdf.set_xy(x1, y1)
         pdf.write(5, text, link)</code></pre>
 </details>
@@ -455,13 +452,13 @@ class Template:
         pdf.set_keywords(keywords)
 
     def load_elements(self, elements):
-        &#34;Initialize the internal element structures&#34;
+        &#34;&#34;&#34;Initialize the internal element structures&#34;&#34;&#34;
         self.pg_no = 0
         self.elements = elements
         self.keys = [v[&#34;name&#34;].lower() for v in self.elements]
 
     def parse_csv(self, infile, delimiter=&#34;,&#34;, decimal_sep=&#34;.&#34;):
-        &#34;Parse template format csv file and create elements dict&#34;
+        &#34;&#34;&#34;Parse template format csv file and create elements dict&#34;&#34;&#34;
         keys = (
             &#34;name&#34;,
             &#34;type&#34;,
@@ -499,20 +496,14 @@ class Template:
 
     def __setitem__(self, name, value):
         if name.lower() in self.keys:
-            if value is None:
-                value = &#34;&#34;
-            else:
-                value = str(value)
+            value = &#34;&#34; if value is None else str(value)
             self.texts[self.pg_no][name.lower()] = value
 
     # setitem shortcut (may be further extended)
     set = __setitem__
 
-    def has_key(self, name):
-        return name.lower() in self.keys
-
     def __contains__(self, name):
-        return self.has_key(name)
+        return name.lower() in self.keys
 
     def __getitem__(self, name):
         if name in self.keys:
@@ -529,7 +520,7 @@ class Template:
         return None
 
     def split_multicell(self, text, element_name):
-        &#34;Divide (\n) a string using a given element width&#34;
+        &#34;&#34;&#34;Divide (\n) a string using a given element width&#34;&#34;&#34;
         pdf = self.pdf
         element = [
             element
@@ -608,46 +599,47 @@ class Template:
         multiline=None,
         **__,
     ):
-        if text:
-            if pdf.text_color != rgb(foreground):
-                pdf.set_text_color(*rgb(foreground))
-            if pdf.fill_color != rgb(backgroud):
-                pdf.set_fill_color(*rgb(backgroud))
+        if not text:
+            return
+        if pdf.text_color != rgb(foreground):
+            pdf.set_text_color(*rgb(foreground))
+        if pdf.fill_color != rgb(backgroud):
+            pdf.set_fill_color(*rgb(backgroud))
 
-            font = font.strip().lower()
-            if font == &#34;helvetica black&#34;:
-                font = &#34;helvetica&#34;
-            style = &#34;&#34;
-            for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
-                if text.startswith(f&#34;&lt;{tag}&gt;&#34;) and text.endswith(f&#34;&lt;/{tag}&gt;&#34;):
-                    text = text[3:-4]
-                    style += tag
-            if bold:
-                style += &#34;B&#34;
-            if italic:
-                style += &#34;I&#34;
-            if underline:
-                style += &#34;U&#34;
-            align = {&#34;L&#34;: &#34;L&#34;, &#34;R&#34;: &#34;R&#34;, &#34;I&#34;: &#34;L&#34;, &#34;D&#34;: &#34;R&#34;, &#34;C&#34;: &#34;C&#34;, &#34;&#34;: &#34;&#34;}.get(
-                align
-            )  # D/I in spanish
-            pdf.set_font(font, style, size)
-            ##m_k = 72 / 2.54
-            ##h = (size/m_k)
-            pdf.set_xy(x1, y1)
-            if multiline is None:
-                # multiline==None: write without wrapping/trimming (default)
-                pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
-            elif multiline:
-                # multiline==True: automatic word - warp
-                pdf.multi_cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, align=align)
-            else:
-                # multiline==False: trim to fit exactly the space defined
-                text = pdf.multi_cell(
-                    w=x2 - x1, h=y2 - y1, txt=text, align=align, split_only=True
-                )[0]
-                print(f&#34;trimming: *{text}*&#34;)
-                pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
+        font = font.strip().lower()
+        if font == &#34;helvetica black&#34;:
+            font = &#34;helvetica&#34;
+        style = &#34;&#34;
+        for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
+            if text.startswith(f&#34;&lt;{tag}&gt;&#34;) and text.endswith(f&#34;&lt;/{tag}&gt;&#34;):
+                text = text[3:-4]
+                style += tag
+        if bold:
+            style += &#34;B&#34;
+        if italic:
+            style += &#34;I&#34;
+        if underline:
+            style += &#34;U&#34;
+        align = {&#34;L&#34;: &#34;L&#34;, &#34;R&#34;: &#34;R&#34;, &#34;I&#34;: &#34;L&#34;, &#34;D&#34;: &#34;R&#34;, &#34;C&#34;: &#34;C&#34;, &#34;&#34;: &#34;&#34;}.get(
+            align
+        )  # D/I in spanish
+        pdf.set_font(font, style, size)
+        # m_k = 72 / 2.54
+        # h = (size/m_k)
+        pdf.set_xy(x1, y1)
+        if multiline is None:
+            # multiline==None: write without wrapping/trimming (default)
+            pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
+        elif multiline:
+            # multiline==True: automatic word - warp
+            pdf.multi_cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, align=align)
+        else:
+            # multiline==False: trim to fit exactly the space defined
+            text = pdf.multi_cell(
+                w=x2 - x1, h=y2 - y1, txt=text, align=align, split_only=True
+            )[0]
+            print(f&#34;trimming: *{text}*&#34;)
+            pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
 
             # pdf.Text(x=x1,y=y1,txt=text)
 
@@ -738,8 +730,8 @@ class Template:
             align
         )  # D/I in spanish
         pdf.set_font(font, style, size)
-        ##m_k = 72 / 2.54
-        ##h = (size/m_k)
+        # m_k = 72 / 2.54
+        # h = (size/m_k)
         pdf.set_xy(x1, y1)
         pdf.write(5, text, link)</code></pre>
 </details>
@@ -860,46 +852,47 @@ def text(
     multiline=None,
     **__,
 ):
-    if text:
-        if pdf.text_color != rgb(foreground):
-            pdf.set_text_color(*rgb(foreground))
-        if pdf.fill_color != rgb(backgroud):
-            pdf.set_fill_color(*rgb(backgroud))
+    if not text:
+        return
+    if pdf.text_color != rgb(foreground):
+        pdf.set_text_color(*rgb(foreground))
+    if pdf.fill_color != rgb(backgroud):
+        pdf.set_fill_color(*rgb(backgroud))
 
-        font = font.strip().lower()
-        if font == &#34;helvetica black&#34;:
-            font = &#34;helvetica&#34;
-        style = &#34;&#34;
-        for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
-            if text.startswith(f&#34;&lt;{tag}&gt;&#34;) and text.endswith(f&#34;&lt;/{tag}&gt;&#34;):
-                text = text[3:-4]
-                style += tag
-        if bold:
-            style += &#34;B&#34;
-        if italic:
-            style += &#34;I&#34;
-        if underline:
-            style += &#34;U&#34;
-        align = {&#34;L&#34;: &#34;L&#34;, &#34;R&#34;: &#34;R&#34;, &#34;I&#34;: &#34;L&#34;, &#34;D&#34;: &#34;R&#34;, &#34;C&#34;: &#34;C&#34;, &#34;&#34;: &#34;&#34;}.get(
-            align
-        )  # D/I in spanish
-        pdf.set_font(font, style, size)
-        ##m_k = 72 / 2.54
-        ##h = (size/m_k)
-        pdf.set_xy(x1, y1)
-        if multiline is None:
-            # multiline==None: write without wrapping/trimming (default)
-            pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
-        elif multiline:
-            # multiline==True: automatic word - warp
-            pdf.multi_cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, align=align)
-        else:
-            # multiline==False: trim to fit exactly the space defined
-            text = pdf.multi_cell(
-                w=x2 - x1, h=y2 - y1, txt=text, align=align, split_only=True
-            )[0]
-            print(f&#34;trimming: *{text}*&#34;)
-            pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
+    font = font.strip().lower()
+    if font == &#34;helvetica black&#34;:
+        font = &#34;helvetica&#34;
+    style = &#34;&#34;
+    for tag in &#34;B&#34;, &#34;I&#34;, &#34;U&#34;:
+        if text.startswith(f&#34;&lt;{tag}&gt;&#34;) and text.endswith(f&#34;&lt;/{tag}&gt;&#34;):
+            text = text[3:-4]
+            style += tag
+    if bold:
+        style += &#34;B&#34;
+    if italic:
+        style += &#34;I&#34;
+    if underline:
+        style += &#34;U&#34;
+    align = {&#34;L&#34;: &#34;L&#34;, &#34;R&#34;: &#34;R&#34;, &#34;I&#34;: &#34;L&#34;, &#34;D&#34;: &#34;R&#34;, &#34;C&#34;: &#34;C&#34;, &#34;&#34;: &#34;&#34;}.get(
+        align
+    )  # D/I in spanish
+    pdf.set_font(font, style, size)
+    # m_k = 72 / 2.54
+    # h = (size/m_k)
+    pdf.set_xy(x1, y1)
+    if multiline is None:
+        # multiline==None: write without wrapping/trimming (default)
+        pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
+    elif multiline:
+        # multiline==True: automatic word - warp
+        pdf.multi_cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, align=align)
+    else:
+        # multiline==False: trim to fit exactly the space defined
+        text = pdf.multi_cell(
+            w=x2 - x1, h=y2 - y1, txt=text, align=align, split_only=True
+        )[0]
+        print(f&#34;trimming: *{text}*&#34;)
+        pdf.cell(w=x2 - x1, h=y2 - y1, txt=text, border=0, ln=0, align=align)
 
         # pdf.Text(x=x1,y=y1,txt=text)</code></pre>
 </details>
@@ -953,8 +946,8 @@ def write(
         align
     )  # D/I in spanish
     pdf.set_font(font, style, size)
-    ##m_k = 72 / 2.54
-    ##h = (size/m_k)
+    # m_k = 72 / 2.54
+    # h = (size/m_k)
     pdf.set_xy(x1, y1)
     pdf.write(5, text, link)</code></pre>
 </details>
@@ -976,19 +969,6 @@ def write(
     self.texts[self.pg_no] = {}</code></pre>
 </details>
 </dd>
-<dt id="fpdf.template.Template.has_key"><code class="name flex">
-<span>def <span class="ident">has_key</span></span>(<span>self, name)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def has_key(self, name):
-    return name.lower() in self.keys</code></pre>
-</details>
-</dd>
 <dt id="fpdf.template.Template.load_elements"><code class="name flex">
 <span>def <span class="ident">load_elements</span></span>(<span>self, elements)</span>
 </code></dt>
@@ -999,7 +979,7 @@ def write(
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def load_elements(self, elements):
-    &#34;Initialize the internal element structures&#34;
+    &#34;&#34;&#34;Initialize the internal element structures&#34;&#34;&#34;
     self.pg_no = 0
     self.elements = elements
     self.keys = [v[&#34;name&#34;].lower() for v in self.elements]</code></pre>
@@ -1015,7 +995,7 @@ def write(
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def parse_csv(self, infile, delimiter=&#34;,&#34;, decimal_sep=&#34;.&#34;):
-    &#34;Parse template format csv file and create elements dict&#34;
+    &#34;&#34;&#34;Parse template format csv file and create elements dict&#34;&#34;&#34;
     keys = (
         &#34;name&#34;,
         &#34;type&#34;,
@@ -1108,10 +1088,7 @@ If ommited, the <code>.pdf.output(&hellip;)</code> method can be manuallyy calle
 </summary>
 <pre><code class="python">def __setitem__(self, name, value):
     if name.lower() in self.keys:
-        if value is None:
-            value = &#34;&#34;
-        else:
-            value = str(value)
+        value = &#34;&#34; if value is None else str(value)
         self.texts[self.pg_no][name.lower()] = value</code></pre>
 </details>
 </dd>
@@ -1126,7 +1103,7 @@ If ommited, the <code>.pdf.output(&hellip;)</code> method can be manuallyy calle
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def split_multicell(self, text, element_name):
-    &#34;Divide (\n) a string using a given element width&#34;
+    &#34;&#34;&#34;Divide (\n) a string using a given element width&#34;&#34;&#34;
     pdf = self.pdf
     element = [
         element
@@ -1182,7 +1159,6 @@ If ommited, the <code>.pdf.output(&hellip;)</code> method can be manuallyy calle
 <ul class="two-column">
 <li><code><a title="fpdf.template.Template.add_page" href="#fpdf.template.Template.add_page">add_page</a></code></li>
 <li><code><a title="fpdf.template.Template.barcode" href="#fpdf.template.Template.barcode">barcode</a></code></li>
-<li><code><a title="fpdf.template.Template.has_key" href="#fpdf.template.Template.has_key">has_key</a></code></li>
 <li><code><a title="fpdf.template.Template.image" href="#fpdf.template.Template.image">image</a></code></li>
 <li><code><a title="fpdf.template.Template.line" href="#fpdf.template.Template.line">line</a></code></li>
 <li><code><a title="fpdf.template.Template.load_elements" href="#fpdf.template.Template.load_elements">load_elements</a></code></li>

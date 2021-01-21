@@ -171,8 +171,8 @@ def create_dictionary_string(
     &#34;&#34;&#34;format dictionary as PDF dictionary
 
     @param dict_: dictionary of values to render
-    @param open: string to open PDF dictionary
-    @param close: string to close PDF dictionary
+    @param open_dict: string to open PDF dictionary
+    @param close_dict: string to close PDF dictionary
     @param field_join: string to join fields with
     @param key_value_join: string to join key to value with
     @param has_empty_fields: whether or not to clear_empty_fields first.
@@ -200,7 +200,7 @@ def iobj_ref(n):
 
 
 def create_stream(stream):
-    if type(stream) in (bytearray, bytes):
+    if isinstance(stream, (bytearray, bytes)):
         stream = str(stream, &#34;latin-1&#34;)
     return &#34;\n&#34;.join([&#34;stream&#34;, stream, &#34;endstream&#34;])
 
@@ -238,8 +238,8 @@ if __name__ == &#34;__main__&#34;:
 <dd>
 <div class="desc"><p>format dictionary as PDF dictionary</p>
 <p>@param dict_: dictionary of values to render
-@param open: string to open PDF dictionary
-@param close: string to close PDF dictionary
+@param open_dict: string to open PDF dictionary
+@param close_dict: string to close PDF dictionary
 @param field_join: string to join fields with
 @param key_value_join: string to join key to value with
 @param has_empty_fields: whether or not to clear_empty_fields first.</p></div>
@@ -258,8 +258,8 @@ if __name__ == &#34;__main__&#34;:
     &#34;&#34;&#34;format dictionary as PDF dictionary
 
     @param dict_: dictionary of values to render
-    @param open: string to open PDF dictionary
-    @param close: string to close PDF dictionary
+    @param open_dict: string to open PDF dictionary
+    @param close_dict: string to close PDF dictionary
     @param field_join: string to join fields with
     @param key_value_join: string to join key to value with
     @param has_empty_fields: whether or not to clear_empty_fields first.
@@ -315,7 +315,7 @@ if __name__ == &#34;__main__&#34;:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def create_stream(stream):
-    if type(stream) in (bytearray, bytes):
+    if isinstance(stream, (bytearray, bytes)):
         stream = str(stream, &#34;latin-1&#34;)
     return &#34;\n&#34;.join([&#34;stream&#34;, stream, &#34;endstream&#34;])</code></pre>
 </details>

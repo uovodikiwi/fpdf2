@@ -1356,7 +1356,7 @@ illustrates the use of colors.</p>
         <span class="c1"># Thickness of frame (1 mm)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_line_width</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="c1"># Title</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="c1"># Line break</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ln</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 
@@ -1376,7 +1376,7 @@ illustrates the use of colors.</p>
         <span class="c1"># Background color</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_fill_color</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">220</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
         <span class="c1"># Title</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;Chapter </span><span class="si">%d</span><span class="s1"> : </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">label</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Chapter </span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s1"> : </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="c1"># Line break</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ln</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 

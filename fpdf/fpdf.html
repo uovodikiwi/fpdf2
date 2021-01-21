@@ -46,10 +46,6 @@ This module contains FPDF class inspiring this library.
 The version number is updated here (above and below in variable).
 &#34;&#34;&#34;
 
-from contextlib import contextmanager
-from datetime import datetime
-from functools import wraps
-from uuid import uuid4
 import errno
 import logging
 import math
@@ -58,7 +54,11 @@ import pickle
 import re
 import warnings
 import zlib
+from contextlib import contextmanager
+from datetime import datetime
+from functools import wraps
 from hashlib import md5
+from uuid import uuid4
 
 from .errors import FPDFException, FPDFPageFormatException
 from .fonts import fpdf_charwidths
@@ -70,11 +70,11 @@ from .util import (
     substr,
 )
 from .util.syntax import (
-    create_name as pdf_name,
     create_dictionary_string as pdf_d,
     create_list_string as pdf_l,
-    iobj_ref as pdf_ref,
+    create_name as pdf_name,
     create_stream as pdf_stream,
+    iobj_ref as pdf_ref,
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -127,7 +127,7 @@ def get_page_format(format, k=None):
         raise FPDFPageFormatException(format, one=True)
 
     try:
-        return (format[0] * k, format[1] * k)
+        return format[0] * k, format[1] * k
     except Exception as e:
         args = f&#34;{format}, {k}&#34;
         raise FPDFPageFormatException(f&#34;Arguments must be numbers: {args}&#34;) from e
@@ -146,7 +146,7 @@ def load_cache(filename):
 
 
 def check_page(fn):
-    &#34;Decorator to protect drawing methods&#34;
+    &#34;&#34;&#34;Decorator to protect drawing methods&#34;&#34;&#34;
 
     @wraps(fn)
     def wrapper(self, *args, **kwargs):
@@ -158,7 +158,7 @@ def check_page(fn):
 
 
 class FPDF:
-    &#34;PDF Generation class&#34;
+    &#34;&#34;&#34;PDF Generation class&#34;&#34;&#34;
 
     def __init__(self, orientation=&#34;P&#34;, unit=&#34;mm&#34;, format=&#34;A4&#34;):
         # Initialization of properties
@@ -253,7 +253,7 @@ class FPDF:
         self.pdf_version = &#34;1.3&#34;  # Set default PDF version No.
 
     def set_margins(self, left, top, right=-1):
-        &#34;Set left, top and right margins&#34;
+        &#34;&#34;&#34;Set left, top and right margins&#34;&#34;&#34;
         self.l_margin = left
         self.t_margin = top
         if right == -1:
@@ -261,21 +261,21 @@ class FPDF:
         self.r_margin = right
 
     def set_left_margin(self, margin):
-        &#34;Set left margin&#34;
+        &#34;&#34;&#34;Set left margin&#34;&#34;&#34;
         self.l_margin = margin
         if self.page &gt; 0 and self.x &lt; margin:
             self.x = margin
 
     def set_top_margin(self, margin):
-        &#34;Set top margin&#34;
+        &#34;&#34;&#34;Set top margin&#34;&#34;&#34;
         self.t_margin = margin
 
     def set_right_margin(self, margin):
-        &#34;Set right margin&#34;
+        &#34;&#34;&#34;Set right margin&#34;&#34;&#34;
         self.r_margin = margin
 
     def set_auto_page_break(self, auto, margin=0):
-        &#34;Set auto page break mode and triggering margin&#34;
+        &#34;&#34;&#34;Set auto page break mode and triggering margin&#34;&#34;&#34;
         self.auto_page_break = auto
         self.b_margin = margin
         self.page_break_trigger = self.h - margin
@@ -286,9 +286,9 @@ class FPDF:
         The &#34;zoom&#34; argument may be &#39;fullpage&#39;, &#39;fullwidth&#39;, &#39;real&#39;,
         &#39;default&#39;, or a number, interpreted as a percentage.
         &#34;&#34;&#34;
-        if zoom in [&#34;fullpage&#34;, &#34;fullwidth&#34;, &#34;real&#34;, &#34;default&#34;]:
-            self.zoom_mode = zoom
-        elif not isinstance(zoom, str):
+        if zoom in [&#34;fullpage&#34;, &#34;fullwidth&#34;, &#34;real&#34;, &#34;default&#34;] or not isinstance(
+            zoom, str
+        ):
             self.zoom_mode = zoom
         else:
             raise FPDFException(f&#34;Incorrect zoom display mode: {zoom}&#34;)
@@ -299,27 +299,27 @@ class FPDF:
             raise FPDFException(f&#34;Incorrect layout display mode: {layout}&#34;)
 
     def set_compression(self, compress):
-        &#34;Set page compression&#34;
+        &#34;&#34;&#34;Set page compression&#34;&#34;&#34;
         self.compress = compress
 
     def set_title(self, title):
-        &#34;Title of document&#34;
+        &#34;&#34;&#34;Title of document&#34;&#34;&#34;
         self.title = title
 
     def set_subject(self, subject):
-        &#34;Subject of document&#34;
+        &#34;&#34;&#34;Subject of document&#34;&#34;&#34;
         self.subject = subject
 
     def set_author(self, author):
-        &#34;Author of document&#34;
+        &#34;&#34;&#34;Author of document&#34;&#34;&#34;
         self.author = author
 
     def set_keywords(self, keywords):
-        &#34;Keywords of document&#34;
+        &#34;&#34;&#34;Keywords of document&#34;&#34;&#34;
         self.keywords = keywords
 
     def set_creator(self, creator):
-        &#34;Creator of document&#34;
+        &#34;&#34;&#34;Creator of document&#34;&#34;&#34;
         self.creator = creator
 
     def set_creation_date(self, date=None):
@@ -327,22 +327,22 @@ class FPDF:
         self.creation_date = datetime.now() if date is None else date
 
     def set_doc_option(self, opt, value):
-        &#34;Set document option&#34;
+        &#34;&#34;&#34;Set document option&#34;&#34;&#34;
         if opt == &#34;core_fonts_encoding&#34;:
             self.core_fonts_encoding = value
         else:
             raise FPDFException(f&#39;Unknown document option &#34;{opt}&#34;&#39;)
 
     def alias_nb_pages(self, alias):
-        &#34;Define an alias for total number of pages&#34;
+        &#34;&#34;&#34;Define an alias for total number of pages&#34;&#34;&#34;
         self.str_alias_nb_pages = alias
 
     def open(self):
-        &#34;Begin document&#34;
+        &#34;&#34;&#34;Begin document&#34;&#34;&#34;
         self.state = 1
 
     def close(self):
-        &#34;Terminate document&#34;
+        &#34;&#34;&#34;Terminate document&#34;&#34;&#34;
         if self.state == 3:
             return
         if self.page == 0:
@@ -357,7 +357,7 @@ class FPDF:
         self._enddoc()  # close document
 
     def add_page(self, orientation=&#34;&#34;, format=&#34;&#34;, same=False):
-        &#34;Start a new page, if same page format will be same as previous&#34;
+        &#34;&#34;&#34;Start a new page, if same page format will be same as previous&#34;&#34;&#34;
         if self.state == 0:
             self.open()
         family = self.font_family
@@ -421,17 +421,17 @@ class FPDF:
         # END Page header
 
     def header(self):
-        &#34;Header to be implemented in your own inherited class&#34;
+        &#34;&#34;&#34;Header to be implemented in your own inherited class&#34;&#34;&#34;
 
     def footer(self):
-        &#34;Footer to be implemented in your own inherited class&#34;
+        &#34;&#34;&#34;Footer to be implemented in your own inherited class&#34;&#34;&#34;
 
     def page_no(self):
-        &#34;Get current page number&#34;
+        &#34;&#34;&#34;Get current page number&#34;&#34;&#34;
         return self.page
 
     def set_draw_color(self, r, g=-1, b=-1):
-        &#34;Set color for all stroking operations&#34;
+        &#34;&#34;&#34;Set color for all stroking operations&#34;&#34;&#34;
         if (r == 0 and g == 0 and b == 0) or g == -1:
             self.draw_color = f&#34;{r / 255:.3f} G&#34;
         else:
@@ -440,7 +440,7 @@ class FPDF:
             self._out(self.draw_color)
 
     def set_fill_color(self, r, g=-1, b=-1):
-        &#34;Set color for all filling operations&#34;
+        &#34;&#34;&#34;Set color for all filling operations&#34;&#34;&#34;
         if (r == 0 and g == 0 and b == 0) or g == -1:
             self.fill_color = f&#34;{r / 255:.3f} g&#34;
         else:
@@ -450,7 +450,7 @@ class FPDF:
             self._out(self.fill_color)
 
     def set_text_color(self, r, g=-1, b=-1):
-        &#34;Set color for text&#34;
+        &#34;&#34;&#34;Set color for text&#34;&#34;&#34;
         if (r == 0 and g == 0 and b == 0) or g == -1:
             self.text_color = f&#34;{r / 255:.3f} g&#34;
         else:
@@ -458,7 +458,7 @@ class FPDF:
         self.color_flag = self.fill_color != self.text_color
 
     def get_string_width(self, s, normalized=False):
-        &#34;Get width of a string in the current font&#34;
+        &#34;&#34;&#34;Get width of a string in the current font&#34;&#34;&#34;
         # normalized is parameter for internal use
         s = s if normalized else self.normalize_text(s)
         cw = self.current_font[&#34;cw&#34;]
@@ -479,21 +479,17 @@ class FPDF:
         return w * self.font_size / 1000
 
     def set_line_width(self, width):
-        &#34;Set line width&#34;
+        &#34;&#34;&#34;Set line width&#34;&#34;&#34;
         self.line_width = width
         if self.page &gt; 0:
             self._out(f&#34;{width * self.k:.2f} w&#34;)
 
     @check_page
     def line(self, x1, y1, x2, y2):
-        &#34;Draw a line&#34;
+        &#34;&#34;&#34;Draw a line&#34;&#34;&#34;
         self._out(
-            &#34;{:.2f} {:.2f} m {:.2f} {:.2f} l S&#34;.format(
-                x1 * self.k,
-                (self.h - y1) * self.k,
-                x2 * self.k,
-                (self.h - y2) * self.k,
-            )
+            f&#34;{x1 * self.k:.2f} {(self.h - y1) * self.k:.2f} m {x2 * self.k:.2f} &#34;
+            f&#34;{(self.h - y2) * self.k:.2f} l S&#34;
         )
 
     def _set_dash(self, dash_length=False, space_length=False):
@@ -514,22 +510,17 @@ class FPDF:
 
     @check_page
     def rect(self, x, y, w, h, style=None):
-        &#34;Draw a rectangle&#34;
+        &#34;&#34;&#34;Draw a rectangle&#34;&#34;&#34;
         style_to_operators = {&#34;F&#34;: &#34;f&#34;, &#34;FD&#34;: &#34;B&#34;, &#34;DF&#34;: &#34;B&#34;}
         op = style_to_operators.get(style, &#34;S&#34;)
         self._out(
-            &#34;{:.2f} {:.2f} {:.2f} {:.2f} re {}&#34;.format(
-                x * self.k,
-                (self.h - y) * self.k,
-                w * self.k,
-                -h * self.k,
-                op,
-            )
+            f&#34;{x * self.k:.2f} {(self.h - y) * self.k:.2f} {w * self.k:.2f} &#34;
+            f&#34;{-h * self.k:.2f} re {op}&#34;
         )
 
     @check_page
     def ellipse(self, x, y, w, h, style=None):
-        &#34;Draw a ellipse&#34;
+        &#34;&#34;&#34;Draw a ellipse&#34;&#34;&#34;
         style_to_operators = {&#34;F&#34;: &#34;f&#34;, &#34;FD&#34;: &#34;B&#34;, &#34;DF&#34;: &#34;B&#34;}
         op = style_to_operators.get(style, &#34;S&#34;)
 
@@ -542,51 +533,37 @@ class FPDF:
         ly = 4 / 3 * (math.sqrt(2) - 1) * ry
 
         self._out(
-            &#34;{:.2f} {:.2f} m {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c&#34;.format(
-                (cx + rx) * self.k,
-                (self.h - cy) * self.k,
-                (cx + rx) * self.k,
-                (self.h - (cy - ly)) * self.k,
-                (cx + lx) * self.k,
-                (self.h - (cy - ry)) * self.k,
-                cx * self.k,
-                (self.h - (cy - ry)) * self.k,
+            (
+                f&#34;{(cx + rx) * self.k:.2f} {(self.h - cy) * self.k:.2f} m &#34;
+                f&#34;{(cx + rx) * self.k:.2f} {(self.h - cy + ly) * self.k:.2f} &#34;
+                f&#34;{(cx + lx) * self.k:.2f} {(self.h - cy + ry) * self.k:.2f} &#34;
+                f&#34;{cx * self.k:.2f} {(self.h - cy + ry) * self.k:.2f} c&#34;
             )
         )
         self._out(
-            &#34;{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c&#34;.format(
-                (cx - lx) * self.k,
-                (self.h - (cy - ry)) * self.k,
-                (cx - rx) * self.k,
-                (self.h - (cy - ly)) * self.k,
-                (cx - rx) * self.k,
-                (self.h - cy) * self.k,
+            (
+                f&#34;{(cx - lx) * self.k:.2f} {(self.h - cy + ry) * self.k:.2f} &#34;
+                f&#34;{(cx - rx) * self.k:.2f} {(self.h - cy + ly) * self.k:.2f} &#34;
+                f&#34;{(cx - rx) * self.k:.2f} {(self.h - cy) * self.k:.2f} c&#34;
             )
         )
         self._out(
-            &#34;{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c&#34;.format(
-                (cx - rx) * self.k,
-                (self.h - (cy + ly)) * self.k,
-                (cx - lx) * self.k,
-                (self.h - (cy + ry)) * self.k,
-                cx * self.k,
-                (self.h - (cy + ry)) * self.k,
+            (
+                f&#34;{(cx - rx) * self.k:.2f} {(self.h - cy - ly) * self.k:.2f} &#34;
+                f&#34;{(cx - lx) * self.k:.2f} {(self.h - cy - ry) * self.k:.2f} &#34;
+                f&#34;{cx * self.k:.2f} {(self.h - cy - ry) * self.k:.2f} c&#34;
             )
         )
         self._out(
-            &#34;{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c {}&#34;.format(
-                (cx + lx) * self.k,
-                (self.h - (cy + ry)) * self.k,
-                (cx + rx) * self.k,
-                (self.h - (cy + ly)) * self.k,
-                (cx + rx) * self.k,
-                (self.h - cy) * self.k,
-                op,
+            (
+                f&#34;{(cx + lx) * self.k:.2f} {(self.h - cy - ry) * self.k:.2f} &#34;
+                f&#34;{(cx + rx) * self.k:.2f} {(self.h - cy - ly) * self.k:.2f} &#34;
+                f&#34;{(cx + rx) * self.k:.2f} {(self.h - cy) * self.k:.2f} c {op}&#34;
             )
         )
 
     def add_font(self, family, style=&#34;&#34;, fname=None, uni=False):
-        &#34;Add a TrueType or Type1 font&#34;
+        &#34;&#34;&#34;Add a TrueType or Type1 font&#34;&#34;&#34;
         if not fname:
             fname = family.replace(&#34; &#34;, &#34;&#34;) + f&#34;{style.lower()}.pkl&#34;
         style = style.upper()
@@ -685,7 +662,6 @@ class FPDF:
             diff = font_dict.get(&#34;diff&#34;)
             if diff:
                 # Search existing encodings
-                d = 0
                 nb = len(self.diffs)
                 for i in range(1, nb + 1):
                     if self.diffs[i] == diff:
@@ -707,7 +683,7 @@ class FPDF:
                     }
 
     def set_font(self, family=None, style=&#34;&#34;, size=0):
-        &#34;Select a font; size given in points&#34;
+        &#34;&#34;&#34;Select a font; size given in points&#34;&#34;&#34;
         if not family:
             family = self.font_family
         if family.lower() == &#34;arial&#34; and (family + style) not in self.fonts:
@@ -774,7 +750,7 @@ class FPDF:
             self._out(f&#34;BT /F{self.current_font[&#39;i&#39;]} {self.font_size_pt:.2f} Tf ET&#34;)
 
     def set_font_size(self, size):
-        &#34;Set font size in points&#34;
+        &#34;&#34;&#34;Set font size in points&#34;&#34;&#34;
         if self.font_size_pt == size:
             return
         self.font_size_pt = size
@@ -783,7 +759,7 @@ class FPDF:
             self._out(f&#34;BT /F{self.current_font[&#39;i&#39;]} {self.font_size_pt:.2f} Tf ET&#34;)
 
     def set_stretching(self, factor):
-        &#34;Set from stretch factor percents (default: 100.0)&#34;
+        &#34;&#34;&#34;Set from stretch factor percents (default: 100.0)&#34;&#34;&#34;
         if self.font_stretching == factor:
             return
         self.font_stretching = factor
@@ -791,13 +767,13 @@ class FPDF:
             self._out(f&#34;BT {self.font_stretching:.2f} Tz ET&#34;)
 
     def add_link(self):
-        &#34;Create a new internal link&#34;
+        &#34;&#34;&#34;Create a new internal link&#34;&#34;&#34;
         n = len(self.links) + 1
         self.links[n] = (0, 0)
         return n
 
     def set_link(self, link, y=0, page=-1):
-        &#34;Set destination of internal link&#34;
+        &#34;&#34;&#34;Set destination of internal link&#34;&#34;&#34;
         if y == -1:
             y = self.y
         if page == -1:
@@ -806,7 +782,7 @@ class FPDF:
         self.links[link] = [page, y]
 
     def link(self, x, y, w, h, link, alt_text=&#34;&#34;):
-        &#34;Put a link on the page&#34;
+        &#34;&#34;&#34;Put a link on the page&#34;&#34;&#34;
         if self.page not in self.page_links:
             self.page_links[self.page] = []
         self.page_links[self.page] += [
@@ -815,7 +791,7 @@ class FPDF:
 
     @check_page
     def text(self, x, y, txt=&#34;&#34;):
-        &#34;Output a string&#34;
+        &#34;&#34;&#34;Output a string&#34;&#34;&#34;
         if not self.font_family:
             raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
         txt = self.normalize_text(txt)
@@ -894,11 +870,11 @@ class FPDF:
 
     @property
     def accept_page_break(self):
-        &#34;Accept automatic page break or not&#34;
+        &#34;&#34;&#34;Accept automatic page break or not&#34;&#34;&#34;
         return self.auto_page_break
 
     @check_page
-    def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0, link=&#34;&#34;):
+    def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=False, link=&#34;&#34;):
         &#34;&#34;&#34;
         Output a cell, cf. https://pyfpdf.github.io/fpdf2/reference/cell.html
 
@@ -956,14 +932,15 @@ class FPDF:
             w = self.w - self.r_margin - self.x
         s = &#34;&#34;
 
-        if fill == 1 or border == 1:
-            if fill == 1:
-                if border == 1:
-                    op = &#34;B&#34;
-                else:
-                    op = &#34;f&#34;
-            else:
-                op = &#34;S&#34;
+        if fill:
+            op = &#34;B&#34; if border == 1 else &#34;f&#34;
+            s = (
+                f&#34;{self.x * k:.2f} {(self.h - self.y) * k:.2f} &#34;
+                f&#34;{w * k:.2f} {-h * k:.2f} re {op} &#34;
+            )
+
+        elif border == 1:
+            op = &#34;S&#34;
             s = (
                 f&#34;{self.x * k:.2f} {(self.h - self.y) * k:.2f} &#34;
                 f&#34;{w * k:.2f} {-h * k:.2f} re {op} &#34;
@@ -1010,9 +987,10 @@ class FPDF:
                     self.current_font[&#34;subset&#34;].append(ord(char))
                 space = escape_parens(&#34; &#34;.encode(&#34;UTF-16BE&#34;).decode(&#34;latin-1&#34;))
 
-                s += &#34;BT 0 Tw {:.2F} {:.2F} Td [&#34;.format(
-                    (self.x + dx) * k,
-                    (self.h - (self.y + (0.5 * h) + (0.3 * self.font_size))) * k,
+                s += (
+                    f&#34;BT 0 Tw {(self.x + dx) * k:.2F} &#34;
+                    f&#34;{(self.h - self.y - 0.5 * h - 0.3 * self.font_size) * k,:.2F} &#34;
+                    f&#34;Td [&#34;
                 )
 
                 t = txt.split(&#34; &#34;)
@@ -1036,10 +1014,10 @@ class FPDF:
                 else:
                     txt2 = escape_parens(txt)
 
-                s += &#34;BT {:.2f} {:.2f} Td ({}) Tj ET&#34;.format(
-                    (self.x + dx) * k,
-                    (self.h - (self.y + (0.5 * h) + (0.3 * self.font_size))) * k,
-                    txt2,
+                s += (
+                    f&#34;BT {(self.x + dx) * k:.2f} &#34;
+                    f&#34;{(self.h - self.y - 0.5 * h - 0.3 * self.font_size) * k:.2f} &#34;
+                    f&#34;Td ({txt2}) Tj ET&#34;
                 )
 
             if self.underline:
@@ -1071,7 +1049,16 @@ class FPDF:
 
     @check_page
     def multi_cell(
-        self, w, h, txt=&#34;&#34;, border=0, align=&#34;J&#34;, fill=0, split_only=False, link=&#34;&#34;, ln=0
+        self,
+        w,
+        h,
+        txt=&#34;&#34;,
+        border=0,
+        align=&#34;J&#34;,
+        fill=False,
+        split_only=False,
+        link=&#34;&#34;,
+        ln=0,
     ):
         &#34;&#34;&#34;
         Output text with line breaks, cf. https://pyfpdf.github.io/fpdf2/reference/multi_cell.html
@@ -1132,11 +1119,7 @@ class FPDF:
                     b2 += &#34;L&#34;
                 if &#34;R&#34; in border:
                     b2 += &#34;R&#34;
-                if &#34;T&#34; in border:
-                    b = b2 + &#34;T&#34;
-                else:
-                    b = b2
-
+                b = b2 + &#34;T&#34; if &#34;T&#34; in border else b2
         character_widths = self.current_font[&#34;cw&#34;]
         text_cells = []
         sep = -1
@@ -1211,10 +1194,11 @@ class FPDF:
 
                 else:
                     if align == &#34;J&#34;:
-                        if ns &gt; 1:
-                            self.ws = (wmax - ls) / 1000 * self.font_size / (ns - 1)
-                        else:
-                            self.ws = 0
+                        self.ws = (
+                            (wmax - ls) / 1000 * self.font_size / (ns - 1)
+                            if ns &gt; 1
+                            else 0
+                        )
                         self._out(f&#34;{self.ws * self.k:.3f} Tw&#34;)
 
                     new_page = self.cell(
@@ -1278,7 +1262,7 @@ class FPDF:
 
     @check_page
     def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
-        &#34;Output text in flowing mode&#34;
+        &#34;&#34;&#34;Output text in flowing mode&#34;&#34;&#34;
         if not self.font_family:
             raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
         txt = self.normalize_text(txt)
@@ -1297,7 +1281,7 @@ class FPDF:
             c = s[i]
             if c == &#34;\n&#34;:
                 # Explicit line break
-                self.cell(w, h, substr(s, j, i - j), 0, 2, &#34;&#34;, 0, link)
+                self.cell(w, h, substr(s, j, i - j), 0, 2, &#34;&#34;, False, link)
                 i += 1
                 sep = -1
                 j = i
@@ -1328,9 +1312,9 @@ class FPDF:
                         continue
                     if i == j:
                         i += 1
-                    self.cell(w, h, substr(s, j, i - j), 0, 2, &#34;&#34;, 0, link)
+                    self.cell(w, h, substr(s, j, i - j), 0, 2, &#34;&#34;, False, link)
                 else:
-                    self.cell(w, h, substr(s, j, sep - j), 0, 2, &#34;&#34;, 0, link)
+                    self.cell(w, h, substr(s, j, sep - j), 0, 2, &#34;&#34;, False, link)
                     i = sep + 1
                 sep = -1
                 j = i
@@ -1344,7 +1328,7 @@ class FPDF:
                 i += 1
         # Last chunk
         if i != j:
-            self.cell(l / 1000 * self.font_size, h, substr(s, j), 0, 0, &#34;&#34;, 0, link)
+            self.cell(l / 1000 * self.font_size, h, substr(s, j), 0, 0, &#34;&#34;, False, link)
 
     @check_page
     def image(
@@ -1412,12 +1396,9 @@ class FPDF:
         if x is None:
             x = self.x
         self._out(
-            &#34;q {:.2f} 0 0 {:.2f} {:.2f} {:.2f} cm /I{} Do Q&#34;.format(
-                w * self.k,
-                h * self.k,
-                x * self.k,
-                (self.h - (y + h)) * self.k,
-                info[&#34;i&#34;],
+            (
+                f&#34;q {w * self.k:.2f} 0 0 {h * self.k:.2f} {x * self.k:.2f} &#34;
+                f&#34;{(self.h - y - h) * self.k:.2f} cm /I{info[&#39;i&#39;]} Do Q&#34;
             )
         )
         if link:
@@ -1436,36 +1417,27 @@ class FPDF:
                 By default, the value equals the height of the last printed cell.
         &#34;&#34;&#34;
         self.x = self.l_margin
-        if h is None:
-            self.y += self.lasth
-        else:
-            self.y += h
+        self.y += self.lasth if h is None else h
 
     def get_x(self):
-        &#34;Get x position&#34;
+        &#34;&#34;&#34;Get x position&#34;&#34;&#34;
         return self.x
 
     def set_x(self, x):
-        &#34;Set x position&#34;
-        if x &gt;= 0:
-            self.x = x
-        else:
-            self.x = self.w + x
+        &#34;&#34;&#34;Set x position&#34;&#34;&#34;
+        self.x = x if x &gt;= 0 else self.w + x
 
     def get_y(self):
-        &#34;Get y position&#34;
+        &#34;&#34;&#34;Get y position&#34;&#34;&#34;
         return self.y
 
     def set_y(self, y):
-        &#34;Set y position and reset x&#34;
+        &#34;&#34;&#34;Set y position and reset x&#34;&#34;&#34;
         self.x = self.l_margin
-        if y &gt;= 0:
-            self.y = y
-        else:
-            self.y = self.h + y
+        self.y = y if y &gt;= 0 else self.h + y
 
     def set_xy(self, x, y):
-        &#34;Set x and y positions&#34;
+        &#34;&#34;&#34;Set x and y positions&#34;&#34;&#34;
         self.set_y(y)
         self.set_x(x)
 
@@ -1498,7 +1470,7 @@ class FPDF:
         return self.buffer
 
     def normalize_text(self, txt):
-        &#34;Check that text input is in the correct format/encoding&#34;
+        &#34;&#34;&#34;Check that text input is in the correct format/encoding&#34;&#34;&#34;
         # - for TTF unicode fonts: unicode object (utf8 encoding)
         # - for built-in fonts: string instances (encoding: latin-1, cp1252)
         if not self.unifontsubset and self.core_fonts_encoding:
@@ -1528,10 +1500,7 @@ class FPDF:
         else:
             dw_pt = self.dh_pt
             dh_pt = self.dw_pt
-        if self.compress:
-            filter = &#34;/Filter /FlateDecode &#34;
-        else:
-            filter = &#34;&#34;
+        filter = &#34;/Filter /FlateDecode &#34; if self.compress else &#34;&#34;
         for n in range(1, nb + 1):
             # page object from pages[n]
             # page object from pages[n]#w_pt
@@ -1590,10 +1559,7 @@ class FPDF:
 
             # Page content
             content = self.pages[n][&#34;content&#34;]
-            if self.compress:
-                p = zlib.compress(content)
-            else:
-                p = content
+            p = zlib.compress(content) if self.compress else content
             self._newobj()
             self._out(f&#34;&lt;&lt;{filter}/Length {len(p)}&gt;&gt;&#34;)
             self._out(pdf_stream(p))
@@ -1824,7 +1790,6 @@ class FPDF:
 
                 # Embed CIDToGIDMap
                 # A specification of the mapping from CIDs to glyph indices
-                cidtogidmap = &#34;&#34;
                 cidtogidmap = [&#34;\x00&#34;] * 256 * 256 * 2
                 for cc, glyph in codeToGlyph.items():
                     cidtogidmap[cc * 2] = chr(glyph &gt;&gt; 8)
@@ -1888,13 +1853,14 @@ class FPDF:
             if cid == 128 and cw127fname and not os.path.exists(cw127fname):
                 try:
                     with open(cw127fname, &#34;wb&#34;) as fh:
-                        font_dict = {}
-                        font_dict[&#34;rangeid&#34;] = rangeid
-                        font_dict[&#34;prevcid&#34;] = prevcid
-                        font_dict[&#34;prevwidth&#34;] = prevwidth
-                        font_dict[&#34;interval&#34;] = interval
-                        font_dict[&#34;range_interval&#34;] = range_interval
-                        font_dict[&#34;range&#34;] = range_
+                        font_dict = {
+                            &#34;rangeid&#34;: rangeid,
+                            &#34;prevcid&#34;: prevcid,
+                            &#34;prevwidth&#34;: prevwidth,
+                            &#34;interval&#34;: interval,
+                            &#34;range_interval&#34;: range_interval,
+                            &#34;range&#34;: range_,
+                        }
                         pickle.dump(font_dict, fh)
                 except OSError as e:
                     if e.errno != errno.EACCES:
@@ -1973,70 +1939,68 @@ class FPDF:
                 del info[&#34;smask&#34;]
 
     def _putimage(self, info):
-        if &#34;data&#34; in info:
+        if &#34;data&#34; not in info:
+            return
+        self._newobj()
+        info[&#34;n&#34;] = self.n
+        self._out(&#34;&lt;&lt;/Type /XObject&#34;)
+        self._out(&#34;/Subtype /Image&#34;)
+        self._out(f&#34;/Width {info[&#39;w&#39;]}&#34;)
+        self._out(f&#34;/Height {info[&#39;h&#39;]}&#34;)
+
+        if info[&#34;cs&#34;] == &#34;Indexed&#34;:
+            self._out(
+                f&#34;/ColorSpace [/Indexed /DeviceRGB &#34;
+                f&#34;{len(info[&#39;pal&#39;]) // 3 - 1} {self.n + 1} 0 R]&#34;
+            )
+        else:
+            self._out(f&#34;/ColorSpace /{info[&#39;cs&#39;]}&#34;)
+            if info[&#34;cs&#34;] == &#34;DeviceCMYK&#34;:
+                self._out(&#34;/Decode [1 0 1 0 1 0 1 0]&#34;)
+
+        self._out(f&#34;/BitsPerComponent {info[&#39;bpc&#39;]}&#34;)
+
+        if &#34;f&#34; in info:
+            self._out(f&#34;/Filter /{info[&#39;f&#39;]}&#34;)
+        if &#34;dp&#34; in info:
+            self._out(f&#34;/DecodeParms &lt;&lt;{info[&#39;dp&#39;]}&gt;&gt;&#34;)
+
+        if &#34;trns&#34; in info and isinstance(info[&#34;trns&#34;], list):
+            trns = &#34; &#34;.join(f&#34;{x} {x}&#34; for x in info[&#34;trns&#34;])
+            self._out(f&#34;/Mask [{trns}]&#34;)
+
+        if &#34;smask&#34; in info:
+            self._out(f&#34;/SMask {self.n + 1} 0 R&#34;)
+
+        self._out(f&#34;/Length {len(info[&#39;data&#39;])}&gt;&gt;&#34;)
+        self._out(pdf_stream(info[&#34;data&#34;]))
+        self._out(&#34;endobj&#34;)
+
+        # Soft mask
+        if &#34;smask&#34; in info:
+            dp = f&#34;/Predictor 15 /Colors 1 /BitsPerComponent 8 /Columns {info[&#39;w&#39;]}&#34;
+            smask = {
+                &#34;w&#34;: info[&#34;w&#34;],
+                &#34;h&#34;: info[&#34;h&#34;],
+                &#34;cs&#34;: &#34;DeviceGray&#34;,
+                &#34;bpc&#34;: 8,
+                &#34;f&#34;: info[&#34;f&#34;],
+                &#34;dp&#34;: dp,
+                &#34;data&#34;: info[&#34;smask&#34;],
+            }
+            self._putimage(smask)
+
+        # Palette
+        if info[&#34;cs&#34;] == &#34;Indexed&#34;:
             self._newobj()
-            info[&#34;n&#34;] = self.n
-            self._out(&#34;&lt;&lt;/Type /XObject&#34;)
-            self._out(&#34;/Subtype /Image&#34;)
-            self._out(f&#34;/Width {info[&#39;w&#39;]}&#34;)
-            self._out(f&#34;/Height {info[&#39;h&#39;]}&#34;)
-
-            if info[&#34;cs&#34;] == &#34;Indexed&#34;:
-                self._out(
-                    f&#34;/ColorSpace [/Indexed /DeviceRGB &#34;
-                    f&#34;{len(info[&#39;pal&#39;]) // 3 - 1} {self.n + 1} 0 R]&#34;
-                )
-            else:
-                self._out(f&#34;/ColorSpace /{info[&#39;cs&#39;]}&#34;)
-                if info[&#34;cs&#34;] == &#34;DeviceCMYK&#34;:
-                    self._out(&#34;/Decode [1 0 1 0 1 0 1 0]&#34;)
-
-            self._out(f&#34;/BitsPerComponent {info[&#39;bpc&#39;]}&#34;)
-
-            if &#34;f&#34; in info:
-                self._out(f&#34;/Filter /{info[&#39;f&#39;]}&#34;)
-            if &#34;dp&#34; in info:
-                self._out(f&#34;/DecodeParms &lt;&lt;{info[&#39;dp&#39;]}&gt;&gt;&#34;)
-
-            if &#34;trns&#34; in info and isinstance(info[&#34;trns&#34;], list):
-                trns = &#34; &#34;.join(f&#34;{x} {x}&#34; for x in info[&#34;trns&#34;])
-                self._out(f&#34;/Mask [{trns}]&#34;)
-
-            if &#34;smask&#34; in info:
-                self._out(f&#34;/SMask {self.n + 1} 0 R&#34;)
-
-            self._out(f&#34;/Length {len(info[&#39;data&#39;])}&gt;&gt;&#34;)
-            self._out(pdf_stream(info[&#34;data&#34;]))
+            filter, pal = (
+                (&#34;/Filter /FlateDecode &#34;, zlib.compress(info[&#34;pal&#34;]))
+                if self.compress
+                else (&#34;&#34;, info[&#34;pal&#34;])
+            )
+            self._out(f&#34;&lt;&lt;{filter}/Length {len(pal)}&gt;&gt;&#34;)
+            self._out(pdf_stream(pal))
             self._out(&#34;endobj&#34;)
-
-            # Soft mask
-            if &#34;smask&#34; in info:
-                dp = (
-                    f&#34;/Predictor 15 /Colors 1 /BitsPerComponent 8 &#34;
-                    f&#34;/Columns {info[&#39;w&#39;]}&#34;
-                )
-                smask = {
-                    &#34;w&#34;: info[&#34;w&#34;],
-                    &#34;h&#34;: info[&#34;h&#34;],
-                    &#34;cs&#34;: &#34;DeviceGray&#34;,
-                    &#34;bpc&#34;: 8,
-                    &#34;f&#34;: info[&#34;f&#34;],
-                    &#34;dp&#34;: dp,
-                    &#34;data&#34;: info[&#34;smask&#34;],
-                }
-                self._putimage(smask)
-
-            # Palette
-            if info[&#34;cs&#34;] == &#34;Indexed&#34;:
-                self._newobj()
-                filter, pal = (
-                    (&#34;/Filter /FlateDecode &#34;, zlib.compress(info[&#34;pal&#34;]))
-                    if self.compress
-                    else (&#34;&#34;, info[&#34;pal&#34;])
-                )
-                self._out(f&#34;&lt;&lt;{filter}/Length {len(pal)}&gt;&gt;&#34;)
-                self._out(pdf_stream(pal))
-                self._out(&#34;endobj&#34;)
 
     def _putxobjectdict(self):
         i = [(x[&#34;i&#34;], x[&#34;n&#34;]) for x in self.images.values()]
@@ -2111,9 +2075,7 @@ class FPDF:
             &#34;fullwidth&#34;: [&#34;/FitH&#34;, &#34;null&#34;],
             &#34;real&#34;: [&#34;/XYZ&#34;, &#34;null&#34;, &#34;null&#34;, &#34;1&#34;],
         }
-        zoom_config = [pdf_ref(3)]
-        zoom_config.extend(zoom_configs.get(self.zoom_mode, []))
-
+        zoom_config = [pdf_ref(3), *zoom_configs.get(self.zoom_mode, [])]
         # zoom_config is a number, not one of the allowed strings
         if not zoom_config:
             zoom_config = [&#34;/XYZ&#34;, &#34;null&#34;, &#34;null&#34;, str(self.zoom_mode / 100)]
@@ -2197,10 +2159,9 @@ class FPDF:
                 fw_pt = self.dw_pt
                 fh_pt = self.dh_pt
             # Page orientation
-            if not orientation:
-                orientation = self.def_orientation
-            else:
-                orientation = orientation[0].upper()
+            orientation = (
+                orientation[0].upper() if orientation else self.def_orientation
+            )
             if orientation == &#34;P&#34;:
                 self.w_pt = fw_pt
                 self.h_pt = fh_pt
@@ -2229,11 +2190,10 @@ class FPDF:
         up = self.current_font[&#34;up&#34;]
         ut = self.current_font[&#34;ut&#34;]
         w = self.get_string_width(txt, True) + self.ws * txt.count(&#34; &#34;)
-        return &#34;{:.2f} {:.2f} {:.2f} {:.2f} re f&#34;.format(
-            x * self.k,
-            (self.h - (y - up / 1000 * self.font_size)) * self.k,
-            w * self.k,
-            -ut / 1000 * self.font_size_pt,
+        return (
+            f&#34;{x * self.k:.2f} &#34;
+            f&#34;{(self.h - y + up / 1000 * self.font_size) * self.k:.2f} &#34;
+            f&#34;{w * self.k:.2f} {-ut / 1000 * self.font_size_pt:.2f} re f&#34;
         )
 
     def _out(self, s):
@@ -2249,7 +2209,7 @@ class FPDF:
 
     @check_page
     def interleaved2of5(self, txt, x, y, w=1, h=10):
-        &#34;Barcode I2of5 (numeric), adds a 0 if odd length&#34;
+        &#34;&#34;&#34;Barcode I2of5 (numeric), adds a 0 if odd length&#34;&#34;&#34;
         narrow = w / 3
         wide = w
 
@@ -2367,11 +2327,9 @@ class FPDF:
     @contextmanager
     def rect_clip(self, x, y, w, h):
         self._out(
-            &#34;q {:.2f} {:.2f} {:.2f} {:.2f} re W n\n&#34;.format(
-                x * self.k,
-                (self.h - (y + h)) * self.k,
-                w * self.k,
-                h * self.k,
+            (
+                f&#34;q {x * self.k:.2f} {(self.h - y - h) * self.k:.2f} {w * self.k:.2f} &#34;
+                f&#34;{h * self.k:.2f} re W n\n&#34;
             )
         )
         yield
@@ -2461,7 +2419,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
         raise FPDFPageFormatException(format, one=True)
 
     try:
-        return (format[0] * k, format[1] * k)
+        return format[0] * k, format[1] * k
     except Exception as e:
         args = f&#34;{format}, {k}&#34;
         raise FPDFPageFormatException(f&#34;Arguments must be numbers: {args}&#34;) from e</code></pre>
@@ -2504,7 +2462,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class FPDF:
-    &#34;PDF Generation class&#34;
+    &#34;&#34;&#34;PDF Generation class&#34;&#34;&#34;
 
     def __init__(self, orientation=&#34;P&#34;, unit=&#34;mm&#34;, format=&#34;A4&#34;):
         # Initialization of properties
@@ -2599,7 +2557,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
         self.pdf_version = &#34;1.3&#34;  # Set default PDF version No.
 
     def set_margins(self, left, top, right=-1):
-        &#34;Set left, top and right margins&#34;
+        &#34;&#34;&#34;Set left, top and right margins&#34;&#34;&#34;
         self.l_margin = left
         self.t_margin = top
         if right == -1:
@@ -2607,21 +2565,21 @@ case insensitive key (the name of the new format) and 2-tuple value of
         self.r_margin = right
 
     def set_left_margin(self, margin):
-        &#34;Set left margin&#34;
+        &#34;&#34;&#34;Set left margin&#34;&#34;&#34;
         self.l_margin = margin
         if self.page &gt; 0 and self.x &lt; margin:
             self.x = margin
 
     def set_top_margin(self, margin):
-        &#34;Set top margin&#34;
+        &#34;&#34;&#34;Set top margin&#34;&#34;&#34;
         self.t_margin = margin
 
     def set_right_margin(self, margin):
-        &#34;Set right margin&#34;
+        &#34;&#34;&#34;Set right margin&#34;&#34;&#34;
         self.r_margin = margin
 
     def set_auto_page_break(self, auto, margin=0):
-        &#34;Set auto page break mode and triggering margin&#34;
+        &#34;&#34;&#34;Set auto page break mode and triggering margin&#34;&#34;&#34;
         self.auto_page_break = auto
         self.b_margin = margin
         self.page_break_trigger = self.h - margin
@@ -2632,9 +2590,9 @@ case insensitive key (the name of the new format) and 2-tuple value of
         The &#34;zoom&#34; argument may be &#39;fullpage&#39;, &#39;fullwidth&#39;, &#39;real&#39;,
         &#39;default&#39;, or a number, interpreted as a percentage.
         &#34;&#34;&#34;
-        if zoom in [&#34;fullpage&#34;, &#34;fullwidth&#34;, &#34;real&#34;, &#34;default&#34;]:
-            self.zoom_mode = zoom
-        elif not isinstance(zoom, str):
+        if zoom in [&#34;fullpage&#34;, &#34;fullwidth&#34;, &#34;real&#34;, &#34;default&#34;] or not isinstance(
+            zoom, str
+        ):
             self.zoom_mode = zoom
         else:
             raise FPDFException(f&#34;Incorrect zoom display mode: {zoom}&#34;)
@@ -2645,27 +2603,27 @@ case insensitive key (the name of the new format) and 2-tuple value of
             raise FPDFException(f&#34;Incorrect layout display mode: {layout}&#34;)
 
     def set_compression(self, compress):
-        &#34;Set page compression&#34;
+        &#34;&#34;&#34;Set page compression&#34;&#34;&#34;
         self.compress = compress
 
     def set_title(self, title):
-        &#34;Title of document&#34;
+        &#34;&#34;&#34;Title of document&#34;&#34;&#34;
         self.title = title
 
     def set_subject(self, subject):
-        &#34;Subject of document&#34;
+        &#34;&#34;&#34;Subject of document&#34;&#34;&#34;
         self.subject = subject
 
     def set_author(self, author):
-        &#34;Author of document&#34;
+        &#34;&#34;&#34;Author of document&#34;&#34;&#34;
         self.author = author
 
     def set_keywords(self, keywords):
-        &#34;Keywords of document&#34;
+        &#34;&#34;&#34;Keywords of document&#34;&#34;&#34;
         self.keywords = keywords
 
     def set_creator(self, creator):
-        &#34;Creator of document&#34;
+        &#34;&#34;&#34;Creator of document&#34;&#34;&#34;
         self.creator = creator
 
     def set_creation_date(self, date=None):
@@ -2673,22 +2631,22 @@ case insensitive key (the name of the new format) and 2-tuple value of
         self.creation_date = datetime.now() if date is None else date
 
     def set_doc_option(self, opt, value):
-        &#34;Set document option&#34;
+        &#34;&#34;&#34;Set document option&#34;&#34;&#34;
         if opt == &#34;core_fonts_encoding&#34;:
             self.core_fonts_encoding = value
         else:
             raise FPDFException(f&#39;Unknown document option &#34;{opt}&#34;&#39;)
 
     def alias_nb_pages(self, alias):
-        &#34;Define an alias for total number of pages&#34;
+        &#34;&#34;&#34;Define an alias for total number of pages&#34;&#34;&#34;
         self.str_alias_nb_pages = alias
 
     def open(self):
-        &#34;Begin document&#34;
+        &#34;&#34;&#34;Begin document&#34;&#34;&#34;
         self.state = 1
 
     def close(self):
-        &#34;Terminate document&#34;
+        &#34;&#34;&#34;Terminate document&#34;&#34;&#34;
         if self.state == 3:
             return
         if self.page == 0:
@@ -2703,7 +2661,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
         self._enddoc()  # close document
 
     def add_page(self, orientation=&#34;&#34;, format=&#34;&#34;, same=False):
-        &#34;Start a new page, if same page format will be same as previous&#34;
+        &#34;&#34;&#34;Start a new page, if same page format will be same as previous&#34;&#34;&#34;
         if self.state == 0:
             self.open()
         family = self.font_family
@@ -2767,17 +2725,17 @@ case insensitive key (the name of the new format) and 2-tuple value of
         # END Page header
 
     def header(self):
-        &#34;Header to be implemented in your own inherited class&#34;
+        &#34;&#34;&#34;Header to be implemented in your own inherited class&#34;&#34;&#34;
 
     def footer(self):
-        &#34;Footer to be implemented in your own inherited class&#34;
+        &#34;&#34;&#34;Footer to be implemented in your own inherited class&#34;&#34;&#34;
 
     def page_no(self):
-        &#34;Get current page number&#34;
+        &#34;&#34;&#34;Get current page number&#34;&#34;&#34;
         return self.page
 
     def set_draw_color(self, r, g=-1, b=-1):
-        &#34;Set color for all stroking operations&#34;
+        &#34;&#34;&#34;Set color for all stroking operations&#34;&#34;&#34;
         if (r == 0 and g == 0 and b == 0) or g == -1:
             self.draw_color = f&#34;{r / 255:.3f} G&#34;
         else:
@@ -2786,7 +2744,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
             self._out(self.draw_color)
 
     def set_fill_color(self, r, g=-1, b=-1):
-        &#34;Set color for all filling operations&#34;
+        &#34;&#34;&#34;Set color for all filling operations&#34;&#34;&#34;
         if (r == 0 and g == 0 and b == 0) or g == -1:
             self.fill_color = f&#34;{r / 255:.3f} g&#34;
         else:
@@ -2796,7 +2754,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
             self._out(self.fill_color)
 
     def set_text_color(self, r, g=-1, b=-1):
-        &#34;Set color for text&#34;
+        &#34;&#34;&#34;Set color for text&#34;&#34;&#34;
         if (r == 0 and g == 0 and b == 0) or g == -1:
             self.text_color = f&#34;{r / 255:.3f} g&#34;
         else:
@@ -2804,7 +2762,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
         self.color_flag = self.fill_color != self.text_color
 
     def get_string_width(self, s, normalized=False):
-        &#34;Get width of a string in the current font&#34;
+        &#34;&#34;&#34;Get width of a string in the current font&#34;&#34;&#34;
         # normalized is parameter for internal use
         s = s if normalized else self.normalize_text(s)
         cw = self.current_font[&#34;cw&#34;]
@@ -2825,21 +2783,17 @@ case insensitive key (the name of the new format) and 2-tuple value of
         return w * self.font_size / 1000
 
     def set_line_width(self, width):
-        &#34;Set line width&#34;
+        &#34;&#34;&#34;Set line width&#34;&#34;&#34;
         self.line_width = width
         if self.page &gt; 0:
             self._out(f&#34;{width * self.k:.2f} w&#34;)
 
     @check_page
     def line(self, x1, y1, x2, y2):
-        &#34;Draw a line&#34;
+        &#34;&#34;&#34;Draw a line&#34;&#34;&#34;
         self._out(
-            &#34;{:.2f} {:.2f} m {:.2f} {:.2f} l S&#34;.format(
-                x1 * self.k,
-                (self.h - y1) * self.k,
-                x2 * self.k,
-                (self.h - y2) * self.k,
-            )
+            f&#34;{x1 * self.k:.2f} {(self.h - y1) * self.k:.2f} m {x2 * self.k:.2f} &#34;
+            f&#34;{(self.h - y2) * self.k:.2f} l S&#34;
         )
 
     def _set_dash(self, dash_length=False, space_length=False):
@@ -2860,22 +2814,17 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
     @check_page
     def rect(self, x, y, w, h, style=None):
-        &#34;Draw a rectangle&#34;
+        &#34;&#34;&#34;Draw a rectangle&#34;&#34;&#34;
         style_to_operators = {&#34;F&#34;: &#34;f&#34;, &#34;FD&#34;: &#34;B&#34;, &#34;DF&#34;: &#34;B&#34;}
         op = style_to_operators.get(style, &#34;S&#34;)
         self._out(
-            &#34;{:.2f} {:.2f} {:.2f} {:.2f} re {}&#34;.format(
-                x * self.k,
-                (self.h - y) * self.k,
-                w * self.k,
-                -h * self.k,
-                op,
-            )
+            f&#34;{x * self.k:.2f} {(self.h - y) * self.k:.2f} {w * self.k:.2f} &#34;
+            f&#34;{-h * self.k:.2f} re {op}&#34;
         )
 
     @check_page
     def ellipse(self, x, y, w, h, style=None):
-        &#34;Draw a ellipse&#34;
+        &#34;&#34;&#34;Draw a ellipse&#34;&#34;&#34;
         style_to_operators = {&#34;F&#34;: &#34;f&#34;, &#34;FD&#34;: &#34;B&#34;, &#34;DF&#34;: &#34;B&#34;}
         op = style_to_operators.get(style, &#34;S&#34;)
 
@@ -2888,51 +2837,37 @@ case insensitive key (the name of the new format) and 2-tuple value of
         ly = 4 / 3 * (math.sqrt(2) - 1) * ry
 
         self._out(
-            &#34;{:.2f} {:.2f} m {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c&#34;.format(
-                (cx + rx) * self.k,
-                (self.h - cy) * self.k,
-                (cx + rx) * self.k,
-                (self.h - (cy - ly)) * self.k,
-                (cx + lx) * self.k,
-                (self.h - (cy - ry)) * self.k,
-                cx * self.k,
-                (self.h - (cy - ry)) * self.k,
+            (
+                f&#34;{(cx + rx) * self.k:.2f} {(self.h - cy) * self.k:.2f} m &#34;
+                f&#34;{(cx + rx) * self.k:.2f} {(self.h - cy + ly) * self.k:.2f} &#34;
+                f&#34;{(cx + lx) * self.k:.2f} {(self.h - cy + ry) * self.k:.2f} &#34;
+                f&#34;{cx * self.k:.2f} {(self.h - cy + ry) * self.k:.2f} c&#34;
             )
         )
         self._out(
-            &#34;{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c&#34;.format(
-                (cx - lx) * self.k,
-                (self.h - (cy - ry)) * self.k,
-                (cx - rx) * self.k,
-                (self.h - (cy - ly)) * self.k,
-                (cx - rx) * self.k,
-                (self.h - cy) * self.k,
+            (
+                f&#34;{(cx - lx) * self.k:.2f} {(self.h - cy + ry) * self.k:.2f} &#34;
+                f&#34;{(cx - rx) * self.k:.2f} {(self.h - cy + ly) * self.k:.2f} &#34;
+                f&#34;{(cx - rx) * self.k:.2f} {(self.h - cy) * self.k:.2f} c&#34;
             )
         )
         self._out(
-            &#34;{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c&#34;.format(
-                (cx - rx) * self.k,
-                (self.h - (cy + ly)) * self.k,
-                (cx - lx) * self.k,
-                (self.h - (cy + ry)) * self.k,
-                cx * self.k,
-                (self.h - (cy + ry)) * self.k,
+            (
+                f&#34;{(cx - rx) * self.k:.2f} {(self.h - cy - ly) * self.k:.2f} &#34;
+                f&#34;{(cx - lx) * self.k:.2f} {(self.h - cy - ry) * self.k:.2f} &#34;
+                f&#34;{cx * self.k:.2f} {(self.h - cy - ry) * self.k:.2f} c&#34;
             )
         )
         self._out(
-            &#34;{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c {}&#34;.format(
-                (cx + lx) * self.k,
-                (self.h - (cy + ry)) * self.k,
-                (cx + rx) * self.k,
-                (self.h - (cy + ly)) * self.k,
-                (cx + rx) * self.k,
-                (self.h - cy) * self.k,
-                op,
+            (
+                f&#34;{(cx + lx) * self.k:.2f} {(self.h - cy - ry) * self.k:.2f} &#34;
+                f&#34;{(cx + rx) * self.k:.2f} {(self.h - cy - ly) * self.k:.2f} &#34;
+                f&#34;{(cx + rx) * self.k:.2f} {(self.h - cy) * self.k:.2f} c {op}&#34;
             )
         )
 
     def add_font(self, family, style=&#34;&#34;, fname=None, uni=False):
-        &#34;Add a TrueType or Type1 font&#34;
+        &#34;&#34;&#34;Add a TrueType or Type1 font&#34;&#34;&#34;
         if not fname:
             fname = family.replace(&#34; &#34;, &#34;&#34;) + f&#34;{style.lower()}.pkl&#34;
         style = style.upper()
@@ -3031,7 +2966,6 @@ case insensitive key (the name of the new format) and 2-tuple value of
             diff = font_dict.get(&#34;diff&#34;)
             if diff:
                 # Search existing encodings
-                d = 0
                 nb = len(self.diffs)
                 for i in range(1, nb + 1):
                     if self.diffs[i] == diff:
@@ -3053,7 +2987,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
                     }
 
     def set_font(self, family=None, style=&#34;&#34;, size=0):
-        &#34;Select a font; size given in points&#34;
+        &#34;&#34;&#34;Select a font; size given in points&#34;&#34;&#34;
         if not family:
             family = self.font_family
         if family.lower() == &#34;arial&#34; and (family + style) not in self.fonts:
@@ -3120,7 +3054,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
             self._out(f&#34;BT /F{self.current_font[&#39;i&#39;]} {self.font_size_pt:.2f} Tf ET&#34;)
 
     def set_font_size(self, size):
-        &#34;Set font size in points&#34;
+        &#34;&#34;&#34;Set font size in points&#34;&#34;&#34;
         if self.font_size_pt == size:
             return
         self.font_size_pt = size
@@ -3129,7 +3063,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
             self._out(f&#34;BT /F{self.current_font[&#39;i&#39;]} {self.font_size_pt:.2f} Tf ET&#34;)
 
     def set_stretching(self, factor):
-        &#34;Set from stretch factor percents (default: 100.0)&#34;
+        &#34;&#34;&#34;Set from stretch factor percents (default: 100.0)&#34;&#34;&#34;
         if self.font_stretching == factor:
             return
         self.font_stretching = factor
@@ -3137,13 +3071,13 @@ case insensitive key (the name of the new format) and 2-tuple value of
             self._out(f&#34;BT {self.font_stretching:.2f} Tz ET&#34;)
 
     def add_link(self):
-        &#34;Create a new internal link&#34;
+        &#34;&#34;&#34;Create a new internal link&#34;&#34;&#34;
         n = len(self.links) + 1
         self.links[n] = (0, 0)
         return n
 
     def set_link(self, link, y=0, page=-1):
-        &#34;Set destination of internal link&#34;
+        &#34;&#34;&#34;Set destination of internal link&#34;&#34;&#34;
         if y == -1:
             y = self.y
         if page == -1:
@@ -3152,7 +3086,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
         self.links[link] = [page, y]
 
     def link(self, x, y, w, h, link, alt_text=&#34;&#34;):
-        &#34;Put a link on the page&#34;
+        &#34;&#34;&#34;Put a link on the page&#34;&#34;&#34;
         if self.page not in self.page_links:
             self.page_links[self.page] = []
         self.page_links[self.page] += [
@@ -3161,7 +3095,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
     @check_page
     def text(self, x, y, txt=&#34;&#34;):
-        &#34;Output a string&#34;
+        &#34;&#34;&#34;Output a string&#34;&#34;&#34;
         if not self.font_family:
             raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
         txt = self.normalize_text(txt)
@@ -3240,11 +3174,11 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
     @property
     def accept_page_break(self):
-        &#34;Accept automatic page break or not&#34;
+        &#34;&#34;&#34;Accept automatic page break or not&#34;&#34;&#34;
         return self.auto_page_break
 
     @check_page
-    def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0, link=&#34;&#34;):
+    def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=False, link=&#34;&#34;):
         &#34;&#34;&#34;
         Output a cell, cf. https://pyfpdf.github.io/fpdf2/reference/cell.html
 
@@ -3302,14 +3236,15 @@ case insensitive key (the name of the new format) and 2-tuple value of
             w = self.w - self.r_margin - self.x
         s = &#34;&#34;
 
-        if fill == 1 or border == 1:
-            if fill == 1:
-                if border == 1:
-                    op = &#34;B&#34;
-                else:
-                    op = &#34;f&#34;
-            else:
-                op = &#34;S&#34;
+        if fill:
+            op = &#34;B&#34; if border == 1 else &#34;f&#34;
+            s = (
+                f&#34;{self.x * k:.2f} {(self.h - self.y) * k:.2f} &#34;
+                f&#34;{w * k:.2f} {-h * k:.2f} re {op} &#34;
+            )
+
+        elif border == 1:
+            op = &#34;S&#34;
             s = (
                 f&#34;{self.x * k:.2f} {(self.h - self.y) * k:.2f} &#34;
                 f&#34;{w * k:.2f} {-h * k:.2f} re {op} &#34;
@@ -3356,9 +3291,10 @@ case insensitive key (the name of the new format) and 2-tuple value of
                     self.current_font[&#34;subset&#34;].append(ord(char))
                 space = escape_parens(&#34; &#34;.encode(&#34;UTF-16BE&#34;).decode(&#34;latin-1&#34;))
 
-                s += &#34;BT 0 Tw {:.2F} {:.2F} Td [&#34;.format(
-                    (self.x + dx) * k,
-                    (self.h - (self.y + (0.5 * h) + (0.3 * self.font_size))) * k,
+                s += (
+                    f&#34;BT 0 Tw {(self.x + dx) * k:.2F} &#34;
+                    f&#34;{(self.h - self.y - 0.5 * h - 0.3 * self.font_size) * k,:.2F} &#34;
+                    f&#34;Td [&#34;
                 )
 
                 t = txt.split(&#34; &#34;)
@@ -3382,10 +3318,10 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 else:
                     txt2 = escape_parens(txt)
 
-                s += &#34;BT {:.2f} {:.2f} Td ({}) Tj ET&#34;.format(
-                    (self.x + dx) * k,
-                    (self.h - (self.y + (0.5 * h) + (0.3 * self.font_size))) * k,
-                    txt2,
+                s += (
+                    f&#34;BT {(self.x + dx) * k:.2f} &#34;
+                    f&#34;{(self.h - self.y - 0.5 * h - 0.3 * self.font_size) * k:.2f} &#34;
+                    f&#34;Td ({txt2}) Tj ET&#34;
                 )
 
             if self.underline:
@@ -3417,7 +3353,16 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
     @check_page
     def multi_cell(
-        self, w, h, txt=&#34;&#34;, border=0, align=&#34;J&#34;, fill=0, split_only=False, link=&#34;&#34;, ln=0
+        self,
+        w,
+        h,
+        txt=&#34;&#34;,
+        border=0,
+        align=&#34;J&#34;,
+        fill=False,
+        split_only=False,
+        link=&#34;&#34;,
+        ln=0,
     ):
         &#34;&#34;&#34;
         Output text with line breaks, cf. https://pyfpdf.github.io/fpdf2/reference/multi_cell.html
@@ -3478,11 +3423,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
                     b2 += &#34;L&#34;
                 if &#34;R&#34; in border:
                     b2 += &#34;R&#34;
-                if &#34;T&#34; in border:
-                    b = b2 + &#34;T&#34;
-                else:
-                    b = b2
-
+                b = b2 + &#34;T&#34; if &#34;T&#34; in border else b2
         character_widths = self.current_font[&#34;cw&#34;]
         text_cells = []
         sep = -1
@@ -3557,10 +3498,11 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
                 else:
                     if align == &#34;J&#34;:
-                        if ns &gt; 1:
-                            self.ws = (wmax - ls) / 1000 * self.font_size / (ns - 1)
-                        else:
-                            self.ws = 0
+                        self.ws = (
+                            (wmax - ls) / 1000 * self.font_size / (ns - 1)
+                            if ns &gt; 1
+                            else 0
+                        )
                         self._out(f&#34;{self.ws * self.k:.3f} Tw&#34;)
 
                     new_page = self.cell(
@@ -3624,7 +3566,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
     @check_page
     def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
-        &#34;Output text in flowing mode&#34;
+        &#34;&#34;&#34;Output text in flowing mode&#34;&#34;&#34;
         if not self.font_family:
             raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
         txt = self.normalize_text(txt)
@@ -3643,7 +3585,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
             c = s[i]
             if c == &#34;\n&#34;:
                 # Explicit line break
-                self.cell(w, h, substr(s, j, i - j), 0, 2, &#34;&#34;, 0, link)
+                self.cell(w, h, substr(s, j, i - j), 0, 2, &#34;&#34;, False, link)
                 i += 1
                 sep = -1
                 j = i
@@ -3674,9 +3616,9 @@ case insensitive key (the name of the new format) and 2-tuple value of
                         continue
                     if i == j:
                         i += 1
-                    self.cell(w, h, substr(s, j, i - j), 0, 2, &#34;&#34;, 0, link)
+                    self.cell(w, h, substr(s, j, i - j), 0, 2, &#34;&#34;, False, link)
                 else:
-                    self.cell(w, h, substr(s, j, sep - j), 0, 2, &#34;&#34;, 0, link)
+                    self.cell(w, h, substr(s, j, sep - j), 0, 2, &#34;&#34;, False, link)
                     i = sep + 1
                 sep = -1
                 j = i
@@ -3690,7 +3632,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 i += 1
         # Last chunk
         if i != j:
-            self.cell(l / 1000 * self.font_size, h, substr(s, j), 0, 0, &#34;&#34;, 0, link)
+            self.cell(l / 1000 * self.font_size, h, substr(s, j), 0, 0, &#34;&#34;, False, link)
 
     @check_page
     def image(
@@ -3758,12 +3700,9 @@ case insensitive key (the name of the new format) and 2-tuple value of
         if x is None:
             x = self.x
         self._out(
-            &#34;q {:.2f} 0 0 {:.2f} {:.2f} {:.2f} cm /I{} Do Q&#34;.format(
-                w * self.k,
-                h * self.k,
-                x * self.k,
-                (self.h - (y + h)) * self.k,
-                info[&#34;i&#34;],
+            (
+                f&#34;q {w * self.k:.2f} 0 0 {h * self.k:.2f} {x * self.k:.2f} &#34;
+                f&#34;{(self.h - y - h) * self.k:.2f} cm /I{info[&#39;i&#39;]} Do Q&#34;
             )
         )
         if link:
@@ -3782,36 +3721,27 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 By default, the value equals the height of the last printed cell.
         &#34;&#34;&#34;
         self.x = self.l_margin
-        if h is None:
-            self.y += self.lasth
-        else:
-            self.y += h
+        self.y += self.lasth if h is None else h
 
     def get_x(self):
-        &#34;Get x position&#34;
+        &#34;&#34;&#34;Get x position&#34;&#34;&#34;
         return self.x
 
     def set_x(self, x):
-        &#34;Set x position&#34;
-        if x &gt;= 0:
-            self.x = x
-        else:
-            self.x = self.w + x
+        &#34;&#34;&#34;Set x position&#34;&#34;&#34;
+        self.x = x if x &gt;= 0 else self.w + x
 
     def get_y(self):
-        &#34;Get y position&#34;
+        &#34;&#34;&#34;Get y position&#34;&#34;&#34;
         return self.y
 
     def set_y(self, y):
-        &#34;Set y position and reset x&#34;
+        &#34;&#34;&#34;Set y position and reset x&#34;&#34;&#34;
         self.x = self.l_margin
-        if y &gt;= 0:
-            self.y = y
-        else:
-            self.y = self.h + y
+        self.y = y if y &gt;= 0 else self.h + y
 
     def set_xy(self, x, y):
-        &#34;Set x and y positions&#34;
+        &#34;&#34;&#34;Set x and y positions&#34;&#34;&#34;
         self.set_y(y)
         self.set_x(x)
 
@@ -3844,7 +3774,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
         return self.buffer
 
     def normalize_text(self, txt):
-        &#34;Check that text input is in the correct format/encoding&#34;
+        &#34;&#34;&#34;Check that text input is in the correct format/encoding&#34;&#34;&#34;
         # - for TTF unicode fonts: unicode object (utf8 encoding)
         # - for built-in fonts: string instances (encoding: latin-1, cp1252)
         if not self.unifontsubset and self.core_fonts_encoding:
@@ -3874,10 +3804,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
         else:
             dw_pt = self.dh_pt
             dh_pt = self.dw_pt
-        if self.compress:
-            filter = &#34;/Filter /FlateDecode &#34;
-        else:
-            filter = &#34;&#34;
+        filter = &#34;/Filter /FlateDecode &#34; if self.compress else &#34;&#34;
         for n in range(1, nb + 1):
             # page object from pages[n]
             # page object from pages[n]#w_pt
@@ -3936,10 +3863,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
             # Page content
             content = self.pages[n][&#34;content&#34;]
-            if self.compress:
-                p = zlib.compress(content)
-            else:
-                p = content
+            p = zlib.compress(content) if self.compress else content
             self._newobj()
             self._out(f&#34;&lt;&lt;{filter}/Length {len(p)}&gt;&gt;&#34;)
             self._out(pdf_stream(p))
@@ -4170,7 +4094,6 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
                 # Embed CIDToGIDMap
                 # A specification of the mapping from CIDs to glyph indices
-                cidtogidmap = &#34;&#34;
                 cidtogidmap = [&#34;\x00&#34;] * 256 * 256 * 2
                 for cc, glyph in codeToGlyph.items():
                     cidtogidmap[cc * 2] = chr(glyph &gt;&gt; 8)
@@ -4234,13 +4157,14 @@ case insensitive key (the name of the new format) and 2-tuple value of
             if cid == 128 and cw127fname and not os.path.exists(cw127fname):
                 try:
                     with open(cw127fname, &#34;wb&#34;) as fh:
-                        font_dict = {}
-                        font_dict[&#34;rangeid&#34;] = rangeid
-                        font_dict[&#34;prevcid&#34;] = prevcid
-                        font_dict[&#34;prevwidth&#34;] = prevwidth
-                        font_dict[&#34;interval&#34;] = interval
-                        font_dict[&#34;range_interval&#34;] = range_interval
-                        font_dict[&#34;range&#34;] = range_
+                        font_dict = {
+                            &#34;rangeid&#34;: rangeid,
+                            &#34;prevcid&#34;: prevcid,
+                            &#34;prevwidth&#34;: prevwidth,
+                            &#34;interval&#34;: interval,
+                            &#34;range_interval&#34;: range_interval,
+                            &#34;range&#34;: range_,
+                        }
                         pickle.dump(font_dict, fh)
                 except OSError as e:
                     if e.errno != errno.EACCES:
@@ -4319,70 +4243,68 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 del info[&#34;smask&#34;]
 
     def _putimage(self, info):
-        if &#34;data&#34; in info:
+        if &#34;data&#34; not in info:
+            return
+        self._newobj()
+        info[&#34;n&#34;] = self.n
+        self._out(&#34;&lt;&lt;/Type /XObject&#34;)
+        self._out(&#34;/Subtype /Image&#34;)
+        self._out(f&#34;/Width {info[&#39;w&#39;]}&#34;)
+        self._out(f&#34;/Height {info[&#39;h&#39;]}&#34;)
+
+        if info[&#34;cs&#34;] == &#34;Indexed&#34;:
+            self._out(
+                f&#34;/ColorSpace [/Indexed /DeviceRGB &#34;
+                f&#34;{len(info[&#39;pal&#39;]) // 3 - 1} {self.n + 1} 0 R]&#34;
+            )
+        else:
+            self._out(f&#34;/ColorSpace /{info[&#39;cs&#39;]}&#34;)
+            if info[&#34;cs&#34;] == &#34;DeviceCMYK&#34;:
+                self._out(&#34;/Decode [1 0 1 0 1 0 1 0]&#34;)
+
+        self._out(f&#34;/BitsPerComponent {info[&#39;bpc&#39;]}&#34;)
+
+        if &#34;f&#34; in info:
+            self._out(f&#34;/Filter /{info[&#39;f&#39;]}&#34;)
+        if &#34;dp&#34; in info:
+            self._out(f&#34;/DecodeParms &lt;&lt;{info[&#39;dp&#39;]}&gt;&gt;&#34;)
+
+        if &#34;trns&#34; in info and isinstance(info[&#34;trns&#34;], list):
+            trns = &#34; &#34;.join(f&#34;{x} {x}&#34; for x in info[&#34;trns&#34;])
+            self._out(f&#34;/Mask [{trns}]&#34;)
+
+        if &#34;smask&#34; in info:
+            self._out(f&#34;/SMask {self.n + 1} 0 R&#34;)
+
+        self._out(f&#34;/Length {len(info[&#39;data&#39;])}&gt;&gt;&#34;)
+        self._out(pdf_stream(info[&#34;data&#34;]))
+        self._out(&#34;endobj&#34;)
+
+        # Soft mask
+        if &#34;smask&#34; in info:
+            dp = f&#34;/Predictor 15 /Colors 1 /BitsPerComponent 8 /Columns {info[&#39;w&#39;]}&#34;
+            smask = {
+                &#34;w&#34;: info[&#34;w&#34;],
+                &#34;h&#34;: info[&#34;h&#34;],
+                &#34;cs&#34;: &#34;DeviceGray&#34;,
+                &#34;bpc&#34;: 8,
+                &#34;f&#34;: info[&#34;f&#34;],
+                &#34;dp&#34;: dp,
+                &#34;data&#34;: info[&#34;smask&#34;],
+            }
+            self._putimage(smask)
+
+        # Palette
+        if info[&#34;cs&#34;] == &#34;Indexed&#34;:
             self._newobj()
-            info[&#34;n&#34;] = self.n
-            self._out(&#34;&lt;&lt;/Type /XObject&#34;)
-            self._out(&#34;/Subtype /Image&#34;)
-            self._out(f&#34;/Width {info[&#39;w&#39;]}&#34;)
-            self._out(f&#34;/Height {info[&#39;h&#39;]}&#34;)
-
-            if info[&#34;cs&#34;] == &#34;Indexed&#34;:
-                self._out(
-                    f&#34;/ColorSpace [/Indexed /DeviceRGB &#34;
-                    f&#34;{len(info[&#39;pal&#39;]) // 3 - 1} {self.n + 1} 0 R]&#34;
-                )
-            else:
-                self._out(f&#34;/ColorSpace /{info[&#39;cs&#39;]}&#34;)
-                if info[&#34;cs&#34;] == &#34;DeviceCMYK&#34;:
-                    self._out(&#34;/Decode [1 0 1 0 1 0 1 0]&#34;)
-
-            self._out(f&#34;/BitsPerComponent {info[&#39;bpc&#39;]}&#34;)
-
-            if &#34;f&#34; in info:
-                self._out(f&#34;/Filter /{info[&#39;f&#39;]}&#34;)
-            if &#34;dp&#34; in info:
-                self._out(f&#34;/DecodeParms &lt;&lt;{info[&#39;dp&#39;]}&gt;&gt;&#34;)
-
-            if &#34;trns&#34; in info and isinstance(info[&#34;trns&#34;], list):
-                trns = &#34; &#34;.join(f&#34;{x} {x}&#34; for x in info[&#34;trns&#34;])
-                self._out(f&#34;/Mask [{trns}]&#34;)
-
-            if &#34;smask&#34; in info:
-                self._out(f&#34;/SMask {self.n + 1} 0 R&#34;)
-
-            self._out(f&#34;/Length {len(info[&#39;data&#39;])}&gt;&gt;&#34;)
-            self._out(pdf_stream(info[&#34;data&#34;]))
+            filter, pal = (
+                (&#34;/Filter /FlateDecode &#34;, zlib.compress(info[&#34;pal&#34;]))
+                if self.compress
+                else (&#34;&#34;, info[&#34;pal&#34;])
+            )
+            self._out(f&#34;&lt;&lt;{filter}/Length {len(pal)}&gt;&gt;&#34;)
+            self._out(pdf_stream(pal))
             self._out(&#34;endobj&#34;)
-
-            # Soft mask
-            if &#34;smask&#34; in info:
-                dp = (
-                    f&#34;/Predictor 15 /Colors 1 /BitsPerComponent 8 &#34;
-                    f&#34;/Columns {info[&#39;w&#39;]}&#34;
-                )
-                smask = {
-                    &#34;w&#34;: info[&#34;w&#34;],
-                    &#34;h&#34;: info[&#34;h&#34;],
-                    &#34;cs&#34;: &#34;DeviceGray&#34;,
-                    &#34;bpc&#34;: 8,
-                    &#34;f&#34;: info[&#34;f&#34;],
-                    &#34;dp&#34;: dp,
-                    &#34;data&#34;: info[&#34;smask&#34;],
-                }
-                self._putimage(smask)
-
-            # Palette
-            if info[&#34;cs&#34;] == &#34;Indexed&#34;:
-                self._newobj()
-                filter, pal = (
-                    (&#34;/Filter /FlateDecode &#34;, zlib.compress(info[&#34;pal&#34;]))
-                    if self.compress
-                    else (&#34;&#34;, info[&#34;pal&#34;])
-                )
-                self._out(f&#34;&lt;&lt;{filter}/Length {len(pal)}&gt;&gt;&#34;)
-                self._out(pdf_stream(pal))
-                self._out(&#34;endobj&#34;)
 
     def _putxobjectdict(self):
         i = [(x[&#34;i&#34;], x[&#34;n&#34;]) for x in self.images.values()]
@@ -4457,9 +4379,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
             &#34;fullwidth&#34;: [&#34;/FitH&#34;, &#34;null&#34;],
             &#34;real&#34;: [&#34;/XYZ&#34;, &#34;null&#34;, &#34;null&#34;, &#34;1&#34;],
         }
-        zoom_config = [pdf_ref(3)]
-        zoom_config.extend(zoom_configs.get(self.zoom_mode, []))
-
+        zoom_config = [pdf_ref(3), *zoom_configs.get(self.zoom_mode, [])]
         # zoom_config is a number, not one of the allowed strings
         if not zoom_config:
             zoom_config = [&#34;/XYZ&#34;, &#34;null&#34;, &#34;null&#34;, str(self.zoom_mode / 100)]
@@ -4543,10 +4463,9 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 fw_pt = self.dw_pt
                 fh_pt = self.dh_pt
             # Page orientation
-            if not orientation:
-                orientation = self.def_orientation
-            else:
-                orientation = orientation[0].upper()
+            orientation = (
+                orientation[0].upper() if orientation else self.def_orientation
+            )
             if orientation == &#34;P&#34;:
                 self.w_pt = fw_pt
                 self.h_pt = fh_pt
@@ -4575,11 +4494,10 @@ case insensitive key (the name of the new format) and 2-tuple value of
         up = self.current_font[&#34;up&#34;]
         ut = self.current_font[&#34;ut&#34;]
         w = self.get_string_width(txt, True) + self.ws * txt.count(&#34; &#34;)
-        return &#34;{:.2f} {:.2f} {:.2f} {:.2f} re f&#34;.format(
-            x * self.k,
-            (self.h - (y - up / 1000 * self.font_size)) * self.k,
-            w * self.k,
-            -ut / 1000 * self.font_size_pt,
+        return (
+            f&#34;{x * self.k:.2f} &#34;
+            f&#34;{(self.h - y + up / 1000 * self.font_size) * self.k:.2f} &#34;
+            f&#34;{w * self.k:.2f} {-ut / 1000 * self.font_size_pt:.2f} re f&#34;
         )
 
     def _out(self, s):
@@ -4595,7 +4513,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
     @check_page
     def interleaved2of5(self, txt, x, y, w=1, h=10):
-        &#34;Barcode I2of5 (numeric), adds a 0 if odd length&#34;
+        &#34;&#34;&#34;Barcode I2of5 (numeric), adds a 0 if odd length&#34;&#34;&#34;
         narrow = w / 3
         wide = w
 
@@ -4713,11 +4631,9 @@ case insensitive key (the name of the new format) and 2-tuple value of
     @contextmanager
     def rect_clip(self, x, y, w, h):
         self._out(
-            &#34;q {:.2f} {:.2f} {:.2f} {:.2f} re W n\n&#34;.format(
-                x * self.k,
-                (self.h - (y + h)) * self.k,
-                w * self.k,
-                h * self.k,
+            (
+                f&#34;q {x * self.k:.2f} {(self.h - y - h) * self.k:.2f} {w * self.k:.2f} &#34;
+                f&#34;{h * self.k:.2f} re W n\n&#34;
             )
         )
         yield
@@ -4740,7 +4656,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
 </summary>
 <pre><code class="python">@property
 def accept_page_break(self):
-    &#34;Accept automatic page break or not&#34;
+    &#34;&#34;&#34;Accept automatic page break or not&#34;&#34;&#34;
     return self.auto_page_break</code></pre>
 </details>
 </dd>
@@ -4757,7 +4673,7 @@ def accept_page_break(self):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def add_font(self, family, style=&#34;&#34;, fname=None, uni=False):
-    &#34;Add a TrueType or Type1 font&#34;
+    &#34;&#34;&#34;Add a TrueType or Type1 font&#34;&#34;&#34;
     if not fname:
         fname = family.replace(&#34; &#34;, &#34;&#34;) + f&#34;{style.lower()}.pkl&#34;
     style = style.upper()
@@ -4856,7 +4772,6 @@ def accept_page_break(self):
         diff = font_dict.get(&#34;diff&#34;)
         if diff:
             # Search existing encodings
-            d = 0
             nb = len(self.diffs)
             for i in range(1, nb + 1):
                 if self.diffs[i] == diff:
@@ -4888,7 +4803,7 @@ def accept_page_break(self):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def add_link(self):
-    &#34;Create a new internal link&#34;
+    &#34;&#34;&#34;Create a new internal link&#34;&#34;&#34;
     n = len(self.links) + 1
     self.links[n] = (0, 0)
     return n</code></pre>
@@ -4904,7 +4819,7 @@ def accept_page_break(self):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def add_page(self, orientation=&#34;&#34;, format=&#34;&#34;, same=False):
-    &#34;Start a new page, if same page format will be same as previous&#34;
+    &#34;&#34;&#34;Start a new page, if same page format will be same as previous&#34;&#34;&#34;
     if self.state == 0:
         self.open()
     family = self.font_family
@@ -4978,12 +4893,12 @@ def accept_page_break(self):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def alias_nb_pages(self, alias):
-    &#34;Define an alias for total number of pages&#34;
+    &#34;&#34;&#34;Define an alias for total number of pages&#34;&#34;&#34;
     self.str_alias_nb_pages = alias</code></pre>
 </details>
 </dd>
 <dt id="fpdf.fpdf.FPDF.cell"><code class="name flex">
-<span>def <span class="ident">cell</span></span>(<span>self, w, h=0, txt='', border=0, ln=0, align='', fill=0, link='')</span>
+<span>def <span class="ident">cell</span></span>(<span>self, w, h=0, txt='', border=0, ln=0, align='', fill=False, link='')</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Output a cell, cf. <a href="https://pyfpdf.github.io/fpdf2/reference/cell.html">https://pyfpdf.github.io/fpdf2/reference/cell.html</a></p>
@@ -5021,7 +4936,7 @@ or transparent (<code>False</code>). Default value: False.</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@check_page
-def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0, link=&#34;&#34;):
+def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=False, link=&#34;&#34;):
     &#34;&#34;&#34;
     Output a cell, cf. https://pyfpdf.github.io/fpdf2/reference/cell.html
 
@@ -5079,14 +4994,15 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
         w = self.w - self.r_margin - self.x
     s = &#34;&#34;
 
-    if fill == 1 or border == 1:
-        if fill == 1:
-            if border == 1:
-                op = &#34;B&#34;
-            else:
-                op = &#34;f&#34;
-        else:
-            op = &#34;S&#34;
+    if fill:
+        op = &#34;B&#34; if border == 1 else &#34;f&#34;
+        s = (
+            f&#34;{self.x * k:.2f} {(self.h - self.y) * k:.2f} &#34;
+            f&#34;{w * k:.2f} {-h * k:.2f} re {op} &#34;
+        )
+
+    elif border == 1:
+        op = &#34;S&#34;
         s = (
             f&#34;{self.x * k:.2f} {(self.h - self.y) * k:.2f} &#34;
             f&#34;{w * k:.2f} {-h * k:.2f} re {op} &#34;
@@ -5133,9 +5049,10 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
                 self.current_font[&#34;subset&#34;].append(ord(char))
             space = escape_parens(&#34; &#34;.encode(&#34;UTF-16BE&#34;).decode(&#34;latin-1&#34;))
 
-            s += &#34;BT 0 Tw {:.2F} {:.2F} Td [&#34;.format(
-                (self.x + dx) * k,
-                (self.h - (self.y + (0.5 * h) + (0.3 * self.font_size))) * k,
+            s += (
+                f&#34;BT 0 Tw {(self.x + dx) * k:.2F} &#34;
+                f&#34;{(self.h - self.y - 0.5 * h - 0.3 * self.font_size) * k,:.2F} &#34;
+                f&#34;Td [&#34;
             )
 
             t = txt.split(&#34; &#34;)
@@ -5159,10 +5076,10 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
             else:
                 txt2 = escape_parens(txt)
 
-            s += &#34;BT {:.2f} {:.2f} Td ({}) Tj ET&#34;.format(
-                (self.x + dx) * k,
-                (self.h - (self.y + (0.5 * h) + (0.3 * self.font_size))) * k,
-                txt2,
+            s += (
+                f&#34;BT {(self.x + dx) * k:.2f} &#34;
+                f&#34;{(self.h - self.y - 0.5 * h - 0.3 * self.font_size) * k:.2f} &#34;
+                f&#34;Td ({txt2}) Tj ET&#34;
             )
 
         if self.underline:
@@ -5203,7 +5120,7 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=0,
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def close(self):
-    &#34;Terminate document&#34;
+    &#34;&#34;&#34;Terminate document&#34;&#34;&#34;
     if self.state == 3:
         return
     if self.page == 0:
@@ -5320,7 +5237,7 @@ def dashed_line(self, x1, y1, x2, y2, dash_length=1, space_length=1):
 </summary>
 <pre><code class="python">@check_page
 def ellipse(self, x, y, w, h, style=None):
-    &#34;Draw a ellipse&#34;
+    &#34;&#34;&#34;Draw a ellipse&#34;&#34;&#34;
     style_to_operators = {&#34;F&#34;: &#34;f&#34;, &#34;FD&#34;: &#34;B&#34;, &#34;DF&#34;: &#34;B&#34;}
     op = style_to_operators.get(style, &#34;S&#34;)
 
@@ -5333,46 +5250,32 @@ def ellipse(self, x, y, w, h, style=None):
     ly = 4 / 3 * (math.sqrt(2) - 1) * ry
 
     self._out(
-        &#34;{:.2f} {:.2f} m {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c&#34;.format(
-            (cx + rx) * self.k,
-            (self.h - cy) * self.k,
-            (cx + rx) * self.k,
-            (self.h - (cy - ly)) * self.k,
-            (cx + lx) * self.k,
-            (self.h - (cy - ry)) * self.k,
-            cx * self.k,
-            (self.h - (cy - ry)) * self.k,
+        (
+            f&#34;{(cx + rx) * self.k:.2f} {(self.h - cy) * self.k:.2f} m &#34;
+            f&#34;{(cx + rx) * self.k:.2f} {(self.h - cy + ly) * self.k:.2f} &#34;
+            f&#34;{(cx + lx) * self.k:.2f} {(self.h - cy + ry) * self.k:.2f} &#34;
+            f&#34;{cx * self.k:.2f} {(self.h - cy + ry) * self.k:.2f} c&#34;
         )
     )
     self._out(
-        &#34;{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c&#34;.format(
-            (cx - lx) * self.k,
-            (self.h - (cy - ry)) * self.k,
-            (cx - rx) * self.k,
-            (self.h - (cy - ly)) * self.k,
-            (cx - rx) * self.k,
-            (self.h - cy) * self.k,
+        (
+            f&#34;{(cx - lx) * self.k:.2f} {(self.h - cy + ry) * self.k:.2f} &#34;
+            f&#34;{(cx - rx) * self.k:.2f} {(self.h - cy + ly) * self.k:.2f} &#34;
+            f&#34;{(cx - rx) * self.k:.2f} {(self.h - cy) * self.k:.2f} c&#34;
         )
     )
     self._out(
-        &#34;{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c&#34;.format(
-            (cx - rx) * self.k,
-            (self.h - (cy + ly)) * self.k,
-            (cx - lx) * self.k,
-            (self.h - (cy + ry)) * self.k,
-            cx * self.k,
-            (self.h - (cy + ry)) * self.k,
+        (
+            f&#34;{(cx - rx) * self.k:.2f} {(self.h - cy - ly) * self.k:.2f} &#34;
+            f&#34;{(cx - lx) * self.k:.2f} {(self.h - cy - ry) * self.k:.2f} &#34;
+            f&#34;{cx * self.k:.2f} {(self.h - cy - ry) * self.k:.2f} c&#34;
         )
     )
     self._out(
-        &#34;{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} c {}&#34;.format(
-            (cx + lx) * self.k,
-            (self.h - (cy + ry)) * self.k,
-            (cx + rx) * self.k,
-            (self.h - (cy + ly)) * self.k,
-            (cx + rx) * self.k,
-            (self.h - cy) * self.k,
-            op,
+        (
+            f&#34;{(cx + lx) * self.k:.2f} {(self.h - cy - ry) * self.k:.2f} &#34;
+            f&#34;{(cx + rx) * self.k:.2f} {(self.h - cy - ly) * self.k:.2f} &#34;
+            f&#34;{(cx + rx) * self.k:.2f} {(self.h - cy) * self.k:.2f} c {op}&#34;
         )
     )</code></pre>
 </details>
@@ -5387,7 +5290,7 @@ def ellipse(self, x, y, w, h, style=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def footer(self):
-    &#34;Footer to be implemented in your own inherited class&#34;</code></pre>
+    &#34;&#34;&#34;Footer to be implemented in your own inherited class&#34;&#34;&#34;</code></pre>
 </details>
 </dd>
 <dt id="fpdf.fpdf.FPDF.get_string_width"><code class="name flex">
@@ -5400,7 +5303,7 @@ def ellipse(self, x, y, w, h, style=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_string_width(self, s, normalized=False):
-    &#34;Get width of a string in the current font&#34;
+    &#34;&#34;&#34;Get width of a string in the current font&#34;&#34;&#34;
     # normalized is parameter for internal use
     s = s if normalized else self.normalize_text(s)
     cw = self.current_font[&#34;cw&#34;]
@@ -5431,7 +5334,7 @@ def ellipse(self, x, y, w, h, style=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_x(self):
-    &#34;Get x position&#34;
+    &#34;&#34;&#34;Get x position&#34;&#34;&#34;
     return self.x</code></pre>
 </details>
 </dd>
@@ -5445,7 +5348,7 @@ def ellipse(self, x, y, w, h, style=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_y(self):
-    &#34;Get y position&#34;
+    &#34;&#34;&#34;Get y position&#34;&#34;&#34;
     return self.y</code></pre>
 </details>
 </dd>
@@ -5459,7 +5362,7 @@ def ellipse(self, x, y, w, h, style=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def header(self):
-    &#34;Header to be implemented in your own inherited class&#34;</code></pre>
+    &#34;&#34;&#34;Header to be implemented in your own inherited class&#34;&#34;&#34;</code></pre>
 </details>
 </dd>
 <dt id="fpdf.fpdf.FPDF.image"><code class="name flex">
@@ -5554,12 +5457,9 @@ def image(
     if x is None:
         x = self.x
     self._out(
-        &#34;q {:.2f} 0 0 {:.2f} {:.2f} {:.2f} cm /I{} Do Q&#34;.format(
-            w * self.k,
-            h * self.k,
-            x * self.k,
-            (self.h - (y + h)) * self.k,
-            info[&#34;i&#34;],
+        (
+            f&#34;q {w * self.k:.2f} 0 0 {h * self.k:.2f} {x * self.k:.2f} &#34;
+            f&#34;{(self.h - y - h) * self.k:.2f} cm /I{info[&#39;i&#39;]} Do Q&#34;
         )
     )
     if link:
@@ -5579,7 +5479,7 @@ def image(
 </summary>
 <pre><code class="python">@check_page
 def interleaved2of5(self, txt, x, y, w=1, h=10):
-    &#34;Barcode I2of5 (numeric), adds a 0 if odd length&#34;
+    &#34;&#34;&#34;Barcode I2of5 (numeric), adds a 0 if odd length&#34;&#34;&#34;
     narrow = w / 3
     wide = w
 
@@ -5645,14 +5545,10 @@ def interleaved2of5(self, txt, x, y, w=1, h=10):
 </summary>
 <pre><code class="python">@check_page
 def line(self, x1, y1, x2, y2):
-    &#34;Draw a line&#34;
+    &#34;&#34;&#34;Draw a line&#34;&#34;&#34;
     self._out(
-        &#34;{:.2f} {:.2f} m {:.2f} {:.2f} l S&#34;.format(
-            x1 * self.k,
-            (self.h - y1) * self.k,
-            x2 * self.k,
-            (self.h - y2) * self.k,
-        )
+        f&#34;{x1 * self.k:.2f} {(self.h - y1) * self.k:.2f} m {x2 * self.k:.2f} &#34;
+        f&#34;{(self.h - y2) * self.k:.2f} l S&#34;
     )</code></pre>
 </details>
 </dd>
@@ -5666,7 +5562,7 @@ def line(self, x1, y1, x2, y2):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def link(self, x, y, w, h, link, alt_text=&#34;&#34;):
-    &#34;Put a link on the page&#34;
+    &#34;&#34;&#34;Put a link on the page&#34;&#34;&#34;
     if self.page not in self.page_links:
         self.page_links[self.page] = []
     self.page_links[self.page] += [
@@ -5701,14 +5597,11 @@ def ln(self, h=None):
             By default, the value equals the height of the last printed cell.
     &#34;&#34;&#34;
     self.x = self.l_margin
-    if h is None:
-        self.y += self.lasth
-    else:
-        self.y += h</code></pre>
+    self.y += self.lasth if h is None else h</code></pre>
 </details>
 </dd>
 <dt id="fpdf.fpdf.FPDF.multi_cell"><code class="name flex">
-<span>def <span class="ident">multi_cell</span></span>(<span>self, w, h, txt='', border=0, align='J', fill=0, split_only=False, link='', ln=0)</span>
+<span>def <span class="ident">multi_cell</span></span>(<span>self, w, h, txt='', border=0, align='J', fill=False, split_only=False, link='', ln=0)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Output text with line breaks, cf. <a href="https://pyfpdf.github.io/fpdf2/reference/multi_cell.html">https://pyfpdf.github.io/fpdf2/reference/multi_cell.html</a></p>
@@ -5750,7 +5643,16 @@ Default value: 0.</dd>
 </summary>
 <pre><code class="python">@check_page
 def multi_cell(
-    self, w, h, txt=&#34;&#34;, border=0, align=&#34;J&#34;, fill=0, split_only=False, link=&#34;&#34;, ln=0
+    self,
+    w,
+    h,
+    txt=&#34;&#34;,
+    border=0,
+    align=&#34;J&#34;,
+    fill=False,
+    split_only=False,
+    link=&#34;&#34;,
+    ln=0,
 ):
     &#34;&#34;&#34;
     Output text with line breaks, cf. https://pyfpdf.github.io/fpdf2/reference/multi_cell.html
@@ -5811,11 +5713,7 @@ def multi_cell(
                 b2 += &#34;L&#34;
             if &#34;R&#34; in border:
                 b2 += &#34;R&#34;
-            if &#34;T&#34; in border:
-                b = b2 + &#34;T&#34;
-            else:
-                b = b2
-
+            b = b2 + &#34;T&#34; if &#34;T&#34; in border else b2
     character_widths = self.current_font[&#34;cw&#34;]
     text_cells = []
     sep = -1
@@ -5890,10 +5788,11 @@ def multi_cell(
 
             else:
                 if align == &#34;J&#34;:
-                    if ns &gt; 1:
-                        self.ws = (wmax - ls) / 1000 * self.font_size / (ns - 1)
-                    else:
-                        self.ws = 0
+                    self.ws = (
+                        (wmax - ls) / 1000 * self.font_size / (ns - 1)
+                        if ns &gt; 1
+                        else 0
+                    )
                     self._out(f&#34;{self.ws * self.k:.3f} Tw&#34;)
 
                 new_page = self.cell(
@@ -5966,7 +5865,7 @@ def multi_cell(
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def normalize_text(self, txt):
-    &#34;Check that text input is in the correct format/encoding&#34;
+    &#34;&#34;&#34;Check that text input is in the correct format/encoding&#34;&#34;&#34;
     # - for TTF unicode fonts: unicode object (utf8 encoding)
     # - for built-in fonts: string instances (encoding: latin-1, cp1252)
     if not self.unifontsubset and self.core_fonts_encoding:
@@ -5984,7 +5883,7 @@ def multi_cell(
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def open(self):
-    &#34;Begin document&#34;
+    &#34;&#34;&#34;Begin document&#34;&#34;&#34;
     self.state = 1</code></pre>
 </details>
 </dd>
@@ -6045,7 +5944,7 @@ If a <code>name</code> is given, the PDF is written to a new file.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def page_no(self):
-    &#34;Get current page number&#34;
+    &#34;&#34;&#34;Get current page number&#34;&#34;&#34;
     return self.page</code></pre>
 </details>
 </dd>
@@ -6060,17 +5959,12 @@ If a <code>name</code> is given, the PDF is written to a new file.</p>
 </summary>
 <pre><code class="python">@check_page
 def rect(self, x, y, w, h, style=None):
-    &#34;Draw a rectangle&#34;
+    &#34;&#34;&#34;Draw a rectangle&#34;&#34;&#34;
     style_to_operators = {&#34;F&#34;: &#34;f&#34;, &#34;FD&#34;: &#34;B&#34;, &#34;DF&#34;: &#34;B&#34;}
     op = style_to_operators.get(style, &#34;S&#34;)
     self._out(
-        &#34;{:.2f} {:.2f} {:.2f} {:.2f} re {}&#34;.format(
-            x * self.k,
-            (self.h - y) * self.k,
-            w * self.k,
-            -h * self.k,
-            op,
-        )
+        f&#34;{x * self.k:.2f} {(self.h - y) * self.k:.2f} {w * self.k:.2f} &#34;
+        f&#34;{-h * self.k:.2f} re {op}&#34;
     )</code></pre>
 </details>
 </dd>
@@ -6087,11 +5981,9 @@ def rect(self, x, y, w, h, style=None):
 @contextmanager
 def rect_clip(self, x, y, w, h):
     self._out(
-        &#34;q {:.2f} {:.2f} {:.2f} {:.2f} re W n\n&#34;.format(
-            x * self.k,
-            (self.h - (y + h)) * self.k,
-            w * self.k,
-            h * self.k,
+        (
+            f&#34;q {x * self.k:.2f} {(self.h - y - h) * self.k:.2f} {w * self.k:.2f} &#34;
+            f&#34;{h * self.k:.2f} re W n\n&#34;
         )
     )
     yield
@@ -6196,7 +6088,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_author(self, author):
-    &#34;Author of document&#34;
+    &#34;&#34;&#34;Author of document&#34;&#34;&#34;
     self.author = author</code></pre>
 </details>
 </dd>
@@ -6210,7 +6102,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_auto_page_break(self, auto, margin=0):
-    &#34;Set auto page break mode and triggering margin&#34;
+    &#34;&#34;&#34;Set auto page break mode and triggering margin&#34;&#34;&#34;
     self.auto_page_break = auto
     self.b_margin = margin
     self.page_break_trigger = self.h - margin</code></pre>
@@ -6226,7 +6118,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_compression(self, compress):
-    &#34;Set page compression&#34;
+    &#34;&#34;&#34;Set page compression&#34;&#34;&#34;
     self.compress = compress</code></pre>
 </details>
 </dd>
@@ -6254,7 +6146,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_creator(self, creator):
-    &#34;Creator of document&#34;
+    &#34;&#34;&#34;Creator of document&#34;&#34;&#34;
     self.creator = creator</code></pre>
 </details>
 </dd>
@@ -6275,9 +6167,9 @@ def rotation(self, angle, x=None, y=None):
     The &#34;zoom&#34; argument may be &#39;fullpage&#39;, &#39;fullwidth&#39;, &#39;real&#39;,
     &#39;default&#39;, or a number, interpreted as a percentage.
     &#34;&#34;&#34;
-    if zoom in [&#34;fullpage&#34;, &#34;fullwidth&#34;, &#34;real&#34;, &#34;default&#34;]:
-        self.zoom_mode = zoom
-    elif not isinstance(zoom, str):
+    if zoom in [&#34;fullpage&#34;, &#34;fullwidth&#34;, &#34;real&#34;, &#34;default&#34;] or not isinstance(
+        zoom, str
+    ):
         self.zoom_mode = zoom
     else:
         raise FPDFException(f&#34;Incorrect zoom display mode: {zoom}&#34;)
@@ -6298,7 +6190,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_doc_option(self, opt, value):
-    &#34;Set document option&#34;
+    &#34;&#34;&#34;Set document option&#34;&#34;&#34;
     if opt == &#34;core_fonts_encoding&#34;:
         self.core_fonts_encoding = value
     else:
@@ -6315,7 +6207,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_draw_color(self, r, g=-1, b=-1):
-    &#34;Set color for all stroking operations&#34;
+    &#34;&#34;&#34;Set color for all stroking operations&#34;&#34;&#34;
     if (r == 0 and g == 0 and b == 0) or g == -1:
         self.draw_color = f&#34;{r / 255:.3f} G&#34;
     else:
@@ -6334,7 +6226,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_fill_color(self, r, g=-1, b=-1):
-    &#34;Set color for all filling operations&#34;
+    &#34;&#34;&#34;Set color for all filling operations&#34;&#34;&#34;
     if (r == 0 and g == 0 and b == 0) or g == -1:
         self.fill_color = f&#34;{r / 255:.3f} g&#34;
     else:
@@ -6354,7 +6246,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_font(self, family=None, style=&#34;&#34;, size=0):
-    &#34;Select a font; size given in points&#34;
+    &#34;&#34;&#34;Select a font; size given in points&#34;&#34;&#34;
     if not family:
         family = self.font_family
     if family.lower() == &#34;arial&#34; and (family + style) not in self.fonts:
@@ -6431,7 +6323,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_font_size(self, size):
-    &#34;Set font size in points&#34;
+    &#34;&#34;&#34;Set font size in points&#34;&#34;&#34;
     if self.font_size_pt == size:
         return
     self.font_size_pt = size
@@ -6450,7 +6342,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_keywords(self, keywords):
-    &#34;Keywords of document&#34;
+    &#34;&#34;&#34;Keywords of document&#34;&#34;&#34;
     self.keywords = keywords</code></pre>
 </details>
 </dd>
@@ -6464,7 +6356,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_left_margin(self, margin):
-    &#34;Set left margin&#34;
+    &#34;&#34;&#34;Set left margin&#34;&#34;&#34;
     self.l_margin = margin
     if self.page &gt; 0 and self.x &lt; margin:
         self.x = margin</code></pre>
@@ -6480,7 +6372,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_line_width(self, width):
-    &#34;Set line width&#34;
+    &#34;&#34;&#34;Set line width&#34;&#34;&#34;
     self.line_width = width
     if self.page &gt; 0:
         self._out(f&#34;{width * self.k:.2f} w&#34;)</code></pre>
@@ -6496,7 +6388,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_link(self, link, y=0, page=-1):
-    &#34;Set destination of internal link&#34;
+    &#34;&#34;&#34;Set destination of internal link&#34;&#34;&#34;
     if y == -1:
         y = self.y
     if page == -1:
@@ -6515,7 +6407,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_margins(self, left, top, right=-1):
-    &#34;Set left, top and right margins&#34;
+    &#34;&#34;&#34;Set left, top and right margins&#34;&#34;&#34;
     self.l_margin = left
     self.t_margin = top
     if right == -1:
@@ -6533,7 +6425,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_right_margin(self, margin):
-    &#34;Set right margin&#34;
+    &#34;&#34;&#34;Set right margin&#34;&#34;&#34;
     self.r_margin = margin</code></pre>
 </details>
 </dd>
@@ -6547,7 +6439,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_stretching(self, factor):
-    &#34;Set from stretch factor percents (default: 100.0)&#34;
+    &#34;&#34;&#34;Set from stretch factor percents (default: 100.0)&#34;&#34;&#34;
     if self.font_stretching == factor:
         return
     self.font_stretching = factor
@@ -6565,7 +6457,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_subject(self, subject):
-    &#34;Subject of document&#34;
+    &#34;&#34;&#34;Subject of document&#34;&#34;&#34;
     self.subject = subject</code></pre>
 </details>
 </dd>
@@ -6579,7 +6471,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_text_color(self, r, g=-1, b=-1):
-    &#34;Set color for text&#34;
+    &#34;&#34;&#34;Set color for text&#34;&#34;&#34;
     if (r == 0 and g == 0 and b == 0) or g == -1:
         self.text_color = f&#34;{r / 255:.3f} g&#34;
     else:
@@ -6597,7 +6489,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_title(self, title):
-    &#34;Title of document&#34;
+    &#34;&#34;&#34;Title of document&#34;&#34;&#34;
     self.title = title</code></pre>
 </details>
 </dd>
@@ -6611,7 +6503,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_top_margin(self, margin):
-    &#34;Set top margin&#34;
+    &#34;&#34;&#34;Set top margin&#34;&#34;&#34;
     self.t_margin = margin</code></pre>
 </details>
 </dd>
@@ -6625,11 +6517,8 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_x(self, x):
-    &#34;Set x position&#34;
-    if x &gt;= 0:
-        self.x = x
-    else:
-        self.x = self.w + x</code></pre>
+    &#34;&#34;&#34;Set x position&#34;&#34;&#34;
+    self.x = x if x &gt;= 0 else self.w + x</code></pre>
 </details>
 </dd>
 <dt id="fpdf.fpdf.FPDF.set_xy"><code class="name flex">
@@ -6642,7 +6531,7 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_xy(self, x, y):
-    &#34;Set x and y positions&#34;
+    &#34;&#34;&#34;Set x and y positions&#34;&#34;&#34;
     self.set_y(y)
     self.set_x(x)</code></pre>
 </details>
@@ -6657,12 +6546,9 @@ def rotation(self, angle, x=None, y=None):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_y(self, y):
-    &#34;Set y position and reset x&#34;
+    &#34;&#34;&#34;Set y position and reset x&#34;&#34;&#34;
     self.x = self.l_margin
-    if y &gt;= 0:
-        self.y = y
-    else:
-        self.y = self.h + y</code></pre>
+    self.y = y if y &gt;= 0 else self.h + y</code></pre>
 </details>
 </dd>
 <dt id="fpdf.fpdf.FPDF.text"><code class="name flex">
@@ -6676,7 +6562,7 @@ def rotation(self, angle, x=None, y=None):
 </summary>
 <pre><code class="python">@check_page
 def text(self, x, y, txt=&#34;&#34;):
-    &#34;Output a string&#34;
+    &#34;&#34;&#34;Output a string&#34;&#34;&#34;
     if not self.font_family:
         raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
     txt = self.normalize_text(txt)
@@ -6705,7 +6591,7 @@ def text(self, x, y, txt=&#34;&#34;):
 </summary>
 <pre><code class="python">@check_page
 def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
-    &#34;Output text in flowing mode&#34;
+    &#34;&#34;&#34;Output text in flowing mode&#34;&#34;&#34;
     if not self.font_family:
         raise FPDFException(&#34;No font set, you need to call set_font() beforehand&#34;)
     txt = self.normalize_text(txt)
@@ -6724,7 +6610,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         c = s[i]
         if c == &#34;\n&#34;:
             # Explicit line break
-            self.cell(w, h, substr(s, j, i - j), 0, 2, &#34;&#34;, 0, link)
+            self.cell(w, h, substr(s, j, i - j), 0, 2, &#34;&#34;, False, link)
             i += 1
             sep = -1
             j = i
@@ -6755,9 +6641,9 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
                     continue
                 if i == j:
                     i += 1
-                self.cell(w, h, substr(s, j, i - j), 0, 2, &#34;&#34;, 0, link)
+                self.cell(w, h, substr(s, j, i - j), 0, 2, &#34;&#34;, False, link)
             else:
-                self.cell(w, h, substr(s, j, sep - j), 0, 2, &#34;&#34;, 0, link)
+                self.cell(w, h, substr(s, j, sep - j), 0, 2, &#34;&#34;, False, link)
                 i = sep + 1
             sep = -1
             j = i
@@ -6771,7 +6657,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
             i += 1
     # Last chunk
     if i != j:
-        self.cell(l / 1000 * self.font_size, h, substr(s, j), 0, 0, &#34;&#34;, 0, link)</code></pre>
+        self.cell(l / 1000 * self.font_size, h, substr(s, j), 0, 0, &#34;&#34;, False, link)</code></pre>
 </details>
 </dd>
 </dl>

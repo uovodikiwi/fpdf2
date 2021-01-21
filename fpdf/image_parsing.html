@@ -54,7 +54,7 @@ def load_resource(filename, reason=&#34;image&#34;):
 def get_img_info(img):
     &#34;&#34;&#34;
     Args:
-        input_img: `BytesIO` or `PIL.Image.Image` instance
+        img: `BytesIO` or `PIL.Image.Image` instance
     &#34;&#34;&#34;
     if not isinstance(img, Image.Image):
         img = Image.open(img)
@@ -123,7 +123,7 @@ def to_zdata(img, remove_slice=None, select_slice=None):
 <dd>
 <div class="desc"><h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>input_img</code></strong></dt>
+<dt><strong><code>img</code></strong></dt>
 <dd><code>BytesIO</code> or <code>PIL.Image.Image</code> instance</dd>
 </dl></div>
 <details class="source">
@@ -133,7 +133,7 @@ def to_zdata(img, remove_slice=None, select_slice=None):
 <pre><code class="python">def get_img_info(img):
     &#34;&#34;&#34;
     Args:
-        input_img: `BytesIO` or `PIL.Image.Image` instance
+        img: `BytesIO` or `PIL.Image.Image` instance
     &#34;&#34;&#34;
     if not isinstance(img, Image.Image):
         img = Image.open(img)

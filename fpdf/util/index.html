@@ -27,7 +27,7 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;Utility Functions&#34;
+<pre><code class="python">&#34;&#34;&#34;Utility Functions&#34;&#34;&#34;
 import locale
 
 
@@ -38,7 +38,7 @@ def substr(s, start, length=-1):
 
 
 def enclose_in_parens(s):
-    &#34;Format a text string&#34;
+    &#34;&#34;&#34;Format a text string&#34;&#34;&#34;
     if s:
         assert isinstance(s, str)
         return f&#34;({escape_parens(s)})&#34;
@@ -46,7 +46,7 @@ def enclose_in_parens(s):
 
 
 def escape_parens(s):
-    &#34;Add a backslash character before , ( and )&#34;
+    &#34;&#34;&#34;Add a backslash character before , ( and )&#34;&#34;&#34;
     if isinstance(s, str):
         return (
             s.replace(&#34;\\&#34;, &#34;\\\\&#34;)
@@ -143,7 +143,7 @@ dochecks()</code></pre>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def enclose_in_parens(s):
-    &#34;Format a text string&#34;
+    &#34;&#34;&#34;Format a text string&#34;&#34;&#34;
     if s:
         assert isinstance(s, str)
         return f&#34;({escape_parens(s)})&#34;
@@ -160,7 +160,7 @@ dochecks()</code></pre>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def escape_parens(s):
-    &#34;Add a backslash character before , ( and )&#34;
+    &#34;&#34;&#34;Add a backslash character before , ( and )&#34;&#34;&#34;
     if isinstance(s, str):
         return (
             s.replace(&#34;\\&#34;, &#34;\\\\&#34;)
