@@ -1405,7 +1405,8 @@ or <code>black</code> detect non-properly formatted code.
 In the later case though, it will auto-format your code
 and you will just have to run <code>git commit -a</code> again.</p>
 <h2 id="testing">Testing</h2>
-<p>To run tests, <code>cd</code> into the repository and run <code>python setup.py test</code> or <code>pytest</code>.</p>
+<p>To run tests, <code>cd</code> into the repository, install the dependencies using
+<code>pip install -r test/requirements.txt</code>,  and run <code>pytest</code>.</p>
 <p>Alternatively, you can use <a href="https://tox.readthedocs.io/en/latest/">Tox</a>.
 It is self-documented in the <code>tox.ini</code> file in the repository.
 To run tests for all versions of Python, simply run <code>tox</code>.
