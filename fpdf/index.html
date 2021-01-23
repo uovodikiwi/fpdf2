@@ -583,20 +583,16 @@ containing meta-data and stuffs.</p></div>
         if fontkey in self.fonts:
             return
         if uni:
-            if os.path.exists(fname):
-                ttffilename = fname
-            elif FPDF_FONT_DIR and os.path.exists(os.path.join(FPDF_FONT_DIR, fname)):
-                ttffilename = os.path.join(FPDF_FONT_DIR, fname)
-            elif SYSTEM_TTFONTS and os.path.exists(os.path.join(SYSTEM_TTFONTS, fname)):
-                ttffilename = os.path.join(SYSTEM_TTFONTS, fname)
+            for parent in (&#34;.&#34;, FPDF_FONT_DIR, SYSTEM_TTFONTS):
+                if (Path(parent) / fname).exists():
+                    ttffilename = Path(parent) / fname
+                    break
             else:
                 raise RuntimeError(f&#34;TTF Font file not found: {fname}&#34;)
             if FPDF_CACHE_MODE == 0:
-                unifilename = f&#34;{os.path.splitext(ttffilename)[0]}.pkl&#34;
+                unifilename = Path() / f&#34;{ttffilename.stem}.pkl&#34;
             elif FPDF_CACHE_MODE == 2:
-                unifilename = os.path.join(
-                    FPDF_CACHE_DIR, f&#34;{_hashpath(ttffilename)}.pkl&#34;
-                )
+                unifilename = FPDF_CACHE_DIR / f&#34;{_hashpath(ttffilename)}.pkl&#34;
             else:
                 unifilename = None
 
@@ -633,8 +629,7 @@ containing meta-data and stuffs.</p></div>
 
                 if unifilename:
                     try:
-                        with open(unifilename, &#34;wb&#34;) as fh:
-                            pickle.dump(font_dict, fh)
+                        unifilename.write_bytes(pickle.dumps(font_dict))
                     except OSError as e:
                         if e.errno != errno.EACCES:
                             raise  # Not a permission error.
@@ -663,8 +658,7 @@ containing meta-data and stuffs.</p></div>
             }
             self.font_files[fname] = {&#34;type&#34;: &#34;TTF&#34;}
         else:
-            with open(fname, &#34;rb&#34;) as fontfile:
-                font_dict = pickle.load(fontfile)
+            font_dict = pickle.loads(fname.read_bytes())
             self.fonts[fontkey] = {&#34;i&#34;: len(self.fonts) + 1}
             self.fonts[fontkey].update(font_dict)
             diff = font_dict.get(&#34;diff&#34;)
@@ -1488,9 +1482,10 @@ containing meta-data and stuffs.</p></div>
         if self.state &lt; 3:
             self.close()
         if name:
-            if isinstance(name, str):
-                with open(name, &#34;wb&#34;) as file:
-                    file.write(self.buffer)
+            if isinstance(name, os.PathLike):
+                name.write_bytes(self.buffer)
+            elif isinstance(name, str):
+                Path(name).write_bytes(self.buffer)
             else:
                 name.write(self.buffer)
             return None
@@ -1628,8 +1623,7 @@ containing meta-data and stuffs.</p></div>
                 # Font file embedding
                 self._newobj()
                 self.font_files[name][&#34;n&#34;] = self.n
-                with open(os.path.join(FPDF_FONT_DIR, name), &#34;rb&#34;, 1) as f:
-                    font = f.read()
+                font = (FPDF_FONT_DIR / name).read_bytes()
                 compressed = substr(name, -2) == &#34;.z&#34;
                 if not compressed and &#34;length2&#34; in info:
                     header = ord(font[0]) == 128
@@ -1857,8 +1851,7 @@ containing meta-data and stuffs.</p></div>
 
     def _putTTfontwidths(self, font, maxUni):
         if font[&#34;unifilename&#34;]:
-            ops = os.path.splitext
-            cw127fname = f&#34;{ops(font[&#39;unifilename&#39;])[0]}.cw127.pkl&#34;
+            cw127fname = Path(font[&#34;unifilename&#34;]).with_suffix(&#34;.cw127.pkl&#34;)
         else:
             cw127fname = None
         font_dict = load_cache(cw127fname)
@@ -1883,17 +1876,17 @@ containing meta-data and stuffs.</p></div>
         # for each character
         subset = set(font[&#34;subset&#34;])
         for cid in range(startcid, cwlen):
-            if cid == 128 and cw127fname and not os.path.exists(cw127fname):
+            if cid == 128 and cw127fname and not cw127fname.exists():
                 try:
-                    with open(cw127fname, &#34;wb&#34;) as fh:
-                        font_dict = {
-                            &#34;rangeid&#34;: rangeid,
-                            &#34;prevcid&#34;: prevcid,
-                            &#34;prevwidth&#34;: prevwidth,
-                            &#34;interval&#34;: interval,
-                            &#34;range_interval&#34;: range_interval,
-                            &#34;range&#34;: range_,
-                        }
+                    font_dict = {
+                        &#34;rangeid&#34;: rangeid,
+                        &#34;prevcid&#34;: prevcid,
+                        &#34;prevwidth&#34;: prevwidth,
+                        &#34;interval&#34;: interval,
+                        &#34;range_interval&#34;: range_interval,
+                        &#34;range&#34;: range_,
+                    }
+                    with cw127fname.open(&#34;wb&#34;) as fh:
                         pickle.dump(font_dict, fh)
                 except OSError as e:
                     if e.errno != errno.EACCES:
@@ -2414,20 +2407,16 @@ def accept_page_break(self):
     if fontkey in self.fonts:
         return
     if uni:
-        if os.path.exists(fname):
-            ttffilename = fname
-        elif FPDF_FONT_DIR and os.path.exists(os.path.join(FPDF_FONT_DIR, fname)):
-            ttffilename = os.path.join(FPDF_FONT_DIR, fname)
-        elif SYSTEM_TTFONTS and os.path.exists(os.path.join(SYSTEM_TTFONTS, fname)):
-            ttffilename = os.path.join(SYSTEM_TTFONTS, fname)
+        for parent in (&#34;.&#34;, FPDF_FONT_DIR, SYSTEM_TTFONTS):
+            if (Path(parent) / fname).exists():
+                ttffilename = Path(parent) / fname
+                break
         else:
             raise RuntimeError(f&#34;TTF Font file not found: {fname}&#34;)
         if FPDF_CACHE_MODE == 0:
-            unifilename = f&#34;{os.path.splitext(ttffilename)[0]}.pkl&#34;
+            unifilename = Path() / f&#34;{ttffilename.stem}.pkl&#34;
         elif FPDF_CACHE_MODE == 2:
-            unifilename = os.path.join(
-                FPDF_CACHE_DIR, f&#34;{_hashpath(ttffilename)}.pkl&#34;
-            )
+            unifilename = FPDF_CACHE_DIR / f&#34;{_hashpath(ttffilename)}.pkl&#34;
         else:
             unifilename = None
 
@@ -2464,8 +2453,7 @@ def accept_page_break(self):
 
             if unifilename:
                 try:
-                    with open(unifilename, &#34;wb&#34;) as fh:
-                        pickle.dump(font_dict, fh)
+                    unifilename.write_bytes(pickle.dumps(font_dict))
                 except OSError as e:
                     if e.errno != errno.EACCES:
                         raise  # Not a permission error.
@@ -2494,8 +2482,7 @@ def accept_page_break(self):
         }
         self.font_files[fname] = {&#34;type&#34;: &#34;TTF&#34;}
     else:
-        with open(fname, &#34;rb&#34;) as fontfile:
-            font_dict = pickle.load(fontfile)
+        font_dict = pickle.loads(fname.read_bytes())
         self.fonts[fontkey] = {&#34;i&#34;: len(self.fonts) + 1}
         self.fonts[fontkey].update(font_dict)
         diff = font_dict.get(&#34;diff&#34;)
@@ -3676,9 +3663,10 @@ If a <code>name</code> is given, the PDF is written to a new file.</p>
     if self.state &lt; 3:
         self.close()
     if name:
-        if isinstance(name, str):
-            with open(name, &#34;wb&#34;) as file:
-                file.write(self.buffer)
+        if isinstance(name, os.PathLike):
+            name.write_bytes(self.buffer)
+        elif isinstance(name, str):
+            Path(name).write_bytes(self.buffer)
         else:
             name.write(self.buffer)
         return None
