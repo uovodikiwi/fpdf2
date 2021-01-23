@@ -1416,10 +1416,15 @@ If you do not want to run tests for all versions of python, run <code>tox -e py3
 utility function in order to validate the output.
 It relies on the very handy <a href="https://github.com/qpdf/qpdf">qpdf</a> CLI program
 to generate a PDF that is easy to compare: annotated, strictly formatted,
-whith uncompressed internal streams.
+with uncompressed internal streams.
 You will need to have its binary in your <code>$PATH</code>,
-otherwise <code>assert_pdf_equal</code> will fall back to hash-based comparison.
-In order to generate a "reference" PDF file, simply call <code>assert_pdf_equal</code> once with <code>generate=True</code>.</p>
+otherwise <code>assert_pdf_equal</code> will fall back to hash-based comparison.</p>
+<p>All generated PDF files (including those processed by <code>qpdf</code>) will be stored in
+<code>/tmp/pytest-of-USERNAME/pytest-current/NAME_OF_TEST/</code>. By default, three
+last test runs will be saved and then automatically deleted, so you can
+check the output in case of a failed test.</p>
+<p>In order to generate a "reference" PDF file, simply call <code>assert_pdf_equal</code>
+once with <code>generate=True</code>.</p>
 <p>Be sure to see the example tests in the <code>test/</code> folder in general.</p>
 <h2 id="github-pipeline">GitHub pipeline</h2>
 <p>A <a href="https://help.github.com/en/actions/reference">GitHub Actions</a> pipeline
