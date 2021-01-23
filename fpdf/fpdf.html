@@ -938,12 +938,10 @@ class FPDF:
                 f&#34;{self.x * k:.2f} {(self.h - self.y) * k:.2f} &#34;
                 f&#34;{w * k:.2f} {-h * k:.2f} re {op} &#34;
             )
-
         elif border == 1:
-            op = &#34;S&#34;
             s = (
                 f&#34;{self.x * k:.2f} {(self.h - self.y) * k:.2f} &#34;
-                f&#34;{w * k:.2f} {-h * k:.2f} re {op} &#34;
+                f&#34;{w * k:.2f} {-h * k:.2f} re S &#34;
             )
 
         if isinstance(border, str):
@@ -989,7 +987,7 @@ class FPDF:
 
                 s += (
                     f&#34;BT 0 Tw {(self.x + dx) * k:.2F} &#34;
-                    f&#34;{(self.h - self.y - 0.5 * h - 0.3 * self.font_size) * k,:.2F} &#34;
+                    f&#34;{(self.h - self.y - 0.5 * h - 0.3 * self.font_size) * k:.2F} &#34;
                     f&#34;Td [&#34;
                 )
 
@@ -1059,6 +1057,7 @@ class FPDF:
         split_only=False,
         link=&#34;&#34;,
         ln=0,
+        max_line_height=None,
     ):
         &#34;&#34;&#34;
         Output text with line breaks, cf. https://pyfpdf.github.io/fpdf2/reference/multi_cell.html
@@ -1080,9 +1079,12 @@ class FPDF:
                 and return the resulting multi-lines array of strings.
             link (str): optional link to add
             ln (int): Indicates where the current position should go after the call.
-                Possible values are: `0`: to the right ; `1`: to the beginning of the next line ;
-                `2`: below. Putting 1 is equivalent to putting 0 and calling `ln` just after.
+                Possible values are: `0`: to the bottom right ; `1`: to the beginning of the next line ;
+                `2`: below with the same horizontal offset ; `3`: to the right with the same vertical offset.
                 Default value: 0.
+            max_line_height (int): optional maximum height of each sub-cell generated
+
+        Using `ln=3` and `maximum height=pdf.font_size` is useful to build tables with multiline text in cells.
 
         Returns: a boolean indicating if page break was triggered.
         &#34;&#34;&#34;
@@ -1128,6 +1130,7 @@ class FPDF:
         l = 0
         ns = 0
         nl = 1
+        prev_x, prev_y = self.x, self.y
         while i &lt; normalized_string_length:
             # Get next character
             c = s[i]
@@ -1138,9 +1141,14 @@ class FPDF:
                     self.ws = 0
                     self._out(&#34;0 Tw&#34;)
 
+                if max_line_height and h &gt; max_line_height:
+                    height = max_line_height
+                    h -= height
+                else:
+                    height = h
                 new_page = self.cell(
                     w,
-                    h=h,
+                    h=height,
                     txt=substr(s, j, i - j),
                     border=b,
                     ln=2,
@@ -1179,9 +1187,14 @@ class FPDF:
                         self.ws = 0
                         self._out(&#34;0 Tw&#34;)
 
+                    if max_line_height and h &gt; max_line_height:
+                        height = max_line_height
+                        h -= height
+                    else:
+                        height = h
                     new_page = self.cell(
                         w,
-                        h=h,
+                        h=height,
                         txt=substr(s, j, i - j),
                         border=b,
                         ln=2,
@@ -1201,9 +1214,14 @@ class FPDF:
                         )
                         self._out(f&#34;{self.ws * self.k:.3f} Tw&#34;)
 
+                    if max_line_height and h &gt; max_line_height:
+                        height = max_line_height
+                        h -= height
+                    else:
+                        height = h
                     new_page = self.cell(
                         w,
-                        h=h,
+                        h=height,
                         txt=substr(s, j, sep - j),
                         border=b,
                         ln=2,
@@ -1237,7 +1255,7 @@ class FPDF:
             h=h,
             txt=substr(s, j, i - j),
             border=b,
-            ln=2,
+            ln=0 if ln == 3 else ln,
             align=align,
             fill=fill,
             link=link,
@@ -1245,12 +1263,13 @@ class FPDF:
         page_break_triggered = page_break_triggered or new_page
         text_cells.append(substr(s, j, i - j))
 
-        location_options = {
-            0: lambda: self.set_xy(self.x + w, self.y),
-            1: lambda: self.set_x(self.l_margin),  # could control y
-            2: lambda: None,
-        }
-        location_options.get(ln, lambda: None)()
+        new_x, new_y = {
+            0: (self.x, self.y + h),
+            1: (self.l_margin, self.y),
+            2: (prev_x, self.y),
+            3: (self.x, prev_y),
+        }[ln]
+        self.set_xy(new_x, new_y)
 
         if split_only:
             # restore writing functions
@@ -1480,19 +1499,25 @@ class FPDF:
     def _putpages(self):
         nb = self.page
         if self.str_alias_nb_pages:
+            substituted = False
             # Replace number of pages in fonts using subsets (unicode)
             alias = self.str_alias_nb_pages.encode(&#34;UTF-16BE&#34;)
             encoded_nb = str(nb).encode(&#34;UTF-16BE&#34;)
             for n in range(1, nb + 1):
-                self.pages[n][&#34;content&#34;] = self.pages[n][&#34;content&#34;].replace(
-                    alias, encoded_nb
-                )
+                new_content = self.pages[n][&#34;content&#34;].replace(alias, encoded_nb)
+                substituted |= self.pages[n][&#34;content&#34;] != new_content
+                self.pages[n][&#34;content&#34;] = new_content
             # Now repeat for no pages in non-subset fonts
             alias = self.str_alias_nb_pages.encode(&#34;latin-1&#34;)
             encoded_nb = str(nb).encode(&#34;latin-1&#34;)
             for n in range(1, nb + 1):
-                self.pages[n][&#34;content&#34;] = self.pages[n][&#34;content&#34;].replace(
-                    alias, encoded_nb
+                new_content = self.pages[n][&#34;content&#34;].replace(alias, encoded_nb)
+                substituted |= self.pages[n][&#34;content&#34;] != new_content
+                self.pages[n][&#34;content&#34;] = new_content
+            if substituted:
+                LOGGER.info(
+                    &#34;Substitution of &#39;%s&#39; was performed in the document&#34;,
+                    self.str_alias_nb_pages,
                 )
         if self.def_orientation == &#34;P&#34;:
             dw_pt = self.dw_pt
@@ -3242,12 +3267,10 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 f&#34;{self.x * k:.2f} {(self.h - self.y) * k:.2f} &#34;
                 f&#34;{w * k:.2f} {-h * k:.2f} re {op} &#34;
             )
-
         elif border == 1:
-            op = &#34;S&#34;
             s = (
                 f&#34;{self.x * k:.2f} {(self.h - self.y) * k:.2f} &#34;
-                f&#34;{w * k:.2f} {-h * k:.2f} re {op} &#34;
+                f&#34;{w * k:.2f} {-h * k:.2f} re S &#34;
             )
 
         if isinstance(border, str):
@@ -3293,7 +3316,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
                 s += (
                     f&#34;BT 0 Tw {(self.x + dx) * k:.2F} &#34;
-                    f&#34;{(self.h - self.y - 0.5 * h - 0.3 * self.font_size) * k,:.2F} &#34;
+                    f&#34;{(self.h - self.y - 0.5 * h - 0.3 * self.font_size) * k:.2F} &#34;
                     f&#34;Td [&#34;
                 )
 
@@ -3363,6 +3386,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
         split_only=False,
         link=&#34;&#34;,
         ln=0,
+        max_line_height=None,
     ):
         &#34;&#34;&#34;
         Output text with line breaks, cf. https://pyfpdf.github.io/fpdf2/reference/multi_cell.html
@@ -3384,9 +3408,12 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 and return the resulting multi-lines array of strings.
             link (str): optional link to add
             ln (int): Indicates where the current position should go after the call.
-                Possible values are: `0`: to the right ; `1`: to the beginning of the next line ;
-                `2`: below. Putting 1 is equivalent to putting 0 and calling `ln` just after.
+                Possible values are: `0`: to the bottom right ; `1`: to the beginning of the next line ;
+                `2`: below with the same horizontal offset ; `3`: to the right with the same vertical offset.
                 Default value: 0.
+            max_line_height (int): optional maximum height of each sub-cell generated
+
+        Using `ln=3` and `maximum height=pdf.font_size` is useful to build tables with multiline text in cells.
 
         Returns: a boolean indicating if page break was triggered.
         &#34;&#34;&#34;
@@ -3432,6 +3459,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
         l = 0
         ns = 0
         nl = 1
+        prev_x, prev_y = self.x, self.y
         while i &lt; normalized_string_length:
             # Get next character
             c = s[i]
@@ -3442,9 +3470,14 @@ case insensitive key (the name of the new format) and 2-tuple value of
                     self.ws = 0
                     self._out(&#34;0 Tw&#34;)
 
+                if max_line_height and h &gt; max_line_height:
+                    height = max_line_height
+                    h -= height
+                else:
+                    height = h
                 new_page = self.cell(
                     w,
-                    h=h,
+                    h=height,
                     txt=substr(s, j, i - j),
                     border=b,
                     ln=2,
@@ -3483,9 +3516,14 @@ case insensitive key (the name of the new format) and 2-tuple value of
                         self.ws = 0
                         self._out(&#34;0 Tw&#34;)
 
+                    if max_line_height and h &gt; max_line_height:
+                        height = max_line_height
+                        h -= height
+                    else:
+                        height = h
                     new_page = self.cell(
                         w,
-                        h=h,
+                        h=height,
                         txt=substr(s, j, i - j),
                         border=b,
                         ln=2,
@@ -3505,9 +3543,14 @@ case insensitive key (the name of the new format) and 2-tuple value of
                         )
                         self._out(f&#34;{self.ws * self.k:.3f} Tw&#34;)
 
+                    if max_line_height and h &gt; max_line_height:
+                        height = max_line_height
+                        h -= height
+                    else:
+                        height = h
                     new_page = self.cell(
                         w,
-                        h=h,
+                        h=height,
                         txt=substr(s, j, sep - j),
                         border=b,
                         ln=2,
@@ -3541,7 +3584,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
             h=h,
             txt=substr(s, j, i - j),
             border=b,
-            ln=2,
+            ln=0 if ln == 3 else ln,
             align=align,
             fill=fill,
             link=link,
@@ -3549,12 +3592,13 @@ case insensitive key (the name of the new format) and 2-tuple value of
         page_break_triggered = page_break_triggered or new_page
         text_cells.append(substr(s, j, i - j))
 
-        location_options = {
-            0: lambda: self.set_xy(self.x + w, self.y),
-            1: lambda: self.set_x(self.l_margin),  # could control y
-            2: lambda: None,
-        }
-        location_options.get(ln, lambda: None)()
+        new_x, new_y = {
+            0: (self.x, self.y + h),
+            1: (self.l_margin, self.y),
+            2: (prev_x, self.y),
+            3: (self.x, prev_y),
+        }[ln]
+        self.set_xy(new_x, new_y)
 
         if split_only:
             # restore writing functions
@@ -3784,19 +3828,25 @@ case insensitive key (the name of the new format) and 2-tuple value of
     def _putpages(self):
         nb = self.page
         if self.str_alias_nb_pages:
+            substituted = False
             # Replace number of pages in fonts using subsets (unicode)
             alias = self.str_alias_nb_pages.encode(&#34;UTF-16BE&#34;)
             encoded_nb = str(nb).encode(&#34;UTF-16BE&#34;)
             for n in range(1, nb + 1):
-                self.pages[n][&#34;content&#34;] = self.pages[n][&#34;content&#34;].replace(
-                    alias, encoded_nb
-                )
+                new_content = self.pages[n][&#34;content&#34;].replace(alias, encoded_nb)
+                substituted |= self.pages[n][&#34;content&#34;] != new_content
+                self.pages[n][&#34;content&#34;] = new_content
             # Now repeat for no pages in non-subset fonts
             alias = self.str_alias_nb_pages.encode(&#34;latin-1&#34;)
             encoded_nb = str(nb).encode(&#34;latin-1&#34;)
             for n in range(1, nb + 1):
-                self.pages[n][&#34;content&#34;] = self.pages[n][&#34;content&#34;].replace(
-                    alias, encoded_nb
+                new_content = self.pages[n][&#34;content&#34;].replace(alias, encoded_nb)
+                substituted |= self.pages[n][&#34;content&#34;] != new_content
+                self.pages[n][&#34;content&#34;] = new_content
+            if substituted:
+                LOGGER.info(
+                    &#34;Substitution of &#39;%s&#39; was performed in the document&#34;,
+                    self.str_alias_nb_pages,
                 )
         if self.def_orientation == &#34;P&#34;:
             dw_pt = self.dw_pt
@@ -5000,12 +5050,10 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=Fa
             f&#34;{self.x * k:.2f} {(self.h - self.y) * k:.2f} &#34;
             f&#34;{w * k:.2f} {-h * k:.2f} re {op} &#34;
         )
-
     elif border == 1:
-        op = &#34;S&#34;
         s = (
             f&#34;{self.x * k:.2f} {(self.h - self.y) * k:.2f} &#34;
-            f&#34;{w * k:.2f} {-h * k:.2f} re {op} &#34;
+            f&#34;{w * k:.2f} {-h * k:.2f} re S &#34;
         )
 
     if isinstance(border, str):
@@ -5051,7 +5099,7 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=Fa
 
             s += (
                 f&#34;BT 0 Tw {(self.x + dx) * k:.2F} &#34;
-                f&#34;{(self.h - self.y - 0.5 * h - 0.3 * self.font_size) * k,:.2F} &#34;
+                f&#34;{(self.h - self.y - 0.5 * h - 0.3 * self.font_size) * k:.2F} &#34;
                 f&#34;Td [&#34;
             )
 
@@ -5601,7 +5649,7 @@ def ln(self, h=None):
 </details>
 </dd>
 <dt id="fpdf.fpdf.FPDF.multi_cell"><code class="name flex">
-<span>def <span class="ident">multi_cell</span></span>(<span>self, w, h, txt='', border=0, align='J', fill=False, split_only=False, link='', ln=0)</span>
+<span>def <span class="ident">multi_cell</span></span>(<span>self, w, h, txt='', border=0, align='J', fill=False, split_only=False, link='', ln=0, max_line_height=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Output text with line breaks, cf. <a href="https://pyfpdf.github.io/fpdf2/reference/multi_cell.html">https://pyfpdf.github.io/fpdf2/reference/multi_cell.html</a></p>
@@ -5632,10 +5680,13 @@ and return the resulting multi-lines array of strings.</dd>
 <dd>optional link to add</dd>
 <dt><strong><code>ln</code></strong> :&ensp;<code>int</code></dt>
 <dd>Indicates where the current position should go after the call.
-Possible values are: <code>0</code>: to the right ; <code>1</code>: to the beginning of the next line ;
-<code>2</code>: below. Putting 1 is equivalent to putting 0 and calling <code>ln</code> just after.
+Possible values are: <code>0</code>: to the bottom right ; <code>1</code>: to the beginning of the next line ;
+<code>2</code>: below with the same horizontal offset ; <code>3</code>: to the right with the same vertical offset.
 Default value: 0.</dd>
+<dt><strong><code>max_line_height</code></strong> :&ensp;<code>int</code></dt>
+<dd>optional maximum height of each sub-cell generated</dd>
 </dl>
+<p>Using <code>ln=3</code> and <code>maximum height=pdf.font_size</code> is useful to build tables with multiline text in cells.</p>
 <p>Returns: a boolean indicating if page break was triggered.</p></div>
 <details class="source">
 <summary>
@@ -5653,6 +5704,7 @@ def multi_cell(
     split_only=False,
     link=&#34;&#34;,
     ln=0,
+    max_line_height=None,
 ):
     &#34;&#34;&#34;
     Output text with line breaks, cf. https://pyfpdf.github.io/fpdf2/reference/multi_cell.html
@@ -5674,9 +5726,12 @@ def multi_cell(
             and return the resulting multi-lines array of strings.
         link (str): optional link to add
         ln (int): Indicates where the current position should go after the call.
-            Possible values are: `0`: to the right ; `1`: to the beginning of the next line ;
-            `2`: below. Putting 1 is equivalent to putting 0 and calling `ln` just after.
+            Possible values are: `0`: to the bottom right ; `1`: to the beginning of the next line ;
+            `2`: below with the same horizontal offset ; `3`: to the right with the same vertical offset.
             Default value: 0.
+        max_line_height (int): optional maximum height of each sub-cell generated
+
+    Using `ln=3` and `maximum height=pdf.font_size` is useful to build tables with multiline text in cells.
 
     Returns: a boolean indicating if page break was triggered.
     &#34;&#34;&#34;
@@ -5722,6 +5777,7 @@ def multi_cell(
     l = 0
     ns = 0
     nl = 1
+    prev_x, prev_y = self.x, self.y
     while i &lt; normalized_string_length:
         # Get next character
         c = s[i]
@@ -5732,9 +5788,14 @@ def multi_cell(
                 self.ws = 0
                 self._out(&#34;0 Tw&#34;)
 
+            if max_line_height and h &gt; max_line_height:
+                height = max_line_height
+                h -= height
+            else:
+                height = h
             new_page = self.cell(
                 w,
-                h=h,
+                h=height,
                 txt=substr(s, j, i - j),
                 border=b,
                 ln=2,
@@ -5773,9 +5834,14 @@ def multi_cell(
                     self.ws = 0
                     self._out(&#34;0 Tw&#34;)
 
+                if max_line_height and h &gt; max_line_height:
+                    height = max_line_height
+                    h -= height
+                else:
+                    height = h
                 new_page = self.cell(
                     w,
-                    h=h,
+                    h=height,
                     txt=substr(s, j, i - j),
                     border=b,
                     ln=2,
@@ -5795,9 +5861,14 @@ def multi_cell(
                     )
                     self._out(f&#34;{self.ws * self.k:.3f} Tw&#34;)
 
+                if max_line_height and h &gt; max_line_height:
+                    height = max_line_height
+                    h -= height
+                else:
+                    height = h
                 new_page = self.cell(
                     w,
-                    h=h,
+                    h=height,
                     txt=substr(s, j, sep - j),
                     border=b,
                     ln=2,
@@ -5831,7 +5902,7 @@ def multi_cell(
         h=h,
         txt=substr(s, j, i - j),
         border=b,
-        ln=2,
+        ln=0 if ln == 3 else ln,
         align=align,
         fill=fill,
         link=link,
@@ -5839,12 +5910,13 @@ def multi_cell(
     page_break_triggered = page_break_triggered or new_page
     text_cells.append(substr(s, j, i - j))
 
-    location_options = {
-        0: lambda: self.set_xy(self.x + w, self.y),
-        1: lambda: self.set_x(self.l_margin),  # could control y
-        2: lambda: None,
-    }
-    location_options.get(ln, lambda: None)()
+    new_x, new_y = {
+        0: (self.x, self.y + h),
+        1: (self.l_margin, self.y),
+        2: (prev_x, self.y),
+        3: (self.x, prev_y),
+    }[ln]
+    self.set_xy(new_x, new_y)
 
     if split_only:
         # restore writing functions
