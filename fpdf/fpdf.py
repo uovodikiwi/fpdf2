@@ -224,6 +224,20 @@ class FPDF:
         self.compress = True  # Enable compression by default
         self.pdf_version = "1.3"  # Set default PDF version No.
 
+    @property
+    def epw(self):
+        """
+        Effective page width: the page width minus its horizontal margins.
+        """
+        return self.w - self.l_margin - self.r_margin
+
+    @property
+    def eph(self):
+        """
+        Effective page height: the page height minus its vertical margins.
+        """
+        return self.h - self.t_margin - self.b_margin
+
     def set_margins(self, left, top, right=-1):
         """Set left, top and right margins"""
         self.l_margin = left
@@ -877,30 +891,12 @@ class FPDF:
             border = 1
         page_break_triggered = False
         txt = self.normalize_text(txt)
-        k = self.k
-        if (
-            self.y + h > self.page_break_trigger
-            and not self.in_footer
-            and self.accept_page_break
-        ):
-
-            # Automatic page break
-            page_break_triggered = True
-            x = self.x
-            ws = self.ws
-            if ws > 0:
-                self.ws = 0
-                self._out("0 Tw")
-            self.add_page(same=True)
-            self.x = x  # restore x but not y after drawing header
-
-            if ws > 0:
-                self.ws = ws
-                self._out(f"{ws * k:.3f} Tw")
+        page_break_triggered = self._perform_page_break_if_need_be(h)
         if w == 0:
             w = self.w - self.r_margin - self.x
         s = ""
 
+        k = self.k
         if fill:
             op = "B" if border == 1 else "f"
             s = (
@@ -1013,6 +1009,30 @@ class FPDF:
             self.x += w
 
         return page_break_triggered
+
+    def _perform_page_break_if_need_be(self, h):
+        if (
+            self.y + h > self.page_break_trigger
+            and not self.in_footer
+            and self.accept_page_break
+        ):
+            LOGGER.info(
+                "Page break on page %d at y=%d for element of height %d",
+                self.page,
+                self.y,
+                h,
+            )
+            x, ws = self.x, self.ws
+            if ws > 0:
+                self.ws = 0
+                self._out("0 Tw")
+            self.add_page(same=True)
+            self.x = x  # restore x but not y after drawing header
+            if ws > 0:
+                self.ws = ws
+                self._out(f"{ws * self.k:.3f} Tw")
+            return True
+        return False
 
     @check_page
     def multi_cell(
@@ -1373,15 +1393,7 @@ class FPDF:
 
         # Flowing mode
         if y is None:
-            if (
-                self.y + h > self.page_break_trigger
-                and not self.in_footer
-                and self.accept_page_break
-            ):
-                # Automatic page break
-                x = self.x
-                self.add_page(same=True)
-                self.x = x
+            self._perform_page_break_if_need_be(h)
             y = self.y
             self.y += h
 
@@ -1530,7 +1542,8 @@ class FPDF:
                     annots += (
                         f"<</Type /Annot /Subtype /Link "
                         f"/Rect [{rect}] /Border [0 0 0] "
-                        # Flag "Print" (bit position 3) specifies to print the annotation when the page is printed.
+                        # Flag "Print" (bit position 3) specifies to print
+                        # the annotation when the page is printed.
                         # cf. https://docs.verapdf.org/validation/pdfa-part1/#rule-653-2
                         f"/F 4"
                     )
