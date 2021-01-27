@@ -48,7 +48,6 @@ class HTML2FPDF(HTMLParser):
         self.indent = 0
         self.bullet = []
         self.font_size = pdf.font_size_pt
-        self.font_face = "times"  # initialize font face
         self.set_font("times", self.font_size)
         self.font_color = 0, 0, 0  # initialize font color, r,g,b format
         self.table = None  # table attributes

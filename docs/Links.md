@@ -4,11 +4,6 @@
 & **hyperlinks** (links to external URLs that will be opened in a browser).
 
 
-## Internal links ##
-
-_TODO: work in progress_
-
-
 ## Hyperlink with FPDF.cell ##
 
 This method makes the whole cell clickable (not only the text):
@@ -59,7 +54,29 @@ pdf = PDF()
 pdf.set_font_size(16)
 pdf.add_page()
 pdf.write_html('<a href="https://github.com/PyFPDF/fpdf2">Link defined as HTML</a>')
-pdf.output('hyperlink.pdf')
+pdf.output("hyperlink.pdf")
 ```
 
 The hyperlinks defined this way will be rendered in blue with underline.
+
+
+## Internal links ##
+
+Using `FPDF.cell`:
+
+```python
+from fpdf import FPDF
+
+pdf = FPDF()
+pdf.set_font("helvetica", size=24)
+pdf.add_page()
+pdf.cell(w=pdf.epw, h=10, txt="Welcome on first page!", align="C")
+pdf.add_page()
+link = pdf.add_link()
+pdf.set_link(link, page=1)
+pdf.cell(w=100, h=10, txt="Internal link to first page", border=1, align="C", link=link)
+pdf.output("internal_link.pdf")
+```
+
+Similarly, `FPDF.link` can be instead of `FPDF.cell`,
+however `write_html` does not allow to define internal links.
