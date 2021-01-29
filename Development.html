@@ -1225,6 +1225,19 @@
     GitHub pipeline
   </a>
   
+    <nav class="md-nav" aria-label="GitHub pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#release-checklist" class="md-nav__link">
+    Release checklist
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1342,6 +1355,19 @@
     GitHub pipeline
   </a>
   
+    <nav class="md-nav" aria-label="GitHub pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#release-checklist" class="md-nav__link">
+    Release checklist
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1387,7 +1413,10 @@
 <li><a href="#linting">Linting</a></li>
 <li><a href="#pre-commit-hook">Pre-commit hook</a></li>
 <li><a href="#testing">Testing</a></li>
-<li><a href="#github-pipeline">GitHub pipeline</a></li>
+<li><a href="#github-pipeline">GitHub pipeline</a><ul>
+<li><a href="#release-checklist">Release checklist</a></li>
+</ul>
+</li>
 <li><a href="#documentation">Documentation</a></li>
 <li><a href="#see-also">See also</a></li>
 </ul>
@@ -1427,11 +1456,15 @@ Some are also listed on <a href="https://libraries.io/pypi/fpdf2">its libraries.
 <li><code>[scripts]</code> - manipulate this repository</li>
 <li><code>[test]</code> - tests</li>
 <li><code>[tutorial]</code> - tutorials (see also <a href="Tutorial.html">Tutorial</a>)</li>
-<li><code>README.md</code>, <code>PyPIReadme.rst</code> - Github and PyPI Readme's.</li>
-<li><code>LICENSE</code> - license information</li>
-<li><code>setup.cfg</code>, <code>setup.py</code>, <code>MANIFEST.in</code> - setup configuration</li>
-<li><code>mkdocs.yml</code> - config for <a href="https://www.mkdocs.org/">MkDocs</a></li>
-<li><code>tox.ini</code> - config for <a href="https://tox.readthedocs.io/en/latest/">Tox</a></li>
+<li><code>README.md</code> - Github and PyPI ReadMe</li>
+<li><code>CHANGELOG.md</code> - details of each release content</li>
+<li><code>LICENSE</code> - code license information</li>
+<li><code>CODEOWNERS</code> - define individuals or teams responsible for code in this repository</li>
+<li><code>CONTRIBUTORS.md</code> - the people who helped build this library ❤️</li>
+<li><code>setup.cfg</code>, <code>setup.py</code>, <code>MANIFEST.in</code> - packaging configuration to publish <a href="https://pypi.org/project/fpdf2/">a package on Pypi</a></li>
+<li><code>mkdocs.yml</code> - configuration for <a href="https://www.mkdocs.org/">MkDocs</a></li>
+<li><code>tox.ini</code> - configuration for <a href="https://tox.readthedocs.io/en/latest/">Tox</a></li>
+<li><code>.pylintrc</code> - configuration for <a href="http://pylint.pycqa.org/en/latest/">Pylint</a></li>
 </ul>
 <h2 id="code-auto-formatting">Code auto-formatting</h2>
 <p>We use <a href="https://github.com/psf/black">black</a> as a code prettifier.
@@ -1496,6 +1529,15 @@ and for every <em>Pull Request</em>.</p>
 linting with <code>pylint</code>, unit tests...
 <em>Pull Requests</em> submitted must pass all those checks in order to be approved.
 Ask maintainers through comments if some errors in the pipeline seem obscure to you.</p>
+<h3 id="release-checklist">Release checklist</h3>
+<ol>
+<li>complete <code>CHANGELOG.md</code> and add the version &amp; date of the new release</li>
+<li>bump <code>FPDF_VERSION</code> in <code>fpdf/fpdf.py</code></li>
+<li><code>git commit</code> &amp; <code>git push</code></li>
+<li>check that <a href="https://github.com/PyFPDF/fpdf2/actions">the GitHub Actions succeed</a>, and that <a href="https://pypi.org/project/fpdf2/#history">a new release appears on Pypi</a></li>
+<li>perform a <a href="https://github.com/PyFPDF/fpdf2/releases">GitHub release</a>, taking the description from the <code>CHANGELOG.md</code>.
+It will create a new <code>git</code> tag.</li>
+</ol>
 <h2 id="documentation">Documentation</h2>
 <p>The standalone documentation is in the <code>docs</code> subfolder,
 written in <a href="https://daringfireball.net/projects/markdown/">Markdown</a>.
