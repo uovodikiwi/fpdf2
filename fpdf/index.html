@@ -605,11 +605,13 @@ containing meta-data and stuffs.</p></div>
             return
         if uni:
             for parent in (&#34;.&#34;, FPDF_FONT_DIR, SYSTEM_TTFONTS):
+                if not parent:
+                    continue
                 if (Path(parent) / fname).exists():
                     ttffilename = Path(parent) / fname
                     break
             else:
-                raise RuntimeError(f&#34;TTF Font file not found: {fname}&#34;)
+                raise FileNotFoundError(f&#34;TTF Font file not found: {fname}&#34;)
             if FPDF_CACHE_MODE == 0:
                 unifilename = Path() / f&#34;{ttffilename.stem}.pkl&#34;
             elif FPDF_CACHE_MODE == 2:
@@ -679,7 +681,7 @@ containing meta-data and stuffs.</p></div>
             }
             self.font_files[fname] = {&#34;type&#34;: &#34;TTF&#34;}
         else:
-            font_dict = pickle.loads(fname.read_bytes())
+            font_dict = pickle.loads(Path(fname).read_bytes())
             self.fonts[fontkey] = {&#34;i&#34;: len(self.fonts) + 1}
             self.fonts[fontkey].update(font_dict)
             diff = font_dict.get(&#34;diff&#34;)
@@ -2503,11 +2505,13 @@ def epw(self):
         return
     if uni:
         for parent in (&#34;.&#34;, FPDF_FONT_DIR, SYSTEM_TTFONTS):
+            if not parent:
+                continue
             if (Path(parent) / fname).exists():
                 ttffilename = Path(parent) / fname
                 break
         else:
-            raise RuntimeError(f&#34;TTF Font file not found: {fname}&#34;)
+            raise FileNotFoundError(f&#34;TTF Font file not found: {fname}&#34;)
         if FPDF_CACHE_MODE == 0:
             unifilename = Path() / f&#34;{ttffilename.stem}.pkl&#34;
         elif FPDF_CACHE_MODE == 2:
@@ -2577,7 +2581,7 @@ def epw(self):
         }
         self.font_files[fname] = {&#34;type&#34;: &#34;TTF&#34;}
     else:
-        font_dict = pickle.loads(fname.read_bytes())
+        font_dict = pickle.loads(Path(fname).read_bytes())
         self.fonts[fontkey] = {&#34;i&#34;: len(self.fonts) + 1}
         self.fonts[fontkey].update(font_dict)
         diff = font_dict.get(&#34;diff&#34;)
