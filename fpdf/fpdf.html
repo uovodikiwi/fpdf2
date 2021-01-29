@@ -1426,11 +1426,11 @@ class FPDF:
                 PendingDeprecationWarning,
             )
         if isinstance(name, str):
-            img = load_resource(name)
+            img = None
         else:
             name, img = uuid4(), name
         if name not in self.images:
-            info = get_img_info(img)
+            info = get_img_info(img or load_resource(name))
             info[&#34;i&#34;] = len(self.images) + 1
             self.images[name] = info
         else:
@@ -3799,11 +3799,11 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 PendingDeprecationWarning,
             )
         if isinstance(name, str):
-            img = load_resource(name)
+            img = None
         else:
             name, img = uuid4(), name
         if name not in self.images:
-            info = get_img_info(img)
+            info = get_img_info(img or load_resource(name))
             info[&#34;i&#34;] = len(self.images) + 1
             self.images[name] = info
         else:
@@ -5584,11 +5584,11 @@ def image(
             PendingDeprecationWarning,
         )
     if isinstance(name, str):
-        img = load_resource(name)
+        img = None
     else:
         name, img = uuid4(), name
     if name not in self.images:
-        info = get_img_info(img)
+        info = get_img_info(img or load_resource(name))
         info[&#34;i&#34;] = len(self.images) + 1
         self.images[name] = info
     else:
