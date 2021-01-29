@@ -97,7 +97,9 @@ def calcChecksum(data):
 
 class TTFontFile:
     def __init__(self):
-        self.maxStrLenRead = 200000  # Maximum size of glyf table to read in as string (otherwise reads each glyph from file)
+        # Maximum size of glyph table to read in as string
+        # (otherwise reads each glyph from file)
+        self.maxStrLenRead = 200000
 
     def getMetrics(self, file):
         self.filename = file
@@ -305,7 +307,8 @@ class TTFontFile:
             raise RuntimeError(f&#34;Unknown glyph data format {glyphDataFormat}&#34;)
 
         # hhea metrics table
-        # ttf2t1 seems to use this value rather than the one in OS/2 - so put in for compatibility
+        # ttf2t1 seems to use this value rather than the one in OS/2 - so put in for
+        # compatibility
         if &#34;hhea&#34; in self.tables:
             self.seek_table(&#34;hhea&#34;)
             self.skip(4)
@@ -424,9 +427,9 @@ class TTFontFile:
 
         if not unicode_cmap_offset and not unicode_cmap_offset12:
             raise RuntimeError(
-                &#34;Font (&#34;
-                + self.filename
-                + &#34;) does not have cmap for Unicode (platform 3, encoding 1, format 4, or platform 3, encoding 10, format 12, or platform 0, any encoding, format 4)&#34;
+                f&#34;Font ({self.filename}) does not have cmap for Unicode (platform 3, &#34;
+                f&#34;encoding 1, format 4, or platform 3, encoding 10, format 12, or &#34;
+                f&#34;platform 0, any encoding, format 4)&#34;
             )
 
         glyphToChar = {}
@@ -501,9 +504,9 @@ class TTFontFile:
 
             if not unicode_cmap_offset and not unicode_cmap_offset12:
                 raise RuntimeError(
-                    &#34;Font (&#34;
-                    + self.filename
-                    + &#34;) does not have cmap for Unicode (platform 3, encoding 1, format 4, or platform 3, encoding 10, format 12, or platform 0, any encoding, format 4)&#34;
+                    f&#34;Font ({self.filename}) does not have cmap for Unicode &#34;
+                    f&#34;(platform 3, encoding 1, format 4, or platform 3, encoding 10, &#34;
+                    f&#34;format 12, or platform 0, any encoding, format 4)&#34;
                 )
 
             glyphToChar = {}
@@ -539,7 +542,9 @@ class TTFontFile:
             subsetglyphs.sort()
             glyphSet = {}
             n = 0
-            fsLastCharIndex = 0  # maximum Unicode index (character code) in this font, according to the cmap subtable for platform ID 3 and platform- specific encoding ID 0 or 1.
+            # maximum Unicode index (character code) in this font, according to the cmap
+            # subtable for platform ID 3 and platform- specific encoding ID 0 or 1.
+            fsLastCharIndex = 0
             for originalGlyphIdx, uni in subsetglyphs:
                 fsLastCharIndex = max(fsLastCharIndex, uni)
                 glyphSet[originalGlyphIdx] = n  # old glyphID to new glyphID
@@ -652,7 +657,7 @@ class TTFontFile:
             for subrange in range_:
                 cmap.append(
                     0
-                )  # idRangeOffset[segCount]      Offset in bytes to glyph indexArray, or 0
+                )  # idRangeOffset[segCount]   Offset in bytes to glyph indexArray, or 0
 
             cmap.append(0)  # idRangeOffset of last Segment
             for subrange, glidx in range_:
@@ -667,7 +672,8 @@ class TTFontFile:
                     try:
                         cmapstr += pack(&#34;&gt;h&#34;, cm)
                     except StructError:
-                        # cmap value too big to fit in a short (h), putting it in an unsigned short (H):
+                        # cmap value too big to fit in a short (h),
+                        # putting it in an unsigned short (H):
                         cmapstr += pack(&#34;&gt;H&#34;, -cm)
             self.add(&#34;cmap&#34;, cmapstr)
 
@@ -863,7 +869,8 @@ class TTFontFile:
             if glyph in glyphToChar or glyph == 0:
                 if aw &gt;= (1 &lt;&lt; 15):
                     aw = 0  # 1.03 Some (arabic) fonts have -ve values for width
-                    # although should be unsigned value - comes out as e.g. 65108 (intended -50)
+                    # although should be unsigned value
+                    # - comes out as e.g. 65108 (intended -50)
                 if glyph == 0:
                     self.defaultWidth = scale * aw
                     continue
@@ -1121,7 +1128,9 @@ class TTFontFile:
 </summary>
 <pre><code class="python">class TTFontFile:
     def __init__(self):
-        self.maxStrLenRead = 200000  # Maximum size of glyf table to read in as string (otherwise reads each glyph from file)
+        # Maximum size of glyph table to read in as string
+        # (otherwise reads each glyph from file)
+        self.maxStrLenRead = 200000
 
     def getMetrics(self, file):
         self.filename = file
@@ -1329,7 +1338,8 @@ class TTFontFile:
             raise RuntimeError(f&#34;Unknown glyph data format {glyphDataFormat}&#34;)
 
         # hhea metrics table
-        # ttf2t1 seems to use this value rather than the one in OS/2 - so put in for compatibility
+        # ttf2t1 seems to use this value rather than the one in OS/2 - so put in for
+        # compatibility
         if &#34;hhea&#34; in self.tables:
             self.seek_table(&#34;hhea&#34;)
             self.skip(4)
@@ -1448,9 +1458,9 @@ class TTFontFile:
 
         if not unicode_cmap_offset and not unicode_cmap_offset12:
             raise RuntimeError(
-                &#34;Font (&#34;
-                + self.filename
-                + &#34;) does not have cmap for Unicode (platform 3, encoding 1, format 4, or platform 3, encoding 10, format 12, or platform 0, any encoding, format 4)&#34;
+                f&#34;Font ({self.filename}) does not have cmap for Unicode (platform 3, &#34;
+                f&#34;encoding 1, format 4, or platform 3, encoding 10, format 12, or &#34;
+                f&#34;platform 0, any encoding, format 4)&#34;
             )
 
         glyphToChar = {}
@@ -1525,9 +1535,9 @@ class TTFontFile:
 
             if not unicode_cmap_offset and not unicode_cmap_offset12:
                 raise RuntimeError(
-                    &#34;Font (&#34;
-                    + self.filename
-                    + &#34;) does not have cmap for Unicode (platform 3, encoding 1, format 4, or platform 3, encoding 10, format 12, or platform 0, any encoding, format 4)&#34;
+                    f&#34;Font ({self.filename}) does not have cmap for Unicode &#34;
+                    f&#34;(platform 3, encoding 1, format 4, or platform 3, encoding 10, &#34;
+                    f&#34;format 12, or platform 0, any encoding, format 4)&#34;
                 )
 
             glyphToChar = {}
@@ -1563,7 +1573,9 @@ class TTFontFile:
             subsetglyphs.sort()
             glyphSet = {}
             n = 0
-            fsLastCharIndex = 0  # maximum Unicode index (character code) in this font, according to the cmap subtable for platform ID 3 and platform- specific encoding ID 0 or 1.
+            # maximum Unicode index (character code) in this font, according to the cmap
+            # subtable for platform ID 3 and platform- specific encoding ID 0 or 1.
+            fsLastCharIndex = 0
             for originalGlyphIdx, uni in subsetglyphs:
                 fsLastCharIndex = max(fsLastCharIndex, uni)
                 glyphSet[originalGlyphIdx] = n  # old glyphID to new glyphID
@@ -1676,7 +1688,7 @@ class TTFontFile:
             for subrange in range_:
                 cmap.append(
                     0
-                )  # idRangeOffset[segCount]      Offset in bytes to glyph indexArray, or 0
+                )  # idRangeOffset[segCount]   Offset in bytes to glyph indexArray, or 0
 
             cmap.append(0)  # idRangeOffset of last Segment
             for subrange, glidx in range_:
@@ -1691,7 +1703,8 @@ class TTFontFile:
                     try:
                         cmapstr += pack(&#34;&gt;h&#34;, cm)
                     except StructError:
-                        # cmap value too big to fit in a short (h), putting it in an unsigned short (H):
+                        # cmap value too big to fit in a short (h),
+                        # putting it in an unsigned short (H):
                         cmapstr += pack(&#34;&gt;H&#34;, -cm)
             self.add(&#34;cmap&#34;, cmapstr)
 
@@ -1887,7 +1900,8 @@ class TTFontFile:
             if glyph in glyphToChar or glyph == 0:
                 if aw &gt;= (1 &lt;&lt; 15):
                     aw = 0  # 1.03 Some (arabic) fonts have -ve values for width
-                    # although should be unsigned value - comes out as e.g. 65108 (intended -50)
+                    # although should be unsigned value
+                    # - comes out as e.g. 65108 (intended -50)
                 if glyph == 0:
                     self.defaultWidth = scale * aw
                     continue
@@ -2267,7 +2281,8 @@ def splice(stream, offset, value):
         raise RuntimeError(f&#34;Unknown glyph data format {glyphDataFormat}&#34;)
 
     # hhea metrics table
-    # ttf2t1 seems to use this value rather than the one in OS/2 - so put in for compatibility
+    # ttf2t1 seems to use this value rather than the one in OS/2 - so put in for
+    # compatibility
     if &#34;hhea&#34; in self.tables:
         self.seek_table(&#34;hhea&#34;)
         self.skip(4)
@@ -2386,9 +2401,9 @@ def splice(stream, offset, value):
 
     if not unicode_cmap_offset and not unicode_cmap_offset12:
         raise RuntimeError(
-            &#34;Font (&#34;
-            + self.filename
-            + &#34;) does not have cmap for Unicode (platform 3, encoding 1, format 4, or platform 3, encoding 10, format 12, or platform 0, any encoding, format 4)&#34;
+            f&#34;Font ({self.filename}) does not have cmap for Unicode (platform 3, &#34;
+            f&#34;encoding 1, format 4, or platform 3, encoding 10, format 12, or &#34;
+            f&#34;platform 0, any encoding, format 4)&#34;
         )
 
     glyphToChar = {}
@@ -2579,7 +2594,8 @@ def splice(stream, offset, value):
         if glyph in glyphToChar or glyph == 0:
             if aw &gt;= (1 &lt;&lt; 15):
                 aw = 0  # 1.03 Some (arabic) fonts have -ve values for width
-                # although should be unsigned value - comes out as e.g. 65108 (intended -50)
+                # although should be unsigned value
+                # - comes out as e.g. 65108 (intended -50)
             if glyph == 0:
                 self.defaultWidth = scale * aw
                 continue
@@ -2832,9 +2848,9 @@ def splice(stream, offset, value):
 
         if not unicode_cmap_offset and not unicode_cmap_offset12:
             raise RuntimeError(
-                &#34;Font (&#34;
-                + self.filename
-                + &#34;) does not have cmap for Unicode (platform 3, encoding 1, format 4, or platform 3, encoding 10, format 12, or platform 0, any encoding, format 4)&#34;
+                f&#34;Font ({self.filename}) does not have cmap for Unicode &#34;
+                f&#34;(platform 3, encoding 1, format 4, or platform 3, encoding 10, &#34;
+                f&#34;format 12, or platform 0, any encoding, format 4)&#34;
             )
 
         glyphToChar = {}
@@ -2870,7 +2886,9 @@ def splice(stream, offset, value):
         subsetglyphs.sort()
         glyphSet = {}
         n = 0
-        fsLastCharIndex = 0  # maximum Unicode index (character code) in this font, according to the cmap subtable for platform ID 3 and platform- specific encoding ID 0 or 1.
+        # maximum Unicode index (character code) in this font, according to the cmap
+        # subtable for platform ID 3 and platform- specific encoding ID 0 or 1.
+        fsLastCharIndex = 0
         for originalGlyphIdx, uni in subsetglyphs:
             fsLastCharIndex = max(fsLastCharIndex, uni)
             glyphSet[originalGlyphIdx] = n  # old glyphID to new glyphID
@@ -2983,7 +3001,7 @@ def splice(stream, offset, value):
         for subrange in range_:
             cmap.append(
                 0
-            )  # idRangeOffset[segCount]      Offset in bytes to glyph indexArray, or 0
+            )  # idRangeOffset[segCount]   Offset in bytes to glyph indexArray, or 0
 
         cmap.append(0)  # idRangeOffset of last Segment
         for subrange, glidx in range_:
@@ -2998,7 +3016,8 @@ def splice(stream, offset, value):
                 try:
                     cmapstr += pack(&#34;&gt;h&#34;, cm)
                 except StructError:
-                    # cmap value too big to fit in a short (h), putting it in an unsigned short (H):
+                    # cmap value too big to fit in a short (h),
+                    # putting it in an unsigned short (H):
                     cmapstr += pack(&#34;&gt;H&#34;, -cm)
         self.add(&#34;cmap&#34;, cmapstr)
 

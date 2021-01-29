@@ -14,7 +14,7 @@
         <link rel="canonical" href="https://pyfpdf.github.io/fpdf2/reference/accept_page_break.html">
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.5">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.6">
     
     
       
@@ -22,10 +22,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.15aa0b43.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.cb6bc1d0.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.75751829.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.39b8e14a.min.css">
         
       
     
@@ -209,7 +209,6 @@
       
       
 
-
   
   
   
@@ -224,7 +223,6 @@
       
       
       
-
 
   
   
@@ -241,7 +239,6 @@
       
       
 
-
   
   
   
@@ -257,6 +254,80 @@
       
       
 
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../HTML.html" class="md-nav__link">
+        HTML
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Links.html" class="md-nav__link">
+        Links
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tables.html" class="md-nav__link">
+        Tables
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PageBreaks.html" class="md-nav__link">
+        Page breaks
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TextStyling.html" class="md-nav__link">
+        Text styling
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
 
   
   
@@ -273,7 +344,6 @@
       
       
 
-
   
   
   
@@ -288,7 +358,6 @@
       
       
       
-
 
   
   
@@ -305,7 +374,6 @@
       
       
 
-
   
   
   
@@ -320,7 +388,6 @@
       
       
       
-
 
   
   
@@ -337,7 +404,6 @@
       
       
 
-
   
   
   
@@ -352,7 +418,6 @@
       
       
       
-
 
   
   
@@ -369,7 +434,6 @@
       
       
 
-
   
   
     
@@ -379,14 +443,14 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-11" type="checkbox" id="nav-11" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-16" type="checkbox" id="nav-16" checked>
       
-      <label class="md-nav__link" for="nav-11">
+      <label class="md-nav__link" for="nav-16">
         ReferenceManual
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="ReferenceManual" data-md-level="1">
-        <label class="md-nav__title" for="nav-11">
+        <label class="md-nav__title" for="nav-16">
           <span class="md-nav__icon md-icon"></span>
           ReferenceManual
         </label>
@@ -447,6 +511,13 @@
           <li class="md-nav__item">
   <a href="#description" class="md-nav__link">
     Description
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
   </a>
   
 </li>
@@ -1129,7 +1200,6 @@
       
       
 
-
   
   
   
@@ -1144,7 +1214,6 @@
       
       
       
-
 
   
   
@@ -1195,6 +1264,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#see-also" class="md-nav__link">
     See also
   </a>
@@ -1226,11 +1302,30 @@
                   <h1>accept_page_break</h1>
                 
                 <h2 id="accept_page_break">accept_page_break</h2>
-<div class="highlight"><pre><span></span><code><span class="n">fpdf</span><span class="o">.</span><span class="n">accept_page_break</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="n">fpdf</span><span class="o">.</span><span class="n">accept_page_break</span>
 </code></pre></div>
 <h3 id="description">Description</h3>
-<p>Whenever a page break condition is met, this method is called, and the break is issued or not depending on the returned value. The default implementation returns a value according to the mode selected by <a href="set_auto_page_break.html">set_auto_page_break</a>. 
+<p><code>@property</code> method to determine whether to issue automatic page break.</p>
+<p>Whenever a page break condition is met, this method is called, and the break is issued or not depending on the returned value.</p>
+<p>The default implementation returns a value according to the mode selected by <a href="set_auto_page_break.html">set_auto_page_break</a>.
 This method is called automatically and should not be called directly by the application.</p>
+<h3 id="example">Example</h3>
+<p>From <code>tutorials/tuto4.py</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">PDF</span><span class="p">(</span><span class="n">FPDF</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">accept_page_break</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="c1"># Go to next column:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_col</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="c1"># Set ordinate to top:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_y</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y0</span><span class="p">)</span>
+            <span class="c1"># Stay on the same page:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="c1"># Go back to first column:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_col</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># Trigger a page break:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+</code></pre></div>
 <h3 id="see-also">See also</h3>
 <p><a href="set_auto_page_break.html">set_auto_page_break</a>.</p>
                 
@@ -1299,15 +1394,15 @@ This method is called automatically and should not be called directly by the app
       
     </div>
     
-      <script src="../assets/javascripts/vendor.93c04032.min.js"></script>
-      <script src="../assets/javascripts/bundle.83e5331e.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      <script src="../assets/javascripts/vendor.53cc9318.min.js"></script>
+      <script src="../assets/javascripts/bundle.e9c9f54f.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
       
       <script>
         app = initialize({
           base: "..",
           features: [],
           search: Object.assign({
-            worker: "../assets/javascripts/worker/search.8c7e0a7e.min.js"
+            worker: "../assets/javascripts/worker/search.9c0e82ba.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>
