@@ -619,6 +619,9 @@ containing meta-data and stuffs.</p></div>
             else:
                 unifilename = None
 
+            # include numbers in the subset! (if alias present)
+            sbarr = list(range(57 if self.str_alias_nb_pages else 32))
+
             font_dict = load_cache(unifilename)
             if font_dict is None:
                 ttf = TTFontFile()
@@ -639,13 +642,15 @@ containing meta-data and stuffs.</p></div>
 
                 # Generate metrics .pkl file
                 font_dict = {
-                    &#34;name&#34;: re.sub(&#34;[ ()]&#34;, &#34;&#34;, ttf.fullName),
                     &#34;type&#34;: &#34;TTF&#34;,
+                    &#34;name&#34;: re.sub(&#34;[ ()]&#34;, &#34;&#34;, ttf.fullName),
                     &#34;desc&#34;: desc,
                     &#34;up&#34;: round(ttf.underlinePosition),
                     &#34;ut&#34;: round(ttf.underlineThickness),
                     &#34;ttffile&#34;: ttffilename,
                     &#34;fontkey&#34;: fontkey,
+                    &#34;subset&#34;: sbarr,
+                    &#34;unifilename&#34;: unifilename,
                     &#34;originalsize&#34;: os.stat(ttffilename).st_size,
                     &#34;cw&#34;: ttf.charWidths,
                 }
@@ -657,9 +662,6 @@ containing meta-data and stuffs.</p></div>
                         if e.errno != errno.EACCES:
                             raise  # Not a permission error.
                 del ttf
-
-            # include numbers in the subset! (if alias present)
-            sbarr = list(range(57 if self.str_alias_nb_pages else 32))
 
             self.fonts[fontkey] = {
                 &#34;i&#34;: len(self.fonts) + 1,
@@ -1893,20 +1895,9 @@ containing meta-data and stuffs.</p></div>
                 self.mtd(font)
 
     def _putTTfontwidths(self, font, maxUni):
-        if font[&#34;unifilename&#34;]:
-            cw127fname = Path(font[&#34;unifilename&#34;]).with_suffix(&#34;.cw127.pkl&#34;)
-        else:
-            cw127fname = None
+        cw127fname = Path(font[&#34;unifilename&#34;]).with_suffix(&#34;.cw127.pkl&#34;)
         font_dict = load_cache(cw127fname)
-        if font_dict is None:
-            rangeid = 0
-            range_ = {}
-            range_interval = {}
-            prevcid = -2
-            prevwidth = -1
-            interval = False
-            startcid = 1
-        else:
+        if font_dict:
             rangeid = font_dict[&#34;rangeid&#34;]
             range_ = font_dict[&#34;range&#34;]
             prevcid = font_dict[&#34;prevcid&#34;]
@@ -1914,21 +1905,21 @@ containing meta-data and stuffs.</p></div>
             interval = font_dict[&#34;interval&#34;]
             range_interval = font_dict[&#34;range_interval&#34;]
             startcid = 128
+        else:
+            rangeid = 0
+            range_ = {}
+            range_interval = {}
+            prevcid = -2
+            prevwidth = -1
+            interval = False
+            startcid = 1
         cwlen = maxUni + 1
 
         # for each character
         subset = set(font[&#34;subset&#34;])
         for cid in range(startcid, cwlen):
-            if cid == 128 and cw127fname and not cw127fname.exists():
+            if cid == 128 and font_dict:
                 try:
-                    font_dict = {
-                        &#34;rangeid&#34;: rangeid,
-                        &#34;prevcid&#34;: prevcid,
-                        &#34;prevwidth&#34;: prevwidth,
-                        &#34;interval&#34;: interval,
-                        &#34;range_interval&#34;: range_interval,
-                        &#34;range&#34;: range_,
-                    }
                     with cw127fname.open(&#34;wb&#34;) as fh:
                         pickle.dump(font_dict, fh)
                 except OSError as e:
@@ -2519,6 +2510,9 @@ def epw(self):
         else:
             unifilename = None
 
+        # include numbers in the subset! (if alias present)
+        sbarr = list(range(57 if self.str_alias_nb_pages else 32))
+
         font_dict = load_cache(unifilename)
         if font_dict is None:
             ttf = TTFontFile()
@@ -2539,13 +2533,15 @@ def epw(self):
 
             # Generate metrics .pkl file
             font_dict = {
-                &#34;name&#34;: re.sub(&#34;[ ()]&#34;, &#34;&#34;, ttf.fullName),
                 &#34;type&#34;: &#34;TTF&#34;,
+                &#34;name&#34;: re.sub(&#34;[ ()]&#34;, &#34;&#34;, ttf.fullName),
                 &#34;desc&#34;: desc,
                 &#34;up&#34;: round(ttf.underlinePosition),
                 &#34;ut&#34;: round(ttf.underlineThickness),
                 &#34;ttffile&#34;: ttffilename,
                 &#34;fontkey&#34;: fontkey,
+                &#34;subset&#34;: sbarr,
+                &#34;unifilename&#34;: unifilename,
                 &#34;originalsize&#34;: os.stat(ttffilename).st_size,
                 &#34;cw&#34;: ttf.charWidths,
             }
@@ -2557,9 +2553,6 @@ def epw(self):
                     if e.errno != errno.EACCES:
                         raise  # Not a permission error.
             del ttf
-
-        # include numbers in the subset! (if alias present)
-        sbarr = list(range(57 if self.str_alias_nb_pages else 32))
 
         self.fonts[fontkey] = {
             &#34;i&#34;: len(self.fonts) + 1,
