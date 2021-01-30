@@ -42,7 +42,7 @@ def load_resource(filename, reason=&#34;image&#34;):
         return filename
     # by default loading from network is allowed for all images
     if reason == &#34;image&#34;:
-        if filename.startswith(&#34;http://&#34;) or filename.startswith(&#34;https://&#34;):
+        if filename.startswith((&#34;http://&#34;, &#34;https://&#34;)):
             f = BytesIO(urlopen(filename).read())
         else:
             with open(filename, &#34;rb&#34;) as fl:
@@ -189,7 +189,7 @@ def to_zdata(img, remove_slice=None, select_slice=None):
         return filename
     # by default loading from network is allowed for all images
     if reason == &#34;image&#34;:
-        if filename.startswith(&#34;http://&#34;) or filename.startswith(&#34;https://&#34;):
+        if filename.startswith((&#34;http://&#34;, &#34;https://&#34;)):
             f = BytesIO(urlopen(filename).read())
         else:
             with open(filename, &#34;rb&#34;) as fl:

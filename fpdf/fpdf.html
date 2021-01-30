@@ -517,12 +517,11 @@ class FPDF:
             f&#34;{(self.h - y2) * self.k:.2f} l S&#34;
         )
 
-    def _set_dash(self, dash_length=False, space_length=False):
+    def _set_dash(self, dash_length=None, space_length=None):
+        dash = &#34;&#34;
         if dash_length and space_length:
-            s = f&#34;[{dash_length * self.k:.3f} {space_length * self.k:.3f}] 0 d&#34;
-        else:
-            s = &#34;[] 0 d&#34;
-        self._out(s)
+            dash = f&#34;{dash_length * self.k:.3f} {space_length * self.k:.3f}&#34;
+        self._out(f&#34;[{dash}] 0 d&#34;)
 
     @check_page
     def dashed_line(self, x1, y1, x2, y2, dash_length=1, space_length=1):
@@ -1639,10 +1638,7 @@ class FPDF:
         self.offsets[1] = len(self.buffer)
         self._out(&#34;1 0 obj&#34;)
         self._out(&#34;&lt;&lt;/Type /Pages&#34;)
-        kids = &#34;/Kids [&#34;
-        for i in range(nb):
-            kids += f&#34;{3 + 2 * i} 0 R &#34;
-        self._out(kids + &#34;]&#34;)
+        self._out(&#34;/Kids [&#34; + &#34; &#34;.join(f&#34;{3 + 2 * i} 0 R&#34; for i in range(nb)) + &#34;]&#34;)
         self._out(f&#34;/Count {nb}&#34;)
         self._out(f&#34;/MediaBox [0 0 {dw_pt:.2f} {dh_pt:.2f}]&#34;)
         self._out(&#34;&gt;&gt;&#34;)
@@ -1727,12 +1723,9 @@ class FPDF:
                 # Widths
                 self._newobj()
                 cw = font[&#34;cw&#34;]
-                s = &#34;[&#34;
-                for i in range(32, 256):
-                    # Get doesn&#39;t raise exception;
-                    # returns 0 instead of None if not set
-                    s += f&#34;{cw.get(chr(i), 0)} &#34;
-                self._out(f&#34;{s}]&#34;)
+                self._out(
+                    &#34;[&#34; + &#34; &#34;.join(cw.get(chr(i), 0) for i in range(32, 256)) + &#34;]&#34;
+                )
                 self._out(&#34;endobj&#34;)
 
                 # Descriptor
@@ -2890,12 +2883,11 @@ case insensitive key (the name of the new format) and 2-tuple value of
             f&#34;{(self.h - y2) * self.k:.2f} l S&#34;
         )
 
-    def _set_dash(self, dash_length=False, space_length=False):
+    def _set_dash(self, dash_length=None, space_length=None):
+        dash = &#34;&#34;
         if dash_length and space_length:
-            s = f&#34;[{dash_length * self.k:.3f} {space_length * self.k:.3f}] 0 d&#34;
-        else:
-            s = &#34;[] 0 d&#34;
-        self._out(s)
+            dash = f&#34;{dash_length * self.k:.3f} {space_length * self.k:.3f}&#34;
+        self._out(f&#34;[{dash}] 0 d&#34;)
 
     @check_page
     def dashed_line(self, x1, y1, x2, y2, dash_length=1, space_length=1):
@@ -4012,10 +4004,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
         self.offsets[1] = len(self.buffer)
         self._out(&#34;1 0 obj&#34;)
         self._out(&#34;&lt;&lt;/Type /Pages&#34;)
-        kids = &#34;/Kids [&#34;
-        for i in range(nb):
-            kids += f&#34;{3 + 2 * i} 0 R &#34;
-        self._out(kids + &#34;]&#34;)
+        self._out(&#34;/Kids [&#34; + &#34; &#34;.join(f&#34;{3 + 2 * i} 0 R&#34; for i in range(nb)) + &#34;]&#34;)
         self._out(f&#34;/Count {nb}&#34;)
         self._out(f&#34;/MediaBox [0 0 {dw_pt:.2f} {dh_pt:.2f}]&#34;)
         self._out(&#34;&gt;&gt;&#34;)
@@ -4100,12 +4089,9 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 # Widths
                 self._newobj()
                 cw = font[&#34;cw&#34;]
-                s = &#34;[&#34;
-                for i in range(32, 256):
-                    # Get doesn&#39;t raise exception;
-                    # returns 0 instead of None if not set
-                    s += f&#34;{cw.get(chr(i), 0)} &#34;
-                self._out(f&#34;{s}]&#34;)
+                self._out(
+                    &#34;[&#34; + &#34; &#34;.join(cw.get(chr(i), 0) for i in range(32, 256)) + &#34;]&#34;
+                )
                 self._out(&#34;endobj&#34;)
 
                 # Descriptor

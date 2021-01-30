@@ -26,17 +26,15 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">#!/usr/bin/env python
+<pre><code class="python"># Fonts:
 
-# Fonts:
-
-fpdf_charwidths = {&#34;courier&#34;: {}}
-
-for i in range(256):
-    fpdf_charwidths[&#34;courier&#34;][chr(i)] = 600
-    fpdf_charwidths[&#34;courierB&#34;] = fpdf_charwidths[&#34;courier&#34;]
-    fpdf_charwidths[&#34;courierI&#34;] = fpdf_charwidths[&#34;courier&#34;]
-    fpdf_charwidths[&#34;courierBI&#34;] = fpdf_charwidths[&#34;courier&#34;]
+courier = {chr(i): 600 for i in range(256)}
+fpdf_charwidths = {
+    &#34;courier&#34;: courier,
+    &#34;courierB&#34;: courier,
+    &#34;courierI&#34;: courier,
+    &#34;courierBI&#34;: courier,
+}
 
 fpdf_charwidths[&#34;helvetica&#34;] = {
     &#34;\x00&#34;: 278,

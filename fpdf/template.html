@@ -146,21 +146,19 @@ class Template:
                 # text for this page:
                 return self.texts[self.pg_no][key]
             # find first element for default text:
-            elements = [
-                element for element in self.elements if element[&#34;name&#34;].lower() == key
-            ]
-            if elements:
-                return elements[0][&#34;text&#34;]
+            return next(
+                (x[&#34;text&#34;] for x in self.elements if x[&#34;name&#34;].lower() == key), None
+            )
         return None
 
     def split_multicell(self, text, element_name):
         &#34;&#34;&#34;Divide (\n) a string using a given element width&#34;&#34;&#34;
         pdf = self.pdf
-        element = [
+        element = next(
             element
             for element in self.elements
             if element[&#34;name&#34;].lower() == element_name.lower()
-        ][0]
+        )
         style = &#34;&#34;
         if element[&#34;bold&#34;]:
             style += &#34;B&#34;
@@ -513,21 +511,19 @@ class Template:
                 # text for this page:
                 return self.texts[self.pg_no][key]
             # find first element for default text:
-            elements = [
-                element for element in self.elements if element[&#34;name&#34;].lower() == key
-            ]
-            if elements:
-                return elements[0][&#34;text&#34;]
+            return next(
+                (x[&#34;text&#34;] for x in self.elements if x[&#34;name&#34;].lower() == key), None
+            )
         return None
 
     def split_multicell(self, text, element_name):
         &#34;&#34;&#34;Divide (\n) a string using a given element width&#34;&#34;&#34;
         pdf = self.pdf
-        element = [
+        element = next(
             element
             for element in self.elements
             if element[&#34;name&#34;].lower() == element_name.lower()
-        ][0]
+        )
         style = &#34;&#34;
         if element[&#34;bold&#34;]:
             style += &#34;B&#34;
@@ -1107,11 +1103,11 @@ def write(
 <pre><code class="python">def split_multicell(self, text, element_name):
     &#34;&#34;&#34;Divide (\n) a string using a given element width&#34;&#34;&#34;
     pdf = self.pdf
-    element = [
+    element = next(
         element
         for element in self.elements
         if element[&#34;name&#34;].lower() == element_name.lower()
-    ][0]
+    )
     style = &#34;&#34;
     if element[&#34;bold&#34;]:
         style += &#34;B&#34;

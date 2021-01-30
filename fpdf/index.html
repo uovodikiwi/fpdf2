@@ -519,12 +519,11 @@ containing meta-data and stuffs.</p></div>
             f&#34;{(self.h - y2) * self.k:.2f} l S&#34;
         )
 
-    def _set_dash(self, dash_length=False, space_length=False):
+    def _set_dash(self, dash_length=None, space_length=None):
+        dash = &#34;&#34;
         if dash_length and space_length:
-            s = f&#34;[{dash_length * self.k:.3f} {space_length * self.k:.3f}] 0 d&#34;
-        else:
-            s = &#34;[] 0 d&#34;
-        self._out(s)
+            dash = f&#34;{dash_length * self.k:.3f} {space_length * self.k:.3f}&#34;
+        self._out(f&#34;[{dash}] 0 d&#34;)
 
     @check_page
     def dashed_line(self, x1, y1, x2, y2, dash_length=1, space_length=1):
@@ -1641,10 +1640,7 @@ containing meta-data and stuffs.</p></div>
         self.offsets[1] = len(self.buffer)
         self._out(&#34;1 0 obj&#34;)
         self._out(&#34;&lt;&lt;/Type /Pages&#34;)
-        kids = &#34;/Kids [&#34;
-        for i in range(nb):
-            kids += f&#34;{3 + 2 * i} 0 R &#34;
-        self._out(kids + &#34;]&#34;)
+        self._out(&#34;/Kids [&#34; + &#34; &#34;.join(f&#34;{3 + 2 * i} 0 R&#34; for i in range(nb)) + &#34;]&#34;)
         self._out(f&#34;/Count {nb}&#34;)
         self._out(f&#34;/MediaBox [0 0 {dw_pt:.2f} {dh_pt:.2f}]&#34;)
         self._out(&#34;&gt;&gt;&#34;)
@@ -1729,12 +1725,9 @@ containing meta-data and stuffs.</p></div>
                 # Widths
                 self._newobj()
                 cw = font[&#34;cw&#34;]
-                s = &#34;[&#34;
-                for i in range(32, 256):
-                    # Get doesn&#39;t raise exception;
-                    # returns 0 instead of None if not set
-                    s += f&#34;{cw.get(chr(i), 0)} &#34;
-                self._out(f&#34;{s}]&#34;)
+                self._out(
+                    &#34;[&#34; + &#34; &#34;.join(cw.get(chr(i), 0) for i in range(32, 256)) + &#34;]&#34;
+                )
                 self._out(&#34;endobj&#34;)
 
                 # Descriptor
@@ -4720,21 +4713,19 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
                 # text for this page:
                 return self.texts[self.pg_no][key]
             # find first element for default text:
-            elements = [
-                element for element in self.elements if element[&#34;name&#34;].lower() == key
-            ]
-            if elements:
-                return elements[0][&#34;text&#34;]
+            return next(
+                (x[&#34;text&#34;] for x in self.elements if x[&#34;name&#34;].lower() == key), None
+            )
         return None
 
     def split_multicell(self, text, element_name):
         &#34;&#34;&#34;Divide (\n) a string using a given element width&#34;&#34;&#34;
         pdf = self.pdf
-        element = [
+        element = next(
             element
             for element in self.elements
             if element[&#34;name&#34;].lower() == element_name.lower()
-        ][0]
+        )
         style = &#34;&#34;
         if element[&#34;bold&#34;]:
             style += &#34;B&#34;
@@ -5314,11 +5305,11 @@ def write(
 <pre><code class="python">def split_multicell(self, text, element_name):
     &#34;&#34;&#34;Divide (\n) a string using a given element width&#34;&#34;&#34;
     pdf = self.pdf
-    element = [
+    element = next(
         element
         for element in self.elements
         if element[&#34;name&#34;].lower() == element_name.lower()
-    ][0]
+    )
     style = &#34;&#34;
     if element[&#34;bold&#34;]:
         style += &#34;B&#34;
