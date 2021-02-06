@@ -74,11 +74,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#set_font" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -302,10 +297,62 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7" >
+      
+      <label class="md-nav__link" for="nav-7">
+        Layout
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Layout" data-md-level="1">
+        <label class="md-nav__title" for="nav-7">
+          <span class="md-nav__icon md-icon"></span>
+          Layout
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PageFormatAndOrientation.html" class="md-nav__link">
+        Page format and orientation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Margins.html" class="md-nav__link">
+        Margins
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
     <li class="md-nav__item">
       <a href="../PageBreaks.html" class="md-nav__link">
         Page breaks
       </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -927,70 +974,9 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          set_font
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="set_font.html" class="md-nav__link md-nav__link--active">
         set_font
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#set_font" class="md-nav__link">
-    set_font
-  </a>
-  
-    <nav class="md-nav" aria-label="set_font">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#description" class="md-nav__link">
-    Description
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#parameters" class="md-nav__link">
-    Parameters
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
-    Example
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    See also
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -1255,69 +1241,6 @@
               </div>
             
             
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#set_font" class="md-nav__link">
-    set_font
-  </a>
-  
-    <nav class="md-nav" aria-label="set_font">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#description" class="md-nav__link">
-    Description
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#parameters" class="md-nav__link">
-    Parameters
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
-    Example
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    See also
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
-            
           
           <div class="md-content">
             <article class="md-content__inner md-typeset">
@@ -1330,90 +1253,11 @@
                 
                   <h1>set_font</h1>
                 
-                <h2 id="set_font">set_font</h2>
-<div class="highlight"><pre><span></span><code><span class="n">fpdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="n">family</span><span class="p">,</span> <span class="n">style</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-</code></pre></div>
-<h3 id="description">Description</h3>
-<p>Sets the font used to print character strings. It is mandatory to call this 
-method at least once before printing text or the resulting document would not 
-be valid.</p>
-<p>The font can be either a standard one or a font added via the 
-<a href="add_font.html">add_font</a> method. </p>
-<p>Default encoding is not specified, but all text writing methods accept only
-unicode for external fonts and one byte encoding for standard.</p>
-<p>Standard fonts use <code>Latin-1</code> encoding by default, but Windows 
-encoding <code>cp1252</code> (Western Europe) can be used with 
-<a href="set_doc_option.html">set_doc_option</a> ("core_fonts_encoding", encoding).</p>
-<p>The method can be called before the first page is created and the font is 
-retained from page to page.</p>
-<p>If you just wish to change the current font size, it is simpler to call 
-<a href="set_font_size.html">set_font_size</a>.</p>
-<p><strong>Note</strong>: the font metric files must be accessible. They are searched 
-successively in:</p>
-<ul>
-<li>The directory defined by the FPDF_FONTPATH constant (if this constant is 
-   defined)</li>
-<li>The font directory located in the directory containing fpdf.py (if it 
-   exists)</li>
-</ul>
-<p>The directories accessible through include()
-Example defining FPDF_FONTPATH (note the mandatory trailing slash):
-define("FPDF_FONTPATH","/home/www/font/");
-require("fpdf.php");
-If the file corresponding to the requested font is not found, the error "Could 
-not include font metric file" is issued.</p>
-<h3 id="parameters">Parameters</h3>
-<p>family:</p>
-<blockquote>
-<p>Font family. It can be either a name defined by <a href="add_font.html">add_font</a> or 
-  one of the standard families (case insensitive):</p>
-<blockquote>
-<ul>
-<li>Courier (fixed-width)</li>
-<li>Helvetica or helvetica (synonymous; sans serif)</li>
-<li>Times (serif)</li>
-<li>Symbol (symbolic)</li>
-<li>ZapfDingbats (symbolic)</li>
-</ul>
-</blockquote>
-<p>It is also possible to pass an empty string. In that case, the current 
-  family is retained.</p>
-</blockquote>
-<p>style:</p>
-<blockquote>
-<p>Font style. Possible values are (case insensitive):</p>
-<blockquote>
-<ul>
-<li>empty string: regular</li>
-<li>B: bold</li>
-<li>I: italic</li>
-<li>U: underline</li>
-</ul>
-</blockquote>
-<p>or any combination. The default value is regular. Bold and italic styles do 
-  not apply to Symbol and ZapfDingbats.</p>
-</blockquote>
-<p>size:</p>
-<blockquote>
-<p>Font size in points.
-The default value is the current size. If no size has been specified since 
-  the beginning of the document, the value taken is 12.</p>
-</blockquote>
-<h3 id="example">Example</h3>
-<div class="highlight"><pre><span></span><code><span class="c1"># Times regular 12</span>
-<span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Times&#39;</span><span class="p">)</span>
-<span class="c1"># helvetica bold 14</span>
-<span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;helvetica&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
-<span class="c1"># Removes bold</span>
-<span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="c1"># Times bold, italic and underlined 14</span>
-<span class="n">pdf</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="s1">&#39;Times&#39;</span><span class="p">,</span> <span class="s1">&#39;BIU&#39;</span><span class="p">)</span>
-</code></pre></div>
-<h3 id="see-also">See also</h3>
-<p><a href="add_font.html">add_font</a>, <a href="set_doc_option.html">set_doc_option</a>, 
-<a href="set_font_size.html">set_font_size</a>, <a href="cell.html">cell</a>, 
-<a href="multi_cell.html">multi_cell</a>, <a href="write.html">write</a>, 
-<a href="set_stretching.html">set_stretching</a>.</p>
+                <p>cf. https://pypi.org/project/fpdf2/fpdf/#fpdf.FPDF.set_font</p>
+<script>
+// Migrating Markdown doc to docstrings - cf. https://github.com/PyFPDF/fpdf2/issues/31
+window.location = 'https://pypi.org/project/fpdf2/fpdf/#fpdf.FPDF.set_font'
+</script>
                 
               
               

@@ -74,11 +74,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#ln" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -302,10 +297,62 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7" >
+      
+      <label class="md-nav__link" for="nav-7">
+        Layout
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Layout" data-md-level="1">
+        <label class="md-nav__title" for="nav-7">
+          <span class="md-nav__icon md-icon"></span>
+          Layout
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PageFormatAndOrientation.html" class="md-nav__link">
+        Page format and orientation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Margins.html" class="md-nav__link">
+        Margins
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
     <li class="md-nav__item">
       <a href="../PageBreaks.html" class="md-nav__link">
         Page breaks
       </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -735,63 +782,9 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          ln
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="ln.html" class="md-nav__link md-nav__link--active">
         ln
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#ln" class="md-nav__link">
-    ln
-  </a>
-  
-    <nav class="md-nav" aria-label="ln">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#description" class="md-nav__link">
-    Description
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#parameters" class="md-nav__link">
-    Parameters
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    See also
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -1248,62 +1241,6 @@
               </div>
             
             
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#ln" class="md-nav__link">
-    ln
-  </a>
-  
-    <nav class="md-nav" aria-label="ln">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#description" class="md-nav__link">
-    Description
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#parameters" class="md-nav__link">
-    Parameters
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    See also
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
-            
           
           <div class="md-content">
             <article class="md-content__inner md-typeset">
@@ -1316,19 +1253,7 @@
                 
                   <h1>ln</h1>
                 
-                <h2 id="ln">ln</h2>
-<div class="highlight"><pre><span></span><code><span class="n">fpdf</span><span class="o">.</span><span class="n">ln</span><span class="p">(</span><span class="n">h</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-</code></pre></div>
-<h3 id="description">Description</h3>
-<p>Performs a line break. The current abscissa goes back to the left margin and the ordinate increases by the amount passed in the parameter.</p>
-<h3 id="parameters">Parameters</h3>
-<p>h:</p>
-<blockquote>
-<p>The height of the break.</p>
-<p>By default, the value equals the height of the last printed cell.</p>
-</blockquote>
-<h3 id="see-also">See also</h3>
-<p><a href="cell.html">cell</a>.</p>
+                <p>cf. https://pypi.org/project/fpdf2/fpdf/#fpdf.FPDF.ln</p>
 <script>
 // Migrating Markdown doc to docstrings - cf. https://github.com/PyFPDF/fpdf2/issues/31
 window.location = 'https://pypi.org/project/fpdf2/fpdf/#fpdf.FPDF.ln'

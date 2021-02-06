@@ -32,13 +32,12 @@ The version number is updated here (above and below in variable).</p>
 <pre><code class="python">#!/usr/bin/env python
 # ****************************************************************************
 # * Software: FPDF for python                                                *
-# * License:  LGPL v3.0                                                      *
+# * License:  LGPL v3.0+                                                     *
 # *                                                                          *
 # * Original Author (PHP):  Olivier PLATHEY 2004-12-31                       *
 # * Ported to Python 2.4 by Max (maxpat78@yahoo.it) on 2006-05               *
 # * Maintainer:  Mariano Reingart (reingart@gmail.com) et al since 2008 est. *
 # * Maintainer:  David Alexander (daveankin@gmail.com) et al since 2017 est. *
-# * NOTE: &#39;I&#39; and &#39;D&#39; destinations are disabled, and simply print to STDOUT  *
 # ****************************************************************************
 &#34;&#34;&#34;fpdf module (in fpdf package housing FPDF class)
 
@@ -251,10 +250,10 @@ class FPDF:
 
         # Page spacing
         # Page margins (1 cm)
-        margin = 28.35 / self.k
+        margin = (7200 / 254) / self.k
+        self.x, self.y, self.l_margin, self.t_margin = 0, 0, 0, 0
         self.set_margins(margin, margin)
-        self.x = self.l_margin
-        self.y = self.t_margin
+        self.x, self.y = self.l_margin, self.t_margin
         self.c_margin = margin / 10.0  # Interior cell margin (1 mm)
         self.line_width = 0.567 / self.k  # line width (0.2 mm)
         self.set_auto_page_break(
@@ -278,30 +277,75 @@ class FPDF:
         &#34;&#34;&#34;
         return self.h - self.t_margin - self.b_margin
 
+    def set_margin(self, margin):
+        &#34;&#34;&#34;
+        Sets the document right, left, top &amp; bottom margins to the same value.
+
+        Args:
+            margin (int): margin in the unit specified to FPDF constructor
+        &#34;&#34;&#34;
+        self.set_margins(margin, margin)
+        self.set_auto_page_break(self.auto_page_break, margin)
+
     def set_margins(self, left, top, right=-1):
-        &#34;&#34;&#34;Set left, top and right margins&#34;&#34;&#34;
-        self.l_margin = left
+        &#34;&#34;&#34;
+        Sets the document left, top &amp; optionaly right margins to the same value.
+        By default, they equal 1 cm.
+        Also sets the current FPDF.y on the page to this minimum vertical position.
+
+        Args:
+            left (int): left margin in the unit specified to FPDF constructor
+            top (int): top margin in the unit specified to FPDF constructor
+            right (int): optional right margin in the unit specified to FPDF constructor
+        &#34;&#34;&#34;
+        self.set_left_margin(left)
+        if self.y &lt; top or self.y == self.t_margin:
+            self.y = top
         self.t_margin = top
         if right == -1:
             right = left
         self.r_margin = right
 
     def set_left_margin(self, margin):
-        &#34;&#34;&#34;Set left margin&#34;&#34;&#34;
-        self.l_margin = margin
-        if self.page &gt; 0 and self.x &lt; margin:
+        &#34;&#34;&#34;
+        Sets the document left margin.
+        Also sets the current FPDF.x on the page to this minimum horizontal position.
+
+        Args:
+            margin (int): margin in the unit specified to FPDF constructor
+        &#34;&#34;&#34;
+        if self.x &lt; margin or self.x == self.l_margin:
             self.x = margin
+        self.l_margin = margin
 
     def set_top_margin(self, margin):
-        &#34;&#34;&#34;Set top margin&#34;&#34;&#34;
+        &#34;&#34;&#34;
+        Sets the document top margin.
+
+        Args:
+            margin (int): margin in the unit specified to FPDF constructor
+        &#34;&#34;&#34;
         self.t_margin = margin
 
     def set_right_margin(self, margin):
-        &#34;&#34;&#34;Set right margin&#34;&#34;&#34;
+        &#34;&#34;&#34;
+        Sets the document right margin.
+
+        Args:
+            margin (int): margin in the unit specified to FPDF constructor
+        &#34;&#34;&#34;
         self.r_margin = margin
 
     def set_auto_page_break(self, auto, margin=0):
-        &#34;&#34;&#34;Set auto page break mode and triggering margin&#34;&#34;&#34;
+        &#34;&#34;&#34;
+        Set auto page break mode and triggering bottom margin.
+        By default, the mode is on and the bottom margin is 2 cm.
+
+        Args:
+            auto (bool): enable or disable this mode
+            margin (int): optional bottom margin (distance from the bottom of the page)
+                in the unit specified to FPDF constructor
+        &#34;&#34;&#34;
         self.auto_page_break = auto
         self.b_margin = margin
         self.page_break_trigger = self.h - margin
@@ -750,14 +794,29 @@ class FPDF:
 
     def set_font(self, family=None, style=&#34;&#34;, size=0):
         &#34;&#34;&#34;
-        Select a font.
+        Sets the font used to print character strings.
+        It is mandatory to call this method at least once before printing text.
+
+        Default encoding is not specified, but all text writing methods accept only
+        unicode for external fonts and one byte encoding for standard.
+
+        Standard fonts use `Latin-1` encoding by default, but Windows
+        encoding `cp1252` (Western Europe) can be used with
+        [set_doc_option](set_doc_option.md) (&#34;core_fonts_encoding&#34;, encoding).
+
+        The font specified is retained from page to page.
+        The method can be called before the first page is created.
 
         Args:
             family (str): name of a font added with `FPDF.add_font`,
-              or name of one of the 14 standard &#34;PostScript&#34; fonts
+                or name of one of the 14 standard &#34;PostScript&#34; fonts:
+                Courier (fixed-width), Helvetica (sans serif), Times (serif),
+                Symbol (symbolic) or ZapfDingbats (symbolic)
+                If an empty string is provided, the current family is retained.
             style (str): empty string (by default) or a combination
-              of one or several letters among B, I, U to
-            size (int): in points
+                of one or several letters among B (bold), I (italic) and U (underline).
+                Bold and italic styles do not apply to Symbol and ZapfDingbats fonts.
+            size (int): in points. The default value is the current size.
         &#34;&#34;&#34;
         if not family:
             family = self.font_family
@@ -954,7 +1013,14 @@ class FPDF:
     @check_page
     def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=False, link=&#34;&#34;):
         &#34;&#34;&#34;
-        Output a cell, cf. https://pyfpdf.github.io/fpdf2/reference/cell.html
+        Prints a cell (rectangular area) with optional borders, background color and
+        character string. The upper-left corner of the cell corresponds to the current
+        position. The text can be aligned or centered. After the call, the current
+        position moves to the right or to the next line. It is possible to put a link
+        on the text.
+
+        If automatic page breaking is enabled and the cell goes beyond the limit, a
+        page break is performed before outputting.
 
         Args:
             w (int): Cell width. If 0, the cell extends up to the right margin.
@@ -974,7 +1040,8 @@ class FPDF:
                 `R`: right align
             fill (bool): Indicates if the cell background must be painted (`True`)
                 or transparent (`False`). Default value: False.
-            link (str): optional link to add
+            link (str): optional link to add on the image, internal
+                (identifier returned by `add_link`) or external URL.
 
         Returns: a boolean indicating if page break was triggered
         &#34;&#34;&#34;
@@ -1145,8 +1212,11 @@ class FPDF:
         max_line_height=None,
     ):
         &#34;&#34;&#34;
-        Output text with line breaks, cf.
-        https://pyfpdf.github.io/fpdf2/reference/multi_cell.html
+        This method allows printing text with line breaks. They can be automatic (as
+        soon as the text reaches the right border of the cell) or explicit (via the
+        `\n` character). As many cells as necessary are stacked, one below the other.
+        Text can be aligned, centered or justified. The cell block can be framed and
+        the background painted.
 
         Args:
             w (int): cells width. If 0, they extend up to the right margin of the page.
@@ -1164,7 +1234,8 @@ class FPDF:
                 or transparent (`False`). Default value: False.
             split_only (bool): if `True`, does not output anything, only perform
                 word-wrapping and return the resulting multi-lines array of strings.
-            link (str): optional link to add
+            link (str): optional link to add on the image, internal
+                (identifier returned by `add_link`) or external URL.
             ln (int): Indicates where the current position should go after the call.
                 Possible values are: `0`: to the bottom right ; `1`: to the beginning
                 of the next line ; `2`: below with the same horizontal offset ;
@@ -1449,17 +1520,33 @@ class FPDF:
         link=&#34;&#34;,
     ):
         &#34;&#34;&#34;
-        Put an image on the page
+        Put an image on the page.
+
+        The size of the image on the page can be specified in different ways:
+        * explicit width and height (expressed in user units)
+        * one explicit dimension, the other being calculated automatically
+          in order to keep the original proportions
+        * no explicit dimension, in which case the image is put at 72 dpi.
+
+        **Remarks**:
+        * if an image is used several times, only one copy is embedded in the file.
+        * when using an animated GIF, only the first frame is used.
 
         Args:
             name: either a string representing a file path to an image, or a instance of
             `PIL.Image.Image`
-            x (int): optional horizontal position where to put the image on the page
-            y (int): optional vertical position where to put the image on the page
-            w (int): optional width of the image
-            h (int): optional height of the image
-            type (str): [**DEPRECATED**] unused, will be removed in a later version
-            link (str): optional link, internal or external, to add on the image
+            x (int): optional horizontal position where to put the image on the page.
+                If not specified or equal to None, the current abscissa is used.
+            y (int): optional vertical position where to put the image on the page.
+                If not specified or equal to None, the current ordinate is used.
+                After the call, the current ordinate is moved to the bottom of the image
+            w (int): optional width of the image. If not specified or equal to zero,
+                it is automatically calculated.
+            h (int): optional height of the image. If not specified or equal to zero,
+                it is automatically calculated.
+            type (str): [**DEPRECATED**] unused, will be removed in a later version.
+            link (str): optional link to add on the image, internal
+                (identifier returned by `add_link`) or external URL.
         &#34;&#34;&#34;
         if type:
             warnings.warn(
@@ -1545,6 +1632,7 @@ class FPDF:
     def output(self, name=&#34;&#34;, dest=&#34;&#34;):
         &#34;&#34;&#34;
         Output PDF to some destination.
+        The method first calls [close](close.md) if necessary to terminate the document.
 
         By default the bytearray buffer is returned.
         If a `name` is given, the PDF is written to a new file.
@@ -2659,10 +2747,10 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
         # Page spacing
         # Page margins (1 cm)
-        margin = 28.35 / self.k
+        margin = (7200 / 254) / self.k
+        self.x, self.y, self.l_margin, self.t_margin = 0, 0, 0, 0
         self.set_margins(margin, margin)
-        self.x = self.l_margin
-        self.y = self.t_margin
+        self.x, self.y = self.l_margin, self.t_margin
         self.c_margin = margin / 10.0  # Interior cell margin (1 mm)
         self.line_width = 0.567 / self.k  # line width (0.2 mm)
         self.set_auto_page_break(
@@ -2686,30 +2774,75 @@ case insensitive key (the name of the new format) and 2-tuple value of
         &#34;&#34;&#34;
         return self.h - self.t_margin - self.b_margin
 
+    def set_margin(self, margin):
+        &#34;&#34;&#34;
+        Sets the document right, left, top &amp; bottom margins to the same value.
+
+        Args:
+            margin (int): margin in the unit specified to FPDF constructor
+        &#34;&#34;&#34;
+        self.set_margins(margin, margin)
+        self.set_auto_page_break(self.auto_page_break, margin)
+
     def set_margins(self, left, top, right=-1):
-        &#34;&#34;&#34;Set left, top and right margins&#34;&#34;&#34;
-        self.l_margin = left
+        &#34;&#34;&#34;
+        Sets the document left, top &amp; optionaly right margins to the same value.
+        By default, they equal 1 cm.
+        Also sets the current FPDF.y on the page to this minimum vertical position.
+
+        Args:
+            left (int): left margin in the unit specified to FPDF constructor
+            top (int): top margin in the unit specified to FPDF constructor
+            right (int): optional right margin in the unit specified to FPDF constructor
+        &#34;&#34;&#34;
+        self.set_left_margin(left)
+        if self.y &lt; top or self.y == self.t_margin:
+            self.y = top
         self.t_margin = top
         if right == -1:
             right = left
         self.r_margin = right
 
     def set_left_margin(self, margin):
-        &#34;&#34;&#34;Set left margin&#34;&#34;&#34;
-        self.l_margin = margin
-        if self.page &gt; 0 and self.x &lt; margin:
+        &#34;&#34;&#34;
+        Sets the document left margin.
+        Also sets the current FPDF.x on the page to this minimum horizontal position.
+
+        Args:
+            margin (int): margin in the unit specified to FPDF constructor
+        &#34;&#34;&#34;
+        if self.x &lt; margin or self.x == self.l_margin:
             self.x = margin
+        self.l_margin = margin
 
     def set_top_margin(self, margin):
-        &#34;&#34;&#34;Set top margin&#34;&#34;&#34;
+        &#34;&#34;&#34;
+        Sets the document top margin.
+
+        Args:
+            margin (int): margin in the unit specified to FPDF constructor
+        &#34;&#34;&#34;
         self.t_margin = margin
 
     def set_right_margin(self, margin):
-        &#34;&#34;&#34;Set right margin&#34;&#34;&#34;
+        &#34;&#34;&#34;
+        Sets the document right margin.
+
+        Args:
+            margin (int): margin in the unit specified to FPDF constructor
+        &#34;&#34;&#34;
         self.r_margin = margin
 
     def set_auto_page_break(self, auto, margin=0):
-        &#34;&#34;&#34;Set auto page break mode and triggering margin&#34;&#34;&#34;
+        &#34;&#34;&#34;
+        Set auto page break mode and triggering bottom margin.
+        By default, the mode is on and the bottom margin is 2 cm.
+
+        Args:
+            auto (bool): enable or disable this mode
+            margin (int): optional bottom margin (distance from the bottom of the page)
+                in the unit specified to FPDF constructor
+        &#34;&#34;&#34;
         self.auto_page_break = auto
         self.b_margin = margin
         self.page_break_trigger = self.h - margin
@@ -3158,14 +3291,29 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
     def set_font(self, family=None, style=&#34;&#34;, size=0):
         &#34;&#34;&#34;
-        Select a font.
+        Sets the font used to print character strings.
+        It is mandatory to call this method at least once before printing text.
+
+        Default encoding is not specified, but all text writing methods accept only
+        unicode for external fonts and one byte encoding for standard.
+
+        Standard fonts use `Latin-1` encoding by default, but Windows
+        encoding `cp1252` (Western Europe) can be used with
+        [set_doc_option](set_doc_option.md) (&#34;core_fonts_encoding&#34;, encoding).
+
+        The font specified is retained from page to page.
+        The method can be called before the first page is created.
 
         Args:
             family (str): name of a font added with `FPDF.add_font`,
-              or name of one of the 14 standard &#34;PostScript&#34; fonts
+                or name of one of the 14 standard &#34;PostScript&#34; fonts:
+                Courier (fixed-width), Helvetica (sans serif), Times (serif),
+                Symbol (symbolic) or ZapfDingbats (symbolic)
+                If an empty string is provided, the current family is retained.
             style (str): empty string (by default) or a combination
-              of one or several letters among B, I, U to
-            size (int): in points
+                of one or several letters among B (bold), I (italic) and U (underline).
+                Bold and italic styles do not apply to Symbol and ZapfDingbats fonts.
+            size (int): in points. The default value is the current size.
         &#34;&#34;&#34;
         if not family:
             family = self.font_family
@@ -3362,7 +3510,14 @@ case insensitive key (the name of the new format) and 2-tuple value of
     @check_page
     def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=False, link=&#34;&#34;):
         &#34;&#34;&#34;
-        Output a cell, cf. https://pyfpdf.github.io/fpdf2/reference/cell.html
+        Prints a cell (rectangular area) with optional borders, background color and
+        character string. The upper-left corner of the cell corresponds to the current
+        position. The text can be aligned or centered. After the call, the current
+        position moves to the right or to the next line. It is possible to put a link
+        on the text.
+
+        If automatic page breaking is enabled and the cell goes beyond the limit, a
+        page break is performed before outputting.
 
         Args:
             w (int): Cell width. If 0, the cell extends up to the right margin.
@@ -3382,7 +3537,8 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 `R`: right align
             fill (bool): Indicates if the cell background must be painted (`True`)
                 or transparent (`False`). Default value: False.
-            link (str): optional link to add
+            link (str): optional link to add on the image, internal
+                (identifier returned by `add_link`) or external URL.
 
         Returns: a boolean indicating if page break was triggered
         &#34;&#34;&#34;
@@ -3553,8 +3709,11 @@ case insensitive key (the name of the new format) and 2-tuple value of
         max_line_height=None,
     ):
         &#34;&#34;&#34;
-        Output text with line breaks, cf.
-        https://pyfpdf.github.io/fpdf2/reference/multi_cell.html
+        This method allows printing text with line breaks. They can be automatic (as
+        soon as the text reaches the right border of the cell) or explicit (via the
+        `\n` character). As many cells as necessary are stacked, one below the other.
+        Text can be aligned, centered or justified. The cell block can be framed and
+        the background painted.
 
         Args:
             w (int): cells width. If 0, they extend up to the right margin of the page.
@@ -3572,7 +3731,8 @@ case insensitive key (the name of the new format) and 2-tuple value of
                 or transparent (`False`). Default value: False.
             split_only (bool): if `True`, does not output anything, only perform
                 word-wrapping and return the resulting multi-lines array of strings.
-            link (str): optional link to add
+            link (str): optional link to add on the image, internal
+                (identifier returned by `add_link`) or external URL.
             ln (int): Indicates where the current position should go after the call.
                 Possible values are: `0`: to the bottom right ; `1`: to the beginning
                 of the next line ; `2`: below with the same horizontal offset ;
@@ -3857,17 +4017,33 @@ case insensitive key (the name of the new format) and 2-tuple value of
         link=&#34;&#34;,
     ):
         &#34;&#34;&#34;
-        Put an image on the page
+        Put an image on the page.
+
+        The size of the image on the page can be specified in different ways:
+        * explicit width and height (expressed in user units)
+        * one explicit dimension, the other being calculated automatically
+          in order to keep the original proportions
+        * no explicit dimension, in which case the image is put at 72 dpi.
+
+        **Remarks**:
+        * if an image is used several times, only one copy is embedded in the file.
+        * when using an animated GIF, only the first frame is used.
 
         Args:
             name: either a string representing a file path to an image, or a instance of
             `PIL.Image.Image`
-            x (int): optional horizontal position where to put the image on the page
-            y (int): optional vertical position where to put the image on the page
-            w (int): optional width of the image
-            h (int): optional height of the image
-            type (str): [**DEPRECATED**] unused, will be removed in a later version
-            link (str): optional link, internal or external, to add on the image
+            x (int): optional horizontal position where to put the image on the page.
+                If not specified or equal to None, the current abscissa is used.
+            y (int): optional vertical position where to put the image on the page.
+                If not specified or equal to None, the current ordinate is used.
+                After the call, the current ordinate is moved to the bottom of the image
+            w (int): optional width of the image. If not specified or equal to zero,
+                it is automatically calculated.
+            h (int): optional height of the image. If not specified or equal to zero,
+                it is automatically calculated.
+            type (str): [**DEPRECATED**] unused, will be removed in a later version.
+            link (str): optional link to add on the image, internal
+                (identifier returned by `add_link`) or external URL.
         &#34;&#34;&#34;
         if type:
             warnings.warn(
@@ -3953,6 +4129,7 @@ case insensitive key (the name of the new format) and 2-tuple value of
     def output(self, name=&#34;&#34;, dest=&#34;&#34;):
         &#34;&#34;&#34;
         Output PDF to some destination.
+        The method first calls [close](close.md) if necessary to terminate the document.
 
         By default the bytearray buffer is returned.
         If a `name` is given, the PDF is written to a new file.
@@ -5151,7 +5328,13 @@ def epw(self):
 <span>def <span class="ident">cell</span></span>(<span>self, w, h=0, txt='', border=0, ln=0, align='', fill=False, link='')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Output a cell, cf. <a href="https://pyfpdf.github.io/fpdf2/reference/cell.html">https://pyfpdf.github.io/fpdf2/reference/cell.html</a></p>
+<div class="desc"><p>Prints a cell (rectangular area) with optional borders, background color and
+character string. The upper-left corner of the cell corresponds to the current
+position. The text can be aligned or centered. After the call, the current
+position moves to the right or to the next line. It is possible to put a link
+on the text.</p>
+<p>If automatic page breaking is enabled and the cell goes beyond the limit, a
+page break is performed before outputting.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>w</code></strong> :&ensp;<code>int</code></dt>
@@ -5179,7 +5362,8 @@ next line ; <code>2</code>: below. Putting 1 is equivalent to putting 0 and call
 <dd>Indicates if the cell background must be painted (<code>True</code>)
 or transparent (<code>False</code>). Default value: False.</dd>
 <dt><strong><code>link</code></strong> :&ensp;<code>str</code></dt>
-<dd>optional link to add</dd>
+<dd>optional link to add on the image, internal
+(identifier returned by <code>add_link</code>) or external URL.</dd>
 </dl>
 <p>Returns: a boolean indicating if page break was triggered</p></div>
 <details class="source">
@@ -5189,7 +5373,14 @@ or transparent (<code>False</code>). Default value: False.</dd>
 <pre><code class="python">@check_page
 def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=False, link=&#34;&#34;):
     &#34;&#34;&#34;
-    Output a cell, cf. https://pyfpdf.github.io/fpdf2/reference/cell.html
+    Prints a cell (rectangular area) with optional borders, background color and
+    character string. The upper-left corner of the cell corresponds to the current
+    position. The text can be aligned or centered. After the call, the current
+    position moves to the right or to the next line. It is possible to put a link
+    on the text.
+
+    If automatic page breaking is enabled and the cell goes beyond the limit, a
+    page break is performed before outputting.
 
     Args:
         w (int): Cell width. If 0, the cell extends up to the right margin.
@@ -5209,7 +5400,8 @@ def cell(self, w, h=0, txt=&#34;&#34;, border=0, ln=0, align=&#34;&#34;, fill=Fa
             `R`: right align
         fill (bool): Indicates if the cell background must be painted (`True`)
             or transparent (`False`). Default value: False.
-        link (str): optional link to add
+        link (str): optional link to add on the image, internal
+            (identifier returned by `add_link`) or external URL.
 
     Returns: a boolean indicating if page break was triggered
     &#34;&#34;&#34;
@@ -5652,24 +5844,38 @@ def ellipse(self, x, y, w, h, style=None):
 <span>def <span class="ident">image</span></span>(<span>self, name, x=None, y=None, w=0, h=0, type='', link='')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Put an image on the page</p>
+<div class="desc"><p>Put an image on the page.</p>
+<p>The size of the image on the page can be specified in different ways:
+* explicit width and height (expressed in user units)
+* one explicit dimension, the other being calculated automatically
+in order to keep the original proportions
+* no explicit dimension, in which case the image is put at 72 dpi.</p>
+<p><strong>Remarks</strong>:
+* if an image is used several times, only one copy is embedded in the file.
+* when using an animated GIF, only the first frame is used.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>name</code></strong></dt>
 <dd>either a string representing a file path to an image, or a instance of</dd>
 <dt><code>PIL.Image.Image</code></dt>
 <dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
-<dd>optional horizontal position where to put the image on the page</dd>
+<dd>optional horizontal position where to put the image on the page.
+If not specified or equal to None, the current abscissa is used.</dd>
 <dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
-<dd>optional vertical position where to put the image on the page</dd>
+<dd>optional vertical position where to put the image on the page.
+If not specified or equal to None, the current ordinate is used.
+After the call, the current ordinate is moved to the bottom of the image</dd>
 <dt><strong><code>w</code></strong> :&ensp;<code>int</code></dt>
-<dd>optional width of the image</dd>
+<dd>optional width of the image. If not specified or equal to zero,
+it is automatically calculated.</dd>
 <dt><strong><code>h</code></strong> :&ensp;<code>int</code></dt>
-<dd>optional height of the image</dd>
+<dd>optional height of the image. If not specified or equal to zero,
+it is automatically calculated.</dd>
 <dt><strong><code>type</code></strong> :&ensp;<code>str</code></dt>
-<dd>[<strong>DEPRECATED</strong>] unused, will be removed in a later version</dd>
+<dd>[<strong>DEPRECATED</strong>] unused, will be removed in a later version.</dd>
 <dt><strong><code>link</code></strong> :&ensp;<code>str</code></dt>
-<dd>optional link, internal or external, to add on the image</dd>
+<dd>optional link to add on the image, internal
+(identifier returned by <code>add_link</code>) or external URL.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -5687,17 +5893,33 @@ def image(
     link=&#34;&#34;,
 ):
     &#34;&#34;&#34;
-    Put an image on the page
+    Put an image on the page.
+
+    The size of the image on the page can be specified in different ways:
+    * explicit width and height (expressed in user units)
+    * one explicit dimension, the other being calculated automatically
+      in order to keep the original proportions
+    * no explicit dimension, in which case the image is put at 72 dpi.
+
+    **Remarks**:
+    * if an image is used several times, only one copy is embedded in the file.
+    * when using an animated GIF, only the first frame is used.
 
     Args:
         name: either a string representing a file path to an image, or a instance of
         `PIL.Image.Image`
-        x (int): optional horizontal position where to put the image on the page
-        y (int): optional vertical position where to put the image on the page
-        w (int): optional width of the image
-        h (int): optional height of the image
-        type (str): [**DEPRECATED**] unused, will be removed in a later version
-        link (str): optional link, internal or external, to add on the image
+        x (int): optional horizontal position where to put the image on the page.
+            If not specified or equal to None, the current abscissa is used.
+        y (int): optional vertical position where to put the image on the page.
+            If not specified or equal to None, the current ordinate is used.
+            After the call, the current ordinate is moved to the bottom of the image
+        w (int): optional width of the image. If not specified or equal to zero,
+            it is automatically calculated.
+        h (int): optional height of the image. If not specified or equal to zero,
+            it is automatically calculated.
+        type (str): [**DEPRECATED**] unused, will be removed in a later version.
+        link (str): optional link to add on the image, internal
+            (identifier returned by `add_link`) or external URL.
     &#34;&#34;&#34;
     if type:
         warnings.warn(
@@ -5902,45 +6124,40 @@ def ln(self, h=None):
 <span>def <span class="ident">multi_cell</span></span>(<span>self, w, h, txt='', border=0, align='J', fill=False, split_only=False, link='', ln=0, max_line_height=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Output text with line breaks, cf.
-<a href="https://pyfpdf.github.io/fpdf2/reference/multi_cell.html">https://pyfpdf.github.io/fpdf2/reference/multi_cell.html</a></p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>w</code></strong> :&ensp;<code>int</code></dt>
-<dd>cells width. If 0, they extend up to the right margin of the page.</dd>
-<dt><strong><code>h</code></strong> :&ensp;<code>int</code></dt>
-<dd>cells height.</dd>
-<dt><strong><code>txt</code></strong> :&ensp;<code>str</code></dt>
-<dd>strign to print.</dd>
-<dt><strong><code>border</code></strong></dt>
-<dd>Indicates if borders must be drawn around the cell.
-The value can be either a number (<code>0</code>: no border ; <code>1</code>: frame)
-or a string containing some or all of the following characters
-(in any order):
-<code>L</code>: left ; <code>T</code>: top ; <code>R</code>: right ; <code>B</code>: bottom. Default value: 0.</dd>
-<dt><strong><code>align</code></strong> :&ensp;<code>str</code></dt>
-<dd>Allows to center or align the text. Possible values are:
-<code>L</code> or empty string: left align (default value) ; <code>C</code>: center ;
-<code>R</code>: right align</dd>
-<dt><strong><code>fill</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Indicates if the cell background must be painted (<code>True</code>)
-or transparent (<code>False</code>). Default value: False.</dd>
-<dt><strong><code>split_only</code></strong> :&ensp;<code>bool</code></dt>
-<dd>if <code>True</code>, does not output anything, only perform
-word-wrapping and return the resulting multi-lines array of strings.</dd>
-<dt><strong><code>link</code></strong> :&ensp;<code>str</code></dt>
-<dd>optional link to add</dd>
-<dt><strong><code>ln</code></strong> :&ensp;<code>int</code></dt>
-<dd>Indicates where the current position should go after the call.
-Possible values are: <code>0</code>: to the bottom right ; <code>1</code>: to the beginning
-of the next line ; <code>2</code>: below with the same horizontal offset ;
-<code>3</code>: to the right with the same vertical offset. Default value: 0.</dd>
-<dt><strong><code>max_line_height</code></strong> :&ensp;<code>int</code></dt>
-<dd>optional maximum height of each sub-cell generated</dd>
-</dl>
-<p>Using <code>ln=3</code> and <code>maximum height=pdf.font_size</code> is useful to build tables
-with multiline text in cells.</p>
-<p>Returns: a boolean indicating if page break was triggered.</p></div>
+<div class="desc"><p>This method allows printing text with line breaks. They can be automatic (as
+soon as the text reaches the right border of the cell) or explicit (via the
+<code></code> character). As many cells as necessary are stacked, one below the other.
+Text can be aligned, centered or justified. The cell block can be framed and
+the background painted.</p>
+<pre><code>    Args:
+        w (int): cells width. If 0, they extend up to the right margin of the page.
+        h (int): cells height.
+        txt (str): strign to print.
+        border: Indicates if borders must be drawn around the cell.
+            The value can be either a number (&lt;code&gt;0&lt;/code&gt;: no border ; &lt;code&gt;1&lt;/code&gt;: frame)
+            or a string containing some or all of the following characters
+            (in any order):
+            &lt;code&gt;L&lt;/code&gt;: left ; &lt;code&gt;T&lt;/code&gt;: top ; &lt;code&gt;R&lt;/code&gt;: right ; &lt;code&gt;B&lt;/code&gt;: bottom. Default value: 0.
+        align (str): Allows to center or align the text. Possible values are:
+            &lt;code&gt;L&lt;/code&gt; or empty string: left align (default value) ; &lt;code&gt;C&lt;/code&gt;: center ;
+            &lt;code&gt;R&lt;/code&gt;: right align
+        fill (bool): Indicates if the cell background must be painted (&lt;code&gt;True&lt;/code&gt;)
+            or transparent (&lt;code&gt;False&lt;/code&gt;). Default value: False.
+        split_only (bool): if &lt;code&gt;True&lt;/code&gt;, does not output anything, only perform
+            word-wrapping and return the resulting multi-lines array of strings.
+        link (str): optional link to add on the image, internal
+            (identifier returned by &lt;code&gt;add\_link&lt;/code&gt;) or external URL.
+        ln (int): Indicates where the current position should go after the call.
+            Possible values are: &lt;code&gt;0&lt;/code&gt;: to the bottom right ; &lt;code&gt;1&lt;/code&gt;: to the beginning
+            of the next line ; &lt;code&gt;2&lt;/code&gt;: below with the same horizontal offset ;
+            &lt;code&gt;3&lt;/code&gt;: to the right with the same vertical offset. Default value: 0.
+        max_line_height (int): optional maximum height of each sub-cell generated
+
+    Using `ln=3` and `maximum height=pdf.font_size` is useful to build tables
+    with multiline text in cells.
+
+    Returns: a boolean indicating if page break was triggered.
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5960,8 +6177,11 @@ def multi_cell(
     max_line_height=None,
 ):
     &#34;&#34;&#34;
-    Output text with line breaks, cf.
-    https://pyfpdf.github.io/fpdf2/reference/multi_cell.html
+    This method allows printing text with line breaks. They can be automatic (as
+    soon as the text reaches the right border of the cell) or explicit (via the
+    `\n` character). As many cells as necessary are stacked, one below the other.
+    Text can be aligned, centered or justified. The cell block can be framed and
+    the background painted.
 
     Args:
         w (int): cells width. If 0, they extend up to the right margin of the page.
@@ -5979,7 +6199,8 @@ def multi_cell(
             or transparent (`False`). Default value: False.
         split_only (bool): if `True`, does not output anything, only perform
             word-wrapping and return the resulting multi-lines array of strings.
-        link (str): optional link to add
+        link (str): optional link to add on the image, internal
+            (identifier returned by `add_link`) or external URL.
         ln (int): Indicates where the current position should go after the call.
             Possible values are: `0`: to the bottom right ; `1`: to the beginning
             of the next line ; `2`: below with the same horizontal offset ;
@@ -6219,7 +6440,8 @@ def multi_cell(
 <span>def <span class="ident">output</span></span>(<span>self, name='', dest='')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Output PDF to some destination.</p>
+<div class="desc"><p>Output PDF to some destination.
+The method first calls <a href="close.md">close</a> if necessary to terminate the document.</p>
 <p>By default the bytearray buffer is returned.
 If a <code>name</code> is given, the PDF is written to a new file.</p>
 <h2 id="args">Args</h2>
@@ -6236,6 +6458,7 @@ If a <code>name</code> is given, the PDF is written to a new file.</p>
 <pre><code class="python">def output(self, name=&#34;&#34;, dest=&#34;&#34;):
     &#34;&#34;&#34;
     Output PDF to some destination.
+    The method first calls [close](close.md) if necessary to terminate the document.
 
     By default the bytearray buffer is returned.
     If a `name` is given, the PDF is written to a new file.
@@ -6490,13 +6713,30 @@ def rotation(self, angle, x=None, y=None):
 <span>def <span class="ident">set_auto_page_break</span></span>(<span>self, auto, margin=0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set auto page break mode and triggering margin</p></div>
+<div class="desc"><p>Set auto page break mode and triggering bottom margin.
+By default, the mode is on and the bottom margin is 2 cm.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>auto</code></strong> :&ensp;<code>bool</code></dt>
+<dd>enable or disable this mode</dd>
+<dt><strong><code>margin</code></strong> :&ensp;<code>int</code></dt>
+<dd>optional bottom margin (distance from the bottom of the page)
+in the unit specified to FPDF constructor</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_auto_page_break(self, auto, margin=0):
-    &#34;&#34;&#34;Set auto page break mode and triggering margin&#34;&#34;&#34;
+    &#34;&#34;&#34;
+    Set auto page break mode and triggering bottom margin.
+    By default, the mode is on and the bottom margin is 2 cm.
+
+    Args:
+        auto (bool): enable or disable this mode
+        margin (int): optional bottom margin (distance from the bottom of the page)
+            in the unit specified to FPDF constructor
+    &#34;&#34;&#34;
     self.auto_page_break = auto
     self.b_margin = margin
     self.page_break_trigger = self.h - margin</code></pre>
@@ -6633,17 +6873,29 @@ def rotation(self, angle, x=None, y=None):
 <span>def <span class="ident">set_font</span></span>(<span>self, family=None, style='', size=0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Select a font.</p>
+<div class="desc"><p>Sets the font used to print character strings.
+It is mandatory to call this method at least once before printing text.</p>
+<p>Default encoding is not specified, but all text writing methods accept only
+unicode for external fonts and one byte encoding for standard.</p>
+<p>Standard fonts use <code>Latin-1</code> encoding by default, but Windows
+encoding <code>cp1252</code> (Western Europe) can be used with
+<a href="set_doc_option.md">set_doc_option</a> ("core_fonts_encoding", encoding).</p>
+<p>The font specified is retained from page to page.
+The method can be called before the first page is created.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>family</code></strong> :&ensp;<code>str</code></dt>
 <dd>name of a font added with <code><a title="fpdf.fpdf.FPDF.add_font" href="#fpdf.fpdf.FPDF.add_font">FPDF.add_font()</a></code>,
-or name of one of the 14 standard "PostScript" fonts</dd>
+or name of one of the 14 standard "PostScript" fonts:
+Courier (fixed-width), Helvetica (sans serif), Times (serif),
+Symbol (symbolic) or ZapfDingbats (symbolic)
+If an empty string is provided, the current family is retained.</dd>
 <dt><strong><code>style</code></strong> :&ensp;<code>str</code></dt>
 <dd>empty string (by default) or a combination
-of one or several letters among B, I, U to</dd>
+of one or several letters among B (bold), I (italic) and U (underline).
+Bold and italic styles do not apply to Symbol and ZapfDingbats fonts.</dd>
 <dt><strong><code>size</code></strong> :&ensp;<code>int</code></dt>
-<dd>in points</dd>
+<dd>in points. The default value is the current size.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -6651,14 +6903,29 @@ of one or several letters among B, I, U to</dd>
 </summary>
 <pre><code class="python">def set_font(self, family=None, style=&#34;&#34;, size=0):
     &#34;&#34;&#34;
-    Select a font.
+    Sets the font used to print character strings.
+    It is mandatory to call this method at least once before printing text.
+
+    Default encoding is not specified, but all text writing methods accept only
+    unicode for external fonts and one byte encoding for standard.
+
+    Standard fonts use `Latin-1` encoding by default, but Windows
+    encoding `cp1252` (Western Europe) can be used with
+    [set_doc_option](set_doc_option.md) (&#34;core_fonts_encoding&#34;, encoding).
+
+    The font specified is retained from page to page.
+    The method can be called before the first page is created.
 
     Args:
         family (str): name of a font added with `FPDF.add_font`,
-          or name of one of the 14 standard &#34;PostScript&#34; fonts
+            or name of one of the 14 standard &#34;PostScript&#34; fonts:
+            Courier (fixed-width), Helvetica (sans serif), Times (serif),
+            Symbol (symbolic) or ZapfDingbats (symbolic)
+            If an empty string is provided, the current family is retained.
         style (str): empty string (by default) or a combination
-          of one or several letters among B, I, U to
-        size (int): in points
+            of one or several letters among B (bold), I (italic) and U (underline).
+            Bold and italic styles do not apply to Symbol and ZapfDingbats fonts.
+        size (int): in points. The default value is the current size.
     &#34;&#34;&#34;
     if not family:
         family = self.font_family
@@ -6765,16 +7032,28 @@ of one or several letters among B, I, U to</dd>
 <span>def <span class="ident">set_left_margin</span></span>(<span>self, margin)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set left margin</p></div>
+<div class="desc"><p>Sets the document left margin.
+Also sets the current FPDF.x on the page to this minimum horizontal position.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>margin</code></strong> :&ensp;<code>int</code></dt>
+<dd>margin in the unit specified to FPDF constructor</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_left_margin(self, margin):
-    &#34;&#34;&#34;Set left margin&#34;&#34;&#34;
-    self.l_margin = margin
-    if self.page &gt; 0 and self.x &lt; margin:
-        self.x = margin</code></pre>
+    &#34;&#34;&#34;
+    Sets the document left margin.
+    Also sets the current FPDF.x on the page to this minimum horizontal position.
+
+    Args:
+        margin (int): margin in the unit specified to FPDF constructor
+    &#34;&#34;&#34;
+    if self.x &lt; margin or self.x == self.l_margin:
+        self.x = margin
+    self.l_margin = margin</code></pre>
 </details>
 </dd>
 <dt id="fpdf.fpdf.FPDF.set_line_width"><code class="name flex">
@@ -6812,18 +7091,65 @@ of one or several letters among B, I, U to</dd>
     self.links[link] = [page, y]</code></pre>
 </details>
 </dd>
+<dt id="fpdf.fpdf.FPDF.set_margin"><code class="name flex">
+<span>def <span class="ident">set_margin</span></span>(<span>self, margin)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sets the document right, left, top &amp; bottom margins to the same value.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>margin</code></strong> :&ensp;<code>int</code></dt>
+<dd>margin in the unit specified to FPDF constructor</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_margin(self, margin):
+    &#34;&#34;&#34;
+    Sets the document right, left, top &amp; bottom margins to the same value.
+
+    Args:
+        margin (int): margin in the unit specified to FPDF constructor
+    &#34;&#34;&#34;
+    self.set_margins(margin, margin)
+    self.set_auto_page_break(self.auto_page_break, margin)</code></pre>
+</details>
+</dd>
 <dt id="fpdf.fpdf.FPDF.set_margins"><code class="name flex">
 <span>def <span class="ident">set_margins</span></span>(<span>self, left, top, right=-1)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set left, top and right margins</p></div>
+<div class="desc"><p>Sets the document left, top &amp; optionaly right margins to the same value.
+By default, they equal 1 cm.
+Also sets the current FPDF.y on the page to this minimum vertical position.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>left</code></strong> :&ensp;<code>int</code></dt>
+<dd>left margin in the unit specified to FPDF constructor</dd>
+<dt><strong><code>top</code></strong> :&ensp;<code>int</code></dt>
+<dd>top margin in the unit specified to FPDF constructor</dd>
+<dt><strong><code>right</code></strong> :&ensp;<code>int</code></dt>
+<dd>optional right margin in the unit specified to FPDF constructor</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_margins(self, left, top, right=-1):
-    &#34;&#34;&#34;Set left, top and right margins&#34;&#34;&#34;
-    self.l_margin = left
+    &#34;&#34;&#34;
+    Sets the document left, top &amp; optionaly right margins to the same value.
+    By default, they equal 1 cm.
+    Also sets the current FPDF.y on the page to this minimum vertical position.
+
+    Args:
+        left (int): left margin in the unit specified to FPDF constructor
+        top (int): top margin in the unit specified to FPDF constructor
+        right (int): optional right margin in the unit specified to FPDF constructor
+    &#34;&#34;&#34;
+    self.set_left_margin(left)
+    if self.y &lt; top or self.y == self.t_margin:
+        self.y = top
     self.t_margin = top
     if right == -1:
         right = left
@@ -6834,13 +7160,23 @@ of one or several letters among B, I, U to</dd>
 <span>def <span class="ident">set_right_margin</span></span>(<span>self, margin)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set right margin</p></div>
+<div class="desc"><p>Sets the document right margin.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>margin</code></strong> :&ensp;<code>int</code></dt>
+<dd>margin in the unit specified to FPDF constructor</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_right_margin(self, margin):
-    &#34;&#34;&#34;Set right margin&#34;&#34;&#34;
+    &#34;&#34;&#34;
+    Sets the document right margin.
+
+    Args:
+        margin (int): margin in the unit specified to FPDF constructor
+    &#34;&#34;&#34;
     self.r_margin = margin</code></pre>
 </details>
 </dd>
@@ -6911,13 +7247,23 @@ of one or several letters among B, I, U to</dd>
 <span>def <span class="ident">set_top_margin</span></span>(<span>self, margin)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set top margin</p></div>
+<div class="desc"><p>Sets the document top margin.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>margin</code></strong> :&ensp;<code>int</code></dt>
+<dd>margin in the unit specified to FPDF constructor</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_top_margin(self, margin):
-    &#34;&#34;&#34;Set top margin&#34;&#34;&#34;
+    &#34;&#34;&#34;
+    Sets the document top margin.
+
+    Args:
+        margin (int): margin in the unit specified to FPDF constructor
+    &#34;&#34;&#34;
     self.t_margin = margin</code></pre>
 </details>
 </dd>
@@ -7180,6 +7526,7 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
 <li><code><a title="fpdf.fpdf.FPDF.set_left_margin" href="#fpdf.fpdf.FPDF.set_left_margin">set_left_margin</a></code></li>
 <li><code><a title="fpdf.fpdf.FPDF.set_line_width" href="#fpdf.fpdf.FPDF.set_line_width">set_line_width</a></code></li>
 <li><code><a title="fpdf.fpdf.FPDF.set_link" href="#fpdf.fpdf.FPDF.set_link">set_link</a></code></li>
+<li><code><a title="fpdf.fpdf.FPDF.set_margin" href="#fpdf.fpdf.FPDF.set_margin">set_margin</a></code></li>
 <li><code><a title="fpdf.fpdf.FPDF.set_margins" href="#fpdf.fpdf.FPDF.set_margins">set_margins</a></code></li>
 <li><code><a title="fpdf.fpdf.FPDF.set_right_margin" href="#fpdf.fpdf.FPDF.set_right_margin">set_right_margin</a></code></li>
 <li><code><a title="fpdf.fpdf.FPDF.set_stretching" href="#fpdf.fpdf.FPDF.set_stretching">set_stretching</a></code></li>

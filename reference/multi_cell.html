@@ -74,11 +74,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#multi_cell" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -302,10 +297,62 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7" >
+      
+      <label class="md-nav__link" for="nav-7">
+        Layout
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Layout" data-md-level="1">
+        <label class="md-nav__title" for="nav-7">
+          <span class="md-nav__icon md-icon"></span>
+          Layout
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PageFormatAndOrientation.html" class="md-nav__link">
+        Page format and orientation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Margins.html" class="md-nav__link">
+        Margins
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
     <li class="md-nav__item">
       <a href="../PageBreaks.html" class="md-nav__link">
         Page breaks
       </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -747,63 +794,9 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          multi_cell
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="multi_cell.html" class="md-nav__link md-nav__link--active">
         multi_cell
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#multi_cell" class="md-nav__link">
-    multi_cell
-  </a>
-  
-    <nav class="md-nav" aria-label="multi_cell">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#description" class="md-nav__link">
-    Description
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#parameters" class="md-nav__link">
-    Parameters
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    See also
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -1248,62 +1241,6 @@
               </div>
             
             
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#multi_cell" class="md-nav__link">
-    multi_cell
-  </a>
-  
-    <nav class="md-nav" aria-label="multi_cell">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#description" class="md-nav__link">
-    Description
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#parameters" class="md-nav__link">
-    Parameters
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    See also
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
-            
           
           <div class="md-content">
             <article class="md-content__inner md-typeset">
@@ -1316,74 +1253,11 @@
                 
                   <h1>multi_cell</h1>
                 
-                <h2 id="multi_cell">multi_cell</h2>
-<div class="highlight"><pre><span></span><code><span class="n">fpdf</span><span class="o">.</span><span class="n">multi_cell</span><span class="p">(</span><span class="n">w</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">h</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">txt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">border</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> 
-                <span class="n">align</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="n">fill</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
-</code></pre></div>
-<h3 id="description">Description</h3>
-<p>This method allows printing text with line breaks. They can be automatic (as 
-soon as the text reaches the right border of the cell) or explicit (via the 
-<code>\n</code> character). As many cells as necessary are output, one below the other.
-Text can be aligned, centered or justified. The cell block can be framed and 
-the background painted.</p>
-<h3 id="parameters">Parameters</h3>
-<p>w:</p>
-<blockquote>
-<p>Width of cells. If 0, they extend up to the right margin of the page.</p>
-</blockquote>
-<p>h:</p>
-<blockquote>
-<p>Height of cells.</p>
-</blockquote>
-<p>txt:</p>
-<blockquote>
-<p>String to print.</p>
-</blockquote>
-<p>border:</p>
-<blockquote>
-<p>Indicates if borders must be drawn around the cell block. The value can be 
-  either a number:</p>
-<blockquote>
-<ul>
-<li>0: no border</li>
-<li>1: frame</li>
-</ul>
-</blockquote>
-<p>or a string containing some or all of the following characters (in any 
-  order):</p>
-<blockquote>
-<ul>
-<li><code>L</code>: left</li>
-<li><code>T</code>: top</li>
-<li><code>R</code>: right</li>
-<li><code>B</code>: bottom</li>
-</ul>
-</blockquote>
-<p>Default value: 0.</p>
-</blockquote>
-<p>align:</p>
-<blockquote>
-<p>Sets the text alignment. Possible values are:</p>
-<blockquote>
-<ul>
-<li><code>L</code>: left alignment</li>
-<li><code>C</code>: center</li>
-<li><code>R</code>: right alignment</li>
-<li><code>J</code>: justification (default value)</li>
-</ul>
-</blockquote>
-</blockquote>
-<p>fill</p>
-<blockquote>
-<p>Indicates if the cell background must be painted (<code>True</code>) or transparent 
-  (<code>False</code>). Default  value: False.</p>
-</blockquote>
-<h3 id="see-also">See also</h3>
-<p><a href="set_doc_option.html">set_doc_option</a>, <a href="set_font.html">set_font</a>, 
-<a href="set_draw_color.html">set_draw_color</a>, <a href="set_fill_color.html">set_fill_color</a>, 
-<a href="set_text_color.html">set_text_color</a>, <a href="set_line_width.html">set_line_width</a>, 
-<a href="cell.html">cell</a>, <a href="write.html">write</a>, 
-<a href="set_auto_page_break.html">set_auto_page_break</a>.</p>
+                <p>cf. https://pypi.org/project/fpdf2/fpdf/#fpdf.FPDF.multi_cell</p>
+<script>
+// Migrating Markdown doc to docstrings - cf. https://github.com/PyFPDF/fpdf2/issues/31
+window.location = 'https://pypi.org/project/fpdf2/fpdf/#fpdf.FPDF.multi_cell'
+</script>
                 
               
               

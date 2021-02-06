@@ -74,11 +74,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#output" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -302,10 +297,62 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7" >
+      
+      <label class="md-nav__link" for="nav-7">
+        Layout
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Layout" data-md-level="1">
+        <label class="md-nav__title" for="nav-7">
+          <span class="md-nav__icon md-icon"></span>
+          Layout
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PageFormatAndOrientation.html" class="md-nav__link">
+        Page format and orientation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Margins.html" class="md-nav__link">
+        Margins
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
     <li class="md-nav__item">
       <a href="../PageBreaks.html" class="md-nav__link">
         Page breaks
       </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -771,63 +818,9 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          output
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="output.html" class="md-nav__link md-nav__link--active">
         output
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#output" class="md-nav__link">
-    output
-  </a>
-  
-    <nav class="md-nav" aria-label="output">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#description" class="md-nav__link">
-    Description
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#parameters" class="md-nav__link">
-    Parameters
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    See also
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -1248,62 +1241,6 @@
               </div>
             
             
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#output" class="md-nav__link">
-    output
-  </a>
-  
-    <nav class="md-nav" aria-label="output">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#description" class="md-nav__link">
-    Description
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#parameters" class="md-nav__link">
-    Parameters
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    See also
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
-            
           
           <div class="md-content">
             <article class="md-content__inner md-typeset">
@@ -1316,21 +1253,11 @@
                 
                   <h1>output</h1>
                 
-                <h2 id="output">output</h2>
-<div class="highlight"><pre><span></span><code><span class="n">fpdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-</code></pre></div>
-<h3 id="description">Description</h3>
-<p>Send the document to some destination: standard output, a file or a byte string.</p>
-<p>The method first calls <a href="close.html">close</a> if necessary to terminate the document.</p>
-<p><strong>NOTICE:</strong>
-In Python 2 strings were raw data but in Python 3 strings are now unicode by default. If you are using Python 3.x you have to use <code>pdf.output().encode('latin-1')</code> in order to get the output, if you don't do so the generated PDF will be invalid and depending on the viewer either not open at all or show up as some blank pages.</p>
-<h3 id="parameters">Parameters</h3>
-<p>name:</p>
-<blockquote>
-<p>The name of the file. Only used when writing to a file.</p>
-</blockquote>
-<h3 id="see-also">See also</h3>
-<p><a href="close.html">close</a>.</p>
+                <p>cf. https://pypi.org/project/fpdf2/fpdf/#fpdf.FPDF.output</p>
+<script>
+// Migrating Markdown doc to docstrings - cf. https://github.com/PyFPDF/fpdf2/issues/31
+window.location = 'https://pypi.org/project/fpdf2/fpdf/#fpdf.FPDF.output'
+</script>
                 
               
               
