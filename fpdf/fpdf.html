@@ -511,7 +511,15 @@ class FPDF:
 
     @check_page
     def line(self, x1, y1, x2, y2):
-        &#34;&#34;&#34;Draw a line&#34;&#34;&#34;
+        &#34;&#34;&#34;
+        Draw a line between two points.
+
+        Args:
+            x1 (int): Abscissa of first point
+            y1 (int): Ordinate of first point
+            x2 (int): Abscissa of second point
+            y2 (int): Ordinate of second point
+        &#34;&#34;&#34;
         self._out(
             f&#34;{x1 * self.k:.2f} {(self.h - y1) * self.k:.2f} m {x2 * self.k:.2f} &#34;
             f&#34;{(self.h - y2) * self.k:.2f} l S&#34;
@@ -525,16 +533,37 @@ class FPDF:
 
     @check_page
     def dashed_line(self, x1, y1, x2, y2, dash_length=1, space_length=1):
-        &#34;&#34;&#34;Draw a dashed line. Same interface as line() except:
-        - dash_length: Length of the dash
-        - space_length: Length of the space between dashes&#34;&#34;&#34;
+        &#34;&#34;&#34;
+        Draw a dashed line between two points.
+
+        Args:
+            x1 (int): Abscissa of first point
+            y1 (int): Ordinate of first point
+            x2 (int): Abscissa of second point
+            y2 (int): Ordinate of second point
+            dash_length (int): Length of the dash
+            space_length (int): Length of the space between 2 dashes
+        &#34;&#34;&#34;
         self._set_dash(dash_length, space_length)
         self.line(x1, y1, x2, y2)
         self._set_dash()
 
     @check_page
     def rect(self, x, y, w, h, style=None):
-        &#34;&#34;&#34;Draw a rectangle&#34;&#34;&#34;
+        &#34;&#34;&#34;
+        Outputs a rectangle.
+        It can be drawn (border only), filled (with no border) or both.
+
+        Args:
+            x (int): Abscissa of upper-left bounging box.
+            y (int): Ordinate of upper-left bounging box.
+            w (int): Width.
+            h (int): Height.
+            style (int): Style of rendering. Possible values are:
+                * `D` or empty string: draw border. This is the default value.
+                * `F`: fill
+                * `DF` or `FD`: draw and fill
+        &#34;&#34;&#34;
         style_to_operators = {&#34;F&#34;: &#34;f&#34;, &#34;FD&#34;: &#34;B&#34;, &#34;DF&#34;: &#34;B&#34;}
         op = style_to_operators.get(style, &#34;S&#34;)
         self._out(
@@ -544,7 +573,20 @@ class FPDF:
 
     @check_page
     def ellipse(self, x, y, w, h, style=None):
-        &#34;&#34;&#34;Draw a ellipse&#34;&#34;&#34;
+        &#34;&#34;&#34;
+        Outputs an ellipse.
+        It can be drawn (border only), filled (with no border) or both.
+
+        Args:
+            x (int): Abscissa of upper-left bounging box.
+            y (int): Ordinate of upper-left bounging box.
+            w (int): Width.
+            h (int): Height.
+            style (int): Style of rendering. Possible values are:
+                * `D` or empty string: draw border. This is the default value.
+                * `F`: fill
+                * `DF` or `FD`: draw and fill
+        &#34;&#34;&#34;
         style_to_operators = {&#34;F&#34;: &#34;f&#34;, &#34;FD&#34;: &#34;B&#34;, &#34;DF&#34;: &#34;B&#34;}
         op = style_to_operators.get(style, &#34;S&#34;)
 
@@ -2877,7 +2919,15 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
     @check_page
     def line(self, x1, y1, x2, y2):
-        &#34;&#34;&#34;Draw a line&#34;&#34;&#34;
+        &#34;&#34;&#34;
+        Draw a line between two points.
+
+        Args:
+            x1 (int): Abscissa of first point
+            y1 (int): Ordinate of first point
+            x2 (int): Abscissa of second point
+            y2 (int): Ordinate of second point
+        &#34;&#34;&#34;
         self._out(
             f&#34;{x1 * self.k:.2f} {(self.h - y1) * self.k:.2f} m {x2 * self.k:.2f} &#34;
             f&#34;{(self.h - y2) * self.k:.2f} l S&#34;
@@ -2891,16 +2941,37 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
     @check_page
     def dashed_line(self, x1, y1, x2, y2, dash_length=1, space_length=1):
-        &#34;&#34;&#34;Draw a dashed line. Same interface as line() except:
-        - dash_length: Length of the dash
-        - space_length: Length of the space between dashes&#34;&#34;&#34;
+        &#34;&#34;&#34;
+        Draw a dashed line between two points.
+
+        Args:
+            x1 (int): Abscissa of first point
+            y1 (int): Ordinate of first point
+            x2 (int): Abscissa of second point
+            y2 (int): Ordinate of second point
+            dash_length (int): Length of the dash
+            space_length (int): Length of the space between 2 dashes
+        &#34;&#34;&#34;
         self._set_dash(dash_length, space_length)
         self.line(x1, y1, x2, y2)
         self._set_dash()
 
     @check_page
     def rect(self, x, y, w, h, style=None):
-        &#34;&#34;&#34;Draw a rectangle&#34;&#34;&#34;
+        &#34;&#34;&#34;
+        Outputs a rectangle.
+        It can be drawn (border only), filled (with no border) or both.
+
+        Args:
+            x (int): Abscissa of upper-left bounging box.
+            y (int): Ordinate of upper-left bounging box.
+            w (int): Width.
+            h (int): Height.
+            style (int): Style of rendering. Possible values are:
+                * `D` or empty string: draw border. This is the default value.
+                * `F`: fill
+                * `DF` or `FD`: draw and fill
+        &#34;&#34;&#34;
         style_to_operators = {&#34;F&#34;: &#34;f&#34;, &#34;FD&#34;: &#34;B&#34;, &#34;DF&#34;: &#34;B&#34;}
         op = style_to_operators.get(style, &#34;S&#34;)
         self._out(
@@ -2910,7 +2981,20 @@ case insensitive key (the name of the new format) and 2-tuple value of
 
     @check_page
     def ellipse(self, x, y, w, h, style=None):
-        &#34;&#34;&#34;Draw a ellipse&#34;&#34;&#34;
+        &#34;&#34;&#34;
+        Outputs an ellipse.
+        It can be drawn (border only), filled (with no border) or both.
+
+        Args:
+            x (int): Abscissa of upper-left bounging box.
+            y (int): Ordinate of upper-left bounging box.
+            w (int): Width.
+            h (int): Height.
+            style (int): Style of rendering. Possible values are:
+                * `D` or empty string: draw border. This is the default value.
+                * `F`: fill
+                * `DF` or `FD`: draw and fill
+        &#34;&#34;&#34;
         style_to_operators = {&#34;F&#34;: &#34;f&#34;, &#34;FD&#34;: &#34;B&#34;, &#34;DF&#34;: &#34;B&#34;}
         op = style_to_operators.get(style, &#34;S&#34;)
 
@@ -5357,18 +5441,39 @@ def code39(self, txt, x, y, w=1.5, h=5):
 <span>def <span class="ident">dashed_line</span></span>(<span>self, x1, y1, x2, y2, dash_length=1, space_length=1)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Draw a dashed line. Same interface as line() except:
-- dash_length: Length of the dash
-- space_length: Length of the space between dashes</p></div>
+<div class="desc"><p>Draw a dashed line between two points.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>x1</code></strong> :&ensp;<code>int</code></dt>
+<dd>Abscissa of first point</dd>
+<dt><strong><code>y1</code></strong> :&ensp;<code>int</code></dt>
+<dd>Ordinate of first point</dd>
+<dt><strong><code>x2</code></strong> :&ensp;<code>int</code></dt>
+<dd>Abscissa of second point</dd>
+<dt><strong><code>y2</code></strong> :&ensp;<code>int</code></dt>
+<dd>Ordinate of second point</dd>
+<dt><strong><code>dash_length</code></strong> :&ensp;<code>int</code></dt>
+<dd>Length of the dash</dd>
+<dt><strong><code>space_length</code></strong> :&ensp;<code>int</code></dt>
+<dd>Length of the space between 2 dashes</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@check_page
 def dashed_line(self, x1, y1, x2, y2, dash_length=1, space_length=1):
-    &#34;&#34;&#34;Draw a dashed line. Same interface as line() except:
-    - dash_length: Length of the dash
-    - space_length: Length of the space between dashes&#34;&#34;&#34;
+    &#34;&#34;&#34;
+    Draw a dashed line between two points.
+
+    Args:
+        x1 (int): Abscissa of first point
+        y1 (int): Ordinate of first point
+        x2 (int): Abscissa of second point
+        y2 (int): Ordinate of second point
+        dash_length (int): Length of the dash
+        space_length (int): Length of the space between 2 dashes
+    &#34;&#34;&#34;
     self._set_dash(dash_length, space_length)
     self.line(x1, y1, x2, y2)
     self._set_dash()</code></pre>
@@ -5378,14 +5483,44 @@ def dashed_line(self, x1, y1, x2, y2, dash_length=1, space_length=1):
 <span>def <span class="ident">ellipse</span></span>(<span>self, x, y, w, h, style=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Draw a ellipse</p></div>
+<div class="desc"><p>Outputs an ellipse.
+It can be drawn (border only), filled (with no border) or both.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
+<dd>Abscissa of upper-left bounging box.</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
+<dd>Ordinate of upper-left bounging box.</dd>
+<dt><strong><code>w</code></strong> :&ensp;<code>int</code></dt>
+<dd>Width.</dd>
+<dt><strong><code>h</code></strong> :&ensp;<code>int</code></dt>
+<dd>Height.</dd>
+<dt><strong><code>style</code></strong> :&ensp;<code>int</code></dt>
+<dd>Style of rendering. Possible values are:
+* <code>D</code> or empty string: draw border. This is the default value.
+* <code>F</code>: fill
+* <code>DF</code> or <code>FD</code>: draw and fill</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@check_page
 def ellipse(self, x, y, w, h, style=None):
-    &#34;&#34;&#34;Draw a ellipse&#34;&#34;&#34;
+    &#34;&#34;&#34;
+    Outputs an ellipse.
+    It can be drawn (border only), filled (with no border) or both.
+
+    Args:
+        x (int): Abscissa of upper-left bounging box.
+        y (int): Ordinate of upper-left bounging box.
+        w (int): Width.
+        h (int): Height.
+        style (int): Style of rendering. Possible values are:
+            * `D` or empty string: draw border. This is the default value.
+            * `F`: fill
+            * `DF` or `FD`: draw and fill
+    &#34;&#34;&#34;
     style_to_operators = {&#34;F&#34;: &#34;f&#34;, &#34;FD&#34;: &#34;B&#34;, &#34;DF&#34;: &#34;B&#34;}
     op = style_to_operators.get(style, &#34;S&#34;)
 
@@ -5680,14 +5815,33 @@ def interleaved2of5(self, txt, x, y, w=1, h=10):
 <span>def <span class="ident">line</span></span>(<span>self, x1, y1, x2, y2)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Draw a line</p></div>
+<div class="desc"><p>Draw a line between two points.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>x1</code></strong> :&ensp;<code>int</code></dt>
+<dd>Abscissa of first point</dd>
+<dt><strong><code>y1</code></strong> :&ensp;<code>int</code></dt>
+<dd>Ordinate of first point</dd>
+<dt><strong><code>x2</code></strong> :&ensp;<code>int</code></dt>
+<dd>Abscissa of second point</dd>
+<dt><strong><code>y2</code></strong> :&ensp;<code>int</code></dt>
+<dd>Ordinate of second point</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@check_page
 def line(self, x1, y1, x2, y2):
-    &#34;&#34;&#34;Draw a line&#34;&#34;&#34;
+    &#34;&#34;&#34;
+    Draw a line between two points.
+
+    Args:
+        x1 (int): Abscissa of first point
+        y1 (int): Ordinate of first point
+        x2 (int): Abscissa of second point
+        y2 (int): Ordinate of second point
+    &#34;&#34;&#34;
     self._out(
         f&#34;{x1 * self.k:.2f} {(self.h - y1) * self.k:.2f} m {x2 * self.k:.2f} &#34;
         f&#34;{(self.h - y2) * self.k:.2f} l S&#34;
@@ -6161,14 +6315,44 @@ If a <code>name</code> is given, the PDF is written to a new file.</p>
 <span>def <span class="ident">rect</span></span>(<span>self, x, y, w, h, style=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Draw a rectangle</p></div>
+<div class="desc"><p>Outputs a rectangle.
+It can be drawn (border only), filled (with no border) or both.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
+<dd>Abscissa of upper-left bounging box.</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
+<dd>Ordinate of upper-left bounging box.</dd>
+<dt><strong><code>w</code></strong> :&ensp;<code>int</code></dt>
+<dd>Width.</dd>
+<dt><strong><code>h</code></strong> :&ensp;<code>int</code></dt>
+<dd>Height.</dd>
+<dt><strong><code>style</code></strong> :&ensp;<code>int</code></dt>
+<dd>Style of rendering. Possible values are:
+* <code>D</code> or empty string: draw border. This is the default value.
+* <code>F</code>: fill
+* <code>DF</code> or <code>FD</code>: draw and fill</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@check_page
 def rect(self, x, y, w, h, style=None):
-    &#34;&#34;&#34;Draw a rectangle&#34;&#34;&#34;
+    &#34;&#34;&#34;
+    Outputs a rectangle.
+    It can be drawn (border only), filled (with no border) or both.
+
+    Args:
+        x (int): Abscissa of upper-left bounging box.
+        y (int): Ordinate of upper-left bounging box.
+        w (int): Width.
+        h (int): Height.
+        style (int): Style of rendering. Possible values are:
+            * `D` or empty string: draw border. This is the default value.
+            * `F`: fill
+            * `DF` or `FD`: draw and fill
+    &#34;&#34;&#34;
     style_to_operators = {&#34;F&#34;: &#34;f&#34;, &#34;FD&#34;: &#34;B&#34;, &#34;DF&#34;: &#34;B&#34;}
     op = style_to_operators.get(style, &#34;S&#34;)
     self._out(
