@@ -1226,7 +1226,7 @@
 <p>The following examples are packaged in a ready to run application:
 <a href="http://pyfpdf.googlecode.com/files/web2py.app.fpdf.w2p">web2py.app.fpdf.w2p</a>.</p>
 <p>PyFPDF is included in <a href="http://www.web2py.com/">web2py</a> since release <a href="http://www.web2py.com/examples/default/download">1.85.2</a>.</p>
-<p>Also, you can download the latest version of <a href="http://pyfpdf.googlecode.com/files/pyfpdf-1.54b.zip">pyfpdf</a> and uncompress it in the <code>web2py, gluon, contrib</code> folder.</p>
+<p>Also, you can put the content of the <code>fpdf/</code> directory in this repository into the <code>web2py/gluon/contrib</code> folder.</p>
 <p><strong>Note about images</strong>: these sample images are small so they may look like low quality ones. For better results, use bigger images: more DPI (screen is often 72/96DPI, printers are often 300/600DPI). As a rule of thumb, use at least half of the image size when rendering to PDF, ie. if an image is 500x200px, use 250x100px as width and height attributes of the IMG tag.</p>
 <h1 id="sample-report">Sample Report</h1>
 <p>You could make a "professional looking" bussiness report just using web2py HTML helpers, mixin headers, logos, charts, text and tables.</p>
@@ -1251,7 +1251,7 @@
     <span class="n">table</span> <span class="o">=</span> <span class="n">TABLE</span><span class="p">(</span><span class="o">*</span><span class="n">rows</span><span class="p">,</span> <span class="n">_border</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">_align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">_width</span><span class="o">=</span><span class="s2">&quot;50%&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="s2">&quot;pdf&quot;</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">gluon.contrib.pyfpdf</span> <span class="kn">import</span> <span class="n">FPDF</span><span class="p">,</span> <span class="n">HTMLMixin</span>
+        <span class="kn">from</span> <span class="nn">gluon.contrib.fpdf</span> <span class="kn">import</span> <span class="n">FPDF</span><span class="p">,</span> <span class="n">HTMLMixin</span>
 
         <span class="c1"># create a custom class with the required functionality </span>
         <span class="k">class</span> <span class="nc">MyFPDF</span><span class="p">(</span><span class="n">FPDF</span><span class="p">,</span> <span class="n">HTMLMixin</span><span class="p">):</span>
@@ -1319,7 +1319,7 @@
                   <span class="n">_border</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">_align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">_width</span><span class="o">=</span><span class="s2">&quot;100%&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="s2">&quot;pdf&quot;</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">gluon.contrib.pyfpdf</span> <span class="kn">import</span> <span class="n">FPDF</span><span class="p">,</span> <span class="n">HTMLMixin</span>
+        <span class="kn">from</span> <span class="nn">gluon.contrib.fpdf</span> <span class="kn">import</span> <span class="n">FPDF</span><span class="p">,</span> <span class="n">HTMLMixin</span>
 
         <span class="c1"># define our FPDF class (move to modules if it is reused frequently)</span>
         <span class="k">class</span> <span class="nc">MyFPDF</span><span class="p">(</span><span class="n">FPDF</span><span class="p">,</span> <span class="n">HTMLMixin</span><span class="p">):</span>
@@ -1406,7 +1406,7 @@ Where the first number indicates the template ID (important for the database sys
 <p>After defining and filling your database, you can use PyFPDF <a href="Templates.html">Templates</a> directly reading row elements from the web2py database:</p>
 <p>For example, for an invoice, in a controller you could write:
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">invoice</span><span class="p">():</span>
-    <span class="kn">from</span> <span class="nn">gluon.contrib.pyfpdf</span> <span class="kn">import</span> <span class="n">Template</span>
+    <span class="kn">from</span> <span class="nn">gluon.contrib.fpdf</span> <span class="kn">import</span> <span class="n">Template</span>
     <span class="kn">import</span> <span class="nn">os.path</span>
 
     <span class="c1"># generate sample invoice (according Argentina&#39;s regulations)</span>

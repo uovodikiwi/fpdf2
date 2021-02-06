@@ -4838,9 +4838,12 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         self.texts[self.pg_no] = {}
 
     def __setitem__(self, name, value):
-        if name.lower() in self.keys:
-            value = &#34;&#34; if value is None else str(value)
-            self.texts[self.pg_no][name.lower()] = value
+        if name.lower() not in self.keys:
+            raise FPDFException(f&#34;Element not loaded, cannot set item: {name}&#34;)
+        if not self.pg_no:
+            raise FPDFException(&#34;No page open, you need to call add_page() first&#34;)
+        value = &#34;&#34; if value is None else str(value)
+        self.texts[self.pg_no][name.lower()] = value
 
     # setitem shortcut (may be further extended)
     set = __setitem__
@@ -4849,16 +4852,18 @@ def write(self, h, txt=&#34;&#34;, link=&#34;&#34;):
         return name.lower() in self.keys
 
     def __getitem__(self, name):
-        if name in self.keys:
-            key = name.lower()
-            if key in self.texts:
-                # text for this page:
-                return self.texts[self.pg_no][key]
-            # find first element for default text:
-            return next(
-                (x[&#34;text&#34;] for x in self.elements if x[&#34;name&#34;].lower() == key), None
-            )
-        return None
+        if not self.pg_no:
+            raise FPDFException(&#34;No page open, you need to call add_page() first&#34;)
+        if name not in self.keys:
+            return None
+        key = name.lower()
+        if key in self.texts[self.pg_no]:
+            # text for this page:
+            return self.texts[self.pg_no][key]
+        # find first element for default text:
+        return next(
+            (x[&#34;text&#34;] for x in self.elements if x[&#34;name&#34;].lower() == key), None
+        )
 
     def split_multicell(self, text, element_name):
         &#34;&#34;&#34;Divide (\n) a string using a given element width&#34;&#34;&#34;
@@ -5429,9 +5434,12 @@ def write(
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __setitem__(self, name, value):
-    if name.lower() in self.keys:
-        value = &#34;&#34; if value is None else str(value)
-        self.texts[self.pg_no][name.lower()] = value</code></pre>
+    if name.lower() not in self.keys:
+        raise FPDFException(f&#34;Element not loaded, cannot set item: {name}&#34;)
+    if not self.pg_no:
+        raise FPDFException(&#34;No page open, you need to call add_page() first&#34;)
+    value = &#34;&#34; if value is None else str(value)
+    self.texts[self.pg_no][name.lower()] = value</code></pre>
 </details>
 </dd>
 <dt id="fpdf.Template.split_multicell"><code class="name flex">
